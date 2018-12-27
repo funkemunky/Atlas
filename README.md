@@ -17,8 +17,8 @@ Atlas is an all-in-one and cohesive API for developers who want to improve their
 ```java
 package cc.funkemunky.fiona.events.custom;
 
-import cc.funkemunky.fiona.events.system.Cancellable;
-import cc.funkemunky.fiona.events.system.Event;
+import cc.funkemunky.api.event.system.Cancellable;
+import cc.funkemunky.api.event.system.Event;
 import cc.funkemunky.fiona.utils.FionaLocation;
 import lombok.Getter;
 import org.bukkit.entity.Player;
@@ -155,7 +155,7 @@ TinyProtocolHandler.sendPacket(e.getPlayer(), new WrappedOutKeepAlivePacket(233 
                 Block block = event.getClickedBlock();
 
                 event.getPlayer().sendMessage(block.getType().name() + "'s Data: " + block.getData());
-                for (BoundingBox box : Fiona.getInstance().getBlockBoxManager().getBlockBox().getSpecificBox(block.getLocation())) {
+                for (BoundingBox box : Atlas.getInstance().getBlockBoxManager().getBlockBox().getSpecificBox(block.getLocation())) {
                     for (float x = box.minX; x < box.maxX; x += 0.2f) {
                         for (float y = box.minY; y < box.maxY; y += 0.2f) {
                             for (float z = box.minZ; z < box.maxZ; z += 0.2f) {
@@ -173,7 +173,7 @@ TinyProtocolHandler.sendPacket(e.getPlayer(), new WrappedOutKeepAlivePacket(233 
 
 ### Getting all collided hit-boxes
 ```java
-List<BoundingBox> box = Fiona.getInstance().getBlockBoxManager().getBlockBox().getCollidingBoxes(to.getWorld(), data.boundingBox.grow(0.5f, 0.1f, 0.5f).subtract(0, 0.5f, 0, 0, 0, 0));
+List<BoundingBox> box = Atlas.getInstance().getBlockBoxManager().getBlockBox().getCollidingBoxes(to.getWorld(), data.boundingBox.grow(0.5f, 0.1f, 0.5f).subtract(0, 0.5f, 0, 0, 0, 0));
 
         CollisionAssessment assessment = new CollisionAssessment(data.boundingBox, data);
         box.forEach(bb -> assessment.assessBox(bb, to.getWorld()));
