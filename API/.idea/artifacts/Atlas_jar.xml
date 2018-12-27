@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="Atlas:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/Atlas_jar</output-path>
+    <root id="archive" name="Atlas.jar">
+      <element id="module-output" name="Atlas" />
+    </root>
+  </artifact>
+</component>
