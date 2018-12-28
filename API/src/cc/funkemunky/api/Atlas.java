@@ -12,6 +12,7 @@ import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.concurrent.Executor;
+import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 @Getter
@@ -20,7 +21,7 @@ public class Atlas extends JavaPlugin {
     private static Atlas instance;
     private TinyProtocolHandler tinyProtocolHandler;
     private BlockBoxManager blockBoxManager;
-    private Executor threadPool;
+    private ExecutorService threadPool;
     private ConsoleCommandSender consoleSender;
 
     public void onEnable() {
