@@ -11,14 +11,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="103113f6-8a1c-45a3-9b02-5a992cc6cbb2" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/artifacts/Atlas_jar/Atlas.jar" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/Atlas_jar/Atlas.jar" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Atlas/cc/funkemunky/api/Atlas.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Atlas/cc/funkemunky/api/Atlas.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Atlas/cc/funkemunky/api/tinyprotocol/api/TinyProtocolHandler$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Atlas/cc/funkemunky/api/tinyprotocol/api/TinyProtocolHandler$1.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Atlas/cc/funkemunky/api/tinyprotocol/api/TinyProtocolHandler$2.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Atlas/cc/funkemunky/api/tinyprotocol/api/TinyProtocolHandler$2.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Atlas/plugin.yml" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Atlas/plugin.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/plugin.yml" beforeDir="false" afterPath="$PROJECT_DIR$/resources/plugin.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/cc/funkemunky/api/Atlas.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/cc/funkemunky/api/Atlas.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/cc/funkemunky/api/commands/FunkeCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/cc/funkemunky/api/commands/FunkeCommand.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -88,13 +81,13 @@
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
-          <entry key="java" value="513" />
+          <entry key="java" value="864" />
           <entry key="yml" value="1" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="JAVA" value="513" />
+          <entry key="JAVA" value="864" />
           <entry key="YAML" value="1" />
         </counts>
       </usages-collector>
@@ -105,8 +98,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/cc/funkemunky/api/Atlas.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="238">
-              <caret line="27" column="28" selection-start-line="27" selection-start-column="28" selection-end-line="27" selection-end-column="28" />
+            <state relative-caret-position="612">
+              <caret line="36" column="56" selection-start-line="36" selection-start-column="56" selection-end-line="36" selection-end-column="56" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -126,7 +119,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/cc/funkemunky/api/commands/FunkeCommandManager.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="85">
+            <state relative-caret-position="136">
               <caret line="8" column="18" selection-start-line="8" selection-start-column="18" selection-end-line="8" selection-end-column="18" />
               <folding>
                 <element signature="imports" expanded="true" />
@@ -138,8 +131,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/cc/funkemunky/api/commands/FunkeCommand.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="40">
-              <caret line="22" selection-start-line="22" selection-end-line="23" />
+            <state relative-caret-position="567">
+              <caret line="62" lean-forward="true" selection-start-line="62" selection-end-line="62" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -215,8 +208,8 @@
         <option value="$PROJECT_DIR$/src/cc/funkemunky/api/event/system/EventManager.java" />
         <option value="$PROJECT_DIR$/src/cc/funkemunky/api/commands/FunkeCommandManager.java" />
         <option value="$PROJECT_DIR$/resources/plugin.yml" />
-        <option value="$PROJECT_DIR$/src/cc/funkemunky/api/Atlas.java" />
         <option value="$PROJECT_DIR$/src/cc/funkemunky/api/commands/FunkeArgument.java" />
+        <option value="$PROJECT_DIR$/src/cc/funkemunky/api/Atlas.java" />
         <option value="$PROJECT_DIR$/src/cc/funkemunky/api/commands/FunkeCommand.java" />
       </list>
     </option>
@@ -287,7 +280,7 @@
     </panes>
   </component>
   <component name="PropertiesComponent">
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1546548036887" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1546621918282" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="project.structure.last.edited" value="Artifacts" />
     <property name="project.structure.proportion" value="0.15917969" />
@@ -612,10 +605,17 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/resources/plugin.yml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="34">
+          <caret line="2" column="14" selection-start-line="2" selection-start-column="14" selection-end-line="2" selection-end-column="14" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/cc/funkemunky/api/Atlas.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="238">
-          <caret line="27" column="28" selection-start-line="27" selection-start-column="28" selection-end-line="27" selection-end-column="28" />
+        <state relative-caret-position="612">
+          <caret line="36" column="56" selection-start-line="36" selection-start-column="56" selection-end-line="36" selection-end-column="56" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
@@ -631,7 +631,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/cc/funkemunky/api/commands/FunkeCommandManager.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="85">
+        <state relative-caret-position="136">
           <caret line="8" column="18" selection-start-line="8" selection-start-column="18" selection-end-line="8" selection-end-column="18" />
           <folding>
             <element signature="imports" expanded="true" />
@@ -639,17 +639,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/resources/plugin.yml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="34">
-          <caret line="2" column="14" selection-start-line="2" selection-start-column="14" selection-end-line="2" selection-end-column="14" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/cc/funkemunky/api/commands/FunkeCommand.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="40">
-          <caret line="22" selection-start-line="22" selection-end-line="23" />
+        <state relative-caret-position="567">
+          <caret line="62" lean-forward="true" selection-start-line="62" selection-end-line="62" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>

@@ -8,6 +8,7 @@ import cc.funkemunky.api.utils.MiscUtils;
 import com.google.common.collect.Lists;
 import lombok.Getter;
 import lombok.Setter;
+import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -18,6 +19,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 
 @Getter
@@ -43,6 +45,9 @@ public abstract class FunkeCommand
         helpPage = true;
         plugin.getCommand(name).setExecutor(this);
         plugin.getCommand(name).setTabCompleter(this);
+
+        plugin.getDescription().getCommands().put(name, new HashMap<>());
+
         this.addArguments();
     }
 
@@ -57,6 +62,9 @@ public abstract class FunkeCommand
         instance = this;
         plugin.getCommand(name).setExecutor(this);
         plugin.getCommand(name).setTabCompleter(this);
+        plugin.getDescription().getCommands().put(name, new HashMap<>());
+
+
         this.addArguments();
     }
 
