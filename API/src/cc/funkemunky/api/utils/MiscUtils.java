@@ -9,6 +9,7 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.util.Vector;
 
 import java.util.ArrayList;
@@ -105,6 +106,11 @@ public class MiscUtils {
             return new BoundingBox(minX, minY, minZ, maxX, maxY, maxZ);
         }
         return ReflectionsUtil.toBoundingBox(ReflectionsUtil.getBoundingBox(entity));
+    }
+
+    /* MAKE SURE TO ONLY RUN THIS METHOD IN onLoad() AND NO WHERE ELSE */
+    public static void registerCommand(String name, JavaPlugin plugin) {
+        plugin.getDescription().getCommands().put(name, new HashMap<>());
     }
 
     public static ItemStack createItem(Material material, int amount, String name, String... lore) {

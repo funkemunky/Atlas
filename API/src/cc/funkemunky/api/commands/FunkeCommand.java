@@ -46,8 +46,6 @@ public abstract class FunkeCommand
         plugin.getCommand(name).setExecutor(this);
         plugin.getCommand(name).setTabCompleter(this);
 
-        plugin.getDescription().getCommands().put(name, new HashMap<>());
-
         this.addArguments();
     }
 
@@ -62,8 +60,6 @@ public abstract class FunkeCommand
         instance = this;
         plugin.getCommand(name).setExecutor(this);
         plugin.getCommand(name).setTabCompleter(this);
-        plugin.getDescription().getCommands().put(name, new HashMap<>());
-
 
         this.addArguments();
     }
