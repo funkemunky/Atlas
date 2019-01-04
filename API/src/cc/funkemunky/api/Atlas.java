@@ -1,5 +1,6 @@
 package cc.funkemunky.api;
 
+import cc.funkemunky.api.commands.FunkeCommandManager;
 import cc.funkemunky.api.tinyprotocol.api.TinyProtocolHandler;
 import cc.funkemunky.api.utils.BlockUtils;
 import cc.funkemunky.api.utils.Color;
@@ -11,7 +12,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -23,6 +23,7 @@ public class Atlas extends JavaPlugin {
     private BlockBoxManager blockBoxManager;
     private ExecutorService threadPool;
     private ConsoleCommandSender consoleSender;
+    private FunkeCommandManager funkeCommandManager;
 
     public void onEnable() {
         instance = this;
@@ -33,6 +34,7 @@ public class Atlas extends JavaPlugin {
         threadPool = Executors.newFixedThreadPool(4);
         tinyProtocolHandler = new TinyProtocolHandler();
         blockBoxManager = new BlockBoxManager();
+        funkeCommandManager = new FunkeCommandManager();
         new BlockUtils();
         new ReflectionsUtil();
         new Color();
