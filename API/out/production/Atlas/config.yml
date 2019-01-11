@@ -1,0 +1,5 @@
+updater:
+  autoDownload: false
+  checkForUpdates: true
+  notifyWhenUpdate: true
+metrics: true

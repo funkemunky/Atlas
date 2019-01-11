@@ -49,7 +49,7 @@ public class MiscUtils {
     }
 
     public static boolean hasPermissionForAlerts(Player player) {
-        return player.hasPermission("fiona.staff") || player.hasPermission("fiona.alerts");
+        return player.hasPermission("api.staff") || player.hasPermission("api.alerts");
     }
 
     public static boolean containsIgnoreCase(String toCheck, String contains) {

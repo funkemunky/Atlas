@@ -7,6 +7,9 @@ import lombok.Getter;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Getter
 public class WrappedInUseEntityPacket extends NMSObject {
     private static String packet = Client.USE_ENTITY;
@@ -26,8 +29,12 @@ public class WrappedInUseEntityPacket extends NMSObject {
     public void process(Player player, ProtocolVersion version) {
         id = fetch(fieldId);
         action = EnumEntityUseAction.valueOf(fetch(fieldAction).name());
-        for (Entity entity : player.getWorld().getEntities()) {
-            if (entity.getEntityId() == id) this.entity = entity;
+        List<Entity> entities = new ArrayList<>(player.getWorld().getEntities());
+        for (Entity entity : entities) {
+            if (entity.getEntityId() == id) {
+                this.entity = entity;
+                break;
+            }
         }
     }
 

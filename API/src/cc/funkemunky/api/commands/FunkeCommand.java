@@ -27,18 +27,18 @@ import java.util.List;
 public abstract class FunkeCommand
         implements CommandExecutor, TabCompleter {
     private static FunkeCommand instance;
-    private final String name;
-    private final String display;
-    private final String permission;
-    private final String description;
+    private String name, display, permission, description, adminPerm = "api.admin";
     private boolean helpPage, playerOnly;
     private final List<FunkeArgument> arguments;
+    private CommandMessages commandMessages;
 
     public FunkeCommand(JavaPlugin plugin, String name, String display, String description, String permission) {
         this.name = name;
         this.display = display;
         this.permission = permission;
         this.description = description;
+
+        commandMessages = new CommandMessages("No permission.", "Invalid arguments. Please check the help page for more information.", "You must be a player to use this feature", "Only console can use this feature.", Color.Gray, Color.Yellow, Color.Gold, Color.Red, Color.White);
 
         this.arguments = new ArrayList<>();
         instance = this;
@@ -55,6 +55,8 @@ public abstract class FunkeCommand
         this.permission = permission;
         this.description = description;
         this.helpPage = helpPage;
+
+        commandMessages = new CommandMessages("No permission.", "Invalid arguments. Please check the help page for more information.", "You must be a player to use this feature", "Only console can use this feature.", Color.Gray, Color.Yellow, Color.Gold, Color.Red, Color.White);
 
         this.arguments = new ArrayList<>();
         instance = this;
@@ -104,11 +106,11 @@ public abstract class FunkeCommand
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
         if (this.permission != null && !sender.hasPermission(this.permission)) {
-            sender.sendMessage(Color.Red + "No permission.");
+            sender.sendMessage(commandMessages.getErrorColor() + commandMessages.getNoPermission());
             return true;
         }
         if(playerOnly && !(sender instanceof Player)) {
-            sender.sendMessage(Color.Red + "You must be a player");
+            sender.sendMessage(commandMessages.getErrorColor() + commandMessages.getPlayerOnly());
             return true;
         }
 
@@ -116,9 +118,9 @@ public abstract class FunkeCommand
             try {
                 int page = args.length > 0 ? Integer.parseInt(args[0]) : 1;
                 sender.sendMessage(MiscUtils.line(Color.Dark_Gray));
-                sender.sendMessage(Color.Gold + Color.Bold + this.display + Color.Yellow + " Command Help " + Color.White + "Page (" + page + " / " + (int) MathUtils.round(arguments.size() / 6D) + ")");
+                sender.sendMessage(commandMessages.getTitleColor() + Color.Bold + this.display + commandMessages.getSecondaryColor() + " Command Help " + commandMessages.getValueColor() + "Page (" + page + " / " + (int) MathUtils.round(arguments.size() / 6D) + ")");
                 sender.sendMessage("");
-                sender.sendMessage(Color.translate("&b<> &7= required. &b[] &7= optional."));
+                sender.sendMessage(Color.translate(commandMessages.getSecondaryColor() + "<> " + commandMessages.getPrimaryColor() + "= required. " + commandMessages.getSecondaryColor() + " [] " + commandMessages.getPrimaryColor() +  "= optional."));
                 sender.sendMessage("");
                 if (sender instanceof Player) {
                     for (int i = (page - 1) * 6; i < Math.min(page * 6, arguments.size()); i++) {
@@ -134,19 +136,19 @@ public abstract class FunkeCommand
                             int length = aliasesFormatted.length();
                             aliasesFormatted = new StringBuilder(aliasesFormatted.substring(0, length - 2));
                         } else {
-                            aliasesFormatted = new StringBuilder(Color.Red + "None");
+                            aliasesFormatted = new StringBuilder(commandMessages.getErrorColor() + "None");
                         }
 
 
-                        String hoverText = Color.translate((argument.getPermission().length > 1 ? "&6Permissions&7: &f" + Arrays.toString(argument.getPermission()) : "&6Permission&7: &f" + argument.getPermission()[0])
-                                + "\n&6Aliases&7: " + aliasesFormatted);
-                        message.addText(Color.Gray + "/" + label.toLowerCase() + Color.White + " " + argument.getDisplay() + Color.Gray + " to " + argument.getDescription()).addHoverText(hoverText);
+                        String hoverText = Color.translate((argument.getPermission().length > 1 ? commandMessages.getTitleColor() + "Permissions: " + commandMessages.getValueColor() + " " + Arrays.toString(argument.getPermission()) : commandMessages.getTitleColor() + "Permission: " + commandMessages.getValueColor() + argument.getPermission()[0])
+                                + "\n" + commandMessages.getTitleColor() +  "Aliases: " + commandMessages.getValueColor() + aliasesFormatted);
+                        message.addText(commandMessages.getPrimaryColor()+ "/" + label.toLowerCase() + commandMessages.getValueColor() + " " + argument.getDisplay() + commandMessages.getPrimaryColor() + " to " + argument.getDescription()).addHoverText(hoverText);
                         message.sendToPlayer((Player) sender);
                     }
                 } else {
                     for (int i = (page - 1) * 6; i < Math.min(arguments.size(), page * 6); i++) {
                         FunkeArgument argument = arguments.get(i);
-                        sender.sendMessage(Color.Gray + "/" + label.toLowerCase() + Color.White + " " + argument.getDisplay() + Color.Gray + " to " + argument.getDescription());
+                        sender.sendMessage(commandMessages.getPrimaryColor() + "/" + label.toLowerCase() + commandMessages.getValueColor() + " " + argument.getDisplay() + commandMessages.getPrimaryColor() + " to " + argument.getDescription());
                     }
                 }
                 sender.sendMessage(MiscUtils.line(Color.Dark_Gray));
@@ -156,12 +158,12 @@ public abstract class FunkeCommand
                     if (!args[0].equalsIgnoreCase(argument.getName()) && !argument.getAliases().contains(args[0].toLowerCase()))
                         continue;
 
-                    if ((argument.getPermission() == null || sender.hasPermission("fiona.admin")
+                    if ((argument.getPermission() == null || sender.hasPermission(adminPerm)
                             || sender.hasPermission(permission))) {
                         argument.onArgument(sender, cmd, args);
                         break;
                     }
-                    sender.sendMessage(Color.Red + "No permission.");
+                    sender.sendMessage(commandMessages.getErrorColor() + commandMessages.getNoPermission());
                     break;
                 }
             }

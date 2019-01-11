@@ -4,10 +4,7 @@ import lombok.Getter;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Getter
 public abstract class FunkeArgument {
@@ -34,10 +31,10 @@ public abstract class FunkeArgument {
         aliases.add(alias);
     }
 
-    public void addTabComplete(int arg, String name) {
+    public void addTabComplete(int arg, String... name) {
         List<String> completion = tabComplete.getOrDefault(arg, new ArrayList<>());
 
-        completion.add(name);
+        completion.addAll(Arrays.asList(name));
 
         tabComplete.put(arg, completion);
     }

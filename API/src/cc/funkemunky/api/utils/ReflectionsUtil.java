@@ -5,6 +5,7 @@ import cc.funkemunky.api.tinyprotocol.api.ProtocolVersion;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.Server;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -12,6 +13,7 @@ import org.bukkit.material.Step;
 import org.bukkit.material.WoodenStep;
 import org.bukkit.util.Vector;
 
+import java.io.File;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -319,6 +321,12 @@ public class ReflectionsUtil {
 
     public static boolean isBukkitVerison(String version) {
         return ProtocolVersion.getGameVersion().getServerVersion().contains(version);
+    }
+
+    public static File getPluginFolder() {
+        Object console = getMethodValue(getMethod(getCBClass("CraftServer"), "console"), Atlas.getInstance().getServer());
+        Object options = getFieldValue(getFieldByName(getNMSClass("MinecraftServer"), "options"), console);
+        return (File) getMethodValue(getMethod(getNMSClass("OptionSet"), "valueOf", String.class), options, "plugins");
     }
 
     public static boolean isNewVersion() {

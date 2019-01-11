@@ -1,5 +1,6 @@
 package cc.funkemunky.api.tinyprotocol.api;
 
+import cc.funkemunky.api.Atlas;
 import com.google.common.collect.Lists;
 import com.google.common.collect.MapMaker;
 import com.mojang.authlib.GameProfile;
@@ -13,6 +14,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerLoginEvent;
 import org.bukkit.event.server.PluginDisableEvent;
 import org.bukkit.plugin.Plugin;
@@ -152,7 +154,7 @@ public abstract class TinyProtocol1_8 implements AbstractTinyProtocol {
         listener = new Listener() {
 
             @EventHandler(priority = EventPriority.LOWEST)
-            public final void onPlayerLogin(PlayerLoginEvent e) {
+            public final void onPlayerLogin(PlayerJoinEvent e) {
                 if (closed)
                     return;
 
@@ -210,18 +212,12 @@ public abstract class TinyProtocol1_8 implements AbstractTinyProtocol {
         for (Channel serverChannel : serverChannels) {
             final ChannelPipeline pipeline = serverChannel.pipeline();
 
-            // Remove channel handler
-            serverChannel.eventLoop().execute(new Runnable() {
-
-                @Override
-                public void run() {
-                    try {
-                        pipeline.remove(serverChannelHandler);
-                    } catch (NoSuchElementException e) {
-                        // That's fine
-                    }
+            Atlas.getInstance().getThreadPool().execute(() -> {
+                try {
+                    pipeline.remove(serverChannelHandler);
+                } catch (NoSuchElementException e) {
+                    // That's fine
                 }
-
             });
         }
     }

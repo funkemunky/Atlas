@@ -40,24 +40,14 @@ public class EventManager {
         Atlas.getInstance().getThreadPool().execute(() -> call(event));
     }
 
-    private static void call(Event event) {
+    private synchronized static void call(Event event) {
         for (Listener listener : registered.keySet()) {
             for (Method method : registered.get(listener)) {
                 if (method.getParameterTypes()[0] == event.getClass()) {
                     try {
                         method.invoke(listener, event);
                     } catch (Exception e) {
-                        new BukkitRunnable() {
-                            public void run() {
-                                try {
-                                    method.invoke(listener, event);
-                                } catch (IllegalAccessException | InvocationTargetException e1) {
-                                    e1.printStackTrace();
-                                } catch (Exception e) {
-                                    //Empty catch block.
-                                }
-                            }
-                        }.runTask(Atlas.getInstance());
+                        e.printStackTrace();
                     }
                 }
             }

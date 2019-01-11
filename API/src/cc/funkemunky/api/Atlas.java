@@ -1,7 +1,10 @@
 package cc.funkemunky.api;
 
 import cc.funkemunky.api.commands.FunkeCommandManager;
+import cc.funkemunky.api.commands.impl.AtlasCommand;
+import cc.funkemunky.api.metrics.Metrics;
 import cc.funkemunky.api.tinyprotocol.api.TinyProtocolHandler;
+import cc.funkemunky.api.updater.Updater;
 import cc.funkemunky.api.utils.BlockUtils;
 import cc.funkemunky.api.utils.Color;
 import cc.funkemunky.api.utils.MiscUtils;
@@ -24,9 +27,15 @@ public class Atlas extends JavaPlugin {
     private ExecutorService threadPool;
     private ConsoleCommandSender consoleSender;
     private FunkeCommandManager funkeCommandManager;
+    private Updater updater;
+    private Metrics metrics;
 
     public void onEnable() {
         instance = this;
+        saveDefaultConfig();
+
+        if(getConfig().getBoolean("metrics"))
+            metrics = new Metrics(this);
 
         consoleSender = Bukkit.getConsoleSender();
 
@@ -39,6 +48,12 @@ public class Atlas extends JavaPlugin {
         new ReflectionsUtil();
         new Color();
         new MiscUtils();
+        updater = new Updater();
+
+        funkeCommandManager.addCommand(new AtlasCommand());
+
+        if(updater.needsToUpdate())
+            MiscUtils.printToConsole(Color.Green + "There is an update available. See more information with /atlas update.");
 
         MiscUtils.printToConsole(Color.Green + "Successfully loaded Atlas and its utilities!");
     }

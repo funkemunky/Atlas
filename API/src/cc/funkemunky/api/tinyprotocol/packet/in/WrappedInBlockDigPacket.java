@@ -20,8 +20,8 @@ public class WrappedInBlockDigPacket extends NMSObject {
     private static FieldAccessor<Integer> fieldPosZ;
     private static FieldAccessor<Object> fieldDirection;
     private static FieldAccessor<Object> fieldDigType;
-    private static FieldAccessor<Integer> face = fetchField(packet, int.class, 3);
-    private static FieldAccessor<Integer> intAction = fetchField(packet, int.class, 4);
+    private static FieldAccessor<Integer> face;
+    private static FieldAccessor<Integer> intAction;
 
 
     // Decoded data
