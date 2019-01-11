@@ -12,10 +12,13 @@
   <component name="ChangeListManager">
     <list default="true" id="103113f6-8a1c-45a3-9b02-5a992cc6cbb2" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/cc/funkemunky/api/event/custom/PacketRecieveEvent.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/cc/funkemunky/api/event/custom/PacketRecieveEvent.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/cc/funkemunky/api/event/custom/PacketSendEvent.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/cc/funkemunky/api/event/custom/PacketSendEvent.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/artifacts/Atlas_jar/Atlas.jar" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/Atlas_jar/Atlas.jar" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Atlas/cc/funkemunky/api/event/custom/PacketRecieveEvent.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Atlas/cc/funkemunky/api/event/custom/PacketRecieveEvent.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Atlas/cc/funkemunky/api/event/custom/PacketSendEvent.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Atlas/cc/funkemunky/api/event/custom/PacketSendEvent.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Atlas/cc/funkemunky/api/event/system/EventManager.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Atlas/cc/funkemunky/api/event/system/EventManager.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Atlas/cc/funkemunky/api/event/system/EventMethod.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Atlas/cc/funkemunky/api/event/system/EventMethod.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/cc/funkemunky/api/Atlas.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/cc/funkemunky/api/Atlas.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/cc/funkemunky/api/event/system/EventManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/cc/funkemunky/api/event/system/EventManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/cc/funkemunky/api/event/system/EventMethod.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/cc/funkemunky/api/event/system/EventMethod.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -28,39 +31,39 @@
     <session id="2086348182">
       <usages-collector id="statistics.lifecycle.project">
         <counts>
-          <entry key="project.closed" value="15" />
+          <entry key="project.closed" value="17" />
           <entry key="project.open.time.0" value="13" />
-          <entry key="project.open.time.3" value="2" />
+          <entry key="project.open.time.3" value="3" />
           <entry key="project.open.time.4" value="1" />
           <entry key="project.open.time.5" value="1" />
-          <entry key="project.opened" value="17" />
+          <entry key="project.opened" value="18" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
         <counts>
           <entry key="class" value="5" />
-          <entry key="java" value="110" />
+          <entry key="java" value="111" />
           <entry key="xml" value="2" />
-          <entry key="yml" value="3" />
+          <entry key="yml" value="4" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.open">
         <counts>
           <entry key="CLASS" value="5" />
-          <entry key="JAVA" value="110" />
+          <entry key="JAVA" value="111" />
           <entry key="XML" value="2" />
-          <entry key="YAML" value="3" />
+          <entry key="YAML" value="4" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
-          <entry key="java" value="7947" />
+          <entry key="java" value="7948" />
           <entry key="yml" value="264" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="JAVA" value="7947" />
+          <entry key="JAVA" value="7948" />
           <entry key="YAML" value="264" />
         </counts>
       </usages-collector>
@@ -106,26 +109,26 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/cc/funkemunky/api/Atlas.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="630">
-              <caret line="59" selection-start-line="59" selection-end-line="59" />
+            <state relative-caret-position="300">
+              <caret line="37" column="36" selection-start-line="37" selection-start-column="36" selection-end-line="37" selection-end-column="36" />
             </state>
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/cc/funkemunky/api/metrics/Metrics.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="150">
-              <caret line="28" column="13" selection-start-line="28" selection-start-column="13" selection-end-line="28" selection-end-column="13" />
+            <state relative-caret-position="539">
+              <caret line="137" column="5" lean-forward="true" selection-start-line="137" selection-start-column="5" selection-end-line="137" selection-end-column="5" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/cc/funkemunky/api/event/custom/PacketSendEvent.java">
+        <entry file="file://$PROJECT_DIR$/resources/config.yml">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="270">
-              <caret line="22" column="47" selection-start-line="22" selection-start-column="47" selection-end-line="22" selection-end-column="47" />
+            <state relative-caret-position="45">
+              <caret line="3" column="14" selection-start-line="3" selection-start-column="14" selection-end-line="3" selection-end-column="14" />
             </state>
           </provider>
         </entry>
@@ -139,11 +142,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/cc/funkemunky/api/event/system/EventManager.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="116">
-              <caret line="24" column="16" selection-start-line="24" selection-start-column="16" selection-end-line="24" selection-end-column="16" />
+            <state relative-caret-position="506">
+              <caret line="58" column="9" selection-start-line="58" selection-start-column="9" selection-end-line="58" selection-end-column="9" />
             </state>
           </provider>
         </entry>
@@ -270,7 +273,6 @@
         <option value="$PROJECT_DIR$/resources/config.yml" />
         <option value="$PROJECT_DIR$/src/cc/funkemunky/api/updater/UpdaterListener.java" />
         <option value="$PROJECT_DIR$/src/cc/funkemunky/api/updater/Updater.java" />
-        <option value="$PROJECT_DIR$/src/cc/funkemunky/api/Atlas.java" />
         <option value="$PROJECT_DIR$/src/cc/funkemunky/api/commands/impl/args/UpdateArgument.java" />
         <option value="$PROJECT_DIR$/src/cc/funkemunky/api/commands/impl/args/ReloadArgument.java" />
         <option value="$PROJECT_DIR$/src/cc/funkemunky/api/commands/impl/AtlasCommand.java" />
@@ -279,6 +281,7 @@
         <option value="$PROJECT_DIR$/src/cc/funkemunky/api/event/system/EnumPriority.java" />
         <option value="$PROJECT_DIR$/src/cc/funkemunky/api/event/system/EventMethod.java" />
         <option value="$PROJECT_DIR$/src/cc/funkemunky/api/event/system/EventManager.java" />
+        <option value="$PROJECT_DIR$/src/cc/funkemunky/api/Atlas.java" />
       </list>
     </option>
   </component>
@@ -428,13 +431,13 @@
           <select />
         </subPane>
       </pane>
-      <pane id="PackagesPane" />
       <pane id="Scope" />
+      <pane id="PackagesPane" />
     </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="SearchEverywhereHistoryKey" value="MinecraftServer&#9;PSI&#9;JAVA://net.minecraft.server.v1_8_R3.MinecraftServer&#10;DedicatedServer&#9;PSI&#9;JAVA://net.minecraft.server.v1_8_R3.DedicatedServer&#10;Minecraft&#9;FILE&#9;jar:///Users/dawson/Documents/GitHub/Atlas/compiled-depends/spigot-1.11.1.jar!/net/minecraft/server/v1_11_R1/MinecraftServer.class&#10;JavaPLugin&#9;PSI&#9;JAVA://org.bukkit.plugin.java.JavaPlugin" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1547230511206" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1547236796726" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="project.structure.last.edited" value="Artifacts" />
     <property name="project.structure.proportion" value="0.15917969" />
@@ -479,7 +482,7 @@
     <frame x="0" y="23" width="1440" height="798" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.3118741" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.31616595" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Image Layers" order="2" />
       <window_info id="Designer" order="3" />
@@ -765,13 +768,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/resources/config.yml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="45">
-          <caret line="3" column="14" selection-start-line="3" selection-start-column="14" selection-end-line="3" selection-end-column="14" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/cc/funkemunky/api/updater/Updater.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="330">
@@ -782,20 +778,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/cc/funkemunky/api/Atlas.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="630">
-          <caret line="59" selection-start-line="59" selection-end-line="59" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/cc/funkemunky/api/metrics/Metrics.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="150">
-          <caret line="28" column="13" selection-start-line="28" selection-start-column="13" selection-end-line="28" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/cc/funkemunky/api/event/custom/PacketSendEvent.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="270">
@@ -803,10 +785,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/cc/funkemunky/api/event/custom/PacketRecieveEvent.java">
+    <entry file="file://$PROJECT_DIR$/src/cc/funkemunky/api/event/system/EventMethod.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="150">
-          <caret line="13" column="27" selection-start-line="13" selection-start-column="27" selection-end-line="13" selection-end-column="27" />
+        <state relative-caret-position="120">
+          <caret line="13" column="48" selection-start-line="13" selection-start-column="48" selection-end-line="13" selection-end-column="48" />
         </state>
       </provider>
     </entry>
@@ -824,10 +806,17 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/cc/funkemunky/api/event/system/EventMethod.java">
+    <entry file="file://$PROJECT_DIR$/resources/config.yml">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="120">
-          <caret line="13" column="48" selection-start-line="13" selection-start-column="48" selection-end-line="13" selection-end-column="48" />
+        <state relative-caret-position="45">
+          <caret line="3" column="14" selection-start-line="3" selection-start-column="14" selection-end-line="3" selection-end-column="14" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/cc/funkemunky/api/Atlas.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="300">
+          <caret line="37" column="36" selection-start-line="37" selection-start-column="36" selection-end-line="37" selection-end-column="36" />
         </state>
       </provider>
     </entry>
@@ -847,8 +836,22 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/cc/funkemunky/api/event/system/EventManager.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="116">
-          <caret line="24" column="16" selection-start-line="24" selection-start-column="16" selection-end-line="24" selection-end-column="16" />
+        <state relative-caret-position="506">
+          <caret line="58" column="9" selection-start-line="58" selection-start-column="9" selection-end-line="58" selection-end-column="9" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/cc/funkemunky/api/event/custom/PacketRecieveEvent.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="150">
+          <caret line="13" column="27" selection-start-line="13" selection-start-column="27" selection-end-line="13" selection-end-column="27" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/cc/funkemunky/api/metrics/Metrics.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="539">
+          <caret line="137" column="5" lean-forward="true" selection-start-line="137" selection-start-column="5" selection-end-line="137" selection-end-column="5" />
         </state>
       </provider>
     </entry>

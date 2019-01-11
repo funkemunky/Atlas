@@ -22,7 +22,7 @@ public class EventManager {
 
                 methods.sort(Comparator.comparingInt(m -> m.getAnnotation(EventMethod.class).priority().getPriority()));
                 Collections.reverse(methods);
-                
+
                 registered.put(listener, methods);
             }
         }

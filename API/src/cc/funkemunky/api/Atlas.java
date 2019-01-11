@@ -35,8 +35,7 @@ public class Atlas extends JavaPlugin {
         instance = this;
         saveDefaultConfig();
 
-        if(getConfig().getBoolean("metrics"))
-            metrics = new Metrics(this);
+        metrics = new Metrics(this);
 
         consoleSender = Bukkit.getConsoleSender();
 
