@@ -15,10 +15,10 @@ import static org.apache.logging.log4j.core.impl.ThrowableFormatOptions.FILE_NAM
 
 @Getter
 public class Updater {
-    private int update = - 1, currentUpdate = 4;
+    private int update = - 1, currentUpdate = 5;
     private String version, downloadLink;
     private File pluginLocation;
-    private boolean importantUpdate;
+    private boolean importantUpdate = false;
 
     public Updater() {
         if(Atlas.getInstance().getConfig().getBoolean("updater.checkForUpdates")) {
@@ -32,6 +32,9 @@ public class Updater {
             } else {
                 version = downloadLink = "N/A";
             }
+        } else {
+            version = Atlas.getInstance().getDescription().getVersion();
+
         }
     }
 

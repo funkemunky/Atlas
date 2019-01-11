@@ -8,8 +8,8 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 
 public class UpdateArgument extends FunkeArgument {
-    public UpdateArgument(String name, String display, String description, String... permission) {
-        super(name, display, description, permission);
+    public UpdateArgument() {
+        super("update", "update <check, download> [args]", "manage updates for Atlas.", "atlas.update");
 
         addTabComplete(2, "check", "download", "update");
         addTabComplete(3, "confirm,!check,2");

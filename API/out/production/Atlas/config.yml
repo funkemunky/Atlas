@@ -1,5 +1,5 @@
 updater:
   autoDownload: false
   checkForUpdates: true
-  notifyWhenUpdate: true
+  notifyOnJoin: true
 metrics: true

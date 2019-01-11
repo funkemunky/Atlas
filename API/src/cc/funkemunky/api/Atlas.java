@@ -5,6 +5,7 @@ import cc.funkemunky.api.commands.impl.AtlasCommand;
 import cc.funkemunky.api.metrics.Metrics;
 import cc.funkemunky.api.tinyprotocol.api.TinyProtocolHandler;
 import cc.funkemunky.api.updater.Updater;
+import cc.funkemunky.api.updater.UpdaterListener;
 import cc.funkemunky.api.utils.BlockUtils;
 import cc.funkemunky.api.utils.Color;
 import cc.funkemunky.api.utils.MiscUtils;
@@ -52,8 +53,17 @@ public class Atlas extends JavaPlugin {
 
         funkeCommandManager.addCommand(new AtlasCommand());
 
-        if(updater.needsToUpdate())
-            MiscUtils.printToConsole(Color.Green + "There is an update available. See more information with /atlas update.");
+        Bukkit.getPluginManager().registerEvents(new UpdaterListener(), this);
+
+        if(updater.needsToUpdate()) {
+            MiscUtils.printToConsole(Color.Yellow + "There is an update available. See more information with /atlas update.");
+
+            if(getConfig().getBoolean("updater.autoDownload")) {
+                MiscUtils.printToConsole(Color.Gray + "Downloading new version...");
+                updater.downloadNewVersion();
+                MiscUtils.printToConsole(Color.Green + "Atlas v" + updater.getVersion() + " has been downloaded. Please restart/reload your server to import it.");
+            }
+        }
 
         MiscUtils.printToConsole(Color.Green + "Successfully loaded Atlas and its utilities!");
     }
