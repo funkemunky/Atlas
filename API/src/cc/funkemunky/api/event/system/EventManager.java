@@ -1,6 +1,7 @@
 package cc.funkemunky.api.event.system;
 
 import cc.funkemunky.api.Atlas;
+import com.google.common.collect.Lists;
 import org.bukkit.block.Block;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -18,6 +19,10 @@ public class EventManager {
             if (method.isAnnotationPresent(EventMethod.class)) {
                 List<Method> methods = registered.getOrDefault(listener, new ArrayList<>());
                 methods.add(method);
+
+                methods.sort(Comparator.comparingInt(m -> m.getAnnotation(EventMethod.class).priority().getPriority()));
+                Collections.reverse(methods);
+                
                 registered.put(listener, methods);
             }
         }
@@ -40,7 +45,7 @@ public class EventManager {
         Atlas.getInstance().getThreadPool().execute(() -> call(event));
     }
 
-    private synchronized static void call(Event event) {
+    private static void call(Event event) {
         for (Listener listener : registered.keySet()) {
             for (Method method : registered.get(listener)) {
                 if (method.getParameterTypes()[0] == event.getClass()) {

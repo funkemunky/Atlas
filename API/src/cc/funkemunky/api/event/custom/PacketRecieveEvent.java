@@ -11,11 +11,14 @@ public class PacketRecieveEvent extends Event implements Cancellable {
     private Object packet;
     private boolean cancelled;
     private String type;
+    private long timeStamp;
 
     public PacketRecieveEvent(Player player, Object packet, String type) {
         this.player = player;
         this.packet = packet;
         this.type = type;
+
+        timeStamp = System.currentTimeMillis();
     }
 
     @Override
