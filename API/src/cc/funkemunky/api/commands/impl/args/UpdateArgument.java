@@ -2,14 +2,15 @@ package cc.funkemunky.api.commands.impl.args;
 
 import cc.funkemunky.api.Atlas;
 import cc.funkemunky.api.commands.FunkeArgument;
+import cc.funkemunky.api.commands.FunkeCommand;
 import cc.funkemunky.api.utils.Color;
 import cc.funkemunky.api.utils.MiscUtils;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 
 public class UpdateArgument extends FunkeArgument {
-    public UpdateArgument() {
-        super("update", "update <check, download> [args]", "manage updates for Atlas.", "atlas.update");
+    public UpdateArgument(FunkeCommand command) {
+        super(command, "update", "update <check, download> [args]", "manage updates for Atlas.", "atlas.update");
 
         addTabComplete(2, "check", "download", "update");
         addTabComplete(3, "confirm,!check,2");

@@ -14,13 +14,15 @@ public abstract class FunkeArgument {
     private Map<Integer, List<String>> tabComplete = new HashMap<>();
     private String[] permission;
 
-    public FunkeArgument(String name, String display, String description) {
+    public FunkeArgument(FunkeCommand parent, String name, String display, String description) {
+        this.parent = parent;
         this.name = name;
         this.display = display;
         this.description = description;
     }
 
-    public FunkeArgument(String name, String display, String description, String... permission) {
+    public FunkeArgument(FunkeCommand parent, String name, String display, String description, String... permission) {
+        this.parent = parent;
         this.name = name;
         this.display = display;
         this.description = description;

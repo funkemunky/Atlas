@@ -12,7 +12,7 @@ public class AtlasCommand extends FunkeCommand {
 
     @Override
     protected void addArguments() {
-        getArguments().add(new UpdateArgument());
-        getArguments().add(new ReloadArgument());
+        getArguments().add(new UpdateArgument(this));
+        getArguments().add(new ReloadArgument(this));
     }
 }

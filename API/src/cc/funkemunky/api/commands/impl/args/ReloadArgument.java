@@ -2,13 +2,14 @@ package cc.funkemunky.api.commands.impl.args;
 
 import cc.funkemunky.api.Atlas;
 import cc.funkemunky.api.commands.FunkeArgument;
+import cc.funkemunky.api.commands.FunkeCommand;
 import cc.funkemunky.api.utils.Color;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 
 public class ReloadArgument extends FunkeArgument {
-    public ReloadArgument() {
-        super("reload", "reload", "reload the configuration.", "atlas.reload");
+    public ReloadArgument(FunkeCommand command) {
+        super(command, "reload", "reload", "reload the configuration.", "atlas.reload");
     }
 
     @Override
