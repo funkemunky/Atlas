@@ -16,22 +16,22 @@ public class TinyProtocolHandler {
         TinyProtocolHandler self = this;
         instance = ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.V1_8) ? new TinyProtocol1_7(Atlas.getInstance()) {
             @Override
-            public Object onPacketOutAsync(Player receiver, net.minecraft.util.io.netty.channel.Channel channel, Object packet) {
+            public Object onPacketOutAsync(Player receiver, Object packet) {
                 return self.onPacketOutAsync(receiver, packet);
             }
 
             @Override
-            public Object onPacketInAsync(Player sender, net.minecraft.util.io.netty.channel.Channel channel, Object packet) {
+            public Object onPacketInAsync(Player sender, Object packet) {
                 return self.onPacketInAsync(sender, packet);
             }
         } : new TinyProtocol1_8(Atlas.getInstance()) {
             @Override
-            public Object onPacketOutAsync(Player receiver, Channel channel, Object packet) {
+            public Object onPacketOutAsync(Player receiver, Object packet) {
                 return self.onPacketOutAsync(receiver, packet);
             }
 
             @Override
-            public Object onPacketInAsync(Player sender, Channel channel, Object packet) {
+            public Object onPacketInAsync(Player sender, Object packet) {
                 return self.onPacketInAsync(sender, packet);
             }
         };

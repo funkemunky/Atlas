@@ -418,6 +418,7 @@ public class BlockUtils {
         collisionBoundingBoxes.put(Material.QUARTZ_ORE, new BoundingBox((float) 0.0, (float) 0.0, (float) 0.0, (float) 1.0, (float) 1.0, (float) 1.0));
         collisionBoundingBoxes.put(Material.GLASS, new BoundingBox((float) 0.0, (float) 0.0, (float) 0.0, (float) 1.0, (float) 1.0, (float) 1.0));
         collisionBoundingBoxes.put(Material.TRIPWIRE_HOOK, new BoundingBox((float) 0.0, (float) 0.0, (float) 0.0, (float) 1.0, (float) 1.0, (float) 1.0));
+        collisionBoundingBoxes.put(Material.VINE, new BoundingBox((float) 0.0, (float) 0.0, (float) 0.0, (float) 1.0, (float) 1.0, (float) 1.0));
         collisionBoundingBoxes.put(Material.WEB, new BoundingBox(0, 0, 0, 1, 1, 1));
         collisionBoundingBoxes.put(Material.WATER, new BoundingBox(0, 0, 0, 0.9f, 0.9f, 0.9f));
         collisionBoundingBoxes.put(Material.getMaterial("STATIONARY_WATER"), new BoundingBox(0, 0, 0, 0.9f, 0.9f, 0.9f));

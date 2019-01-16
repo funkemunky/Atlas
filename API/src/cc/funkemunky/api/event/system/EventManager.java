@@ -8,11 +8,12 @@ import org.bukkit.scheduler.BukkitRunnable;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.FutureTask;
 
 public class EventManager {
-    private static final Map<Listener, List<Method>> registered = new HashMap<>();
+    private static final Map<Listener, List<Method>> registered = new ConcurrentHashMap<>();
 
     public static void register(Listener listener) {
         for (Method method : listener.getClass().getMethods()) {
@@ -30,6 +31,9 @@ public class EventManager {
 
 
     public static void unregister(Listener listener) {
+        if(registered.containsKey(listener)) {
+            registered.put(listener, Lists.newArrayList());
+        }
         registered.remove(listener);
     }
 
@@ -42,7 +46,7 @@ public class EventManager {
     }
 
     public static void callEvent(Event event) {
-        Atlas.getInstance().getThreadPool().execute(() -> call(event));
+        Atlas.getInstance().executeTask(() -> call(event));
     }
 
     private static void call(Event event) {

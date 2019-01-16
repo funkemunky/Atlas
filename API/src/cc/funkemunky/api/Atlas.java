@@ -2,6 +2,7 @@ package cc.funkemunky.api;
 
 import cc.funkemunky.api.commands.FunkeCommandManager;
 import cc.funkemunky.api.commands.impl.AtlasCommand;
+import cc.funkemunky.api.event.system.EventManager;
 import cc.funkemunky.api.metrics.Metrics;
 import cc.funkemunky.api.tinyprotocol.api.TinyProtocolHandler;
 import cc.funkemunky.api.updater.Updater;
@@ -14,10 +15,12 @@ import cc.funkemunky.api.utils.blockbox.BlockBoxManager;
 import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.command.ConsoleCommandSender;
+import org.bukkit.event.HandlerList;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 @Getter
 public class Atlas extends JavaPlugin {
@@ -48,6 +51,7 @@ public class Atlas extends JavaPlugin {
         new ReflectionsUtil();
         new Color();
         new MiscUtils();
+
         updater = new Updater();
 
         funkeCommandManager.addCommand(new AtlasCommand());
@@ -65,5 +69,23 @@ public class Atlas extends JavaPlugin {
         }
 
         MiscUtils.printToConsole(Color.Green + "Successfully loaded Atlas and its utilities!");
+    }
+
+    public void onDisable() {
+        EventManager.clearRegistered();
+        HandlerList.unregisterAll(this);
+        Bukkit.getScheduler().cancelTasks(this);
+        threadPool.shutdownNow();
+    }
+
+    public void executeTask(Runnable runnable) {
+        Future future = getThreadPool().submit(runnable);
+        try {
+            if(future.isDone()) {
+                future.get();
+            }
+        } catch (Exception ex) {
+            ex.getCause().printStackTrace();
+        }
     }
 }

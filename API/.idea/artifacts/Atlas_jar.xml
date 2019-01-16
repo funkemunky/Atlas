@@ -3,6 +3,7 @@
     <output-path>$PROJECT_DIR$/out/artifacts/Atlas_jar</output-path>
     <root id="archive" name="Atlas.jar">
       <element id="module-output" name="Atlas" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/../compiled-depends/asm-all-5.2.jar" path-in-jar="/" />
     </root>
   </artifact>
 </component>

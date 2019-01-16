@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="nSpigot">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/Desktop/Dev Tools/Server Versions/nSpigot.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/Desktop/Dev Tools/Server Versions/nSpigot.jar!/" />
+    </SOURCES>
+  </library>
+</component>
