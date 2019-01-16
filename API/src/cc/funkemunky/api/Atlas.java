@@ -6,23 +6,23 @@ import cc.funkemunky.api.event.system.EventManager;
 import cc.funkemunky.api.metrics.Metrics;
 import cc.funkemunky.api.tinyprotocol.api.TinyProtocolHandler;
 import cc.funkemunky.api.updater.Updater;
-import cc.funkemunky.api.updater.UpdaterListener;
-import cc.funkemunky.api.utils.BlockUtils;
-import cc.funkemunky.api.utils.Color;
-import cc.funkemunky.api.utils.MiscUtils;
-import cc.funkemunky.api.utils.ReflectionsUtil;
+import cc.funkemunky.api.utils.*;
 import cc.funkemunky.api.utils.blockbox.BlockBoxManager;
 import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.event.HandlerList;
+import org.bukkit.event.Listener;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.util.Arrays;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
 @Getter
+@Init
 public class Atlas extends JavaPlugin {
     @Getter
     private static Atlas instance;
@@ -33,6 +33,9 @@ public class Atlas extends JavaPlugin {
     private FunkeCommandManager funkeCommandManager;
     private Updater updater;
     private Metrics metrics;
+
+    @ConfigSetting(path = "updater")
+    private boolean autoDownload = false;
 
     public void onEnable() {
         instance = this;
@@ -54,14 +57,15 @@ public class Atlas extends JavaPlugin {
 
         updater = new Updater();
 
-        funkeCommandManager.addCommand(new AtlasCommand());
+        MiscUtils.printToConsole(Color.Gray + "Starting scanner...");
+        initializeScanner(getClass(), this);
 
-        Bukkit.getPluginManager().registerEvents(new UpdaterListener(), this);
+        funkeCommandManager.addCommand(new AtlasCommand());
 
         if(updater.needsToUpdate()) {
             MiscUtils.printToConsole(Color.Yellow + "There is an update available. See more information with /atlas update.");
 
-            if(getConfig().getBoolean("updater.autoDownload")) {
+            if(autoDownload) {
                 MiscUtils.printToConsole(Color.Gray + "Downloading new version...");
                 updater.downloadNewVersion();
                 MiscUtils.printToConsole(Color.Green + "Atlas v" + updater.getVersion() + " has been downloaded. Please restart/reload your server to import it.");
@@ -87,5 +91,42 @@ public class Atlas extends JavaPlugin {
         } catch (Exception ex) {
             ex.getCause().printStackTrace();
         }
+    }
+
+    public void initializeScanner(Class<?> mainClass, Plugin plugin) {
+        ClassScanner.scanFile(null, mainClass).forEach(c -> {
+            try {
+                Class clazz = Class.forName(c);
+                Object obj = clazz.newInstance();
+
+                if (obj instanceof Listener) {
+                    MiscUtils.printToConsole("&eFound " + clazz.getSimpleName() + " Bukkit listener. Registering...");
+                    Bukkit.getPluginManager().registerEvents((Listener) obj, plugin);
+                } else if(obj instanceof cc.funkemunky.api.event.system.Listener) {
+                    MiscUtils.printToConsole("&eFound " + clazz.getSimpleName() + " Atlas listener. Registering...");
+                    EventManager.register((cc.funkemunky.api.event.system.Listener) obj);
+                }
+
+                Arrays.stream(clazz.getDeclaredFields()).filter(field -> field.isAnnotationPresent(ConfigSetting.class)).forEach(field -> {
+                    String path = field.getAnnotation(ConfigSetting.class).path() + "." + field.getName();
+                    try {
+                        field.setAccessible(true);
+                        MiscUtils.printToConsole("&eFound " + field.getName() + " ConfigSetting (default=" + field.get(obj) + ").");
+                        if(plugin.getConfig().get(path) == null) {
+                            MiscUtils.printToConsole("&eValue not found in configuration! Setting default into config...");
+                            plugin.getConfig().set(path, field.get(obj));
+                            saveConfig();
+                        } else {
+                            field.set(obj, plugin.getConfig().get(path));
+                            MiscUtils.printToConsole("&eValue found in configuration! Set value to &a" + plugin.getConfig().get(path));
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                });
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
     }
 }

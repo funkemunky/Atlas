@@ -1,6 +1,7 @@
 package cc.funkemunky.api.updater;
 
 import cc.funkemunky.api.Atlas;
+import cc.funkemunky.api.utils.ConfigSetting;
 import cc.funkemunky.api.utils.ReflectionsUtil;
 import lombok.Getter;
 
@@ -15,13 +16,16 @@ import static org.apache.logging.log4j.core.impl.ThrowableFormatOptions.FILE_NAM
 
 @Getter
 public class Updater {
-    private int update = - 1, currentUpdate = 5;
+    private int update = - 1, currentUpdate = 6;
     private String version, downloadLink;
     private File pluginLocation;
     private boolean importantUpdate = false;
 
+    @ConfigSetting(path = "updater")
+    private boolean checkForUpdates = true;
+
     public Updater() {
-        if(Atlas.getInstance().getConfig().getBoolean("updater.checkForUpdates")) {
+        if(checkForUpdates) {
             String[] toSort = readFromUpdaterPastebin();
 
             if(toSort.length > 0) {
