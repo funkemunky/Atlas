@@ -6,10 +6,7 @@ import cc.funkemunky.api.utils.MathUtils;
 import cc.funkemunky.api.utils.ReflectionsUtil;
 import cc.funkemunky.api.utils.blockbox.BlockBox;
 import com.google.common.collect.Lists;
-import net.minecraft.server.v1_7_R4.AxisAlignedBB;
-import net.minecraft.server.v1_7_R4.EntityPlayer;
-import net.minecraft.server.v1_7_R4.EntityTrackerEntry;
-import net.minecraft.server.v1_7_R4.WorldServer;
+import net.minecraft.server.v1_7_R4.*;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -127,6 +124,11 @@ public class BlockBox1_7_R4 implements BlockBox {
     public boolean isUsingItem(Player player) {
         net.minecraft.server.v1_7_R4.EntityHuman entity = ((org.bukkit.craftbukkit.v1_7_R4.entity.CraftHumanEntity) player).getHandle();
         return entity.bF() != null && entity.bF().getItem().d(entity.bF()) != net.minecraft.server.v1_7_R4.EnumAnimation.NONE;
+    }
+
+    @Override
+    public float getMovementFactor(Player player) {
+        return (float) ((CraftPlayer) player).getHandle().getAttributeInstance(GenericAttributes.d).getValue();
     }
 
     @Override

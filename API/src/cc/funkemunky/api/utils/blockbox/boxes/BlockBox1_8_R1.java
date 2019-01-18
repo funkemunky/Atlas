@@ -126,6 +126,11 @@ public class BlockBox1_8_R1 implements BlockBox {
         net.minecraft.server.v1_8_R1.EntityHuman entity = ((org.bukkit.craftbukkit.v1_8_R1.entity.CraftHumanEntity) player).getHandle();
         return entity.bY() != null && entity.bY().getItem().e(entity.bY()) != net.minecraft.server.v1_8_R1.EnumAnimation.NONE;
     }
+
+    @Override
+    public float getMovementFactor(Player player) {
+        return (float) ((CraftPlayer) player).getHandle().getAttributeInstance(GenericAttributes.d).getValue();
+    }
     
     @Override
     public int getTrackerId(Player player) {

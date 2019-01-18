@@ -122,6 +122,11 @@ public class BlockBox1_10_R1 implements BlockBox {
     }
 
     @Override
+    public float getMovementFactor(Player player) {
+        return (float) ((CraftPlayer) player).getHandle().getAttributeInstance(GenericAttributes.MOVEMENT_SPEED).getValue();
+    }
+
+    @Override
     public boolean isRiptiding(LivingEntity entity) {
         return false;
     }

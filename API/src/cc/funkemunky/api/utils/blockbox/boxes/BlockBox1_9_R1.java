@@ -127,6 +127,11 @@ public class BlockBox1_9_R1 implements BlockBox {
     }
 
     @Override
+    public float getMovementFactor(Player player) {
+        return (float) ((CraftPlayer) player).getHandle().getAttributeInstance(GenericAttributes.MOVEMENT_SPEED).getValue();
+    }
+
+    @Override
     public int getTrackerId(Player player) {
         EntityPlayer entityPlayer = ((CraftPlayer) player).getHandle();
         EntityTrackerEntry entry = ((WorldServer) entityPlayer.getWorld()).tracker.trackedEntities.get(entityPlayer.getId());

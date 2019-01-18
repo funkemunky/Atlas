@@ -19,5 +19,7 @@ public interface BlockBox {
 
     boolean isRiptiding(LivingEntity entity);
 
+    float getMovementFactor(Player player);
+
     int getTrackerId(Player player);
 }

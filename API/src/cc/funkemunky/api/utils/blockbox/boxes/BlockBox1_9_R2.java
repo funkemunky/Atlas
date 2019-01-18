@@ -120,6 +120,11 @@ public class BlockBox1_9_R2 implements BlockBox {
         net.minecraft.server.v1_9_R2.EntityLiving entity = ((org.bukkit.craftbukkit.v1_9_R2.entity.CraftLivingEntity) player).getHandle();
         return entity.cw() != null && entity.cw().getItem().f(entity.cw()) != net.minecraft.server.v1_9_R2.EnumAnimation.NONE;
     }
+
+    @Override
+    public float getMovementFactor(Player player) {
+        return (float) ((CraftPlayer) player).getHandle().getAttributeInstance(GenericAttributes.MOVEMENT_SPEED).getValue();
+    }
     
     @Override
     public boolean isRiptiding(LivingEntity entity) {
