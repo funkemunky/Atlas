@@ -52,11 +52,13 @@ public class EventManager {
     private static void call(Event event) {
         for (Listener listener : registered.keySet()) {
             for (Method method : registered.get(listener)) {
-                if (method.getParameterTypes()[0] == event.getClass()) {
-                    try {
-                        method.invoke(listener, event);
-                    } catch (Exception e) {
-                        e.printStackTrace();
+                if(method != null) {
+                    if (method.getParameterTypes()[0] == event.getClass()) {
+                        try {
+                            method.invoke(listener, event);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
                     }
                 }
             }

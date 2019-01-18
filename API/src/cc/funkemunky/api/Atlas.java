@@ -76,10 +76,10 @@ public class Atlas extends JavaPlugin {
     }
 
     public void onDisable() {
+        threadPool.shutdownNow();
         EventManager.clearRegistered();
         HandlerList.unregisterAll(this);
         Bukkit.getScheduler().cancelTasks(this);
-        threadPool.shutdownNow();
     }
 
     public void executeTask(Runnable runnable) {
@@ -97,7 +97,7 @@ public class Atlas extends JavaPlugin {
         ClassScanner.scanFile(null, mainClass).forEach(c -> {
             try {
                 Class clazz = Class.forName(c);
-                Object obj = clazz.newInstance();
+                Object obj = clazz.getName().equals(this.getClass().getName()) ? this : clazz.newInstance();
 
                 if (obj instanceof Listener) {
                     MiscUtils.printToConsole("&eFound " + clazz.getSimpleName() + " Bukkit listener. Registering...");

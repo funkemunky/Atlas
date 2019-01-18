@@ -85,7 +85,7 @@ public abstract class FunkeCommand
 
             if (funkeArgument[0] != null) {
                 funkeArgument[0].getTabComplete().getOrDefault(args.length, Lists.newArrayList()).forEach(string -> {
-                    String[] split = string.split(",").length == 0 ? new String[]{string} : string.split(","), conditional = split.length > 1 ? new String[]{split[1], split[2]} : new String[0];
+                    String[] split = string.split(",").length <= 1 ? new String[]{string} : string.split(","), conditional = split.length > 2 ? new String[]{split[1], split[2]} : new String[0];
 
                     String arg = split[0];
 

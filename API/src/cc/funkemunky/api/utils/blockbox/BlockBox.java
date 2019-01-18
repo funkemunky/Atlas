@@ -20,4 +20,6 @@ public interface BlockBox {
     boolean isRiptiding(LivingEntity entity);
 
     int getTrackerId(Player player);
+
+    float getMovementSpeed(Player player);
 }
