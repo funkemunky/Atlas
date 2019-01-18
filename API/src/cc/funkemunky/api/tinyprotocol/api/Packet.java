@@ -139,6 +139,7 @@ public abstract class Packet {
         public static final String BLOCK_PLACE = CLIENT + "BlockPlace";
         public static final String ABILITIES = CLIENT + "Abilities";
         public static final String HELD_ITEM_SLOT = CLIENT + "HeldItemSlot";
+        public static final String CLOSE_WINDOW = CLIENT + "CloseWindow";
     }
 
     public static class Server {
@@ -157,5 +158,6 @@ public abstract class Packet {
         public static final String ENTITY_VELOCITY = SERVER + "EntityVelocity";
         public static final String ENTITY_DESTROY = SERVER + "EntityDestroy";
         public static final String BLOCK_CHANGE = SERVER + "BlockChange";
+        public static final String CLOSE_WINDOW = SERVER + "CloseWindow";
     }
 }
