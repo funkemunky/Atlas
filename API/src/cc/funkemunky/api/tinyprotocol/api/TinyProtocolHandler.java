@@ -6,6 +6,7 @@ import cc.funkemunky.api.event.custom.PacketSendEvent;
 import cc.funkemunky.api.event.system.EventManager;
 import io.netty.channel.Channel;
 import lombok.Getter;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 public class TinyProtocolHandler {
@@ -52,7 +53,8 @@ public class TinyProtocolHandler {
         String packetName = name.substring(index + 1);
 
         PacketSendEvent event = new PacketSendEvent(sender, packet, packetName);
-        EventManager.callEvent(event);
+
+        event = (PacketSendEvent) EventManager.callEvent(event);
 
         return !event.isCancelled() ? event.getPacket() : null;
     }
@@ -67,9 +69,9 @@ public class TinyProtocolHandler {
 
         PacketRecieveEvent event = new PacketRecieveEvent(sender, packet, packetName);
 
-        EventManager.callEvent(event);
+        event = (PacketRecieveEvent) EventManager.callEvent(event);
 
-        return !event.isCancelled() ? packet : null;
+        return !event.isCancelled() ? event.getPacket() : null;
     }
 }
 

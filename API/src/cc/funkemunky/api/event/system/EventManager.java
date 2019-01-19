@@ -45,11 +45,20 @@ public class EventManager {
         registered.clear();
     }
 
-    public static void callEvent(Event event) {
-        Atlas.getInstance().executeTask(() -> call(event));
+    public static Event callEvent(Event event) {
+        FutureTask<Event> futureTask = new FutureTask<>(() -> call(event));
+
+        Atlas.getInstance().getThreadPool().submit(futureTask);
+
+        try {
+            return futureTask.get();
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
+        }
+        return event;
     }
 
-    private static void call(Event event) {
+    private static Event call(Event event) {
         for (Listener listener : registered.keySet()) {
             for (Method method : registered.get(listener)) {
                 if (method.getParameterTypes()[0] == event.getClass()) {
@@ -61,6 +70,7 @@ public class EventManager {
                 }
             }
         }
+        return event;
     }
 }
 

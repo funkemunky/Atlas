@@ -37,6 +37,9 @@ public class Atlas extends JavaPlugin {
     @ConfigSetting(path = "updater")
     private boolean autoDownload = false;
 
+    @ConfigSetting(path = "init")
+    private boolean loadDependingPluginsOnStart = true;
+
     public void onEnable() {
         instance = this;
         saveDefaultConfig();
@@ -124,6 +127,7 @@ public class Atlas extends JavaPlugin {
                         e.printStackTrace();
                     }
                 });
+
             } catch (Exception e) {
                 e.printStackTrace();
             }

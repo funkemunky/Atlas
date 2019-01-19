@@ -74,7 +74,7 @@ public class ClassScanner {
         }
     }
 
-    private static void scanDirectory(String file, Path dir, final Set<String> plugins) {
+    public static void scanDirectory(String file, Path dir, final Set<String> plugins) {
         try {
             Files.walkFileTree(dir, newHashSet(FileVisitOption.FOLLOW_LINKS), Integer.MAX_VALUE, new SimpleFileVisitor<Path>() {
                 @Override
@@ -128,7 +128,7 @@ public class ClassScanner {
         }
     }
 
-    public static String findPlugin(String file, InputStream in) throws IOException {
+    public static String findPlugin(String file, InputStream in) {
         try {
             ClassReader reader = new ClassReader(in);
             ClassNode classNode = new ClassNode();
