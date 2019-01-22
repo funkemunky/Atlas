@@ -4,6 +4,7 @@
     <root id="archive" name="Atlas.jar">
       <element id="module-output" name="Atlas" />
       <element id="extracted-dir" path="$PROJECT_DIR$/../compiled-depends/asm-all-5.2.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/org/mongodb/mongo-java-driver/3.8.0/mongo-java-driver-3.8.0.jar" path-in-jar="/" />
     </root>
   </artifact>
 </component>

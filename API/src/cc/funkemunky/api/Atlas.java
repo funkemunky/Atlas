@@ -100,34 +100,39 @@ public class Atlas extends JavaPlugin {
         ClassScanner.scanFile(null, mainClass).forEach(c -> {
             try {
                 Class clazz = Class.forName(c);
-                Object obj = clazz.newInstance();
 
-                if (obj instanceof Listener) {
-                    MiscUtils.printToConsole("&eFound " + clazz.getSimpleName() + " Bukkit listener. Registering...");
-                    Bukkit.getPluginManager().registerEvents((Listener) obj, plugin);
-                } else if(obj instanceof cc.funkemunky.api.event.system.Listener) {
-                    MiscUtils.printToConsole("&eFound " + clazz.getSimpleName() + " Atlas listener. Registering...");
-                    EventManager.register((cc.funkemunky.api.event.system.Listener) obj);
-                }
+                if(clazz.isAnnotationPresent(Init.class)) {
+                    Object obj = clazz.equals(mainClass) ? plugin : clazz.newInstance();
 
-                Arrays.stream(clazz.getDeclaredFields()).filter(field -> field.isAnnotationPresent(ConfigSetting.class)).forEach(field -> {
-                    String path = field.getAnnotation(ConfigSetting.class).path() + "." + field.getName();
-                    try {
-                        field.setAccessible(true);
-                        MiscUtils.printToConsole("&eFound " + field.getName() + " ConfigSetting (default=" + field.get(obj) + ").");
-                        if(plugin.getConfig().get(path) == null) {
-                            MiscUtils.printToConsole("&eValue not found in configuration! Setting default into config...");
-                            plugin.getConfig().set(path, field.get(obj));
-                            saveConfig();
-                        } else {
-                            field.set(obj, plugin.getConfig().get(path));
-                            MiscUtils.printToConsole("&eValue found in configuration! Set value to &a" + plugin.getConfig().get(path));
-                        }
-                    } catch (Exception e) {
-                        e.printStackTrace();
+                    if (obj instanceof Listener) {
+                        MiscUtils.printToConsole("&eFound " + clazz.getSimpleName() + " Bukkit listener. Registering...");
+                        Bukkit.getPluginManager().registerEvents((Listener) obj, plugin);
+                    } else if(obj instanceof cc.funkemunky.api.event.system.Listener) {
+                        MiscUtils.printToConsole("&eFound " + clazz.getSimpleName() + " Atlas listener. Registering...");
+                        EventManager.register((cc.funkemunky.api.event.system.Listener) obj);
                     }
-                });
 
+                    Arrays.stream(clazz.getDeclaredFields()).filter(field -> field.isAnnotationPresent(ConfigSetting.class)).forEach(field -> {
+                        String name = field.getAnnotation(ConfigSetting.class).name();
+                        String path = field.getAnnotation(ConfigSetting.class).path() + "." + (name.length() > 0 ? name : field.getName());
+                        try {
+                            field.setAccessible(true);
+                            MiscUtils.printToConsole("&eFound " + field.getName() + " ConfigSetting (default=" + field.get(obj) + ").");
+                            if(plugin.getConfig().get(path) == null) {
+                                MiscUtils.printToConsole("&eValue not found in configuration! Setting default into config...");
+                                plugin.getConfig().set(path, field.get(obj));
+                                plugin.saveConfig();
+                            } else {
+                                field.set(obj, plugin.getConfig().get(path));
+
+                                MiscUtils.printToConsole("&eValue found in configuration! Set value to &a" + plugin.getConfig().get(path));
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    });
+
+                }
             } catch (Exception e) {
                 e.printStackTrace();
             }

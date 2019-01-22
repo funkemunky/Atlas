@@ -160,7 +160,11 @@ public abstract class FunkeCommand
 
                     if ((argument.getPermission() == null || sender.hasPermission(adminPerm)
                             || sender.hasPermission(permission))) {
-                        argument.onArgument(sender, cmd, args);
+                        if(!argument.isPlayerOnly() || sender instanceof Player) {
+                            argument.onArgument(sender, cmd, args);
+                        } else {
+                            sender.sendMessage(commandMessages.getErrorColor() + commandMessages.getPlayerOnly());
+                        }
                         break;
                     }
                     sender.sendMessage(commandMessages.getErrorColor() + commandMessages.getNoPermission());

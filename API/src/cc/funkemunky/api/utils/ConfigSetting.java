@@ -9,4 +9,5 @@ import java.lang.annotation.Target;
 @Target({ElementType.FIELD, ElementType.TYPE})
 public @interface ConfigSetting {
     String path() default "";
+    String name() default "";
 }

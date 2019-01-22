@@ -74,7 +74,7 @@ public class ClassScanner {
         }
     }
 
-    public static void scanDirectory(String file, Path dir, final Set<String> plugins) {
+    private static void scanDirectory(String file, Path dir, final Set<String> plugins) {
         try {
             Files.walkFileTree(dir, newHashSet(FileVisitOption.FOLLOW_LINKS), Integer.MAX_VALUE, new SimpleFileVisitor<Path>() {
                 @Override
@@ -143,7 +143,7 @@ public class ClassScanner {
             }
             if (classNode.superName != null && (classNode.superName.equals(file))) return className;
         } catch (Exception e) {
-            System.out.println("Failed to scan: " + in.toString());
+            //System.out.println("Failed to scan: " + in.toString());
         }
         return null;
     }
