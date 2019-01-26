@@ -1,6 +1,7 @@
 package cc.funkemunky.api.utils;
 
 import cc.funkemunky.api.Atlas;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.*;
@@ -12,7 +13,7 @@ public class FunkeFile {
     private File file;
     private String name;
 
-    public FunkeFile(JavaPlugin Plugin, String Path, String Name) {
+    public FunkeFile(Plugin Plugin, String Path, String Name) {
         this.file = new File(Plugin.getDataFolder() + File.separator + Path);
         this.file.mkdirs();
         this.file = new File(Plugin.getDataFolder() + File.separator + Path, Name);

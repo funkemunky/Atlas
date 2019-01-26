@@ -189,6 +189,10 @@ public class MiscUtils {
         return var21 + "has been unloaded and disabled!";
     }
 
+    public static <T> T parseObjectFromString(String s, Class<T> clazz) throws Exception {
+        return clazz.getConstructor(new Class[] {String.class }).newInstance(s);
+    }
+
     public static BoundingBox getEntityBoundingBox(LivingEntity entity) {
         if (entityDimensions.containsKey(entity.getType())) {
             Vector entityVector = entityDimensions.get(entity.getType());
