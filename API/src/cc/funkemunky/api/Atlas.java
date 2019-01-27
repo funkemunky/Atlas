@@ -19,6 +19,7 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
@@ -109,7 +110,27 @@ public class Atlas extends JavaPlugin {
     }
 
     public void initializeScanner(Class<?> mainClass, Plugin plugin) {
-        ClassScanner.scanFile(null, mainClass).forEach(c -> {
+        ClassScanner.scanFile(null, mainClass).stream().filter(c -> {
+            try {
+                Class clazz = Class.forName(c);
+
+                return clazz.isAnnotationPresent(Init.class);
+            } catch(Exception e) {
+                e.printStackTrace();
+            }
+            return false;
+        }).sorted(Comparator.comparingInt(c -> {
+            try {
+                Class clazz = Class.forName(c);
+
+                Init annotation = (Init) clazz.getAnnotation(Init.class);
+
+                return annotation.priority().getPriority();
+            } catch(Exception e) {
+                e.printStackTrace();
+            }
+            return 3;
+        })).forEachOrdered(c -> {
             try {
                 Class clazz = Class.forName(c);
 
