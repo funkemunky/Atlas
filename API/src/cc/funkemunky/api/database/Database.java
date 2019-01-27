@@ -12,11 +12,14 @@ import java.util.concurrent.ConcurrentHashMap;
 public abstract class Database {
     private String name;
     private Plugin plugin;
+    private DatabaseType type;
     private Map<String, Object> databaseValues;
 
-    public Database(String name, Plugin plugin) {
+    public Database(String name, Plugin plugin, DatabaseType type) {
         this.name = name;
         this.plugin = plugin;
+        this.type = type;
+
         databaseValues = new ConcurrentHashMap<>();
     }
 

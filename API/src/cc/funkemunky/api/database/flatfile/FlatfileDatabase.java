@@ -1,6 +1,7 @@
 package cc.funkemunky.api.database.flatfile;
 
 import cc.funkemunky.api.database.Database;
+import cc.funkemunky.api.database.DatabaseType;
 import cc.funkemunky.api.utils.FunkeFile;
 import cc.funkemunky.api.utils.MiscUtils;
 import lombok.Getter;
@@ -12,7 +13,7 @@ import org.bukkit.plugin.Plugin;
 public class FlatfileDatabase extends Database {
     private FunkeFile file;
     public FlatfileDatabase(String name, Plugin plugin) {
-        super(name, plugin);
+        super(name, plugin, DatabaseType.FLATFILE);
 
         file = new FunkeFile(plugin, "databases", name + ".txt");
     }

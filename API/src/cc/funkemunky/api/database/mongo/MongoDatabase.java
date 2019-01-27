@@ -2,6 +2,7 @@ package cc.funkemunky.api.database.mongo;
 
 import cc.funkemunky.api.Atlas;
 import cc.funkemunky.api.database.Database;
+import cc.funkemunky.api.database.DatabaseType;
 import cc.funkemunky.api.mongo.Mongo;
 import com.mongodb.Block;
 import com.mongodb.client.MongoCollection;
@@ -15,7 +16,7 @@ import java.util.Map;
 public class MongoDatabase extends Database {
     private MongoCollection<Document> collection;
     public MongoDatabase(String name, Plugin plugin) {
-        super(name, plugin);
+        super(name, plugin, DatabaseType.MONGO);
 
         collection = Atlas.getInstance().getMongo().getMongoDatabase().getCollection(name);
     }
@@ -31,7 +32,7 @@ public class MongoDatabase extends Database {
     public void saveDatabase() {
         Map<String, Map<String, Object>> toSort = new HashMap<>();
         getDatabaseValues().keySet().forEach(key -> {
-            String[] toFormat = key.split(".");
+            String[] toFormat = key.split(";");
 
             Map<String, Object> objects = toSort.getOrDefault(toFormat[0], new HashMap<>());
 
