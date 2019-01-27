@@ -98,7 +98,6 @@ public class BlockBox1_8_R3 implements BlockBox {
                             net.minecraft.server.v1_8_R3.IBlockData nmsiBlockData = ((CraftWorld) world).getHandle().getType(new BlockPosition(x, y, z));
                             net.minecraft.server.v1_8_R3.Block nmsBlock = nmsiBlockData.getBlock();
 
-
                             nmsBlock.a(nmsWorld, new BlockPosition(x, y, z), nmsiBlockData, (AxisAlignedBB) box.toAxisAlignedBB(), aabbs, null);
                         }
                         /*

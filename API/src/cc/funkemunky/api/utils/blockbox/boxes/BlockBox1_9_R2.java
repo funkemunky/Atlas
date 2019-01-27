@@ -20,7 +20,6 @@ import java.util.List;
 public class BlockBox1_9_R2 implements BlockBox {
     @Override
     public List<BoundingBox> getCollidingBoxes(World world, BoundingBox box) {
-        BoundingBox collisionBox = box;
         List<AxisAlignedBB> aabbs = Lists.newArrayList();
         List<BoundingBox> boxes = Lists.newArrayList();
 
