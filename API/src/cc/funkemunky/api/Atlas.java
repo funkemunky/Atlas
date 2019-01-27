@@ -40,11 +40,12 @@ public class Atlas extends JavaPlugin {
     @ConfigSetting(path = "init")
     private boolean loadDependingPluginsOnStart = true;
 
+    @ConfigSetting(name = "metrics")
+    private boolean metricsEnabled = true;
+
     public void onEnable() {
         instance = this;
         saveDefaultConfig();
-
-        metrics = new Metrics(this);
 
         consoleSender = Bukkit.getConsoleSender();
 
@@ -64,6 +65,10 @@ public class Atlas extends JavaPlugin {
         initializeScanner(getClass(), this);
 
         funkeCommandManager.addCommand(new AtlasCommand());
+
+        if(metricsEnabled) {
+            metrics = new Metrics(this);
+        }
 
         if(updater.needsToUpdate()) {
             MiscUtils.printToConsole(Color.Yellow + "There is an update available. See more information with /atlas update.");
