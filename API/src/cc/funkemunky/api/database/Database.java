@@ -12,7 +12,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public abstract class Database {
     private String name;
     private Plugin plugin;
-    private Map<String, String> databaseValues;
+    private Map<String, Object> databaseValues;
 
     public Database(String name, Plugin plugin) {
         this.name = name;

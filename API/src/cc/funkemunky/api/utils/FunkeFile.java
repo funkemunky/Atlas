@@ -43,6 +43,14 @@ public class FunkeFile {
 
     public void clear() {
         this.lines.clear();
+        if(file.delete()) {
+            try {
+                file.createNewFile();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
     }
 
     public void addLine(String line) {

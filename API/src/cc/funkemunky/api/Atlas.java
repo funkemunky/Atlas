@@ -2,8 +2,10 @@ package cc.funkemunky.api;
 
 import cc.funkemunky.api.commands.FunkeCommandManager;
 import cc.funkemunky.api.commands.impl.AtlasCommand;
+import cc.funkemunky.api.database.DatabaseManager;
 import cc.funkemunky.api.event.system.EventManager;
 import cc.funkemunky.api.metrics.Metrics;
+import cc.funkemunky.api.mongo.Mongo;
 import cc.funkemunky.api.tinyprotocol.api.TinyProtocolHandler;
 import cc.funkemunky.api.updater.Updater;
 import cc.funkemunky.api.utils.*;
@@ -33,6 +35,8 @@ public class Atlas extends JavaPlugin {
     private FunkeCommandManager funkeCommandManager;
     private Updater updater;
     private Metrics metrics;
+    private Mongo mongo;
+    private DatabaseManager databaseManager;
 
     @ConfigSetting(path = "updater")
     private boolean autoDownload = false;
@@ -63,6 +67,9 @@ public class Atlas extends JavaPlugin {
 
         MiscUtils.printToConsole(Color.Gray + "Starting scanner...");
         initializeScanner(getClass(), this);
+
+        mongo = new Mongo();
+        databaseManager = new DatabaseManager();
 
         funkeCommandManager.addCommand(new AtlasCommand());
 

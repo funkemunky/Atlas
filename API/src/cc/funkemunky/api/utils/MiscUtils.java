@@ -190,7 +190,7 @@ public class MiscUtils {
     }
 
     public static <T> T parseObjectFromString(String s, Class<T> clazz) throws Exception {
-        return clazz.getConstructor(new Class[] {String.class }).newInstance(s);
+        return clazz.getConstructor(new Class[] {String.class}).newInstance(s);
     }
 
     public static BoundingBox getEntityBoundingBox(LivingEntity entity) {
