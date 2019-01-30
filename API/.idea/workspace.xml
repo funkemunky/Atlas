@@ -11,8 +11,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="103113f6-8a1c-45a3-9b02-5a992cc6cbb2" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/resources/plugin.yml" beforeDir="false" afterPath="$PROJECT_DIR$/resources/plugin.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/cc/funkemunky/api/tinyprotocol/packet/in/WrappedInUseEntityPacket.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/cc/funkemunky/api/tinyprotocol/packet/in/WrappedInUseEntityPacket.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/cc/funkemunky/api/updater/Updater.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/cc/funkemunky/api/updater/Updater.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -55,13 +54,13 @@
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
-          <entry key="java" value="10492" />
+          <entry key="java" value="10508" />
           <entry key="yml" value="267" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="JAVA" value="10492" />
+          <entry key="JAVA" value="10508" />
           <entry key="YAML" value="267" />
         </counts>
       </usages-collector>
@@ -106,7 +105,7 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/cc/funkemunky/api/updater/Updater.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="90">
@@ -181,11 +180,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/cc/funkemunky/api/tinyprotocol/packet/in/WrappedInEntityActionPacket.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="281">
-              <caret line="27" column="33" lean-forward="true" selection-start-line="27" selection-start-column="33" selection-end-line="27" selection-end-column="33" />
+            <state relative-caret-position="326">
+              <caret line="30" column="51" selection-start-line="30" selection-start-column="51" selection-end-line="30" selection-end-column="51" />
             </state>
           </provider>
         </entry>
@@ -258,7 +257,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/src/cc/funkemunky/api/tinyprotocol/api/TinyProtocol1_8.java" />
         <option value="$PROJECT_DIR$/src/cc/funkemunky/api/metrics/Metrics.java" />
         <option value="$PROJECT_DIR$/src/cc/funkemunky/api/commands/CommandMessages.java" />
         <option value="$PROJECT_DIR$/resources/config.yml" />
@@ -306,9 +304,10 @@
         <option value="$PROJECT_DIR$/src/cc/funkemunky/api/utils/Priority.java" />
         <option value="$PROJECT_DIR$/src/cc/funkemunky/api/utils/Init.java" />
         <option value="$PROJECT_DIR$/src/cc/funkemunky/api/Atlas.java" />
-        <option value="$PROJECT_DIR$/src/cc/funkemunky/api/updater/Updater.java" />
         <option value="$PROJECT_DIR$/src/cc/funkemunky/api/tinyprotocol/packet/in/WrappedInUseEntityPacket.java" />
         <option value="$PROJECT_DIR$/resources/plugin.yml" />
+        <option value="$PROJECT_DIR$/src/cc/funkemunky/api/tinyprotocol/packet/in/WrappedInEntityActionPacket.java" />
+        <option value="$PROJECT_DIR$/src/cc/funkemunky/api/updater/Updater.java" />
       </list>
     </option>
   </component>
@@ -541,7 +540,7 @@
     <property name="Repository.Attach.JavaDocs" value="false" />
     <property name="Repository.Attach.Sources" value="false" />
     <property name="SearchEverywhereHistoryKey" value="PacketPlayInEntityAction&#9;PSI&#9;JAVA://net.minecraft.server.v1_7_R4.PacketPlayInEntityAction&#10;EntityLiving&#9;FILE&#9;jar:///Users/dawson/Documents/GitHub/Atlas/compiled-depends/spigot-1.7.10-SNAPSHOT-b1657.jar!/net/minecraft/server/v1_7_R4/EntityLiving.class&#10;EntityPlayer&#9;PSI&#9;JAVA://net.minecraft.server.v1_7_R4.EntityPlayer&#10;net.minecraft.server.Entity&#9;PSI&#9;JAVA://net.minecraft.server.v1_7_R4.Entity&#10;MinecraftServer&#9;PSI&#9;JAVA://net.minecraft.server.v1_8_R3.MinecraftServer&#10;DedicatedServer&#9;PSI&#9;JAVA://net.minecraft.server.v1_8_R3.DedicatedServer&#10;Minecraft&#9;FILE&#9;jar:///Users/dawson/Documents/GitHub/Atlas/compiled-depends/spigot-1.11.1.jar!/net/minecraft/server/v1_11_R1/MinecraftServer.class&#10;JavaPLugin&#9;PSI&#9;JAVA://org.bukkit.plugin.java.JavaPlugin" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1548884912815" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1548885466826" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="project.structure.last.edited" value="Libraries" />
     <property name="project.structure.proportion" value="0.15917969" />
@@ -972,24 +971,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/cc/funkemunky/api/updater/Updater.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="90">
-          <caret line="18" column="47" selection-start-line="18" selection-start-column="47" selection-end-line="18" selection-end-column="47" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/cc/funkemunky/api/tinyprotocol/packet/in/WrappedInUseEntityPacket.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="420">
           <caret line="39" column="25" lean-forward="true" selection-start-line="39" selection-start-column="25" selection-end-line="39" selection-end-column="25" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/resources/plugin.yml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="30">
-          <caret line="2" column="16" selection-start-line="2" selection-start-column="16" selection-end-line="2" selection-end-column="16" />
         </state>
       </provider>
     </entry>
@@ -1000,10 +985,24 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/resources/plugin.yml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="30">
+          <caret line="2" column="16" selection-start-line="2" selection-start-column="16" selection-end-line="2" selection-end-column="16" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/cc/funkemunky/api/tinyprotocol/packet/in/WrappedInEntityActionPacket.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="281">
-          <caret line="27" column="33" lean-forward="true" selection-start-line="27" selection-start-column="33" selection-end-line="27" selection-end-column="33" />
+        <state relative-caret-position="326">
+          <caret line="30" column="51" selection-start-line="30" selection-start-column="51" selection-end-line="30" selection-end-column="51" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/cc/funkemunky/api/updater/Updater.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="90">
+          <caret line="18" column="47" selection-start-line="18" selection-start-column="47" selection-end-line="18" selection-end-column="47" />
         </state>
       </provider>
     </entry>

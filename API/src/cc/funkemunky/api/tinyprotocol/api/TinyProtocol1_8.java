@@ -1,5 +1,6 @@
 package cc.funkemunky.api.tinyprotocol.api;
 
+import cc.funkemunky.api.Atlas;
 import cc.funkemunky.api.tinyprotocol.reflection.FieldAccessor;
 import cc.funkemunky.api.tinyprotocol.reflection.MethodInvoker;
 import cc.funkemunky.api.tinyprotocol.reflection.Reflection;
@@ -188,31 +189,35 @@ public abstract class TinyProtocol1_8 implements AbstractTinyProtocol {
 
     @SuppressWarnings("unchecked")
     private void registerChannelHandler() {
-        Object mcServer = getMinecraftServer.get(Bukkit.getServer());
-        Object serverConnection = getServerConnection.get(mcServer);
-        boolean looking = true;
+        new BukkitRunnable() {
+            public void run() {
+                Object mcServer = getMinecraftServer.get(Bukkit.getServer());
+                Object serverConnection = getServerConnection.get(mcServer);
+                boolean looking = true;
 
-        // We need to synchronize against this list
-        networkManagers = (List<Object>) getNetworkMarkers.invoke(null, serverConnection);
-        createServerChannelHandler();
+                // We need to synchronize against this list
+                networkManagers = (List<Object>) getNetworkMarkers.invoke(null, serverConnection);
+                createServerChannelHandler();
 
-        // Find the correct list, or implicitly throw an exception
-        for (int i = 0; looking; i++) {
-            List<Object> list = Reflection.getField(serverConnection.getClass(), List.class, i).get(serverConnection);
+                // Find the correct list, or implicitly throw an exception
+                for (int i = 0; looking; i++) {
+                    List<Object> list = Reflection.getField(serverConnection.getClass(), List.class, i).get(serverConnection);
 
-            for (Object item : list) {
-                //if (!ChannelFuture.class.isInstance(item))
-                //	break;
+                    for (Object item : list) {
+                        //if (!ChannelFuture.class.isInstance(item))
+                        //	break;
 
-                // Channel future that contains the server connection
-                Channel serverChannel = ((ChannelFuture) item).channel();
+                        // Channel future that contains the server connection
+                        Channel serverChannel = ((ChannelFuture) item).channel();
 
-                serverChannels.add(serverChannel);
-                serverChannel.pipeline().addFirst(serverChannelHandler);
-                System.out.println("Server channel handler injected (" + serverChannel + ")");
-                looking = false;
+                        serverChannels.add(serverChannel);
+                        serverChannel.pipeline().addFirst(serverChannelHandler);
+                        System.out.println("Server channel handler injected (" + serverChannel + ")");
+                        looking = false;
+                    }
+                }
             }
-        }
+        }.runTaskLaterAsynchronously(Atlas.getInstance(), 20);
     }
 
     private void unregisterChannelHandler() {

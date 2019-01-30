@@ -16,7 +16,7 @@ import static org.apache.logging.log4j.core.impl.ThrowableFormatOptions.FILE_NAM
 
 @Getter
 public class Updater {
-    private int update = - 1, currentUpdate = 8;
+    private int update = - 1, currentUpdate = 9;
     private String version, downloadLink;
     private File pluginLocation;
     private boolean importantUpdate = false;
