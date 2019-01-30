@@ -541,7 +541,7 @@
     <property name="Repository.Attach.JavaDocs" value="false" />
     <property name="Repository.Attach.Sources" value="false" />
     <property name="SearchEverywhereHistoryKey" value="PacketPlayInEntityAction&#9;PSI&#9;JAVA://net.minecraft.server.v1_7_R4.PacketPlayInEntityAction&#10;EntityLiving&#9;FILE&#9;jar:///Users/dawson/Documents/GitHub/Atlas/compiled-depends/spigot-1.7.10-SNAPSHOT-b1657.jar!/net/minecraft/server/v1_7_R4/EntityLiving.class&#10;EntityPlayer&#9;PSI&#9;JAVA://net.minecraft.server.v1_7_R4.EntityPlayer&#10;net.minecraft.server.Entity&#9;PSI&#9;JAVA://net.minecraft.server.v1_7_R4.Entity&#10;MinecraftServer&#9;PSI&#9;JAVA://net.minecraft.server.v1_8_R3.MinecraftServer&#10;DedicatedServer&#9;PSI&#9;JAVA://net.minecraft.server.v1_8_R3.DedicatedServer&#10;Minecraft&#9;FILE&#9;jar:///Users/dawson/Documents/GitHub/Atlas/compiled-depends/spigot-1.11.1.jar!/net/minecraft/server/v1_11_R1/MinecraftServer.class&#10;JavaPLugin&#9;PSI&#9;JAVA://org.bukkit.plugin.java.JavaPlugin" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1548884750986" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1548884912815" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="project.structure.last.edited" value="Libraries" />
     <property name="project.structure.proportion" value="0.15917969" />
