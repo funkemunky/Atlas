@@ -18,14 +18,14 @@ public class Color {
     public static final String Italics = ChatColor.ITALIC.toString();
     public static final String Strikethrough = ChatColor.STRIKETHROUGH.toString();
     public static final String White = ChatColor.WHITE.toString();
-    public static String Dark_Red = ChatColor.DARK_RED.toString();
-    public static String Dark_Green = ChatColor.DARK_GREEN.toString();
-    public static String Blue = ChatColor.BLUE.toString();
-    public static String Dark_Blue = ChatColor.DARK_BLUE.toString();
-    public static String Pink = ChatColor.LIGHT_PURPLE.toString();
-    public static String Purple = ChatColor.DARK_PURPLE.toString();
-    public static String Black = ChatColor.BLACK.toString();
-    public static String Underline = ChatColor.UNDERLINE.toString();
+    public static final String Dark_Red = ChatColor.DARK_RED.toString();
+    public static final String Dark_Green = ChatColor.DARK_GREEN.toString();
+    public static final String Blue = ChatColor.BLUE.toString();
+    public static final String Dark_Blue = ChatColor.DARK_BLUE.toString();
+    public static final String Pink = ChatColor.LIGHT_PURPLE.toString();
+    public static final String Purple = ChatColor.DARK_PURPLE.toString();
+    public static final String Black = ChatColor.BLACK.toString();
+    public static final String Underline = ChatColor.UNDERLINE.toString();
     private static Color instance;
 
     public Color() {

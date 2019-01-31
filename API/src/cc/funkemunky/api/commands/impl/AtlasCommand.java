@@ -7,7 +7,7 @@ import cc.funkemunky.api.commands.impl.args.UpdateArgument;
 
 public class AtlasCommand extends FunkeCommand {
     public AtlasCommand() {
-        super(Atlas.getInstance(), "atlas", "Atlas", "The Atlas main command.", "atlas.admin");
+        super(Atlas.getInstance(), "atlas", "Atlas", "The Atlas main ancmd.", "atlas.admin");
     }
 
     @Override

@@ -1,6 +1,8 @@
 package cc.funkemunky.api;
 
+import cc.funkemunky.api.commands.FunkeCommand;
 import cc.funkemunky.api.commands.FunkeCommandManager;
+import cc.funkemunky.api.commands.ancmd.CommandManager;
 import cc.funkemunky.api.commands.impl.AtlasCommand;
 import cc.funkemunky.api.database.DatabaseManager;
 import cc.funkemunky.api.event.system.EventManager;
@@ -12,10 +14,10 @@ import cc.funkemunky.api.utils.*;
 import cc.funkemunky.api.utils.blockbox.BlockBoxManager;
 import lombok.Getter;
 import org.bukkit.Bukkit;
+import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
-import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.Arrays;
@@ -33,6 +35,7 @@ public class Atlas extends JavaPlugin {
     private BlockBoxManager blockBoxManager;
     private ExecutorService threadPool;
     private ConsoleCommandSender consoleSender;
+    private CommandManager commandManager;
     private FunkeCommandManager funkeCommandManager;
     private Updater updater;
     private Metrics metrics;
@@ -58,6 +61,7 @@ public class Atlas extends JavaPlugin {
         threadPool = Executors.newFixedThreadPool(4);
         tinyProtocolHandler = new TinyProtocolHandler();
         blockBoxManager = new BlockBoxManager();
+        commandManager = new CommandManager(this);
         funkeCommandManager = new FunkeCommandManager();
         new BlockUtils();
         new ReflectionsUtil();
@@ -66,13 +70,13 @@ public class Atlas extends JavaPlugin {
 
         updater = new Updater();
 
+        funkeCommandManager.addCommand(new AtlasCommand());
+
         MiscUtils.printToConsole(Color.Gray + "Starting scanner...");
-        initializeScanner(getClass(), this);
+        initializeScanner(getClass(), this, commandManager);
 
         mongo = new Mongo();
         databaseManager = new DatabaseManager();
-
-        funkeCommandManager.addCommand(new AtlasCommand());
 
         if(metricsEnabled) {
             metrics = new Metrics(this);
@@ -109,7 +113,7 @@ public class Atlas extends JavaPlugin {
         }
     }
 
-    public void initializeScanner(Class<?> mainClass, Plugin plugin) {
+    public void initializeScanner(Class<?> mainClass, JavaPlugin plugin, CommandManager manager) {
         ClassScanner.scanFile(null, mainClass).stream().filter(c -> {
             try {
                 Class clazz = Class.forName(c);
@@ -136,14 +140,26 @@ public class Atlas extends JavaPlugin {
 
                 if(clazz.isAnnotationPresent(Init.class)) {
                     Object obj = clazz.equals(mainClass) ? plugin : clazz.newInstance();
+                    Init annotation = (Init) clazz.getAnnotation(Init.class);
 
                     if (obj instanceof Listener) {
                         MiscUtils.printToConsole("&eFound " + clazz.getSimpleName() + " Bukkit listener. Registering...");
-                        Bukkit.getPluginManager().registerEvents((Listener) obj, plugin);
+                        plugin.getServer().getPluginManager().registerEvents((Listener) obj, plugin);
                     } else if(obj instanceof cc.funkemunky.api.event.system.Listener) {
                         MiscUtils.printToConsole("&eFound " + clazz.getSimpleName() + " Atlas listener. Registering...");
                         EventManager.register((cc.funkemunky.api.event.system.Listener) obj);
+                    } else if(obj instanceof CommandExecutor && clazz.isAnnotationPresent(Commands.class)) {
+                        Commands commands = (Commands) clazz.getAnnotation(Commands.class);
+
+                        Arrays.stream(commands.commands()).forEach(label -> {
+                            if(label.length() > 0) {
+                                plugin.getCommand(label).setExecutor((CommandExecutor) obj);
+                                MiscUtils.printToConsole("&eRegistered ancmd " + label + " from Command Executor: " + clazz.getSimpleName());
+                            }
+                        });
                     }
+
+                    if(annotation.commands()) manager.registerCommands(obj);
 
                     Arrays.stream(clazz.getDeclaredFields()).filter(field -> field.isAnnotationPresent(ConfigSetting.class)).forEach(field -> {
                         String name = field.getAnnotation(ConfigSetting.class).name();
