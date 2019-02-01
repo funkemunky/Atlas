@@ -19,12 +19,11 @@ import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.Arrays;
 import java.util.Comparator;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
+import java.util.concurrent.*;
 
 @Getter
 @Init
@@ -34,6 +33,7 @@ public class Atlas extends JavaPlugin {
     private TinyProtocolHandler tinyProtocolHandler;
     private BlockBoxManager blockBoxManager;
     private ExecutorService threadPool;
+    private ScheduledExecutorService schedular;
     private ConsoleCommandSender consoleSender;
     private CommandManager commandManager;
     private FunkeCommandManager funkeCommandManager;
@@ -59,7 +59,12 @@ public class Atlas extends JavaPlugin {
 
         MiscUtils.printToConsole(Color.Red + "Loading Atlas...");
         threadPool = Executors.newFixedThreadPool(4);
-        tinyProtocolHandler = new TinyProtocolHandler();
+        schedular = Executors.newSingleThreadScheduledExecutor();
+
+        schedular.schedule(() -> {
+            tinyProtocolHandler = new TinyProtocolHandler();
+        }, 2, TimeUnit.SECONDS);
+
         blockBoxManager = new BlockBoxManager();
         commandManager = new CommandManager(this);
         funkeCommandManager = new FunkeCommandManager();

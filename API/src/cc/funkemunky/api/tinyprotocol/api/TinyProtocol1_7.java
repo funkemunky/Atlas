@@ -192,7 +192,7 @@ public abstract class TinyProtocol1_7 implements AbstractTinyProtocol {
         boolean looking = true;
 
         // We need to synchronize against this list
-        networkManagers = (List<Object>) getNetworkMarkers.invoke(null, serverConnection);
+        networkManagers = (List<Object>) getNetworkMarkers.invoke(serverConnection, serverConnection);
         createServerChannelHandler();
 
         // Find the correct list, or implicitly throw an exception

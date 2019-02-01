@@ -152,7 +152,7 @@ public abstract class FunkeCommand
                     }
                 }
                 sender.sendMessage(MiscUtils.line(Color.Dark_Gray));
-            } catch (Exception e) {
+            } catch (NumberFormatException e) {
                 for (FunkeArgument argument : this.arguments) {
 
                     if (!args[0].equalsIgnoreCase(argument.getName()) && !argument.getAliases().contains(args[0].toLowerCase()))

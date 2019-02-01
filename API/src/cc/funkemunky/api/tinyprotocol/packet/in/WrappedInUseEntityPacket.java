@@ -9,6 +9,7 @@ import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 @Getter
@@ -28,8 +29,9 @@ public class WrappedInUseEntityPacket extends NMSObject {
 
     @Override
     public void process(Player player, ProtocolVersion version) {
-        id = fetch(fieldId);
-        action = EnumEntityUseAction.valueOf(fetch(fieldAction).name());
+        id = Objects.requireNonNull(fetch(fieldId));
+        Enum fieldAct = Objects.nonNull(fetch(fieldAction)) ? fetch(fieldAction) : null;
+        action = fieldAct == null ? EnumEntityUseAction.INTERACT_AT : EnumEntityUseAction.valueOf(fieldAct.name());
         for (Entity entity : player.getWorld().getEntities()) {
             if (entity.getEntityId() == id) this.entity = entity;
         }
