@@ -1,7 +1,6 @@
 package cc.funkemunky.api.tinyprotocol.packet.types;
 
-import com.google.common.collect.Maps;
-
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 
@@ -15,7 +14,7 @@ public enum EnumDirection {
 
     private static final EnumDirection[] n = new EnumDirection[6];
     private static final EnumDirection[] o = new EnumDirection[4];
-    private static final Map<String, EnumDirection> p = Maps.newHashMap();
+    private static final Map<String, EnumDirection> p = new HashMap<>();
 
     static {
         EnumDirection[] var0 = values();
@@ -152,7 +151,7 @@ public enum EnumDirection {
         Y("y", EnumDirection.EnumDirectionLimit.VERTICAL),
         Z("z", EnumDirection.EnumDirectionLimit.HORIZONTAL);
 
-        private static final Map<String, EnumAxis> d = Maps.newHashMap();
+        private static final Map<String, EnumAxis> d = new HashMap<>();
 
         static {
             EnumDirection.EnumAxis[] var0 = values();

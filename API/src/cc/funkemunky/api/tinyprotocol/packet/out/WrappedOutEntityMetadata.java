@@ -1,6 +1,5 @@
 package cc.funkemunky.api.tinyprotocol.packet.out;
 
-import com.google.common.collect.Lists;
 import cc.funkemunky.api.tinyprotocol.api.NMSObject;
 import cc.funkemunky.api.tinyprotocol.api.Packet;
 import cc.funkemunky.api.tinyprotocol.api.ProtocolVersion;
@@ -10,6 +9,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.entity.Player;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -30,7 +30,7 @@ public class WrappedOutEntityMetadata extends NMSObject {
     public void process(Player player, ProtocolVersion version) {
         watchableObjects = fetchField(packet, List.class, 0);
 
-        objects = Lists.newArrayList();
+        objects = new ArrayList<>();
 
         List list = fetch(watchableObjects);
 

@@ -1,11 +1,7 @@
 package cc.funkemunky.api.event.system;
 
 import cc.funkemunky.api.Atlas;
-import com.google.common.collect.Lists;
-import org.bukkit.block.Block;
-import org.bukkit.scheduler.BukkitRunnable;
 
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
@@ -32,7 +28,7 @@ public class EventManager {
 
     public static void unregister(Listener listener) {
         if(registered.containsKey(listener)) {
-            registered.put(listener, Lists.newArrayList());
+            registered.put(listener, new ArrayList<>());
         }
         registered.remove(listener);
     }

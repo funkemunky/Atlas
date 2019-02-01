@@ -4,10 +4,10 @@
 
 package cc.funkemunky.api.tinyprotocol.packet.out;
 
-import cc.funkemunky.api.utils.MathUtils;
 import cc.funkemunky.api.tinyprotocol.api.NMSObject;
 import cc.funkemunky.api.tinyprotocol.api.ProtocolVersion;
 import cc.funkemunky.api.tinyprotocol.packet.types.WrappedGameProfile;
+import cc.funkemunky.api.utils.MathUtils;
 
 //TODO make this cleaner
 public class WrappedOutNamedEntitySpawn extends NMSObject {

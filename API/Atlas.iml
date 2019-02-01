@@ -10,7 +10,7 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="asm-all-5.2" level="project" />
     <orderEntry type="library" name="spigot-1.8.8-R0.1-SNAPSHOT" level="project" />
-    <orderEntry type="library" name="lombok-1.18.0" level="project" />
     <orderEntry type="library" name="org.mongodb:mongo-java-driver:3.8.0" level="project" />
+    <orderEntry type="library" name="lombok-1.18.0" level="project" />
   </component>
 </module>

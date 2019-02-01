@@ -4,6 +4,8 @@ import cc.funkemunky.api.Atlas;
 import cc.funkemunky.api.tinyprotocol.packet.out.WrappedPacketPlayOutWorldParticle;
 import cc.funkemunky.api.tinyprotocol.packet.types.WrappedEnumParticle;
 import org.bukkit.Bukkit;
+import org.bukkit.Effect;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.command.SimpleCommandMap;
@@ -68,8 +70,7 @@ public class MiscUtils {
         for (float x = box.minX; x < box.maxX + 0.2; x += 0.2f) {
             for (float y = box.minY; y < box.maxY + 0.2; y += 0.2f) {
                 for (float z = box.minZ; z < box.maxZ + 0.2; z += 0.2f) {
-                    WrappedPacketPlayOutWorldParticle packet = new WrappedPacketPlayOutWorldParticle(WrappedEnumParticle.FLAME, true, x, y, z, 0f, 0f, 0f, 0f, 1, null);
-                    packet.sendPacket(player);
+                    player.playEffect(new Location(player.getWorld(),x,y,z), Effect.FLAME, 0);
                 }
             }
         }

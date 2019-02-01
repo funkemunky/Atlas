@@ -1,7 +1,6 @@
 package cc.funkemunky.api.utils;
 
 import cc.funkemunky.api.Atlas;
-import com.google.common.collect.Lists;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -114,7 +113,7 @@ public class BoundingBox {
     public List<Block> getAllBlocks(Player player) {
         Location min = new Location(player.getWorld(), MathUtils.floor(minX), MathUtils.floor(minY), MathUtils.floor(minZ));
         Location max = new Location(player.getWorld(), MathUtils.floor(maxX), MathUtils.floor(maxY), MathUtils.floor(maxZ));
-        List<Block> all = Lists.newArrayList();
+        List<Block> all = new ArrayList<>();
         for (float x = (float) min.getX(); x < max.getX(); x++) {
             for (float y = (float) min.getY(); y < max.getY(); y++) {
                 for (float z = (float) min.getZ(); z < max.getZ(); z++) {

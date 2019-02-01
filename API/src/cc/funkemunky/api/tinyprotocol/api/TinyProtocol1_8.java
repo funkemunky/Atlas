@@ -4,7 +4,6 @@ import cc.funkemunky.api.Atlas;
 import cc.funkemunky.api.tinyprotocol.reflection.FieldAccessor;
 import cc.funkemunky.api.tinyprotocol.reflection.MethodInvoker;
 import cc.funkemunky.api.tinyprotocol.reflection.Reflection;
-import com.google.common.collect.Lists;
 import com.google.common.collect.MapMaker;
 import com.mojang.authlib.GameProfile;
 import io.netty.channel.*;
@@ -66,7 +65,7 @@ public abstract class TinyProtocol1_8 implements AbstractTinyProtocol {
     private List<Object> networkManagers;
 
     // Injected channel handlers
-    private List<Channel> serverChannels = Lists.newArrayList();
+    private List<Channel> serverChannels = new ArrayList<>();
     private ChannelInboundHandlerAdapter serverChannelHandler;
     private ChannelInitializer<Channel> beginInitProtocol;
     private ChannelInitializer<Channel> endInitProtocol;

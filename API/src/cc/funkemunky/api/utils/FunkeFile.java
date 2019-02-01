@@ -2,7 +2,6 @@ package cc.funkemunky.api.utils;
 
 import cc.funkemunky.api.Atlas;
 import org.bukkit.plugin.Plugin;
-import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.*;
 import java.util.ArrayList;

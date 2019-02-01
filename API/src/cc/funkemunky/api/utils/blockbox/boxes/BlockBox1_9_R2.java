@@ -5,7 +5,6 @@ import cc.funkemunky.api.utils.BoundingBox;
 import cc.funkemunky.api.utils.MathUtils;
 import cc.funkemunky.api.utils.ReflectionsUtil;
 import cc.funkemunky.api.utils.blockbox.BlockBox;
-import com.google.common.collect.Lists;
 import net.minecraft.server.v1_9_R2.*;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -15,13 +14,14 @@ import org.bukkit.craftbukkit.v1_9_R2.entity.CraftPlayer;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class BlockBox1_9_R2 implements BlockBox {
     @Override
     public List<BoundingBox> getCollidingBoxes(World world, BoundingBox box) {
-        List<AxisAlignedBB> aabbs = Lists.newArrayList();
-        List<BoundingBox> boxes = Lists.newArrayList();
+        List<AxisAlignedBB> aabbs = new ArrayList<>();
+        List<BoundingBox> boxes = new ArrayList<>();
 
         int minX = MathUtils.floor(box.minX);
         int maxX = MathUtils.floor(box.maxX + 1);
@@ -67,8 +67,8 @@ public class BlockBox1_9_R2 implements BlockBox {
         AxisAlignedBB collisionBox = (AxisAlignedBB) new BoundingBox(loc.toVector(), loc.toVector()).grow(1f, 1f, 1f).toAxisAlignedBB();
         List<AxisAlignedBB> boxList = ((CraftWorld) world).getHandle().a(collisionBox);
 
-        List<AxisAlignedBB> aabbs = Lists.newArrayList();
-        List<BoundingBox> boxes = Lists.newArrayList();
+        List<AxisAlignedBB> aabbs = new ArrayList<>();
+        List<BoundingBox> boxes = new ArrayList<>();
 
         BoundingBox box = new BoundingBox(loc.toVector(), loc.toVector()).grow(2, 2, 2);
         int minX = MathUtils.floor(box.minX);

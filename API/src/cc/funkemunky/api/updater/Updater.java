@@ -2,7 +2,6 @@ package cc.funkemunky.api.updater;
 
 import cc.funkemunky.api.Atlas;
 import cc.funkemunky.api.utils.ConfigSetting;
-import cc.funkemunky.api.utils.ReflectionsUtil;
 import lombok.Getter;
 
 import java.io.*;
@@ -11,8 +10,6 @@ import java.net.URLConnection;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
-
-import static org.apache.logging.log4j.core.impl.ThrowableFormatOptions.FILE_NAME;
 
 @Getter
 public class Updater {

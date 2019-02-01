@@ -3,7 +3,6 @@ package cc.funkemunky.api.database.mongo;
 import cc.funkemunky.api.Atlas;
 import cc.funkemunky.api.database.Database;
 import cc.funkemunky.api.database.DatabaseType;
-import cc.funkemunky.api.mongo.Mongo;
 import com.mongodb.Block;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.model.Filters;

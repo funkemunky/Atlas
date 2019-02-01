@@ -1,25 +1,20 @@
 package cc.funkemunky.api.commands;
 
-import cc.funkemunky.api.Atlas;
 import cc.funkemunky.api.utils.Color;
 import cc.funkemunky.api.utils.JsonMessage;
 import cc.funkemunky.api.utils.MathUtils;
 import cc.funkemunky.api.utils.MiscUtils;
-import com.google.common.collect.Lists;
 import lombok.Getter;
 import lombok.Setter;
-import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
-import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
 
 @Getter
@@ -84,7 +79,7 @@ public abstract class FunkeCommand
             });
 
             if (funkeArgument[0] != null) {
-                funkeArgument[0].getTabComplete().getOrDefault(args.length, Lists.newArrayList()).forEach(string -> {
+                funkeArgument[0].getTabComplete().getOrDefault(args.length, new ArrayList<>()).forEach(string -> {
                     String[] split = string.split(",").length == 0 ? new String[]{string} : string.split(","), conditional = split.length > 1 ? new String[]{split[1], split[2]} : new String[0];
 
                     String arg = split[0];

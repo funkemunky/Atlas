@@ -1,7 +1,5 @@
 package cc.funkemunky.api.event.system;
 
-import org.bukkit.event.EventPriority;
-
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;

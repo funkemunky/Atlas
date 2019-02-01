@@ -1,7 +1,7 @@
 package cc.funkemunky.api.utils.math;
 
-import cc.funkemunky.api.utils.BoundingBox;
 import cc.funkemunky.api.tinyprotocol.api.ProtocolVersion;
+import cc.funkemunky.api.utils.BoundingBox;
 import org.bukkit.Effect;
 import org.bukkit.World;
 import org.bukkit.block.Block;

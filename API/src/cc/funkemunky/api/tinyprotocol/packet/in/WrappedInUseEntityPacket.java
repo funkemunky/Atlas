@@ -7,10 +7,7 @@ import lombok.Getter;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
-import java.util.concurrent.CopyOnWriteArrayList;
 
 @Getter
 public class WrappedInUseEntityPacket extends NMSObject {

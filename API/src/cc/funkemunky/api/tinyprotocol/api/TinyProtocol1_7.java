@@ -1,8 +1,8 @@
 package cc.funkemunky.api.tinyprotocol.api;
+
 import cc.funkemunky.api.tinyprotocol.reflection.FieldAccessor;
 import cc.funkemunky.api.tinyprotocol.reflection.MethodInvoker;
 import cc.funkemunky.api.tinyprotocol.reflection.Reflection;
-import com.google.common.collect.Lists;
 import com.google.common.collect.MapMaker;
 import net.minecraft.util.com.mojang.authlib.GameProfile;
 import net.minecraft.util.io.netty.channel.*;
@@ -64,7 +64,7 @@ public abstract class TinyProtocol1_7 implements AbstractTinyProtocol {
     private List<Object> networkManagers;
 
     // Injected channel handlers
-    private List<Channel> serverChannels = Lists.newArrayList();
+    private List<Channel> serverChannels = new ArrayList<>();
     private ChannelInboundHandlerAdapter serverChannelHandler;
     private ChannelInitializer<Channel> beginInitProtocol;
     private ChannelInitializer<Channel> endInitProtocol;
