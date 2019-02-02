@@ -9,8 +9,8 @@ import java.lang.annotation.Target;
 @Target({ElementType.METHOD})
 public @interface Command {
     String name() default "";
-    boolean playerOnly = false;
-    boolean consoleOnly = false;
+    boolean playerOnly() default false;
+    boolean consoleOnly() default false;
     String[] permission() default "";
     String description() default "";
     String usage() default "";

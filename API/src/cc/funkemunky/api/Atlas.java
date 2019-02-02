@@ -75,6 +75,10 @@ public class Atlas extends JavaPlugin {
 
         funkeCommandManager.addCommand(new AtlasCommand());
 
+        getServer().getMessenger().registerOutgoingPluginChannel(this, "Atlas_Data_Request");
+        getServer().getMessenger().registerOutgoingPluginChannel(this, "Atlas_Data_Outgoing");
+        getServer().getMessenger().registerOutgoingPluginChannel(this, "Atlas_Data_Incoming");
+
         MiscUtils.printToConsole(Color.Gray + "Starting scanner...");
         initializeScanner(getClass(), this, commandManager);
 

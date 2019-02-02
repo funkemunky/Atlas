@@ -54,10 +54,6 @@ public class MiscUtils {
         entityDimensions.put(EntityType.GHAST, new Vector(2, 4, 2));
     }
 
-    public static boolean hasPermissionForAlerts(Player player) {
-        return player.hasPermission("api.staff") || player.hasPermission("api.alerts");
-    }
-
     public static boolean containsIgnoreCase(String toCheck, String contains) {
         return toCheck.toLowerCase().contains(contains.toLowerCase());
     }
