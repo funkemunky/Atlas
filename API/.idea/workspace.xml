@@ -6,29 +6,20 @@
     </artifacts-to-build>
   </component>
   <component name="BookmarkManager">
-    <bookmark url="file://$PROJECT_DIR$/src/cc/funkemunky/api/Atlas.java" line="37" />
-    <bookmark url="file://$PROJECT_DIR$/src/cc/funkemunky/api/Atlas.java" line="23" />
+    <bookmark url="file://$PROJECT_DIR$/src/cc/funkemunky/api/Atlas.java" line="38" />
+    <bookmark url="file://$PROJECT_DIR$/src/cc/funkemunky/api/Atlas.java" line="24" />
     <bookmark url="file://$PROJECT_DIR$/src/cc/funkemunky/api/utils/blockbox/boxes/BlockBox1_13_R2.java" line="23" />
   </component>
   <component name="ChangeListManager">
     <list default="true" id="103113f6-8a1c-45a3-9b02-5a992cc6cbb2" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/../AtlasBungee/.idea/libraries/BungeeCord_1119.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../AtlasBungee/.idea/uiDesigner.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../AtlasBungee/src/cc/funkemunky/atlas/configuration/Config.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../AtlasBungee/src/cc/funkemunky/atlas/database/Database.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../AtlasBungee/src/cc/funkemunky/atlas/database/DatabaseManager.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../AtlasBungee/src/cc/funkemunky/atlas/database/DatabaseType.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../AtlasBungee/src/cc/funkemunky/atlas/database/flatfile/FlatfileDatabase.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/artifacts/Atlas_jar/Atlas.jar" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/Atlas_jar/Atlas.jar" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Atlas/cc/funkemunky/api/commands/ancmd/Command.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Atlas/cc/funkemunky/api/commands/ancmd/Command.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Atlas/cc/funkemunky/api/updater/Updater.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Atlas/cc/funkemunky/api/updater/Updater.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Atlas/plugin.yml" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Atlas/plugin.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/plugin.yml" beforeDir="false" afterPath="$PROJECT_DIR$/resources/plugin.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Atlas/cc/funkemunky/api/Atlas.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Atlas/cc/funkemunky/api/Atlas.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Atlas/cc/funkemunky/api/commands/impl/AtlasCommand.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Atlas/cc/funkemunky/api/commands/impl/AtlasCommand.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Atlas/cc/funkemunky/api/utils/MiscUtils.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Atlas/cc/funkemunky/api/utils/MiscUtils.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/cc/funkemunky/api/Atlas.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/cc/funkemunky/api/Atlas.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/cc/funkemunky/api/commands/ancmd/Command.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/cc/funkemunky/api/commands/ancmd/Command.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/cc/funkemunky/api/commands/impl/AtlasCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/cc/funkemunky/api/commands/impl/AtlasCommand.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/cc/funkemunky/api/updater/Updater.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/cc/funkemunky/api/updater/Updater.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/cc/funkemunky/api/utils/MiscUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/cc/funkemunky/api/utils/MiscUtils.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -41,44 +32,46 @@
     <session id="2086348182">
       <usages-collector id="statistics.lifecycle.project">
         <counts>
-          <entry key="project.closed" value="39" />
-          <entry key="project.open.time.0" value="26" />
-          <entry key="project.open.time.1" value="5" />
+          <entry key="project.closed" value="41" />
+          <entry key="project.open.time.0" value="27" />
+          <entry key="project.open.time.1" value="6" />
           <entry key="project.open.time.14" value="1" />
           <entry key="project.open.time.2" value="1" />
           <entry key="project.open.time.3" value="3" />
           <entry key="project.open.time.4" value="2" />
           <entry key="project.open.time.5" value="2" />
-          <entry key="project.opened" value="40" />
+          <entry key="project.opened" value="42" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
         <counts>
-          <entry key="class" value="22" />
+          <entry key="class" value="25" />
           <entry key="iml" value="1" />
-          <entry key="java" value="175" />
+          <entry key="java" value="184" />
           <entry key="xml" value="2" />
           <entry key="yml" value="8" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.open">
         <counts>
-          <entry key="CLASS" value="22" />
+          <entry key="CLASS" value="25" />
           <entry key="IDEA_MODULE" value="1" />
-          <entry key="JAVA" value="175" />
+          <entry key="JAVA" value="184" />
           <entry key="XML" value="2" />
           <entry key="YAML" value="8" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
-          <entry key="java" value="13170" />
+          <entry key="dummy" value="2" />
+          <entry key="java" value="15004" />
           <entry key="yml" value="270" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="JAVA" value="13170" />
+          <entry key="JAVA" value="15004" />
+          <entry key="PLAIN_TEXT" value="2" />
           <entry key="YAML" value="270" />
         </counts>
       </usages-collector>
@@ -128,18 +121,6 @@
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/cc/funkemunky/api/database/bungee/BungeeDatabase.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="345">
-              <caret line="23" column="107" selection-start-line="23" selection-start-column="107" selection-end-line="23" selection-end-column="126" />
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/cc/funkemunky/api/utils/MiscUtils.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="2535">
@@ -148,20 +129,86 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/cc/funkemunky/api/Atlas.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="457">
-              <caret line="79" column="91" selection-start-line="79" selection-start-column="91" selection-end-line="79" selection-end-column="91" />
+            <state relative-caret-position="960">
+              <caret line="86" column="36" selection-start-line="86" selection-start-column="36" selection-end-line="86" selection-end-column="36" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/cc/funkemunky/api/database/Database.java">
+        <entry file="file://$PROJECT_DIR$/src/cc/funkemunky/api/commands/impl/args/DevArgument.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="165">
+              <caret line="15" column="48" selection-start-line="15" selection-start-column="48" selection-end-line="15" selection-end-column="48" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/cc/funkemunky/api/commands/impl/AtlasCommand.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="165">
+              <caret line="17" column="78" selection-start-line="17" selection-start-column="78" selection-end-line="17" selection-end-column="78" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/cc/funkemunky/api/utils/blockbox/impl/BoundingBoxes.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="521">
+              <caret line="220" column="71" selection-start-line="220" selection-start-column="71" selection-end-line="220" selection-end-column="71" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/cc/funkemunky/api/utils/blockbox/impl/StairBox.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="255">
+              <caret line="19" selection-start-line="19" selection-end-line="19" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/cc/funkemunky/api/updater/Updater.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="90">
-              <caret line="11" column="22" selection-start-line="11" selection-start-column="22" selection-end-line="11" selection-end-column="22" />
+              <caret line="15" column="48" selection-start-line="15" selection-start-column="48" selection-end-line="15" selection-end-column="48" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/cc/funkemunky/api/utils/blockbox/impl/BlockBox.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="75">
+              <caret line="9" column="7" selection-start-line="9" selection-start-column="7" selection-end-line="9" selection-end-column="7" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="jar://$PROJECT_DIR$/../compiled-depends/spigot-1.8.8-R0.1-SNAPSHOT.jar!/net/minecraft/server/v1_8_R3/BlockStairs.class">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="2820">
+              <caret line="201" column="19" selection-start-line="201" selection-start-column="19" selection-end-line="201" selection-end-column="19" />
             </state>
           </provider>
         </entry>
@@ -179,9 +226,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>.add</find>
-      <find>VoxelShape&gt;</find>
-      <find>get</find>
       <find>EnumAxis</find>
       <find>EnumAxis var</find>
       <find>insideBlock</find>
@@ -209,6 +253,9 @@
       <find>Stream&lt;VoxelShape&gt;</find>
       <find>Stream&lt;</find>
       <find>parse</find>
+      <find>this.minX</find>
+      <find>BlockBox</find>
+      <find>AxisAlignedBB</find>
     </findStrings>
     <replaceStrings>
       <replace>com.funkemunky.api.tinyprotocol</replace>
@@ -221,6 +268,7 @@
       <replace>new ArrayList&lt;&gt;()</replace>
       <replace>new HashMap&lt;&gt;()</replace>
       <replace>world</replace>
+      <replace>RegularBox</replace>
     </replaceStrings>
     <dirStrings>
       <dir>C:\Users\suckm\Documents\GitHub\Atlas\API</dir>
@@ -232,13 +280,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/src/cc/funkemunky/api/utils/ClassScanner.java" />
-        <option value="$PROJECT_DIR$/src/cc/funkemunky/api/utils/ConfigSetting.java" />
-        <option value="$PROJECT_DIR$/src/cc/funkemunky/api/utils/MathUtils.java" />
-        <option value="$PROJECT_DIR$/src/cc/funkemunky/api/commands/FunkeArgument.java" />
-        <option value="$PROJECT_DIR$/src/cc/funkemunky/api/commands/FunkeCommandManager.java" />
-        <option value="$PROJECT_DIR$/src/cc/funkemunky/api/database/ObjectType.java" />
-        <option value="$PROJECT_DIR$/src/cc/funkemunky/api/utils/FunkeFile.java" />
         <option value="$PROJECT_DIR$/src/cc/funkemunky/api/database/flatfile/DatabaseType.java" />
         <option value="$PROJECT_DIR$/src/cc/funkemunky/api/database/DatabaseType.java" />
         <option value="$PROJECT_DIR$/src/cc/funkemunky/api/mongo/Mongo.java" />
@@ -276,13 +317,20 @@
         <option value="$PROJECT_DIR$/src/cc/funkemunky/api/utils/blockbox/boxes/BlockBox1_8_R1.java" />
         <option value="$PROJECT_DIR$/src/cc/funkemunky/api/utils/blockbox/boxes/BlockBox1_8_R3.java" />
         <option value="$PROJECT_DIR$/src/cc/funkemunky/api/utils/blockbox/boxes/BlockBox1_13_R2.java" />
-        <option value="$PROJECT_DIR$/src/cc/funkemunky/api/updater/Updater.java" />
         <option value="$PROJECT_DIR$/src/cc/funkemunky/api/commands/ancmd/Command.java" />
         <option value="$PROJECT_DIR$/resources/plugin.yml" />
         <option value="$PROJECT_DIR$/src/cc/funkemunky/api/utils/MiscUtils.java" />
         <option value="$PROJECT_DIR$/src/cc/funkemunky/api/database/flatfile/FlatfileDatabase.java" />
         <option value="$PROJECT_DIR$/src/cc/funkemunky/api/database/bungee/BungeeDatabase.java" />
+        <option value="$PROJECT_DIR$/src/cc/funkemunky/api/utils/Pastebin.java" />
         <option value="$PROJECT_DIR$/src/cc/funkemunky/api/Atlas.java" />
+        <option value="$PROJECT_DIR$/src/cc/funkemunky/api/commands/impl/args/DevArgument.java" />
+        <option value="$PROJECT_DIR$/src/cc/funkemunky/api/commands/impl/AtlasCommand.java" />
+        <option value="$PROJECT_DIR$/src/cc/funkemunky/api/utils/blockbox/impl/BlockBox.java" />
+        <option value="$PROJECT_DIR$/src/cc/funkemunky/api/utils/blockbox/impl/RegularBox.java" />
+        <option value="$PROJECT_DIR$/src/cc/funkemunky/api/utils/blockbox/impl/StairBox.java" />
+        <option value="$PROJECT_DIR$/src/cc/funkemunky/api/updater/Updater.java" />
+        <option value="$PROJECT_DIR$/src/cc/funkemunky/api/utils/blockbox/impl/BoundingBoxes.java" />
       </list>
     </option>
   </component>
@@ -292,7 +340,7 @@
       <select />
     </treeState>
   </component>
-  <component name="ProjectFrameBounds" fullScreen="true">
+  <component name="ProjectFrameBounds">
     <option name="y" value="23" />
     <option name="width" value="1440" />
     <option name="height" value="798" />
@@ -305,8 +353,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
-      <pane id="PackagesPane" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -398,29 +444,6 @@
               <item name="API" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="api" type="462c0819:PsiDirectoryNode" />
-              <item name="event" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="Atlas" type="b2602c69:ProjectViewProjectNode" />
-              <item name="API" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="api" type="462c0819:PsiDirectoryNode" />
-              <item name="event" type="462c0819:PsiDirectoryNode" />
-              <item name="custom" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="Atlas" type="b2602c69:ProjectViewProjectNode" />
-              <item name="API" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="api" type="462c0819:PsiDirectoryNode" />
-              <item name="event" type="462c0819:PsiDirectoryNode" />
-              <item name="system" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="Atlas" type="b2602c69:ProjectViewProjectNode" />
-              <item name="API" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="api" type="462c0819:PsiDirectoryNode" />
               <item name="metrics" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
@@ -429,71 +452,6 @@
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="api" type="462c0819:PsiDirectoryNode" />
               <item name="mongo" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="Atlas" type="b2602c69:ProjectViewProjectNode" />
-              <item name="API" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="api" type="462c0819:PsiDirectoryNode" />
-              <item name="profiling" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="Atlas" type="b2602c69:ProjectViewProjectNode" />
-              <item name="API" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="api" type="462c0819:PsiDirectoryNode" />
-              <item name="tinyprotocol" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="Atlas" type="b2602c69:ProjectViewProjectNode" />
-              <item name="API" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="api" type="462c0819:PsiDirectoryNode" />
-              <item name="tinyprotocol" type="462c0819:PsiDirectoryNode" />
-              <item name="api" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="Atlas" type="b2602c69:ProjectViewProjectNode" />
-              <item name="API" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="api" type="462c0819:PsiDirectoryNode" />
-              <item name="tinyprotocol" type="462c0819:PsiDirectoryNode" />
-              <item name="packet" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="Atlas" type="b2602c69:ProjectViewProjectNode" />
-              <item name="API" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="api" type="462c0819:PsiDirectoryNode" />
-              <item name="tinyprotocol" type="462c0819:PsiDirectoryNode" />
-              <item name="packet" type="462c0819:PsiDirectoryNode" />
-              <item name="in" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="Atlas" type="b2602c69:ProjectViewProjectNode" />
-              <item name="API" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="api" type="462c0819:PsiDirectoryNode" />
-              <item name="tinyprotocol" type="462c0819:PsiDirectoryNode" />
-              <item name="packet" type="462c0819:PsiDirectoryNode" />
-              <item name="out" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="Atlas" type="b2602c69:ProjectViewProjectNode" />
-              <item name="API" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="api" type="462c0819:PsiDirectoryNode" />
-              <item name="tinyprotocol" type="462c0819:PsiDirectoryNode" />
-              <item name="packet" type="462c0819:PsiDirectoryNode" />
-              <item name="types" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="Atlas" type="b2602c69:ProjectViewProjectNode" />
-              <item name="API" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="api" type="462c0819:PsiDirectoryNode" />
-              <item name="tinyprotocol" type="462c0819:PsiDirectoryNode" />
-              <item name="reflection" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="Atlas" type="b2602c69:ProjectViewProjectNode" />
@@ -519,37 +477,22 @@
             </path>
             <path>
               <item name="Atlas" type="b2602c69:ProjectViewProjectNode" />
-              <item name="API" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="api" type="462c0819:PsiDirectoryNode" />
-              <item name="utils" type="462c0819:PsiDirectoryNode" />
-              <item name="blockbox" type="462c0819:PsiDirectoryNode" />
-              <item name="boxes" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="Atlas" type="b2602c69:ProjectViewProjectNode" />
-              <item name="API" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="api" type="462c0819:PsiDirectoryNode" />
-              <item name="utils" type="462c0819:PsiDirectoryNode" />
-              <item name="math" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="Atlas" type="b2602c69:ProjectViewProjectNode" />
               <item name="External Libraries" type="cb654da1:ExternalLibrariesNode" />
             </path>
           </expand>
           <select />
         </subPane>
       </pane>
+      <pane id="PackagesPane" />
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="Downloaded.Files.Path.Enabled" value="false" />
     <property name="Repository.Attach.JavaDocs" value="false" />
     <property name="Repository.Attach.Sources" value="false" />
-    <property name="SearchEverywhereHistoryKey" value="BlockStairs&#9;PSI&#9;JAVA://net.minecraft.server.v1_8_R3.BlockStairs&#10;net.minecraft.Entity&#9;PSI&#9;JAVA://net.minecraft.server.v1_13_R2.Entity&#10;VoxelShapes&#9;PSI&#9;JAVA://net.minecraft.server.v1_13_R2.VoxelShapes&#10;net.minecraft.EntityLiving&#9;PSI&#9;JAVA://net.minecraft.server.v1_13_R2.EntityLiving&#10;net.minecraft.World&#9;PSI&#9;JAVA://net.minecraft.server.v1_13_R2.World&#10;Block&#9;FILE&#9;jar://C:/Users/suckm/Documents/GitHub/Atlas/compiled-depends/spigot-1.13.2.jar!/net/minecraft/server/v1_13_R2/Block.class&#10;org.bukkit.Block&#9;PSI&#9;JAVA://org.bukkit.block.Block&#10;EntityLiving&#9;PSI&#9;JAVA://net.minecraft.server.v1_13_R2.EntityLiving&#10;net.minecraft.Block&#9;PSI&#9;JAVA://net.minecraft.server.v1_13_R2.Block&#10;PacketPlayOUtWorldParticles&#9;PSI&#9;JAVA://net.minecraft.server.v1_7_R4.PacketPlayOutWorldParticles&#10;PacketPlayOutWorldParticle&#9;FILE&#9;jar://C:/Users/suckm/Documents/GitHub/Atlas/compiled-depends/spigot-1.10.2-R0.1-SNAPSHOT-latest.jar!/net/minecraft/server/v1_10_R1/PacketPlayOutWorldParticles.class&#10;PacketPlayInUseEntity&#9;PSI&#9;JAVA://net.minecraft.server.v1_7_R4.PacketPlayInUseEntity&#10;ServerConnection&#9;PSI&#9;JAVA://net.minecraft.server.v1_7_R4.ServerConnection&#10;PacketPlayInEntityAction&#9;PSI&#9;JAVA://net.minecraft.server.v1_7_R4.PacketPlayInEntityAction&#10;EntityPlayer&#9;PSI&#9;JAVA://net.minecraft.server.v1_7_R4.EntityPlayer&#10;net.minecraft.server.Entity&#9;PSI&#9;JAVA://net.minecraft.server.v1_7_R4.Entity&#10;MinecraftServer&#9;PSI&#9;JAVA://net.minecraft.server.v1_8_R3.MinecraftServer&#10;DedicatedServer&#9;PSI&#9;JAVA://net.minecraft.server.v1_8_R3.DedicatedServer&#10;Minecraft&#9;FILE&#9;jar:///Users/dawson/Documents/GitHub/Atlas/compiled-depends/spigot-1.11.1.jar!/net/minecraft/server/v1_11_R1/MinecraftServer.class&#10;JavaPLugin&#9;PSI&#9;JAVA://org.bukkit.plugin.java.JavaPlugin" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1549130075903" />
+    <property name="SearchEverywhereHistoryKey" value="BlockSTairs&#9;FILE&#9;jar:///Users/dawson/Documents/GitHub/Atlas/compiled-depends/spigot-1.8.8-R0.1-SNAPSHOT.jar!/net/minecraft/server/v1_8_R3/BlockStairs.class&#10;BlockStairs&#9;PSI&#9;JAVA://net.minecraft.server.v1_8_R3.BlockStairs&#10;net.minecraft.Entity&#9;PSI&#9;JAVA://net.minecraft.server.v1_13_R2.Entity&#10;VoxelShapes&#9;PSI&#9;JAVA://net.minecraft.server.v1_13_R2.VoxelShapes&#10;net.minecraft.EntityLiving&#9;PSI&#9;JAVA://net.minecraft.server.v1_13_R2.EntityLiving&#10;net.minecraft.World&#9;PSI&#9;JAVA://net.minecraft.server.v1_13_R2.World&#10;Block&#9;FILE&#9;jar://C:/Users/suckm/Documents/GitHub/Atlas/compiled-depends/spigot-1.13.2.jar!/net/minecraft/server/v1_13_R2/Block.class&#10;org.bukkit.Block&#9;PSI&#9;JAVA://org.bukkit.block.Block&#10;EntityLiving&#9;PSI&#9;JAVA://net.minecraft.server.v1_13_R2.EntityLiving&#10;net.minecraft.Block&#9;PSI&#9;JAVA://net.minecraft.server.v1_13_R2.Block&#10;PacketPlayOUtWorldParticles&#9;PSI&#9;JAVA://net.minecraft.server.v1_7_R4.PacketPlayOutWorldParticles&#10;PacketPlayOutWorldParticle&#9;FILE&#9;jar://C:/Users/suckm/Documents/GitHub/Atlas/compiled-depends/spigot-1.10.2-R0.1-SNAPSHOT-latest.jar!/net/minecraft/server/v1_10_R1/PacketPlayOutWorldParticles.class&#10;PacketPlayInUseEntity&#9;PSI&#9;JAVA://net.minecraft.server.v1_7_R4.PacketPlayInUseEntity&#10;ServerConnection&#9;PSI&#9;JAVA://net.minecraft.server.v1_7_R4.ServerConnection&#10;PacketPlayInEntityAction&#9;PSI&#9;JAVA://net.minecraft.server.v1_7_R4.PacketPlayInEntityAction&#10;EntityPlayer&#9;PSI&#9;JAVA://net.minecraft.server.v1_7_R4.EntityPlayer&#10;net.minecraft.server.Entity&#9;PSI&#9;JAVA://net.minecraft.server.v1_7_R4.Entity&#10;MinecraftServer&#9;PSI&#9;JAVA://net.minecraft.server.v1_8_R3.MinecraftServer&#10;DedicatedServer&#9;PSI&#9;JAVA://net.minecraft.server.v1_8_R3.DedicatedServer&#10;Minecraft&#9;FILE&#9;jar:///Users/dawson/Documents/GitHub/Atlas/compiled-depends/spigot-1.11.1.jar!/net/minecraft/server/v1_11_R1/MinecraftServer.class&#10;JavaPLugin&#9;PSI&#9;JAVA://org.bukkit.plugin.java.JavaPlugin" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1549136427609" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/../compiled-depends/spigot-1.13.2.jar!/" />
     <property name="project.structure.last.edited" value="Modules" />
     <property name="project.structure.proportion" value="0.15917969" />
@@ -558,6 +501,7 @@
   </component>
   <component name="RecentsManager">
     <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="cc.funkemunky.api.utils" />
       <recent name="cc.funkemunky.api.command" />
       <recent name="cc.funkemunky.api.mongo" />
     </key>
@@ -595,9 +539,10 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="0" width="1440" height="900" extended-state="0" />
+    <frame x="0" y="23" width="1440" height="798" extended-state="0" />
+    <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.24034335" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.24391988" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Image Layers" order="2" />
       <window_info id="Designer" order="3" />
@@ -614,7 +559,7 @@
       <window_info anchor="bottom" id="Terminal" order="7" />
       <window_info anchor="bottom" id="Event Log" order="8" side_tool="true" />
       <window_info anchor="bottom" id="Version Control" order="9" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Messages" order="10" weight="0.31084338" />
+      <window_info anchor="bottom" id="Messages" order="10" weight="0.3101983" />
       <window_info anchor="bottom" id="Thumbnails" order="11" weight="0.3286119" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
@@ -658,62 +603,6 @@
     <option name="myLimit" value="2678400000" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/cc/funkemunky/api/utils/blockbox/boxes/BlockBox1_8_R2.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1165">
-          <caret line="133" lean-forward="true" selection-start-line="133" selection-end-line="133" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/cc/funkemunky/api/utils/blockbox/boxes/BlockBox1_9_R1.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="68">
-          <caret line="19" column="13" selection-start-line="19" selection-start-column="13" selection-end-line="19" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/cc/funkemunky/api/utils/blockbox/boxes/BlockBox1_12_R1.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="68">
-          <caret line="19" column="13" selection-start-line="19" selection-start-column="13" selection-end-line="19" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/cc/funkemunky/api/tinyprotocol/packet/out/WrappedOutEntityMetadata.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="102">
-          <caret line="16" column="13" selection-start-line="16" selection-start-column="13" selection-end-line="16" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/cc/funkemunky/api/tinyprotocol/packet/types/EnumDirection.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="68">
-          <caret line="6" column="12" selection-start-line="6" selection-start-column="12" selection-end-line="6" selection-end-column="12" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/cc/funkemunky/api/utils/blockbox/boxes/BlockBox1_9_R2.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="102">
-          <caret line="22" column="54" lean-forward="true" selection-start-line="22" selection-start-column="54" selection-end-line="22" selection-end-column="54" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/cc/funkemunky/api/commands/impl/args/ReloadArgument.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="102">
-          <caret line="18" column="23" lean-forward="true" selection-start-line="18" selection-start-column="23" selection-end-line="18" selection-end-column="23" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/cc/funkemunky/api/utils/blockbox/boxes/BlockBox1_10_R1.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="553">
-          <caret line="124" column="4" selection-start-line="124" selection-start-column="4" selection-end-line="124" selection-end-column="4" />
-        </state>
-      </provider>
-    </entry>
     <entry file="jar://$PROJECT_DIR$/../compiled-depends/spigot-1.10.2-R0.1-SNAPSHOT-latest.jar!/net/minecraft/server/v1_10_R1/PacketPlayOutWorldParticles.class">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
@@ -822,24 +711,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="jar://$PROJECT_DIR$/../compiled-depends/spigot-1.8.8-R0.1-SNAPSHOT.jar!/net/minecraft/server/v1_8_R3/BlockStairs.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3173">
-          <caret line="511" column="33" selection-start-line="511" selection-start-column="22" selection-end-line="511" selection-end-column="33" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/cc/funkemunky/api/utils/blockbox/boxes/BlockBox1_8_R3.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="524">
           <caret line="50" column="42" lean-forward="true" selection-start-line="50" selection-start-column="42" selection-end-line="50" selection-end-column="42" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$PROJECT_DIR$/../compiled-depends/spigot-1.8.8-R0.1-SNAPSHOT.jar!/net/minecraft/server/v1_8_R3/Block.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="237">
-          <caret line="302" column="45" selection-start-line="302" selection-start-column="45" selection-end-line="302" selection-end-column="45" />
         </state>
       </provider>
     </entry>
@@ -918,13 +793,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/cc/funkemunky/api/updater/Updater.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="90">
-          <caret line="15" column="48" selection-start-line="15" selection-start-column="48" selection-end-line="15" selection-end-column="48" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/cc/funkemunky/api/commands/ancmd/CommandManager.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="300">
@@ -988,26 +856,16 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="30">
           <caret line="2" selection-start-line="2" selection-end-line="105" selection-end-column="1" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/cc/funkemunky/api/database/bungee/BungeeDatabase.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="345">
+        <state relative-caret-position="135">
           <caret line="23" column="107" selection-start-line="23" selection-start-column="107" selection-end-line="23" selection-end-column="126" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/cc/funkemunky/api/utils/MiscUtils.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2535">
-          <caret line="189" column="4" selection-start-line="189" selection-start-column="4" selection-end-line="191" selection-end-column="5" />
         </state>
       </provider>
     </entry>
@@ -1018,10 +876,107 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/cc/funkemunky/api/utils/blockbox/BlockBox.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="60">
+          <caret line="10" column="17" selection-start-line="10" selection-start-column="17" selection-end-line="10" selection-end-column="17" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$PROJECT_DIR$/../compiled-depends/spigot-1.8.8-R0.1-SNAPSHOT.jar!/net/minecraft/server/v1_8_R3/Block.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1150">
+          <caret line="289" column="17" selection-start-line="289" selection-start-column="8" selection-end-line="289" selection-end-column="17" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/cc/funkemunky/api/utils/blockbox/impl/RegularBox.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="105">
+          <caret line="7" column="11" selection-start-line="7" selection-start-column="11" selection-end-line="7" selection-end-column="11" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#251#252#0" expanded="true" />
+            <element signature="e#292#293#0" expanded="true" />
+            <element signature="e#217#218#0" expanded="true" />
+            <element signature="e#244#245#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/cc/funkemunky/api/utils/Pastebin.java" />
+    <entry file="file://$PROJECT_DIR$/src/cc/funkemunky/api/utils/MiscUtils.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2535">
+          <caret line="189" column="4" selection-start-line="189" selection-start-column="4" selection-end-line="191" selection-end-column="5" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/cc/funkemunky/api/Atlas.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="457">
-          <caret line="79" column="91" selection-start-line="79" selection-start-column="91" selection-end-line="79" selection-end-column="91" />
+        <state relative-caret-position="960">
+          <caret line="86" column="36" selection-start-line="86" selection-start-column="36" selection-end-line="86" selection-end-column="36" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/cc/funkemunky/api/commands/impl/args/DevArgument.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="165">
+          <caret line="15" column="48" selection-start-line="15" selection-start-column="48" selection-end-line="15" selection-end-column="48" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/cc/funkemunky/api/commands/impl/AtlasCommand.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="165">
+          <caret line="17" column="78" selection-start-line="17" selection-start-column="78" selection-end-line="17" selection-end-column="78" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/cc/funkemunky/api/utils/blockbox/impl/BlockBox.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="75">
+          <caret line="9" column="7" selection-start-line="9" selection-start-column="7" selection-end-line="9" selection-end-column="7" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$PROJECT_DIR$/../compiled-depends/spigot-1.8.8-R0.1-SNAPSHOT.jar!/net/minecraft/server/v1_8_R3/BlockStairs.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2820">
+          <caret line="201" column="19" selection-start-line="201" selection-start-column="19" selection-end-line="201" selection-end-column="19" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/cc/funkemunky/api/utils/blockbox/impl/StairBox.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="255">
+          <caret line="19" selection-start-line="19" selection-end-line="19" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/cc/funkemunky/api/updater/Updater.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="90">
+          <caret line="15" column="48" selection-start-line="15" selection-start-column="48" selection-end-line="15" selection-end-column="48" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/cc/funkemunky/api/utils/blockbox/impl/BoundingBoxes.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="521">
+          <caret line="220" column="71" selection-start-line="220" selection-start-column="71" selection-end-line="220" selection-end-column="71" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

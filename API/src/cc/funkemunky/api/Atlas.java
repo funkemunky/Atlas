@@ -11,6 +11,7 @@ import cc.funkemunky.api.tinyprotocol.api.TinyProtocolHandler;
 import cc.funkemunky.api.updater.Updater;
 import cc.funkemunky.api.utils.*;
 import cc.funkemunky.api.utils.blockbox.BlockBoxManager;
+import cc.funkemunky.api.utils.blockbox.impl.BoundingBoxes;
 import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandExecutor;
@@ -39,6 +40,7 @@ public class Atlas extends JavaPlugin {
     private Metrics metrics;
     private Mongo mongo;
     private DatabaseManager databaseManager;
+    private BoundingBoxes boxes;
 
     @ConfigSetting(path = "updater")
     private boolean autoDownload = false;
@@ -81,6 +83,8 @@ public class Atlas extends JavaPlugin {
 
         MiscUtils.printToConsole(Color.Gray + "Starting scanner...");
         initializeScanner(getClass(), this, commandManager);
+
+        boxes = new BoundingBoxes();
 
         mongo = new Mongo();
         databaseManager = new DatabaseManager();
