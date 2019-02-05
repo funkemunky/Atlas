@@ -5,21 +5,152 @@
       <artifact name="Atlas:jar" />
     </artifacts-to-build>
   </component>
-  <component name="BookmarkManager">
-    <bookmark url="file://$PROJECT_DIR$/src/cc/funkemunky/api/Atlas.java" line="38" />
-    <bookmark url="file://$PROJECT_DIR$/src/cc/funkemunky/api/Atlas.java" line="24" />
-    <bookmark url="file://$PROJECT_DIR$/src/cc/funkemunky/api/utils/blockbox/boxes/BlockBox1_13_R2.java" line="23" />
-  </component>
   <component name="ChangeListManager">
-    <list default="true" id="103113f6-8a1c-45a3-9b02-5a992cc6cbb2" name="Default Changelist" comment="">
+    <list default="true" id="a9dc43c0-7a81-4135-9d37-7a26978435ee" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/.name" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/artifacts/Atlas_jar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/artifacts/Atlas_jar.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/asm_all_5_2.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/asm_all_5_2.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/lombok_1_18_0.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/artifacts/Atlas_jar/Atlas.jar" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/Atlas_jar/Atlas.jar" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Atlas/cc/funkemunky/api/Atlas.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Atlas/cc/funkemunky/api/Atlas.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Atlas/cc/funkemunky/api/commands/impl/AtlasCommand.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Atlas/cc/funkemunky/api/commands/impl/AtlasCommand.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Atlas/cc/funkemunky/api/utils/MiscUtils.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Atlas/cc/funkemunky/api/utils/MiscUtils.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/cc/funkemunky/api/Atlas.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/cc/funkemunky/api/Atlas.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/cc/funkemunky/api/commands/impl/AtlasCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/cc/funkemunky/api/commands/impl/AtlasCommand.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/cc/funkemunky/api/updater/Updater.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/cc/funkemunky/api/updater/Updater.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/config.yml" beforeDir="false" afterPath="$PROJECT_DIR$/Atlas/src/resources/config.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/plugin.yml" beforeDir="false" afterPath="$PROJECT_DIR$/Atlas/src/resources/plugin.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/cc/funkemunky/api/Atlas.java" beforeDir="false" afterPath="$PROJECT_DIR$/Atlas/src/java/cc/funkemunky/api/Atlas.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/cc/funkemunky/api/commands/CommandMessages.java" beforeDir="false" afterPath="$PROJECT_DIR$/Atlas/src/java/cc/funkemunky/api/commands/CommandMessages.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/cc/funkemunky/api/commands/FunkeArgument.java" beforeDir="false" afterPath="$PROJECT_DIR$/Atlas/src/java/cc/funkemunky/api/commands/FunkeArgument.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/cc/funkemunky/api/commands/FunkeCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/Atlas/src/java/cc/funkemunky/api/commands/FunkeCommand.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/cc/funkemunky/api/commands/FunkeCommandManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/Atlas/src/java/cc/funkemunky/api/commands/FunkeCommandManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/cc/funkemunky/api/commands/ancmd/Command.java" beforeDir="false" afterPath="$PROJECT_DIR$/Atlas/src/java/cc/funkemunky/api/commands/ancmd/Command.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/cc/funkemunky/api/commands/ancmd/CommandAdapter.java" beforeDir="false" afterPath="$PROJECT_DIR$/Atlas/src/java/cc/funkemunky/api/commands/ancmd/CommandAdapter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/cc/funkemunky/api/commands/ancmd/CommandManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/Atlas/src/java/cc/funkemunky/api/commands/ancmd/CommandManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/cc/funkemunky/api/commands/ancmd/SpigotCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/Atlas/src/java/cc/funkemunky/api/commands/ancmd/SpigotCommand.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/cc/funkemunky/api/commands/ancmd/SpigotCompleter.java" beforeDir="false" afterPath="$PROJECT_DIR$/Atlas/src/java/cc/funkemunky/api/commands/ancmd/SpigotCompleter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/cc/funkemunky/api/commands/impl/AtlasCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/Atlas/src/java/cc/funkemunky/api/commands/impl/AtlasCommand.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/cc/funkemunky/api/commands/impl/args/DevArgument.java" beforeDir="false" afterPath="$PROJECT_DIR$/Atlas/src/java/cc/funkemunky/api/commands/impl/args/DevArgument.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/cc/funkemunky/api/commands/impl/args/ReloadArgument.java" beforeDir="false" afterPath="$PROJECT_DIR$/Atlas/src/java/cc/funkemunky/api/commands/impl/args/ReloadArgument.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/cc/funkemunky/api/commands/impl/args/UpdateArgument.java" beforeDir="false" afterPath="$PROJECT_DIR$/Atlas/src/java/cc/funkemunky/api/commands/impl/args/UpdateArgument.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/cc/funkemunky/api/database/Database.java" beforeDir="false" afterPath="$PROJECT_DIR$/Atlas/src/java/cc/funkemunky/api/database/Database.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/cc/funkemunky/api/database/DatabaseManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/Atlas/src/java/cc/funkemunky/api/database/DatabaseManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/cc/funkemunky/api/database/DatabaseType.java" beforeDir="false" afterPath="$PROJECT_DIR$/Atlas/src/java/cc/funkemunky/api/database/DatabaseType.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/cc/funkemunky/api/database/bungee/BungeeDatabase.java" beforeDir="false" afterPath="$PROJECT_DIR$/Atlas/src/java/cc/funkemunky/api/database/bungee/BungeeDatabase.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/cc/funkemunky/api/database/flatfile/FlatfileDatabase.java" beforeDir="false" afterPath="$PROJECT_DIR$/Atlas/src/java/cc/funkemunky/api/database/flatfile/FlatfileDatabase.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/cc/funkemunky/api/database/mongo/MongoDatabase.java" beforeDir="false" afterPath="$PROJECT_DIR$/Atlas/src/java/cc/funkemunky/api/database/mongo/MongoDatabase.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/cc/funkemunky/api/event/custom/PacketRecieveEvent.java" beforeDir="false" afterPath="$PROJECT_DIR$/Atlas/src/java/cc/funkemunky/api/event/custom/PacketRecieveEvent.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/cc/funkemunky/api/event/custom/PacketSendEvent.java" beforeDir="false" afterPath="$PROJECT_DIR$/Atlas/src/java/cc/funkemunky/api/event/custom/PacketSendEvent.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/cc/funkemunky/api/event/system/Cancellable.java" beforeDir="false" afterPath="$PROJECT_DIR$/Atlas/src/java/cc/funkemunky/api/event/system/Cancellable.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/cc/funkemunky/api/event/system/EnumPriority.java" beforeDir="false" afterPath="$PROJECT_DIR$/Atlas/src/java/cc/funkemunky/api/event/system/EnumPriority.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/cc/funkemunky/api/event/system/Event.java" beforeDir="false" afterPath="$PROJECT_DIR$/Atlas/src/java/cc/funkemunky/api/event/system/Event.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/cc/funkemunky/api/event/system/EventManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/Atlas/src/java/cc/funkemunky/api/event/system/EventManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/cc/funkemunky/api/event/system/EventMethod.java" beforeDir="false" afterPath="$PROJECT_DIR$/Atlas/src/java/cc/funkemunky/api/event/system/EventMethod.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/cc/funkemunky/api/event/system/Listener.java" beforeDir="false" afterPath="$PROJECT_DIR$/Atlas/src/java/cc/funkemunky/api/event/system/Listener.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/cc/funkemunky/api/metrics/Metrics.java" beforeDir="false" afterPath="$PROJECT_DIR$/Atlas/src/java/cc/funkemunky/api/metrics/Metrics.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/cc/funkemunky/api/mongo/Mongo.java" beforeDir="false" afterPath="$PROJECT_DIR$/Atlas/src/java/cc/funkemunky/api/mongo/Mongo.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/cc/funkemunky/api/profiling/BaseProfiler.java" beforeDir="false" afterPath="$PROJECT_DIR$/Atlas/src/java/cc/funkemunky/api/profiling/BaseProfiler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/cc/funkemunky/api/profiling/Profiler.java" beforeDir="false" afterPath="$PROJECT_DIR$/Atlas/src/java/cc/funkemunky/api/profiling/Profiler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/cc/funkemunky/api/profiling/ToggleableProfiler.java" beforeDir="false" afterPath="$PROJECT_DIR$/Atlas/src/java/cc/funkemunky/api/profiling/ToggleableProfiler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/cc/funkemunky/api/tinyprotocol/api/AbstractTinyProtocol.java" beforeDir="false" afterPath="$PROJECT_DIR$/Atlas/src/java/cc/funkemunky/api/tinyprotocol/api/AbstractTinyProtocol.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/cc/funkemunky/api/tinyprotocol/api/NMSObject.java" beforeDir="false" afterPath="$PROJECT_DIR$/Atlas/src/java/cc/funkemunky/api/tinyprotocol/api/NMSObject.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/cc/funkemunky/api/tinyprotocol/api/Packet.java" beforeDir="false" afterPath="$PROJECT_DIR$/Atlas/src/java/cc/funkemunky/api/tinyprotocol/api/Packet.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/cc/funkemunky/api/tinyprotocol/api/ProtocolVersion.java" beforeDir="false" afterPath="$PROJECT_DIR$/Atlas/src/java/cc/funkemunky/api/tinyprotocol/api/ProtocolVersion.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/cc/funkemunky/api/tinyprotocol/api/TinyProtocol1_7.java" beforeDir="false" afterPath="$PROJECT_DIR$/Atlas/src/java/cc/funkemunky/api/tinyprotocol/api/TinyProtocol1_7.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/cc/funkemunky/api/tinyprotocol/api/TinyProtocol1_8.java" beforeDir="false" afterPath="$PROJECT_DIR$/Atlas/src/java/cc/funkemunky/api/tinyprotocol/api/TinyProtocol1_8.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/cc/funkemunky/api/tinyprotocol/api/TinyProtocolHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/Atlas/src/java/cc/funkemunky/api/tinyprotocol/api/TinyProtocolHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/cc/funkemunky/api/tinyprotocol/packet/in/WrappedIn13KeepAlive.java" beforeDir="false" afterPath="$PROJECT_DIR$/Atlas/src/java/cc/funkemunky/api/tinyprotocol/packet/in/WrappedIn13KeepAlive.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/cc/funkemunky/api/tinyprotocol/packet/in/WrappedInAbilitiesPacket.java" beforeDir="false" afterPath="$PROJECT_DIR$/Atlas/src/java/cc/funkemunky/api/tinyprotocol/packet/in/WrappedInAbilitiesPacket.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/cc/funkemunky/api/tinyprotocol/packet/in/WrappedInArmAnimationPacket.java" beforeDir="false" afterPath="$PROJECT_DIR$/Atlas/src/java/cc/funkemunky/api/tinyprotocol/packet/in/WrappedInArmAnimationPacket.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/cc/funkemunky/api/tinyprotocol/packet/in/WrappedInBlockDigPacket.java" beforeDir="false" afterPath="$PROJECT_DIR$/Atlas/src/java/cc/funkemunky/api/tinyprotocol/packet/in/WrappedInBlockDigPacket.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/cc/funkemunky/api/tinyprotocol/packet/in/WrappedInBlockPlacePacket.java" beforeDir="false" afterPath="$PROJECT_DIR$/Atlas/src/java/cc/funkemunky/api/tinyprotocol/packet/in/WrappedInBlockPlacePacket.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/cc/funkemunky/api/tinyprotocol/packet/in/WrappedInClientCommandPacket.java" beforeDir="false" afterPath="$PROJECT_DIR$/Atlas/src/java/cc/funkemunky/api/tinyprotocol/packet/in/WrappedInClientCommandPacket.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/cc/funkemunky/api/tinyprotocol/packet/in/WrappedInCloseWindowPacket.java" beforeDir="false" afterPath="$PROJECT_DIR$/Atlas/src/java/cc/funkemunky/api/tinyprotocol/packet/in/WrappedInCloseWindowPacket.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/cc/funkemunky/api/tinyprotocol/packet/in/WrappedInEntityActionPacket.java" beforeDir="false" afterPath="$PROJECT_DIR$/Atlas/src/java/cc/funkemunky/api/tinyprotocol/packet/in/WrappedInEntityActionPacket.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/cc/funkemunky/api/tinyprotocol/packet/in/WrappedInFlyingPacket.java" beforeDir="false" afterPath="$PROJECT_DIR$/Atlas/src/java/cc/funkemunky/api/tinyprotocol/packet/in/WrappedInFlyingPacket.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/cc/funkemunky/api/tinyprotocol/packet/in/WrappedInHeldItemSlotPacket.java" beforeDir="false" afterPath="$PROJECT_DIR$/Atlas/src/java/cc/funkemunky/api/tinyprotocol/packet/in/WrappedInHeldItemSlotPacket.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/cc/funkemunky/api/tinyprotocol/packet/in/WrappedInKeepAlivePacket.java" beforeDir="false" afterPath="$PROJECT_DIR$/Atlas/src/java/cc/funkemunky/api/tinyprotocol/packet/in/WrappedInKeepAlivePacket.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/cc/funkemunky/api/tinyprotocol/packet/in/WrappedInSteerVehiclePacket.java" beforeDir="false" afterPath="$PROJECT_DIR$/Atlas/src/java/cc/funkemunky/api/tinyprotocol/packet/in/WrappedInSteerVehiclePacket.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/cc/funkemunky/api/tinyprotocol/packet/in/WrappedInTransactionPacket.java" beforeDir="false" afterPath="$PROJECT_DIR$/Atlas/src/java/cc/funkemunky/api/tinyprotocol/packet/in/WrappedInTransactionPacket.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/cc/funkemunky/api/tinyprotocol/packet/in/WrappedInUseEntityPacket.java" beforeDir="false" afterPath="$PROJECT_DIR$/Atlas/src/java/cc/funkemunky/api/tinyprotocol/packet/in/WrappedInUseEntityPacket.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/cc/funkemunky/api/tinyprotocol/packet/in/WrappedInVelocityPacket.java" beforeDir="false" afterPath="$PROJECT_DIR$/Atlas/src/java/cc/funkemunky/api/tinyprotocol/packet/in/WrappedInVelocityPacket.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/cc/funkemunky/api/tinyprotocol/packet/in/WrappedInWindowClickPacket.java" beforeDir="false" afterPath="$PROJECT_DIR$/Atlas/src/java/cc/funkemunky/api/tinyprotocol/packet/in/WrappedInWindowClickPacket.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/cc/funkemunky/api/tinyprotocol/packet/out/WrappedOutAbilitiesPacket.java" beforeDir="false" afterPath="$PROJECT_DIR$/Atlas/src/java/cc/funkemunky/api/tinyprotocol/packet/out/WrappedOutAbilitiesPacket.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/cc/funkemunky/api/tinyprotocol/packet/out/WrappedOutBlockChange.java" beforeDir="false" afterPath="$PROJECT_DIR$/Atlas/src/java/cc/funkemunky/api/tinyprotocol/packet/out/WrappedOutBlockChange.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/cc/funkemunky/api/tinyprotocol/packet/out/WrappedOutEntityMetadata.java" beforeDir="false" afterPath="$PROJECT_DIR$/Atlas/src/java/cc/funkemunky/api/tinyprotocol/packet/out/WrappedOutEntityMetadata.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/cc/funkemunky/api/tinyprotocol/packet/out/WrappedOutKeepAlivePacket.java" beforeDir="false" afterPath="$PROJECT_DIR$/Atlas/src/java/cc/funkemunky/api/tinyprotocol/packet/out/WrappedOutKeepAlivePacket.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/cc/funkemunky/api/tinyprotocol/packet/out/WrappedOutNamedEntitySpawn.java" beforeDir="false" afterPath="$PROJECT_DIR$/Atlas/src/java/cc/funkemunky/api/tinyprotocol/packet/out/WrappedOutNamedEntitySpawn.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/cc/funkemunky/api/tinyprotocol/packet/out/WrappedOutPositionPacket.java" beforeDir="false" afterPath="$PROJECT_DIR$/Atlas/src/java/cc/funkemunky/api/tinyprotocol/packet/out/WrappedOutPositionPacket.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/cc/funkemunky/api/tinyprotocol/packet/out/WrappedOutRelativePosition.java" beforeDir="false" afterPath="$PROJECT_DIR$/Atlas/src/java/cc/funkemunky/api/tinyprotocol/packet/out/WrappedOutRelativePosition.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/cc/funkemunky/api/tinyprotocol/packet/out/WrappedOutTransaction.java" beforeDir="false" afterPath="$PROJECT_DIR$/Atlas/src/java/cc/funkemunky/api/tinyprotocol/packet/out/WrappedOutTransaction.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/cc/funkemunky/api/tinyprotocol/packet/out/WrappedOutVelocityPacket.java" beforeDir="false" afterPath="$PROJECT_DIR$/Atlas/src/java/cc/funkemunky/api/tinyprotocol/packet/out/WrappedOutVelocityPacket.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/cc/funkemunky/api/tinyprotocol/packet/out/WrappedPacketPlayOutWorldParticle.java" beforeDir="false" afterPath="$PROJECT_DIR$/Atlas/src/java/cc/funkemunky/api/tinyprotocol/packet/out/WrappedPacketPlayOutWorldParticle.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/cc/funkemunky/api/tinyprotocol/packet/types/BaseBlockPosition.java" beforeDir="false" afterPath="$PROJECT_DIR$/Atlas/src/java/cc/funkemunky/api/tinyprotocol/packet/types/BaseBlockPosition.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/cc/funkemunky/api/tinyprotocol/packet/types/EnumDirection.java" beforeDir="false" afterPath="$PROJECT_DIR$/Atlas/src/java/cc/funkemunky/api/tinyprotocol/packet/types/EnumDirection.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/cc/funkemunky/api/tinyprotocol/packet/types/MathHelper.java" beforeDir="false" afterPath="$PROJECT_DIR$/Atlas/src/java/cc/funkemunky/api/tinyprotocol/packet/types/MathHelper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/cc/funkemunky/api/tinyprotocol/packet/types/Vec3D.java" beforeDir="false" afterPath="$PROJECT_DIR$/Atlas/src/java/cc/funkemunky/api/tinyprotocol/packet/types/Vec3D.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/cc/funkemunky/api/tinyprotocol/packet/types/WrappedEnumParticle.java" beforeDir="false" afterPath="$PROJECT_DIR$/Atlas/src/java/cc/funkemunky/api/tinyprotocol/packet/types/WrappedEnumParticle.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/cc/funkemunky/api/tinyprotocol/packet/types/WrappedGameProfile.java" beforeDir="false" afterPath="$PROJECT_DIR$/Atlas/src/java/cc/funkemunky/api/tinyprotocol/packet/types/WrappedGameProfile.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/cc/funkemunky/api/tinyprotocol/packet/types/WrappedWatchableObject.java" beforeDir="false" afterPath="$PROJECT_DIR$/Atlas/src/java/cc/funkemunky/api/tinyprotocol/packet/types/WrappedWatchableObject.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/cc/funkemunky/api/tinyprotocol/reflection/ConstructorInvoker.java" beforeDir="false" afterPath="$PROJECT_DIR$/Atlas/src/java/cc/funkemunky/api/tinyprotocol/reflection/ConstructorInvoker.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/cc/funkemunky/api/tinyprotocol/reflection/FieldAccessor.java" beforeDir="false" afterPath="$PROJECT_DIR$/Atlas/src/java/cc/funkemunky/api/tinyprotocol/reflection/FieldAccessor.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/cc/funkemunky/api/tinyprotocol/reflection/MethodInvoker.java" beforeDir="false" afterPath="$PROJECT_DIR$/Atlas/src/java/cc/funkemunky/api/tinyprotocol/reflection/MethodInvoker.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/cc/funkemunky/api/tinyprotocol/reflection/Reflection.java" beforeDir="false" afterPath="$PROJECT_DIR$/Atlas/src/java/cc/funkemunky/api/tinyprotocol/reflection/Reflection.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/cc/funkemunky/api/updater/Updater.java" beforeDir="false" afterPath="$PROJECT_DIR$/Atlas/src/java/cc/funkemunky/api/updater/Updater.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/cc/funkemunky/api/updater/UpdaterListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/Atlas/src/java/cc/funkemunky/api/updater/UpdaterListener.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/cc/funkemunky/api/updater/UpdaterUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/Atlas/src/java/cc/funkemunky/api/updater/UpdaterUtils.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/cc/funkemunky/api/utils/BlockUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/Atlas/src/java/cc/funkemunky/api/utils/BlockUtils.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/cc/funkemunky/api/utils/BoundingBox.java" beforeDir="false" afterPath="$PROJECT_DIR$/Atlas/src/java/cc/funkemunky/api/utils/BoundingBox.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/cc/funkemunky/api/utils/ClassScanner.java" beforeDir="false" afterPath="$PROJECT_DIR$/Atlas/src/java/cc/funkemunky/api/utils/ClassScanner.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/cc/funkemunky/api/utils/Color.java" beforeDir="false" afterPath="$PROJECT_DIR$/Atlas/src/java/cc/funkemunky/api/utils/Color.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/cc/funkemunky/api/utils/Commands.java" beforeDir="false" afterPath="$PROJECT_DIR$/Atlas/src/java/cc/funkemunky/api/utils/Commands.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/cc/funkemunky/api/utils/ConfigSetting.java" beforeDir="false" afterPath="$PROJECT_DIR$/Atlas/src/java/cc/funkemunky/api/utils/ConfigSetting.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/cc/funkemunky/api/utils/Dummy.java" beforeDir="false" afterPath="$PROJECT_DIR$/Atlas/src/java/cc/funkemunky/api/utils/Dummy.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/cc/funkemunky/api/utils/FunkeFile.java" beforeDir="false" afterPath="$PROJECT_DIR$/Atlas/src/java/cc/funkemunky/api/utils/FunkeFile.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/cc/funkemunky/api/utils/Init.java" beforeDir="false" afterPath="$PROJECT_DIR$/Atlas/src/java/cc/funkemunky/api/utils/Init.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/cc/funkemunky/api/utils/JsonMessage.java" beforeDir="false" afterPath="$PROJECT_DIR$/Atlas/src/java/cc/funkemunky/api/utils/JsonMessage.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/cc/funkemunky/api/utils/MathHelper.java" beforeDir="false" afterPath="$PROJECT_DIR$/Atlas/src/java/cc/funkemunky/api/utils/MathHelper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/cc/funkemunky/api/utils/MathUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/Atlas/src/java/cc/funkemunky/api/utils/MathUtils.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/cc/funkemunky/api/utils/MiscUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/Atlas/src/java/cc/funkemunky/api/utils/MiscUtils.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/cc/funkemunky/api/utils/PlayerUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/Atlas/src/java/cc/funkemunky/api/utils/PlayerUtils.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/cc/funkemunky/api/utils/Priority.java" beforeDir="false" afterPath="$PROJECT_DIR$/Atlas/src/java/cc/funkemunky/api/utils/Priority.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/cc/funkemunky/api/utils/ReflectionsUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/Atlas/src/java/cc/funkemunky/api/utils/ReflectionsUtil.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/cc/funkemunky/api/utils/blockbox/BlockBox.java" beforeDir="false" afterPath="$PROJECT_DIR$/Atlas/src/java/cc/funkemunky/api/utils/blockbox/BlockBox.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/cc/funkemunky/api/utils/blockbox/BlockBoxManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/Atlas/src/java/cc/funkemunky/api/utils/blockbox/BlockBoxManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/cc/funkemunky/api/utils/blockbox/boxes/BlockBox1_10_R1.java" beforeDir="false" afterPath="$PROJECT_DIR$/Atlas/src/java/cc/funkemunky/api/utils/blockbox/boxes/BlockBox1_10_R1.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/cc/funkemunky/api/utils/blockbox/boxes/BlockBox1_11_R1.java" beforeDir="false" afterPath="$PROJECT_DIR$/Atlas/src/java/cc/funkemunky/api/utils/blockbox/boxes/BlockBox1_11_R1.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/cc/funkemunky/api/utils/blockbox/boxes/BlockBox1_12_R1.java" beforeDir="false" afterPath="$PROJECT_DIR$/Atlas/src/java/cc/funkemunky/api/utils/blockbox/boxes/BlockBox1_12_R1.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/cc/funkemunky/api/utils/blockbox/boxes/BlockBox1_13_R1.java" beforeDir="false" afterPath="$PROJECT_DIR$/Atlas/src/java/cc/funkemunky/api/utils/blockbox/boxes/BlockBox1_13_R1.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/cc/funkemunky/api/utils/blockbox/boxes/BlockBox1_13_R2.java" beforeDir="false" afterPath="$PROJECT_DIR$/Atlas/src/java/cc/funkemunky/api/utils/blockbox/boxes/BlockBox1_13_R2.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/cc/funkemunky/api/utils/blockbox/boxes/BlockBox1_7_R4.java" beforeDir="false" afterPath="$PROJECT_DIR$/Atlas/src/java/cc/funkemunky/api/utils/blockbox/boxes/BlockBox1_7_R4.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/cc/funkemunky/api/utils/blockbox/boxes/BlockBox1_8_R1.java" beforeDir="false" afterPath="$PROJECT_DIR$/Atlas/src/java/cc/funkemunky/api/utils/blockbox/boxes/BlockBox1_8_R1.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/cc/funkemunky/api/utils/blockbox/boxes/BlockBox1_8_R2.java" beforeDir="false" afterPath="$PROJECT_DIR$/Atlas/src/java/cc/funkemunky/api/utils/blockbox/boxes/BlockBox1_8_R2.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/cc/funkemunky/api/utils/blockbox/boxes/BlockBox1_8_R3.java" beforeDir="false" afterPath="$PROJECT_DIR$/Atlas/src/java/cc/funkemunky/api/utils/blockbox/boxes/BlockBox1_8_R3.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/cc/funkemunky/api/utils/blockbox/boxes/BlockBox1_9_R1.java" beforeDir="false" afterPath="$PROJECT_DIR$/Atlas/src/java/cc/funkemunky/api/utils/blockbox/boxes/BlockBox1_9_R1.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/cc/funkemunky/api/utils/blockbox/boxes/BlockBox1_9_R2.java" beforeDir="false" afterPath="$PROJECT_DIR$/Atlas/src/java/cc/funkemunky/api/utils/blockbox/boxes/BlockBox1_9_R2.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/cc/funkemunky/api/utils/blockbox/impl/BlockBox.java" beforeDir="false" afterPath="$PROJECT_DIR$/Atlas/src/java/cc/funkemunky/api/utils/blockbox/impl/BlockBox.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/cc/funkemunky/api/utils/blockbox/impl/BoundingBoxes.java" beforeDir="false" afterPath="$PROJECT_DIR$/Atlas/src/java/cc/funkemunky/api/utils/blockbox/impl/BoundingBoxes.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/cc/funkemunky/api/utils/blockbox/impl/RegularBox.java" beforeDir="false" afterPath="$PROJECT_DIR$/Atlas/src/java/cc/funkemunky/api/utils/blockbox/impl/RegularBox.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/cc/funkemunky/api/utils/blockbox/impl/StairBox.java" beforeDir="false" afterPath="$PROJECT_DIR$/Atlas/src/java/cc/funkemunky/api/utils/blockbox/impl/StairBox.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/cc/funkemunky/api/utils/math/Average.java" beforeDir="false" afterPath="$PROJECT_DIR$/Atlas/src/java/cc/funkemunky/api/utils/math/Average.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/cc/funkemunky/api/utils/math/MCSmooth.java" beforeDir="false" afterPath="$PROJECT_DIR$/Atlas/src/java/cc/funkemunky/api/utils/math/MCSmooth.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/cc/funkemunky/api/utils/math/RayTrace.java" beforeDir="false" afterPath="$PROJECT_DIR$/Atlas/src/java/cc/funkemunky/api/utils/math/RayTrace.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/cc/funkemunky/api/utils/math/RollingAverage.java" beforeDir="false" afterPath="$PROJECT_DIR$/Atlas/src/java/cc/funkemunky/api/utils/math/RollingAverage.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/cc/funkemunky/api/utils/math/RollingAverageDouble.java" beforeDir="false" afterPath="$PROJECT_DIR$/Atlas/src/java/cc/funkemunky/api/utils/math/RollingAverageDouble.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/cc/funkemunky/api/utils/math/RollingAverageLong.java" beforeDir="false" afterPath="$PROJECT_DIR$/Atlas/src/java/cc/funkemunky/api/utils/math/RollingAverageLong.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../AtlasBungee/AtlasBungee.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../AtlasBungee/resources/plugin.yml" beforeDir="false" afterPath="$PROJECT_DIR$/../AtlasBungee/src/resources/plugin.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../AtlasBungee/src/cc/funkemunky/atlas/AtlasBungee.java" beforeDir="false" afterPath="$PROJECT_DIR$/../AtlasBungee/src/java/cc/funkemunky/atlas/AtlasBungee.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../AtlasBungee/src/cc/funkemunky/atlas/configuration/Config.java" beforeDir="false" afterPath="$PROJECT_DIR$/../AtlasBungee/src/java/cc/funkemunky/atlas/configuration/Config.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../AtlasBungee/src/cc/funkemunky/atlas/configuration/ConfigSetting.java" beforeDir="false" afterPath="$PROJECT_DIR$/../AtlasBungee/src/java/cc/funkemunky/atlas/configuration/ConfigSetting.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../AtlasBungee/src/cc/funkemunky/atlas/database/Database.java" beforeDir="false" afterPath="$PROJECT_DIR$/../AtlasBungee/src/java/cc/funkemunky/atlas/database/Database.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../AtlasBungee/src/cc/funkemunky/atlas/database/DatabaseManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/../AtlasBungee/src/java/cc/funkemunky/atlas/database/DatabaseManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../AtlasBungee/src/cc/funkemunky/atlas/database/DatabaseType.java" beforeDir="false" afterPath="$PROJECT_DIR$/../AtlasBungee/src/java/cc/funkemunky/atlas/database/DatabaseType.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../AtlasBungee/src/cc/funkemunky/atlas/database/flatfile/FlatfileDatabase.java" beforeDir="false" afterPath="$PROJECT_DIR$/../AtlasBungee/src/java/cc/funkemunky/atlas/database/flatfile/FlatfileDatabase.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../AtlasBungee/src/cc/funkemunky/atlas/listeners/HandshakeListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/../AtlasBungee/src/java/cc/funkemunky/atlas/listeners/HandshakeListener.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../AtlasBungee/src/cc/funkemunky/atlas/utils/ClassScanner.java" beforeDir="false" afterPath="$PROJECT_DIR$/../AtlasBungee/src/java/cc/funkemunky/atlas/utils/ClassScanner.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../AtlasBungee/src/cc/funkemunky/atlas/utils/Color.java" beforeDir="false" afterPath="$PROJECT_DIR$/../AtlasBungee/src/java/cc/funkemunky/atlas/utils/Color.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../AtlasBungee/src/cc/funkemunky/atlas/utils/FunkeFile.java" beforeDir="false" afterPath="$PROJECT_DIR$/../AtlasBungee/src/java/cc/funkemunky/atlas/utils/FunkeFile.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../AtlasBungee/src/cc/funkemunky/atlas/utils/Init.java" beforeDir="false" afterPath="$PROJECT_DIR$/../AtlasBungee/src/java/cc/funkemunky/atlas/utils/Init.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../AtlasBungee/src/cc/funkemunky/atlas/utils/MiscUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/../AtlasBungee/src/java/cc/funkemunky/atlas/utils/MiscUtils.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../AtlasBungee/src/cc/funkemunky/atlas/utils/Priority.java" beforeDir="false" afterPath="$PROJECT_DIR$/../AtlasBungee/src/java/cc/funkemunky/atlas/utils/Priority.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -29,174 +160,109 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="FUSProjectUsageTrigger">
-    <session id="2086348182">
-      <usages-collector id="statistics.lifecycle.project">
-        <counts>
-          <entry key="project.closed" value="41" />
-          <entry key="project.open.time.0" value="27" />
-          <entry key="project.open.time.1" value="6" />
-          <entry key="project.open.time.14" value="1" />
-          <entry key="project.open.time.2" value="1" />
-          <entry key="project.open.time.3" value="3" />
-          <entry key="project.open.time.4" value="2" />
-          <entry key="project.open.time.5" value="2" />
-          <entry key="project.opened" value="42" />
-        </counts>
-      </usages-collector>
-      <usages-collector id="statistics.file.extensions.open">
-        <counts>
-          <entry key="class" value="25" />
-          <entry key="iml" value="1" />
-          <entry key="java" value="184" />
-          <entry key="xml" value="2" />
-          <entry key="yml" value="8" />
-        </counts>
-      </usages-collector>
-      <usages-collector id="statistics.file.types.open">
-        <counts>
-          <entry key="CLASS" value="25" />
-          <entry key="IDEA_MODULE" value="1" />
-          <entry key="JAVA" value="184" />
-          <entry key="XML" value="2" />
-          <entry key="YAML" value="8" />
-        </counts>
-      </usages-collector>
-      <usages-collector id="statistics.file.extensions.edit">
-        <counts>
-          <entry key="dummy" value="2" />
-          <entry key="java" value="15004" />
-          <entry key="yml" value="270" />
-        </counts>
-      </usages-collector>
-      <usages-collector id="statistics.file.types.edit">
-        <counts>
-          <entry key="JAVA" value="15004" />
-          <entry key="PLAIN_TEXT" value="2" />
-          <entry key="YAML" value="270" />
-        </counts>
-      </usages-collector>
-    </session>
     <session id="4320345">
       <usages-collector id="statistics.lifecycle.project">
         <counts>
-          <entry key="project.closed" value="9" />
-          <entry key="project.open.time.0" value="2" />
-          <entry key="project.open.time.1" value="3" />
-          <entry key="project.open.time.3" value="2" />
-          <entry key="project.open.time.4" value="1" />
-          <entry key="project.open.time.7" value="1" />
-          <entry key="project.opened" value="9" />
+          <entry key="project.closed" value="1" />
+          <entry key="project.open.time.1" value="1" />
+          <entry key="project.opened" value="1" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
         <counts>
-          <entry key="class" value="20" />
-          <entry key="java" value="70" />
+          <entry key="class" value="23" />
+          <entry key="java" value="45" />
           <entry key="yml" value="3" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.open">
         <counts>
-          <entry key="CLASS" value="20" />
-          <entry key="JAVA" value="70" />
+          <entry key="CLASS" value="23" />
+          <entry key="JAVA" value="45" />
           <entry key="YAML" value="3" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
-          <entry key="dummy" value="12" />
-          <entry key="java" value="8861" />
-          <entry key="yml" value="3" />
+          <entry key="class" value="1" />
+          <entry key="java" value="5834" />
+          <entry key="yml" value="6" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="JAVA" value="8861" />
-          <entry key="PLAIN_TEXT" value="12" />
-          <entry key="YAML" value="3" />
+          <entry key="CLASS" value="1" />
+          <entry key="JAVA" value="5834" />
+          <entry key="YAML" value="6" />
         </counts>
       </usages-collector>
     </session>
   </component>
   <component name="FileEditorManager">
-    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+    <leaf>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/cc/funkemunky/api/utils/MiscUtils.java">
+        <entry file="file://$PROJECT_DIR$/Atlas/src/java/cc/funkemunky/api/commands/FunkeCommand.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2535">
-              <caret line="189" column="4" selection-start-line="189" selection-start-column="4" selection-end-line="191" selection-end-column="5" />
+            <state relative-caret-position="420">
+              <caret line="167" column="13" lean-forward="true" selection-start-line="112" selection-start-column="12" selection-end-line="167" selection-end-column="13" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/cc/funkemunky/api/Atlas.java">
+        <entry file="file://$PROJECT_DIR$/Atlas/src/java/cc/funkemunky/api/utils/MiscUtils.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="960">
-              <caret line="86" column="36" selection-start-line="86" selection-start-column="36" selection-end-line="86" selection-end-column="36" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/cc/funkemunky/api/commands/impl/args/DevArgument.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="165">
-              <caret line="15" column="48" selection-start-line="15" selection-start-column="48" selection-end-line="15" selection-end-column="48" />
+            <state relative-caret-position="459">
+              <caret line="65" column="15" selection-start-line="65" selection-start-column="15" selection-end-line="65" selection-end-column="15" />
               <folding>
-                <element signature="imports" expanded="true" />
+                <element signature="e#3225#3226#0" expanded="true" />
+                <element signature="e#3311#3312#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/cc/funkemunky/api/commands/impl/AtlasCommand.java">
+        <entry file="file://$PROJECT_DIR$/Atlas/src/java/cc/funkemunky/api/commands/ancmd/Command.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="165">
-              <caret line="17" column="78" selection-start-line="17" selection-start-column="78" selection-end-line="17" selection-end-column="78" />
+            <state relative-caret-position="136">
+              <caret line="11" column="30" selection-start-line="11" selection-start-column="30" selection-end-line="11" selection-end-column="30" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Atlas/src/java/cc/funkemunky/api/commands/ancmd/CommandManager.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="126">
+              <caret line="82" column="79" selection-start-line="82" selection-start-column="79" selection-end-line="82" selection-end-column="79" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Atlas/src/resources/plugin.yml">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="34">
+              <caret line="2" column="14" selection-start-line="2" selection-start-column="14" selection-end-line="2" selection-end-column="14" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/cc/funkemunky/api/utils/blockbox/impl/BoundingBoxes.java">
+        <entry file="file://$PROJECT_DIR$/Atlas/src/java/cc/funkemunky/api/updater/Updater.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="521">
-              <caret line="220" column="71" selection-start-line="220" selection-start-column="71" selection-end-line="220" selection-end-column="71" />
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/cc/funkemunky/api/utils/blockbox/impl/StairBox.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="255">
-              <caret line="19" selection-start-line="19" selection-end-line="19" />
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/cc/funkemunky/api/updater/Updater.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="90">
+            <state relative-caret-position="102">
               <caret line="15" column="48" selection-start-line="15" selection-start-column="48" selection-end-line="15" selection-end-column="48" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/cc/funkemunky/api/utils/blockbox/impl/BlockBox.java">
+        <entry file="file://$PROJECT_DIR$/Atlas/src/java/cc/funkemunky/api/commands/ancmd/ColorScheme.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="75">
-              <caret line="9" column="7" selection-start-line="9" selection-start-column="7" selection-end-line="9" selection-end-column="7" />
+            <state relative-caret-position="170">
+              <caret line="10" column="65" selection-start-line="10" selection-start-column="65" selection-end-line="10" selection-end-column="65" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -205,10 +271,28 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="jar://$PROJECT_DIR$/../compiled-depends/spigot-1.8.8-R0.1-SNAPSHOT.jar!/net/minecraft/server/v1_8_R3/BlockStairs.class">
+        <entry file="file://$PROJECT_DIR$/Atlas/src/java/cc/funkemunky/api/commands/ancmd/SpigotCompleter.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2820">
-              <caret line="201" column="19" selection-start-line="201" selection-start-column="19" selection-end-line="201" selection-end-column="19" />
+            <state relative-caret-position="315">
+              <caret line="39" column="62" selection-start-line="39" selection-start-column="62" selection-end-line="39" selection-end-column="62" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Atlas/src/java/cc/funkemunky/api/commands/ancmd/SpigotCommand.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="1003">
+              <caret line="66" column="24" lean-forward="true" selection-start-line="66" selection-start-column="24" selection-end-line="66" selection-end-column="24" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Atlas/src/java/cc/funkemunky/api/commands/ancmd/CommandAdapter.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="153">
+              <caret line="14" column="28" selection-start-line="14" selection-start-column="28" selection-end-line="14" selection-end-column="28" />
             </state>
           </provider>
         </entry>
@@ -218,61 +302,45 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="Enum" />
-        <option value="AnnotationType" />
         <option value="Class" />
       </list>
     </option>
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>EnumAxis</find>
-      <find>EnumAxis var</find>
-      <find>insideBlock</find>
-      <find>a(World</find>
-      <find>move(</find>
-      <find>boolean a(World</find>
-      <find>static VoxelShape</find>
-      <find>this.world</find>
-      <find>updateSTate</find>
-      <find>block.</find>
-      <find>getCollission</find>
-      <find>a(iBlockData</find>
-      <find>this.n =</find>
-      <find>Entity</find>
-      <find>.a(</find>
-      <find>.a(iBlockData</find>
-      <find>a(</find>
-      <find>VoxelShape a(</find>
-      <find>public VoxelShape</find>
-      <find>.a(iblockdata</find>
-      <find>checkBlockCollisions</find>
+      <find>updateShape</find>
+      <find>extended</find>
+      <find>extende</find>
+      <find>this.a</find>
+      <find>new BoundingBox(1f, 1f, 1f, 1f, 1f, 1f))</find>
+      <find>WATER</find>
+      <find>this.R =</find>
+      <find>R =</find>
+      <find>w(</find>
+      <find>);</find>
       <find>VoxelShape</find>
-      <find>updateState</find>
-      <find>Stream</find>
-      <find>Stream&lt;VoxelShape&gt;</find>
-      <find>Stream&lt;</find>
-      <find>parse</find>
-      <find>this.minX</find>
-      <find>BlockBox</find>
+      <find>getVanillaBlock</find>
       <find>AxisAlignedBB</find>
+      <find>VoxelShape a</find>
+      <find>STAIR</find>
+      <find>STEP</find>
+      <find>CHEST</find>
+      <find>STAIRS</find>
+      <find>box.</find>
+      <find>95</find>
+      <find>recentT</find>
+      <find>TPS</find>
+      <find>PlayerLoginEvent</find>
+      <find>PlayerJoin</find>
+      <find>PlayerJoinEvent</find>
+      <find>alias</find>
     </findStrings>
     <replaceStrings>
-      <replace>com.funkemunky.api.tinyprotocol</replace>
-      <replace>Atlas.getInstance</replace>
-      <replace>cc.funkemunky.api.Atlas</replace>
-      <replace>Atlas</replace>
-      <replace>cc.funkemunky.api</replace>
-      <replace>cc.funkemunky.api.tinyprotocol</replace>
-      <replace>api</replace>
-      <replace>new ArrayList&lt;&gt;()</replace>
-      <replace>new HashMap&lt;&gt;()</replace>
-      <replace>world</replace>
-      <replace>RegularBox</replace>
+      <replace>return new BoundingBox</replace>
+      <replace>new BoundingBox(0f, 0f, 0f, 1f, 1f, 1f))</replace>
+      <replace>));</replace>
+      <replace>this.</replace>
     </replaceStrings>
-    <dirStrings>
-      <dir>C:\Users\suckm\Documents\GitHub\Atlas\API</dir>
-    </dirStrings>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
@@ -280,74 +348,36 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/src/cc/funkemunky/api/database/flatfile/DatabaseType.java" />
-        <option value="$PROJECT_DIR$/src/cc/funkemunky/api/database/DatabaseType.java" />
-        <option value="$PROJECT_DIR$/src/cc/funkemunky/api/mongo/Mongo.java" />
-        <option value="$PROJECT_DIR$/src/cc/funkemunky/api/database/DatabaseManager.java" />
-        <option value="$PROJECT_DIR$/src/cc/funkemunky/api/database/Database.java" />
-        <option value="$PROJECT_DIR$/src/cc/funkemunky/api/database/mongo/MongoDatabase.java" />
-        <option value="$PROJECT_DIR$/src/cc/funkemunky/api/utils/Priority.java" />
-        <option value="$PROJECT_DIR$/src/cc/funkemunky/api/tinyprotocol/packet/in/WrappedInEntityActionPacket.java" />
-        <option value="$PROJECT_DIR$/src/cc/funkemunky/api/utils/Color.java" />
-        <option value="$PROJECT_DIR$/src/cc/funkemunky/api/utils/Commands.java" />
-        <option value="$PROJECT_DIR$/src/cc/funkemunky/api/command/BukkitCommand.java" />
-        <option value="$PROJECT_DIR$/src/cc/funkemunky/api/command/CommandAdapter.java" />
-        <option value="$PROJECT_DIR$/src/cc/funkemunky/api/command/BukkitCompleter.java" />
-        <option value="$PROJECT_DIR$/src/cc/funkemunky/api/command/SpigotCompleter.java" />
-        <option value="$PROJECT_DIR$/src/cc/funkemunky/api/command/Command.java" />
-        <option value="$PROJECT_DIR$/src/cc/funkemunky/api/utils/Init.java" />
-        <option value="$PROJECT_DIR$/src/cc/funkemunky/api/command/CommandManager.java" />
-        <option value="$PROJECT_DIR$/src/cc/funkemunky/api/commands/AtlasCommand.java" />
-        <option value="$PROJECT_DIR$/src/cc/funkemunky/api/commands/FunkeCommand.java" />
-        <option value="$PROJECT_DIR$/src/cc/funkemunky/api/tinyprotocol/api/TinyProtocol1_7.java" />
-        <option value="$PROJECT_DIR$/src/cc/funkemunky/api/tinyprotocol/reflection/Reflection.java" />
-        <option value="$PROJECT_DIR$/src/cc/funkemunky/api/tinyprotocol/packet/in/WrappedInUseEntityPacket.java" />
-        <option value="$PROJECT_DIR$/src/cc/funkemunky/api/utils/blockbox/boxes/BlockBox1_11_R1.java" />
-        <option value="$PROJECT_DIR$/src/cc/funkemunky/api/utils/blockbox/boxes/BlockBox1_8_R2.java" />
-        <option value="$PROJECT_DIR$/src/cc/funkemunky/api/utils/blockbox/boxes/BlockBox1_9_R1.java" />
-        <option value="$PROJECT_DIR$/src/cc/funkemunky/api/utils/blockbox/boxes/BlockBox1_9_R2.java" />
-        <option value="$PROJECT_DIR$/src/cc/funkemunky/api/utils/blockbox/boxes/BlockBox1_10_R1.java" />
-        <option value="$PROJECT_DIR$/src/cc/funkemunky/api/utils/blockbox/boxes/BlockBox1_12_R1.java" />
-        <option value="$PROJECT_DIR$/src/cc/funkemunky/api/utils/blockbox/boxes/BlockBox1_13_R1.java" />
-        <option value="$PROJECT_DIR$/src/cc/funkemunky/api/tinyprotocol/packet/out/WrappedOutEntityMetadata.java" />
-        <option value="$PROJECT_DIR$/src/cc/funkemunky/api/tinyprotocol/packet/types/EnumDirection.java" />
-        <option value="$PROJECT_DIR$/src/cc/funkemunky/api/commands/impl/args/ReloadArgument.java" />
-        <option value="$PROJECT_DIR$/src/cc/funkemunky/api/utils/blockbox/boxes/BlockBox1_7_R4.java" />
-        <option value="$PROJECT_DIR$/src/cc/funkemunky/api/tinyprotocol/packet/out/WrappedPacketPlayOutWorldParticle.java" />
-        <option value="$PROJECT_DIR$/src/cc/funkemunky/api/utils/blockbox/boxes/BlockBox1_8_R1.java" />
-        <option value="$PROJECT_DIR$/src/cc/funkemunky/api/utils/blockbox/boxes/BlockBox1_8_R3.java" />
-        <option value="$PROJECT_DIR$/src/cc/funkemunky/api/utils/blockbox/boxes/BlockBox1_13_R2.java" />
-        <option value="$PROJECT_DIR$/src/cc/funkemunky/api/commands/ancmd/Command.java" />
-        <option value="$PROJECT_DIR$/resources/plugin.yml" />
-        <option value="$PROJECT_DIR$/src/cc/funkemunky/api/utils/MiscUtils.java" />
-        <option value="$PROJECT_DIR$/src/cc/funkemunky/api/database/flatfile/FlatfileDatabase.java" />
-        <option value="$PROJECT_DIR$/src/cc/funkemunky/api/database/bungee/BungeeDatabase.java" />
-        <option value="$PROJECT_DIR$/src/cc/funkemunky/api/utils/Pastebin.java" />
-        <option value="$PROJECT_DIR$/src/cc/funkemunky/api/Atlas.java" />
-        <option value="$PROJECT_DIR$/src/cc/funkemunky/api/commands/impl/args/DevArgument.java" />
-        <option value="$PROJECT_DIR$/src/cc/funkemunky/api/commands/impl/AtlasCommand.java" />
-        <option value="$PROJECT_DIR$/src/cc/funkemunky/api/utils/blockbox/impl/BlockBox.java" />
-        <option value="$PROJECT_DIR$/src/cc/funkemunky/api/utils/blockbox/impl/RegularBox.java" />
-        <option value="$PROJECT_DIR$/src/cc/funkemunky/api/utils/blockbox/impl/StairBox.java" />
-        <option value="$PROJECT_DIR$/src/cc/funkemunky/api/updater/Updater.java" />
-        <option value="$PROJECT_DIR$/src/cc/funkemunky/api/utils/blockbox/impl/BoundingBoxes.java" />
+        <option value="$PROJECT_DIR$/Atlas/src/java/cc/funkemunky/api/utils/blockbox/impl/BlockBox.java" />
+        <option value="$PROJECT_DIR$/Atlas/src/java/cc/funkemunky/api/utils/blockbox/impl/SlabBox.java" />
+        <option value="$PROJECT_DIR$/Atlas/src/java/cc/funkemunky/api/utils/BoundingBox.java" />
+        <option value="$PROJECT_DIR$/Atlas/src/java/cc/funkemunky/api/utils/blockbox/impl/BoundingBoxes.java" />
+        <option value="$PROJECT_DIR$/Atlas/src/java/cc/funkemunky/api/utils/blockbox/impl/RegularBox.java" />
+        <option value="$PROJECT_DIR$/Atlas/src/java/cc/funkemunky/api/utils/blockbox/impl/PistonBox.java" />
+        <option value="$PROJECT_DIR$/Atlas/src/java/cc/funkemunky/api/Atlas.java" />
+        <option value="$PROJECT_DIR$/Atlas/src/java/cc/funkemunky/api/utils/blockbox/impl/StairBox.java" />
+        <option value="$PROJECT_DIR$/Atlas/src/java/cc/funkemunky/api/commands/FunkeCommand.java" />
+        <option value="$PROJECT_DIR$/Atlas/src/java/cc/funkemunky/api/database/DatabaseManager.java" />
+        <option value="$PROJECT_DIR$/Atlas/src/java/cc/funkemunky/api/utils/ReflectionsUtil.java" />
+        <option value="$PROJECT_DIR$/Atlas/src/resources/plugin.yml" />
+        <option value="$PROJECT_DIR$/Atlas/src/java/cc/funkemunky/api/updater/Updater.java" />
+        <option value="$PROJECT_DIR$/Atlas/src/java/cc/funkemunky/api/tinyprotocol/api/TinyProtocolHandler.java" />
+        <option value="$PROJECT_DIR$/Atlas/src/java/cc/funkemunky/api/tinyprotocol/api/TinyProtocol1_7.java" />
+        <option value="$PROJECT_DIR$/Atlas/src/java/cc/funkemunky/api/tinyprotocol/api/TinyProtocol1_8.java" />
+        <option value="$PROJECT_DIR$/Atlas/src/java/cc/funkemunky/api/utils/MiscUtils.java" />
+        <option value="$PROJECT_DIR$/Atlas/src/java/cc/funkemunky/api/commands/ancmd/ColorScheme.java" />
+        <option value="$PROJECT_DIR$/Atlas/src/java/cc/funkemunky/api/commands/ancmd/Command.java" />
+        <option value="$PROJECT_DIR$/Atlas/src/java/cc/funkemunky/api/commands/ancmd/SpigotCompleter.java" />
+        <option value="$PROJECT_DIR$/Atlas/src/java/cc/funkemunky/api/commands/ancmd/CommandAdapter.java" />
+        <option value="$PROJECT_DIR$/Atlas/src/java/cc/funkemunky/api/commands/ancmd/CommandManager.java" />
       </list>
     </option>
   </component>
-  <component name="MavenProjectNavigator">
-    <treeState>
-      <expand />
-      <select />
-    </treeState>
+  <component name="ProjectFrameBounds" extendedState="6">
+    <option name="width" value="1920" />
+    <option name="height" value="1080" />
   </component>
-  <component name="ProjectFrameBounds">
-    <option name="y" value="23" />
-    <option name="width" value="1440" />
-    <option name="height" value="798" />
-  </component>
-  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
-    <ConfirmationsSetting value="1" id="Add" />
-  </component>
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectView">
     <navigator proportions="" version="1">
       <foldersAlwaysOnTop value="true" />
@@ -357,160 +387,156 @@
         <subPane>
           <expand>
             <path>
-              <item name="Atlas" type="b2602c69:ProjectViewProjectNode" />
-              <item name="API" type="462c0819:PsiDirectoryNode" />
+              <item name="API" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Atlas" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
-              <item name="Atlas" type="b2602c69:ProjectViewProjectNode" />
-              <item name="API" type="462c0819:PsiDirectoryNode" />
-              <item name="resources" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="Atlas" type="b2602c69:ProjectViewProjectNode" />
-              <item name="API" type="462c0819:PsiDirectoryNode" />
+              <item name="API" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Atlas" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
-              <item name="Atlas" type="b2602c69:ProjectViewProjectNode" />
-              <item name="API" type="462c0819:PsiDirectoryNode" />
+              <item name="API" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Atlas" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="API" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Atlas" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
               <item name="api" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
-              <item name="Atlas" type="b2602c69:ProjectViewProjectNode" />
-              <item name="API" type="462c0819:PsiDirectoryNode" />
+              <item name="API" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Atlas" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
               <item name="api" type="462c0819:PsiDirectoryNode" />
               <item name="commands" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
-              <item name="Atlas" type="b2602c69:ProjectViewProjectNode" />
-              <item name="API" type="462c0819:PsiDirectoryNode" />
+              <item name="API" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Atlas" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
               <item name="api" type="462c0819:PsiDirectoryNode" />
               <item name="commands" type="462c0819:PsiDirectoryNode" />
               <item name="ancmd" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
-              <item name="Atlas" type="b2602c69:ProjectViewProjectNode" />
-              <item name="API" type="462c0819:PsiDirectoryNode" />
+              <item name="API" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Atlas" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="api" type="462c0819:PsiDirectoryNode" />
-              <item name="commands" type="462c0819:PsiDirectoryNode" />
-              <item name="impl" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="Atlas" type="b2602c69:ProjectViewProjectNode" />
-              <item name="API" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="api" type="462c0819:PsiDirectoryNode" />
-              <item name="commands" type="462c0819:PsiDirectoryNode" />
-              <item name="impl" type="462c0819:PsiDirectoryNode" />
-              <item name="args" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="Atlas" type="b2602c69:ProjectViewProjectNode" />
-              <item name="API" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
               <item name="api" type="462c0819:PsiDirectoryNode" />
               <item name="database" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
-              <item name="Atlas" type="b2602c69:ProjectViewProjectNode" />
-              <item name="API" type="462c0819:PsiDirectoryNode" />
+              <item name="API" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Atlas" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="api" type="462c0819:PsiDirectoryNode" />
-              <item name="database" type="462c0819:PsiDirectoryNode" />
-              <item name="bungee" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="Atlas" type="b2602c69:ProjectViewProjectNode" />
-              <item name="API" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
               <item name="api" type="462c0819:PsiDirectoryNode" />
               <item name="database" type="462c0819:PsiDirectoryNode" />
               <item name="flatfile" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
-              <item name="Atlas" type="b2602c69:ProjectViewProjectNode" />
-              <item name="API" type="462c0819:PsiDirectoryNode" />
+              <item name="API" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Atlas" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
               <item name="api" type="462c0819:PsiDirectoryNode" />
-              <item name="database" type="462c0819:PsiDirectoryNode" />
-              <item name="mongo" type="462c0819:PsiDirectoryNode" />
+              <item name="tinyprotocol" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
-              <item name="Atlas" type="b2602c69:ProjectViewProjectNode" />
-              <item name="API" type="462c0819:PsiDirectoryNode" />
+              <item name="API" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Atlas" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
               <item name="api" type="462c0819:PsiDirectoryNode" />
-              <item name="metrics" type="462c0819:PsiDirectoryNode" />
+              <item name="tinyprotocol" type="462c0819:PsiDirectoryNode" />
+              <item name="api" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
-              <item name="Atlas" type="b2602c69:ProjectViewProjectNode" />
-              <item name="API" type="462c0819:PsiDirectoryNode" />
+              <item name="API" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Atlas" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="api" type="462c0819:PsiDirectoryNode" />
-              <item name="mongo" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="Atlas" type="b2602c69:ProjectViewProjectNode" />
-              <item name="API" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
               <item name="api" type="462c0819:PsiDirectoryNode" />
               <item name="updater" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
-              <item name="Atlas" type="b2602c69:ProjectViewProjectNode" />
-              <item name="API" type="462c0819:PsiDirectoryNode" />
+              <item name="API" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Atlas" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
               <item name="api" type="462c0819:PsiDirectoryNode" />
               <item name="utils" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
-              <item name="Atlas" type="b2602c69:ProjectViewProjectNode" />
-              <item name="API" type="462c0819:PsiDirectoryNode" />
+              <item name="API" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Atlas" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
               <item name="api" type="462c0819:PsiDirectoryNode" />
               <item name="utils" type="462c0819:PsiDirectoryNode" />
               <item name="blockbox" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
-              <item name="Atlas" type="b2602c69:ProjectViewProjectNode" />
-              <item name="External Libraries" type="cb654da1:ExternalLibrariesNode" />
+              <item name="API" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Atlas" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="api" type="462c0819:PsiDirectoryNode" />
+              <item name="utils" type="462c0819:PsiDirectoryNode" />
+              <item name="blockbox" type="462c0819:PsiDirectoryNode" />
+              <item name="boxes" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="API" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Atlas" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="api" type="462c0819:PsiDirectoryNode" />
+              <item name="utils" type="462c0819:PsiDirectoryNode" />
+              <item name="blockbox" type="462c0819:PsiDirectoryNode" />
+              <item name="impl" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="API" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Atlas" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="resources" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
         </subPane>
       </pane>
-      <pane id="PackagesPane" />
       <pane id="Scope" />
+      <pane id="PackagesPane" />
     </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="Downloaded.Files.Path.Enabled" value="false" />
+    <property name="GenerateAntBuildDialog.backupFiles" value="true" />
+    <property name="GenerateAntBuildDialog.enableUiFormCompile" value="true" />
+    <property name="GenerateAntBuildDialog.forceTargetJdk" value="true" />
+    <property name="GenerateAntBuildDialog.outputFileNameProperty" value="api" />
     <property name="Repository.Attach.JavaDocs" value="false" />
     <property name="Repository.Attach.Sources" value="false" />
-    <property name="SearchEverywhereHistoryKey" value="BlockSTairs&#9;FILE&#9;jar:///Users/dawson/Documents/GitHub/Atlas/compiled-depends/spigot-1.8.8-R0.1-SNAPSHOT.jar!/net/minecraft/server/v1_8_R3/BlockStairs.class&#10;BlockStairs&#9;PSI&#9;JAVA://net.minecraft.server.v1_8_R3.BlockStairs&#10;net.minecraft.Entity&#9;PSI&#9;JAVA://net.minecraft.server.v1_13_R2.Entity&#10;VoxelShapes&#9;PSI&#9;JAVA://net.minecraft.server.v1_13_R2.VoxelShapes&#10;net.minecraft.EntityLiving&#9;PSI&#9;JAVA://net.minecraft.server.v1_13_R2.EntityLiving&#10;net.minecraft.World&#9;PSI&#9;JAVA://net.minecraft.server.v1_13_R2.World&#10;Block&#9;FILE&#9;jar://C:/Users/suckm/Documents/GitHub/Atlas/compiled-depends/spigot-1.13.2.jar!/net/minecraft/server/v1_13_R2/Block.class&#10;org.bukkit.Block&#9;PSI&#9;JAVA://org.bukkit.block.Block&#10;EntityLiving&#9;PSI&#9;JAVA://net.minecraft.server.v1_13_R2.EntityLiving&#10;net.minecraft.Block&#9;PSI&#9;JAVA://net.minecraft.server.v1_13_R2.Block&#10;PacketPlayOUtWorldParticles&#9;PSI&#9;JAVA://net.minecraft.server.v1_7_R4.PacketPlayOutWorldParticles&#10;PacketPlayOutWorldParticle&#9;FILE&#9;jar://C:/Users/suckm/Documents/GitHub/Atlas/compiled-depends/spigot-1.10.2-R0.1-SNAPSHOT-latest.jar!/net/minecraft/server/v1_10_R1/PacketPlayOutWorldParticles.class&#10;PacketPlayInUseEntity&#9;PSI&#9;JAVA://net.minecraft.server.v1_7_R4.PacketPlayInUseEntity&#10;ServerConnection&#9;PSI&#9;JAVA://net.minecraft.server.v1_7_R4.ServerConnection&#10;PacketPlayInEntityAction&#9;PSI&#9;JAVA://net.minecraft.server.v1_7_R4.PacketPlayInEntityAction&#10;EntityPlayer&#9;PSI&#9;JAVA://net.minecraft.server.v1_7_R4.EntityPlayer&#10;net.minecraft.server.Entity&#9;PSI&#9;JAVA://net.minecraft.server.v1_7_R4.Entity&#10;MinecraftServer&#9;PSI&#9;JAVA://net.minecraft.server.v1_8_R3.MinecraftServer&#10;DedicatedServer&#9;PSI&#9;JAVA://net.minecraft.server.v1_8_R3.DedicatedServer&#10;Minecraft&#9;FILE&#9;jar:///Users/dawson/Documents/GitHub/Atlas/compiled-depends/spigot-1.11.1.jar!/net/minecraft/server/v1_11_R1/MinecraftServer.class&#10;JavaPLugin&#9;PSI&#9;JAVA://org.bukkit.plugin.java.JavaPlugin" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1549136427609" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../compiled-depends/spigot-1.13.2.jar!/" />
-    <property name="project.structure.last.edited" value="Modules" />
-    <property name="project.structure.proportion" value="0.15917969" />
-    <property name="project.structure.side.proportion" value="0.2" />
+    <property name="SearchEverywhereHistoryKey" value="MinecraftServer&#9;FILE&#9;jar://C:/Users/suckm/Documents/GitHub/Atlas/compiled-depends/paper-1.13.2.jar!/net/minecraft/server/v1_13_R2/MinecraftServer.class&#10;BlockStairs&#9;FILE&#9;jar://C:/Users/suckm/Documents/GitHub/Atlas/compiled-depends/spigot-1.13.2.jar!/net/minecraft/server/v1_13_R2/BlockStairs.class&#10;VoxelShape&#9;PSI&#9;JAVA://net.minecraft.server.v1_13_R2.VoxelShape&#10;org.bukkit.Block&#9;PSI&#9;JAVA://org.bukkit.block.Block&#10;BlockFace&#9;PSI&#9;JAVA://org.bukkit.block.BlockFace&#10;BlockPistonMoving&#9;PSI&#9;JAVA://net.minecraft.server.v1_8_R3.BlockPistonMoving&#10;BlockPistonExtension&#9;PSI&#9;JAVA://net.minecraft.server.v1_8_R3.BlockPistonExtension&#10;BlockPiston&#9;PSI&#9;JAVA://net.minecraft.server.v1_8_R3.BlockPiston&#10;Blocks&#9;PSI&#9;JAVA://net.minecraft.server.v1_8_R3.Blocks" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1549377244727" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../compiled-depends/spigot-1.8.8-R0.1-SNAPSHOT.jar!/" />
+    <property name="project.structure.last.edited" value="Artifacts" />
+    <property name="project.structure.proportion" value="0.17285156" />
+    <property name="project.structure.side.proportion" value="0.20164126" />
     <property name="settings.editor.selected.configurable" value="reference.projectsettings.compiler.annotationProcessors" />
   </component>
   <component name="RecentsManager">
-    <key name="CopyClassDialog.RECENTS_KEY">
-      <recent name="cc.funkemunky.api.utils" />
-      <recent name="cc.funkemunky.api.command" />
-      <recent name="cc.funkemunky.api.mongo" />
-    </key>
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="C:\Users\suckm\Documents\GitHub\Atlas\API\src\cc\funkemunky\api" />
-      <recent name="$PROJECT_DIR$/src/cc/funkemunky/api/tinyprotocol" />
-      <recent name="C:\Users\suckm\Documents\GitHub\Atlas\API\src\cc\funkemunky\api\commands" />
-      <recent name="$PROJECT_DIR$/src/cc/funkemunky/api/event/custom" />
-      <recent name="$PROJECT_DIR$/src/cc/funkemunky/api/event" />
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\suckm\Documents\GitHub\Atlas\API\Atlas\src" />
     </key>
   </component>
   <component name="RunDashboard">
@@ -530,25 +556,28 @@
   </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="103113f6-8a1c-45a3-9b02-5a992cc6cbb2" name="Default Changelist" comment="" />
-      <created>1545880888938</created>
+      <changelist id="a9dc43c0-7a81-4135-9d37-7a26978435ee" name="Default Changelist" comment="" />
+      <created>1549293129024</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
-      <updated>1545880888938</updated>
+      <updated>1549293129024</updated>
     </task>
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="23" width="1440" height="798" extended-state="0" />
-    <editor active="true" />
+    <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.24391988" />
+      <window_info id="Image Layers" />
+      <window_info id="Designer" />
+      <window_info id="UI Designer" />
+      <window_info id="Capture Tool" />
+      <window_info id="Favorites" side_tool="true" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.25" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
-      <window_info id="Image Layers" order="2" />
-      <window_info id="Designer" order="3" />
-      <window_info id="UI Designer" order="4" />
-      <window_info id="Capture Tool" order="5" />
-      <window_info id="Favorites" order="6" side_tool="true" />
+      <window_info anchor="bottom" id="Version Control" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Terminal" />
+      <window_info anchor="bottom" id="Event Log" side_tool="true" />
+      <window_info anchor="bottom" id="Messages" weight="0.329718" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.329718" />
       <window_info anchor="bottom" id="Run" order="2" />
@@ -556,427 +585,485 @@
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" />
-      <window_info anchor="bottom" id="Terminal" order="7" />
-      <window_info anchor="bottom" id="Event Log" order="8" side_tool="true" />
-      <window_info anchor="bottom" id="Version Control" order="9" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Messages" order="10" weight="0.3101983" />
-      <window_info anchor="bottom" id="Thumbnails" order="11" weight="0.3286119" />
+      <window_info anchor="right" id="Palette" />
+      <window_info anchor="right" id="Theme Preview" />
+      <window_info anchor="right" id="Capture Analysis" />
+      <window_info anchor="right" id="Palette&#9;" />
+      <window_info anchor="right" id="Maven Projects" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
-      <window_info anchor="right" id="Palette" order="3" />
-      <window_info anchor="right" id="Capture Analysis" order="4" />
-      <window_info anchor="right" id="Theme Preview" order="5" />
-      <window_info anchor="right" id="Palette&#9;" order="6" />
-      <window_info anchor="right" id="Maven Projects" order="7" weight="0.3297568" />
     </layout>
-    <layout-to-restore>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.26332623" />
-      <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
-      <window_info id="Image Layers" order="2" />
-      <window_info id="Designer" order="3" />
-      <window_info id="UI Designer" order="4" />
-      <window_info id="Capture Tool" order="5" />
-      <window_info id="Favorites" order="6" side_tool="true" />
-      <window_info anchor="bottom" id="Message" order="0" />
-      <window_info anchor="bottom" id="Find" order="1" />
-      <window_info anchor="bottom" id="Run" order="2" />
-      <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
-      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
-      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
-      <window_info anchor="bottom" id="TODO" order="6" />
-      <window_info anchor="bottom" id="Terminal" order="7" />
-      <window_info anchor="bottom" id="Event Log" order="8" side_tool="true" />
-      <window_info anchor="bottom" id="Version Control" order="9" show_stripe_button="false" />
-      <window_info active="true" anchor="bottom" id="Messages" order="10" visible="true" weight="0.3275488" />
-      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
-      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
-      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
-      <window_info anchor="right" id="Palette" order="3" />
-      <window_info anchor="right" id="Capture Analysis" order="4" />
-      <window_info anchor="right" id="Theme Preview" order="5" />
-      <window_info anchor="right" id="Palette&#9;" order="6" />
-      <window_info anchor="right" id="Maven Projects" order="7" />
-    </layout-to-restore>
   </component>
   <component name="VcsContentAnnotationSettings">
     <option name="myLimit" value="2678400000" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="jar://$PROJECT_DIR$/../compiled-depends/spigot-1.10.2-R0.1-SNAPSHOT-latest.jar!/net/minecraft/server/v1_10_R1/PacketPlayOutWorldParticles.class">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="jar://$PROJECT_DIR$/../compiled-depends/spigot-1.7.10-SNAPSHOT-b1657.jar!/net/minecraft/server/v1_7_R4/PacketPlayOutWorldParticles.class">
+    <entry file="jar://$PROJECT_DIR$/../compiled-depends/spigot-1.8.8-R0.1-SNAPSHOT.jar!/net/minecraft/server/v1_8_R3/BlockStationary.class">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="340">
-          <caret line="27" column="20" lean-forward="true" selection-start-line="27" selection-start-column="20" selection-end-line="27" selection-end-column="20" />
+        <state relative-caret-position="34">
+          <caret line="10" column="42" selection-start-line="10" selection-start-column="41" selection-end-line="10" selection-end-column="42" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/cc/funkemunky/api/tinyprotocol/packet/out/WrappedPacketPlayOutWorldParticle.java">
+    <entry file="jar://$PROJECT_DIR$/../compiled-depends/spigot-1.8.8-R0.1-SNAPSHOT.jar!/net/minecraft/server/v1_8_R3/BlockFlowing.class">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="653">
-          <caret line="62" column="81" selection-start-line="62" selection-start-column="81" selection-end-line="62" selection-end-column="81" />
+        <state relative-caret-position="-2244">
+          <caret line="18" column="13" selection-start-line="18" selection-start-column="13" selection-end-line="18" selection-end-column="13" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/cc/funkemunky/api/utils/blockbox/boxes/BlockBox1_7_R4.java">
+    <entry file="jar://$PROJECT_DIR$/../compiled-depends/spigot-1.8.8-R0.1-SNAPSHOT.jar!/net/minecraft/server/v1_8_R3/BlockPistonExtension.class">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="85">
-          <caret line="74" column="45" lean-forward="true" selection-start-line="74" selection-start-column="45" selection-end-line="74" selection-end-column="45" />
+        <state relative-caret-position="425">
+          <caret line="84" column="8" selection-start-line="84" selection-start-column="8" selection-end-line="100" selection-end-column="62" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/cc/funkemunky/api/utils/blockbox/boxes/BlockBox1_8_R1.java">
+    <entry file="jar://$PROJECT_DIR$/../compiled-depends/spigot-1.8.8-R0.1-SNAPSHOT.jar!/net/minecraft/server/v1_8_R3/BlockPiston.class">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="68">
-          <caret line="19" column="49" selection-start-line="19" selection-start-column="49" selection-end-line="19" selection-end-column="49" />
+        <state relative-caret-position="459">
+          <caret line="194" column="64" lean-forward="true" selection-start-line="178" selection-start-column="15" selection-end-line="194" selection-end-column="64" />
         </state>
       </provider>
     </entry>
-    <entry file="jar://$PROJECT_DIR$/../compiled-depends/spigot-1.12.2.jar!/net/minecraft/server/v1_12_R1/Block.class">
+    <entry file="jar://$PROJECT_DIR$/../compiled-depends/spigot-1.8.8-R0.1-SNAPSHOT.jar!/org/bukkit/block/BlockFace.class">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="176">
-          <caret line="317" column="24" selection-start-line="317" selection-start-column="20" selection-end-line="317" selection-end-column="24" />
+        <state relative-caret-position="153">
+          <caret line="12" column="5" lean-forward="true" selection-start-line="12" selection-start-column="5" selection-end-line="12" selection-end-column="5" />
         </state>
       </provider>
     </entry>
-    <entry file="jar://$PROJECT_DIR$/../compiled-depends/paper-1.13.2.jar!/net/minecraft/server/v1_13_R2/VoxelShape.class">
+    <entry file="jar://$PROJECT_DIR$/../compiled-depends/spigot-1.8.8-R0.1-SNAPSHOT.jar!/net/minecraft/server/v1_8_R3/EnumDirection.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="221">
+          <caret line="21" lean-forward="true" selection-start-line="21" selection-end-line="21" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$PROJECT_DIR$/../compiled-depends/paper-1.13.2.jar!/org/bukkit/block/data/Directional.class">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="102">
-          <caret line="19" column="22" selection-start-line="19" selection-start-column="22" selection-end-line="19" selection-end-column="22" />
+          <caret line="10" column="17" selection-start-line="10" selection-start-column="17" selection-end-line="10" selection-end-column="17" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$PROJECT_DIR$/../compiled-depends/paper-1.13.2.jar!/org/bukkit/block/data/type/Piston.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="102">
+          <caret line="9" column="36" selection-start-line="9" selection-start-column="36" selection-end-line="9" selection-end-column="36" />
         </state>
       </provider>
     </entry>
     <entry file="jar://$PROJECT_DIR$/../compiled-depends/spigot-1.13.1-R0.1-SNAPSHOT-b1919.jar!/org/bukkit/block/Block.class">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="176">
-          <caret line="63" column="14" selection-start-line="63" selection-start-column="14" selection-end-line="63" selection-end-column="14" />
+        <state relative-caret-position="425">
+          <caret line="35" column="30" lean-forward="true" selection-start-line="35" selection-start-column="30" selection-end-line="35" selection-end-column="30" />
         </state>
       </provider>
     </entry>
-    <entry file="jar://$PROJECT_DIR$/../compiled-depends/spigot-1.13.2.jar!/net/minecraft/server/v1_13_R2/Block.class">
+    <entry file="jar://$PROJECT_DIR$/../compiled-depends/spigot-1.8.8-R0.1-SNAPSHOT.jar!/net/minecraft/server/v1_8_R3/BlockPistonMoving.class">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="969">
-          <caret line="76" column="18" selection-start-line="76" selection-start-column="8" selection-end-line="76" selection-end-column="18" />
+        <state relative-caret-position="170">
+          <caret line="130" column="42" lean-forward="true" selection-start-line="130" selection-start-column="42" selection-end-line="130" selection-end-column="42" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/cc/funkemunky/api/utils/math/RayTrace.java">
+    <entry file="jar://$PROJECT_DIR$/../compiled-depends/spigot-1.8.8-R0.1-SNAPSHOT.jar!/net/minecraft/server/v1_8_R3/Blocks.class">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="366">
-          <caret line="138" column="20" selection-start-line="138" selection-start-column="14" selection-end-line="138" selection-end-column="20" />
+        <state relative-caret-position="255">
+          <caret line="223" column="35" selection-start-line="223" selection-start-column="35" selection-end-line="223" selection-end-column="35" />
         </state>
       </provider>
     </entry>
-    <entry file="jar://$PROJECT_DIR$/../compiled-depends/spigot-1.13.2.jar!/net/minecraft/server/v1_13_R2/World.class">
+    <entry file="jar://$PROJECT_DIR$/../compiled-depends/spigot-1.8.8-R0.1-SNAPSHOT.jar!/org/bukkit/material/Stairs.class">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="431">
-          <caret line="126" column="35" selection-start-line="126" selection-start-column="32" selection-end-line="126" selection-end-column="35" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$PROJECT_DIR$/../compiled-depends/spigot-1.13.2.jar!/net/minecraft/server/v1_13_R2/Entity.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="176">
-          <caret line="762" column="91" selection-start-line="762" selection-start-column="91" selection-end-line="762" selection-end-column="91" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$PROJECT_DIR$/../compiled-depends/spigot-1.13.2.jar!/net/minecraft/server/v1_13_R2/EntityLiving.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="22230">
-          <caret line="1602" column="30" selection-start-line="1602" selection-start-column="25" selection-end-line="1602" selection-end-column="30" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$PROJECT_DIR$/../compiled-depends/paper-1.13.2.jar!/net/minecraft/server/v1_13_R2/BlockPosition.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3735">
-          <caret line="287" column="30" selection-start-line="287" selection-start-column="30" selection-end-line="287" selection-end-column="30" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$PROJECT_DIR$/../compiled-depends/paper-1.13.2.jar!/net/minecraft/server/v1_13_R2/VoxelShapes.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="176">
-          <caret line="31" column="29" selection-start-line="31" selection-start-column="11" selection-end-line="31" selection-end-column="29" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/cc/funkemunky/api/utils/BlockUtils.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="203">
-          <caret line="333" column="43" selection-start-line="333" selection-start-column="43" selection-end-line="333" selection-end-column="43" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/cc/funkemunky/api/utils/blockbox/boxes/BlockBox1_8_R3.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="524">
-          <caret line="50" column="42" lean-forward="true" selection-start-line="50" selection-start-column="42" selection-end-line="50" selection-end-column="42" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$PROJECT_DIR$/../compiled-depends/paper-1.13.2.jar!/net/minecraft/server/v1_13_R2/Entity.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="8235">
-          <caret line="668" column="22" selection-start-line="668" selection-start-column="16" selection-end-line="668" selection-end-column="22" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$PROJECT_DIR$/../compiled-depends/paper-1.13.2.jar!/net/minecraft/server/v1_13_R2/IWorldReader.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2220">
-          <caret line="168" column="19" selection-start-line="168" selection-start-column="12" selection-end-line="168" selection-end-column="19" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$PROJECT_DIR$/../compiled-depends/paper-1.13.2.jar!/net/minecraft/server/v1_13_R2/World.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="32760">
-          <caret line="2295" column="5" selection-start-line="2295" selection-start-column="5" selection-end-line="2295" selection-end-column="5" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/cc/funkemunky/api/utils/blockbox/boxes/BlockBox1_13_R2.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2160">
-          <caret line="144" column="5" selection-start-line="144" selection-start-column="5" selection-end-line="144" selection-end-column="5" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#6416#6417#0" expanded="true" />
-            <element signature="e#6493#6494#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/cc/funkemunky/api/updater/UpdaterListener.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="90">
-          <caret line="12" column="13" selection-start-line="12" selection-start-column="13" selection-end-line="12" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/cc/funkemunky/api/utils/ReflectionsUtil.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="75">
-          <caret line="23" column="13" selection-start-line="23" selection-start-column="13" selection-end-line="23" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/cc/funkemunky/api/utils/blockbox/boxes/BlockBox1_13_R1.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1275">
-          <caret line="102" column="25" selection-end-line="146" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$PROJECT_DIR$/../compiled-depends/paper-1.13.2.jar!/net/minecraft/server/v1_13_R2/IBlockData.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2850">
-          <caret line="229" column="24" selection-start-line="229" selection-start-column="24" selection-end-line="229" selection-end-column="24" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$PROJECT_DIR$/../compiled-depends/spigot-1.13.2.jar!/net/minecraft/server/v1_13_R2/BlockStairs.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="975">
-          <caret line="75" column="22" selection-start-line="75" selection-start-column="4" selection-end-line="75" selection-end-column="22" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$PROJECT_DIR$/../compiled-depends/paper-1.13.2.jar!/net/minecraft/server/v1_13_R2/Block.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="4215">
-          <caret line="335" column="24" selection-start-line="335" selection-start-column="11" selection-end-line="335" selection-end-column="24" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/cc/funkemunky/api/commands/ancmd/CommandManager.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="300">
-          <caret line="20" column="7" selection-start-line="20" selection-start-column="7" selection-end-line="20" selection-end-column="7" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/cc/funkemunky/api/commands/ancmd/Command.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="135">
-          <caret line="12" column="33" selection-start-line="12" selection-start-column="33" selection-end-line="12" selection-end-column="33" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/resources/plugin.yml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="30">
-          <caret line="2" column="16" selection-start-line="2" selection-start-column="16" selection-end-line="2" selection-end-column="16" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/cc/funkemunky/api/utils/Dummy.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="30">
-          <caret line="2" column="13" selection-start-line="2" selection-start-column="13" selection-end-line="2" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$PROJECT_DIR$/../compiled-depends/spigot-1.8.8-R0.1-SNAPSHOT.jar!/org/bukkit/command/Command.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="370">
-          <caret line="113" column="19" selection-start-line="113" selection-start-column="19" selection-end-line="113" selection-end-column="19" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/cc/funkemunky/api/database/DatabaseManager.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="75">
-          <caret line="11" column="13" selection-start-line="11" selection-start-column="13" selection-end-line="11" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/cc/funkemunky/api/database/flatfile/FlatfileDatabase.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="76">
-          <caret line="17" column="37" lean-forward="true" selection-start-line="17" selection-start-column="37" selection-end-line="17" selection-end-column="37" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/cc/funkemunky/api/commands/ancmd/SpigotCommand.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="157">
-          <caret line="38" column="16" lean-forward="true" selection-start-line="38" selection-start-column="16" selection-end-line="38" selection-end-column="16" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/cc/funkemunky/api/utils/FunkeFile.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="30">
-          <caret line="2" selection-start-line="2" selection-end-line="105" selection-end-column="1" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/cc/funkemunky/api/database/bungee/BungeeDatabase.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="135">
-          <caret line="23" column="107" selection-start-line="23" selection-start-column="107" selection-end-line="23" selection-end-column="126" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/cc/funkemunky/api/database/Database.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="90">
-          <caret line="11" column="22" selection-start-line="11" selection-start-column="22" selection-end-line="11" selection-end-column="22" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/cc/funkemunky/api/utils/blockbox/BlockBox.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="60">
-          <caret line="10" column="17" selection-start-line="10" selection-start-column="17" selection-end-line="10" selection-end-column="17" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$PROJECT_DIR$/../compiled-depends/spigot-1.8.8-R0.1-SNAPSHOT.jar!/net/minecraft/server/v1_8_R3/Block.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1150">
-          <caret line="289" column="17" selection-start-line="289" selection-start-column="8" selection-end-line="289" selection-end-column="17" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/cc/funkemunky/api/utils/blockbox/impl/RegularBox.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="105">
-          <caret line="7" column="11" selection-start-line="7" selection-start-column="11" selection-end-line="7" selection-end-column="11" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#251#252#0" expanded="true" />
-            <element signature="e#292#293#0" expanded="true" />
-            <element signature="e#217#218#0" expanded="true" />
-            <element signature="e#244#245#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/cc/funkemunky/api/utils/Pastebin.java" />
-    <entry file="file://$PROJECT_DIR$/src/cc/funkemunky/api/utils/MiscUtils.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2535">
-          <caret line="189" column="4" selection-start-line="189" selection-start-column="4" selection-end-line="191" selection-end-column="5" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/cc/funkemunky/api/Atlas.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="960">
-          <caret line="86" column="36" selection-start-line="86" selection-start-column="36" selection-end-line="86" selection-end-column="36" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/cc/funkemunky/api/commands/impl/args/DevArgument.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="165">
-          <caret line="15" column="48" selection-start-line="15" selection-start-column="48" selection-end-line="15" selection-end-column="48" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/cc/funkemunky/api/commands/impl/AtlasCommand.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="165">
-          <caret line="17" column="78" selection-start-line="17" selection-start-column="78" selection-end-line="17" selection-end-column="78" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/cc/funkemunky/api/utils/blockbox/impl/BlockBox.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="75">
-          <caret line="9" column="7" selection-start-line="9" selection-start-column="7" selection-end-line="9" selection-end-column="7" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
+        <state relative-caret-position="102">
+          <caret line="10" column="13" selection-start-line="10" selection-start-column="13" selection-end-line="10" selection-end-column="13" />
         </state>
       </provider>
     </entry>
     <entry file="jar://$PROJECT_DIR$/../compiled-depends/spigot-1.8.8-R0.1-SNAPSHOT.jar!/net/minecraft/server/v1_8_R3/BlockStairs.class">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2820">
-          <caret line="201" column="19" selection-start-line="201" selection-start-column="19" selection-end-line="201" selection-end-column="19" />
+        <state relative-caret-position="272">
+          <caret line="374" column="105" selection-start-line="374" selection-start-column="92" selection-end-line="374" selection-end-column="105" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/cc/funkemunky/api/utils/blockbox/impl/StairBox.java">
+    <entry file="jar://$PROJECT_DIR$/../compiled-depends/paper-1.13.2.jar!/net/minecraft/server/v1_13_R2/VoxelShape.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="51">
+          <caret line="19" column="34" selection-start-line="19" selection-start-column="34" selection-end-line="19" selection-end-column="34" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$PROJECT_DIR$/../compiled-depends/spigot-1.13.1.jar!/net/minecraft/server/v1_13_R2/VoxelShape.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret line="24" column="5" lean-forward="true" selection-start-line="24" selection-start-column="5" selection-end-line="24" selection-end-column="5" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Atlas/src/java/cc/funkemunky/api/utils/blockbox/impl/SlabBox.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="170">
+          <caret line="10" column="8" selection-start-line="10" selection-start-column="8" selection-end-line="10" selection-end-column="20" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#244#245#0" expanded="true" />
+            <element signature="e#271#272#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Atlas/src/java/cc/funkemunky/api/utils/blockbox/impl/BlockBox.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="255">
-          <caret line="19" selection-start-line="19" selection-end-line="19" />
+          <caret line="21" column="49" selection-start-line="21" selection-start-column="49" selection-end-line="21" selection-end-column="49" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Atlas/src/java/cc/funkemunky/api/utils/blockbox/BlockBoxManager.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="85">
+          <caret line="7" column="13" selection-start-line="7" selection-start-column="13" selection-end-line="7" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Atlas/src/java/cc/funkemunky/api/tinyprotocol/api/NMSObject.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="190">
+          <caret line="35" column="39" selection-start-line="35" selection-start-column="39" selection-end-line="35" selection-end-column="39" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Atlas/src/java/cc/funkemunky/api/utils/ClassScanner.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="119">
+          <caret line="25" column="13" selection-start-line="25" selection-start-column="13" selection-end-line="25" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Atlas/src/java/cc/funkemunky/api/utils/blockbox/boxes/BlockBox1_13_R2.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="68">
+          <caret line="21" column="13" selection-start-line="21" selection-start-column="13" selection-end-line="21" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Atlas/src/java/cc/funkemunky/api/utils/blockbox/impl/BoundingBoxes.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="605">
+          <caret line="82" column="62" selection-start-line="82" selection-start-column="62" selection-end-line="82" selection-end-column="62" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Atlas/src/java/cc/funkemunky/api/utils/blockbox/impl/RegularBox.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="68">
+          <caret line="9" column="13" selection-start-line="9" selection-start-column="13" selection-end-line="9" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Atlas/src/java/cc/funkemunky/api/utils/blockbox/boxes/BlockBox1_8_R3.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="816">
+          <caret line="63" column="78" lean-forward="true" selection-start-line="26" selection-start-column="5" selection-end-line="63" selection-end-column="78" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Atlas/src/java/cc/funkemunky/api/utils/blockbox/BlockBox.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="85">
+          <caret line="11" column="22" selection-start-line="11" selection-start-column="22" selection-end-line="11" selection-end-column="22" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Atlas/src/java/cc/funkemunky/api/utils/BoundingBox.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="252">
+          <caret line="124" column="5" lean-forward="true" selection-start-line="124" selection-start-column="5" selection-end-line="124" selection-end-column="5" />
+          <folding>
+            <element signature="e#4424#4425#0" expanded="true" />
+            <element signature="e#4475#4476#0" expanded="true" />
+            <element signature="e#4509#4510#0" expanded="true" />
+            <element signature="e#4560#4561#0" expanded="true" />
+            <element signature="e#5778#5779#0" expanded="true" />
+            <element signature="e#5838#5839#0" expanded="true" />
+            <element signature="e#11875#11876#0" expanded="true" />
+            <element signature="e#11966#11967#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$PROJECT_DIR$/../compiled-depends/spigot-1.13.2.jar!/net/minecraft/server/v1_13_R2/BlockStairs.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-3247">
+          <caret line="60" lean-forward="true" selection-start-line="60" selection-end-line="60" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Atlas/src/java/cc/funkemunky/api/utils/blockbox/impl/PistonBox.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-850">
+          <caret line="13" column="13" selection-start-line="13" selection-start-column="13" selection-end-line="13" selection-end-column="13" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/cc/funkemunky/api/updater/Updater.java">
+    <entry file="file://$PROJECT_DIR$/Atlas/src/java/cc/funkemunky/api/utils/blockbox/impl/StairBox.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="90">
+        <state relative-caret-position="544">
+          <caret line="32" lean-forward="true" selection-start-line="32" selection-end-line="32" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#293#294#0" expanded="true" />
+            <element signature="e#354#355#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Atlas/src/java/cc/funkemunky/api/utils/MathUtils.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="323">
+          <caret line="28" column="5" lean-forward="true" selection-start-line="28" selection-start-column="5" selection-end-line="28" selection-end-column="5" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Atlas/src/java/cc/funkemunky/api/utils/BlockUtils.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="281">
+          <caret line="111" column="19" selection-start-line="111" selection-start-column="17" selection-end-line="111" selection-end-column="19" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Atlas/src/java/cc/funkemunky/api/database/flatfile/FlatfileDatabase.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="500">
+          <caret line="41" column="22" selection-start-line="41" selection-start-column="22" selection-end-line="41" selection-end-column="22" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Atlas/src/java/cc/funkemunky/api/database/DatabaseManager.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="102">
+          <caret line="12" column="67" selection-start-line="12" selection-start-column="50" selection-end-line="12" selection-end-column="67" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Atlas/src/java/cc/funkemunky/api/database/Database.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret column="35" selection-start-column="35" selection-end-column="35" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$PROJECT_DIR$/../compiled-depends/paper-1.13.2.jar!/net/minecraft/server/v1_13_R2/MinecraftServer.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="595">
+          <caret line="186" column="49" selection-start-line="186" selection-start-column="5" selection-end-line="186" selection-end-column="50" />
+          <folding>
+            <element signature="e#0#61396#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Atlas/src/java/cc/funkemunky/api/Atlas.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="408">
+          <caret line="83" column="98" selection-start-line="83" selection-start-column="98" selection-end-line="83" selection-end-column="98" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Atlas/src/java/cc/funkemunky/api/utils/ReflectionsUtil.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="251">
+          <caret line="238" column="97" selection-start-line="238" selection-start-column="97" selection-end-line="238" selection-end-column="97" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$PROJECT_DIR$/../compiled-depends/spigot-1.8.8-R0.1-SNAPSHOT.jar!/net/minecraft/server/v1_8_R3/MinecraftServer.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="170">
+          <caret line="475" column="30" selection-start-line="475" selection-start-column="27" selection-end-line="475" selection-end-column="30" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Atlas/src/java/cc/funkemunky/api/tinyprotocol/api/TinyProtocolHandler.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="357">
+          <caret line="35" column="10" lean-forward="true" selection-start-line="15" selection-start-column="7" selection-end-line="35" selection-end-column="10" />
+          <folding>
+            <element signature="e#871#872#0" expanded="true" />
+            <element signature="e#946#947#0" expanded="true" />
+            <element signature="e#1275#1276#0" expanded="true" />
+            <element signature="e#1350#1351#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Atlas/src/java/cc/funkemunky/api/tinyprotocol/api/TinyProtocol1_7.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="366">
+          <caret line="167" column="16" selection-start-line="167" selection-start-column="16" selection-end-line="172" selection-end-column="17" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#3471#3489#0" expanded="true" />
+            <element signature="e#4783#5058#0" expanded="true" />
+            <element signature="e#5057#5058#0" expanded="true" />
+            <element signature="e#5204#5932#0" expanded="true" />
+            <element signature="e#5931#5932#0" expanded="true" />
+            <element signature="e#6026#6245#0" expanded="true" />
+            <element signature="e#6244#6245#0" expanded="true" />
+            <element signature="e#6279#6613#0" expanded="true" />
+            <element signature="e#6612#6613#0" expanded="true" />
+            <element signature="e#7524#7554#0" expanded="true" />
+            <element signature="e#9910#9911#0" expanded="true" />
+            <element signature="e#9939#9940#0" expanded="true" />
+            <element signature="e#10408#10409#0" expanded="true" />
+            <element signature="e#10437#10438#0" expanded="true" />
+            <element signature="e#10759#10760#0" expanded="true" />
+            <element signature="e#10813#10814#0" expanded="true" />
+            <element signature="e#11147#11148#0" expanded="true" />
+            <element signature="e#11203#11204#0" expanded="true" />
+            <element signature="e#11587#11588#0" expanded="true" />
+            <element signature="e#11644#11645#0" expanded="true" />
+            <element signature="e#12484#12485#0" expanded="true" />
+            <element signature="e#12562#12563#0" expanded="true" />
+            <element signature="e#12886#12887#0" expanded="true" />
+            <element signature="e#12959#12960#0" expanded="true" />
+            <element signature="e#13218#13219#0" expanded="true" />
+            <element signature="e#13264#13265#0" expanded="true" />
+            <element signature="e#15336#15337#0" expanded="true" />
+            <element signature="e#15387#15388#0" expanded="true" />
+            <element signature="e#16181#16182#0" expanded="true" />
+            <element signature="e#16235#16236#0" expanded="true" />
+            <element signature="e#16466#16467#0" expanded="true" />
+            <element signature="e#16532#16533#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Atlas/src/java/cc/funkemunky/api/tinyprotocol/api/TinyProtocol1_8.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="349">
+          <caret line="168" column="16" selection-start-line="168" selection-start-column="16" selection-end-line="173" selection-end-column="17" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#3465#3483#0" expanded="true" />
+            <element signature="e#4777#5052#0" expanded="true" />
+            <element signature="e#5051#5052#0" expanded="true" />
+            <element signature="e#5198#5926#0" expanded="true" />
+            <element signature="e#5925#5926#0" expanded="true" />
+            <element signature="e#6020#6239#0" expanded="true" />
+            <element signature="e#6238#6239#0" expanded="true" />
+            <element signature="e#6273#6607#0" expanded="true" />
+            <element signature="e#6606#6607#0" expanded="true" />
+            <element signature="e#7518#7548#0" expanded="true" />
+            <element signature="e#7601#8968#0" expanded="true" />
+            <element signature="e#8967#8968#0" expanded="true" />
+            <element signature="e#10191#10192#0" expanded="true" />
+            <element signature="e#10220#10221#0" expanded="true" />
+            <element signature="e#10689#10690#0" expanded="true" />
+            <element signature="e#10718#10719#0" expanded="true" />
+            <element signature="e#11040#11041#0" expanded="true" />
+            <element signature="e#11094#11095#0" expanded="true" />
+            <element signature="e#11428#11429#0" expanded="true" />
+            <element signature="e#11484#11485#0" expanded="true" />
+            <element signature="e#11868#11869#0" expanded="true" />
+            <element signature="e#11925#11926#0" expanded="true" />
+            <element signature="e#12765#12766#0" expanded="true" />
+            <element signature="e#12843#12844#0" expanded="true" />
+            <element signature="e#13167#13168#0" expanded="true" />
+            <element signature="e#13240#13241#0" expanded="true" />
+            <element signature="e#13499#13500#0" expanded="true" />
+            <element signature="e#13545#13546#0" expanded="true" />
+            <element signature="e#15617#15618#0" expanded="true" />
+            <element signature="e#15668#15669#0" expanded="true" />
+            <element signature="e#16462#16463#0" expanded="true" />
+            <element signature="e#16516#16517#0" expanded="true" />
+            <element signature="e#16747#16748#0" expanded="true" />
+            <element signature="e#16813#16814#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Atlas/src/java/cc/funkemunky/api/utils/MiscUtils.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="459">
+          <caret line="65" column="15" selection-start-line="65" selection-start-column="15" selection-end-line="65" selection-end-column="15" />
+          <folding>
+            <element signature="e#3225#3226#0" expanded="true" />
+            <element signature="e#3311#3312#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Atlas/src/java/cc/funkemunky/api/commands/FunkeCommand.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="420">
+          <caret line="167" column="13" lean-forward="true" selection-start-line="112" selection-start-column="12" selection-end-line="167" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Atlas/src/java/cc/funkemunky/api/commands/ancmd/SpigotCommand.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1003">
+          <caret line="66" column="24" lean-forward="true" selection-start-line="66" selection-start-column="24" selection-end-line="66" selection-end-column="24" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Atlas/src/java/cc/funkemunky/api/commands/ancmd/ColorScheme.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="170">
+          <caret line="10" column="65" selection-start-line="10" selection-start-column="65" selection-end-line="10" selection-end-column="65" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Atlas/src/java/cc/funkemunky/api/commands/ancmd/Command.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="136">
+          <caret line="11" column="30" selection-start-line="11" selection-start-column="30" selection-end-line="11" selection-end-column="30" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Atlas/src/java/cc/funkemunky/api/commands/ancmd/CommandAdapter.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="153">
+          <caret line="14" column="28" selection-start-line="14" selection-start-column="28" selection-end-line="14" selection-end-column="28" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Atlas/src/java/cc/funkemunky/api/commands/ancmd/SpigotCompleter.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="315">
+          <caret line="39" column="62" selection-start-line="39" selection-start-column="62" selection-end-line="39" selection-end-column="62" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Atlas/src/java/cc/funkemunky/api/commands/ancmd/CommandManager.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="126">
+          <caret line="82" column="79" selection-start-line="82" selection-start-column="79" selection-end-line="82" selection-end-column="79" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Atlas/src/resources/plugin.yml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="34">
+          <caret line="2" column="14" selection-start-line="2" selection-start-column="14" selection-end-line="2" selection-end-column="14" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Atlas/src/java/cc/funkemunky/api/updater/Updater.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="102">
           <caret line="15" column="48" selection-start-line="15" selection-start-column="48" selection-end-line="15" selection-end-column="48" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/cc/funkemunky/api/utils/blockbox/impl/BoundingBoxes.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="521">
-          <caret line="220" column="71" selection-start-line="220" selection-start-column="71" selection-end-line="220" selection-end-column="71" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -990,7 +1077,7 @@
           <splitter-proportions>
             <option name="proportions">
               <list>
-                <option value="0.2" />
+                <option value="0.20164126" />
                 <option value="0.5" />
               </list>
             </option>
@@ -1034,11 +1121,11 @@
       </state>
       <state key="ModuleStructureConfigurable.UI">
         <settings>
-          <last-edited>Atlas</last-edited>
+          <last-edited>API</last-edited>
           <splitter-proportions>
             <option name="proportions">
               <list>
-                <option value="0.2" />
+                <option value="0.20164126" />
               </list>
             </option>
           </splitter-proportions>
@@ -1058,11 +1145,11 @@
       </state>
       <state key="ProjectLibrariesConfigurable.UI">
         <settings>
-          <last-edited>asm-all-5.2</last-edited>
+          <last-edited>org.mongodb:mongo-java-driver:3.8.0</last-edited>
           <splitter-proportions>
             <option name="proportions">
               <list>
-                <option value="0.2" />
+                <option value="0.20164126" />
               </list>
             </option>
           </splitter-proportions>

@@ -2,8 +2,48 @@
   <library name="asm-all-5.2">
     <CLASSES>
       <root url="jar://$PROJECT_DIR$/../compiled-depends/asm-all-5.2.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../compiled-depends/lombok-1.18.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../compiled-depends/paper-1.13.2.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../compiled-depends/spigot-1.10.2-R0.1-SNAPSHOT-latest.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../compiled-depends/spigot-1.10.2-R0.1-SNAPSHOT.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../compiled-depends/spigot-1.11.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../compiled-depends/spigot-1.11.2-R0.1-SNAPSHOT.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../compiled-depends/spigot-1.12.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../compiled-depends/spigot-1.12.2-R0.1-SNAPSHOT-b1648.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../compiled-depends/spigot-1.12.2.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../compiled-depends/spigot-1.13.1-R0.1-SNAPSHOT-b1919.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../compiled-depends/spigot-1.13.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../compiled-depends/spigot-1.13.2.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../compiled-depends/spigot-1.13.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../compiled-depends/spigot-1.7.10-SNAPSHOT-b1657.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../compiled-depends/spigot-1.8-R0.1-SNAPSHOT.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../compiled-depends/spigot-1.8.3-R0.1-SNAPSHOT.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../compiled-depends/spigot-1.8.8-R0.1-SNAPSHOT.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../compiled-depends/spigot-1.9-R0.1-SNAPSHOT.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../compiled-depends/spigot-1.9.4-R0.1-SNAPSHOT-latest.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../compiled-depends/spigot-1.9.4-R0.1-SNAPSHOT.jar!/" />
     </CLASSES>
     <JAVADOC />
-    <SOURCES />
+    <SOURCES>
+      <root url="jar://$PROJECT_DIR$/../compiled-depends/paper-1.13.2.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../compiled-depends/spigot-1.10.2-R0.1-SNAPSHOT-latest.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../compiled-depends/spigot-1.10.2-R0.1-SNAPSHOT.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../compiled-depends/spigot-1.11.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../compiled-depends/spigot-1.11.2-R0.1-SNAPSHOT.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../compiled-depends/spigot-1.12.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../compiled-depends/spigot-1.12.2-R0.1-SNAPSHOT-b1648.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../compiled-depends/spigot-1.12.2.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../compiled-depends/spigot-1.13.1-R0.1-SNAPSHOT-b1919.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../compiled-depends/spigot-1.13.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../compiled-depends/spigot-1.13.2.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../compiled-depends/spigot-1.13.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../compiled-depends/spigot-1.7.10-SNAPSHOT-b1657.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../compiled-depends/spigot-1.8-R0.1-SNAPSHOT.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../compiled-depends/spigot-1.8.3-R0.1-SNAPSHOT.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../compiled-depends/spigot-1.8.8-R0.1-SNAPSHOT.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../compiled-depends/spigot-1.9-R0.1-SNAPSHOT.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../compiled-depends/spigot-1.9.4-R0.1-SNAPSHOT-latest.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../compiled-depends/spigot-1.9.4-R0.1-SNAPSHOT.jar!/" />
+    </SOURCES>
   </library>
 </component>
