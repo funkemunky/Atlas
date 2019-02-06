@@ -47,8 +47,16 @@ public class BlockBox1_8_R3 implements BlockBox {
                                 net.minecraft.server.v1_8_R3.IBlockData nmsiBlockData = ((CraftWorld) world).getHandle().getType(new BlockPosition(x, y, z));
                                 net.minecraft.server.v1_8_R3.Block nmsBlock = nmsiBlockData.getBlock();
 
+                                List<AxisAlignedBB> preBoxes = new ArrayList<>();
 
-                                nmsBlock.a(nmsWorld, new BlockPosition(x, y, z), nmsiBlockData, (AxisAlignedBB) box.toAxisAlignedBB(), aabbs, null);
+                                nmsBlock.updateShape(nmsWorld, new BlockPosition(x, y, z));
+                                nmsBlock.a(nmsWorld, new BlockPosition(x, y, z), nmsiBlockData, (AxisAlignedBB) box.toAxisAlignedBB(), preBoxes, null);
+
+                                if(preBoxes.size() > 0) {
+                                    aabbs.addAll(preBoxes);
+                                } else {
+                                    boxes.add(new BoundingBox((float) nmsBlock.B(), (float) nmsBlock.D(), (float) nmsBlock.F(), (float) nmsBlock.C(), (float) nmsBlock.E(), (float) nmsBlock.G()).add(block.getLocation().toVector()));
+                                }
                             }
                         /*
                         else {
@@ -97,7 +105,16 @@ public class BlockBox1_8_R3 implements BlockBox {
                             net.minecraft.server.v1_8_R3.IBlockData nmsiBlockData = ((CraftWorld) world).getHandle().getType(new BlockPosition(x, y, z));
                             net.minecraft.server.v1_8_R3.Block nmsBlock = nmsiBlockData.getBlock();
 
-                            nmsBlock.a(nmsWorld, new BlockPosition(x, y, z), nmsiBlockData, (AxisAlignedBB) box.toAxisAlignedBB(), aabbs, null);
+                            List<AxisAlignedBB> preBoxes = new ArrayList<>();
+
+                            nmsBlock.updateShape(nmsWorld, new BlockPosition(x, y, z));
+                            nmsBlock.a(nmsWorld, new BlockPosition(x, y, z), nmsiBlockData, (AxisAlignedBB) box.toAxisAlignedBB(), preBoxes, null);
+
+                            if(preBoxes.size() > 0) {
+                                aabbs.addAll(preBoxes);
+                            } else {
+                                boxes.add(new BoundingBox((float) nmsBlock.B(), (float) nmsBlock.D(), (float) nmsBlock.F(), (float) nmsBlock.C(), (float) nmsBlock.E(), (float) nmsBlock.G()).add(block.getLocation().toVector()));
+                            }
                         }
                         /*
                         else {

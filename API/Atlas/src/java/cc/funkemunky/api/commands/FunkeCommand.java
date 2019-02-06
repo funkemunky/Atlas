@@ -33,7 +33,7 @@ public abstract class FunkeCommand
         this.permission = permission;
         this.description = description;
 
-        commandMessages = new CommandMessages("No permission.", "Invalid arguments. Please check the help page for more information.", "You must be a player to use this feature", "Only console can use this feature.", Color.Gray, Color.Yellow, Color.Gold, Color.Red, Color.White);
+        commandMessages = new CommandMessages("No permission.", "Invalid arguments. Please check the help page for more information.", "You must be a player to use this feature", "Only console can use this feature.", Color.Gray, Color.Yellow, Color.Gold, Color.Red, Color.White, Color.Green);
 
         this.arguments = new ArrayList<>();
         instance = this;
@@ -51,7 +51,7 @@ public abstract class FunkeCommand
         this.description = description;
         this.helpPage = helpPage;
 
-        commandMessages = new CommandMessages("No permission.", "Invalid arguments. Please check the help page for more information.", "You must be a player to use this feature", "Only console can use this feature.", Color.Gray, Color.Yellow, Color.Gold, Color.Red, Color.White);
+        commandMessages = new CommandMessages("No permission.", "Invalid arguments. Please check the help page for more information.", "You must be a player to use this feature", "Only console can use this feature.", Color.Gray, Color.Yellow, Color.Gold, Color.Red, Color.White, Color.Green);
 
         this.arguments = new ArrayList<>();
         instance = this;

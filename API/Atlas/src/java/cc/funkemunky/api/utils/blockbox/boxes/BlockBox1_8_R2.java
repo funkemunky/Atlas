@@ -45,7 +45,16 @@ public class BlockBox1_8_R2 implements BlockBox {
                             net.minecraft.server.v1_8_R2.Block nmsBlock = nmsiBlockData.getBlock();
 
 
-                            nmsBlock.a(nmsWorld, new BlockPosition(x, y, z), nmsiBlockData, (AxisAlignedBB) box.toAxisAlignedBB(), aabbs, null);
+                            List<AxisAlignedBB> preBoxes = new ArrayList<>();
+
+                            nmsBlock.updateShape(nmsWorld, new BlockPosition(x, y, z));
+                            nmsBlock.a(nmsWorld, new BlockPosition(x, y, z), nmsiBlockData, (AxisAlignedBB) box.toAxisAlignedBB(), preBoxes, null);
+
+                            if(preBoxes.size() > 0) {
+                                aabbs.addAll(preBoxes);
+                            } else {
+                                boxes.add(new BoundingBox((float) nmsBlock.B(), (float) nmsBlock.D(), (float) nmsBlock.F(), (float) nmsBlock.C(), (float) nmsBlock.E(), (float) nmsBlock.G()).add(block.getLocation().toVector()));
+                            }
                         }
                         /*
                         else {
@@ -93,7 +102,16 @@ public class BlockBox1_8_R2 implements BlockBox {
                             net.minecraft.server.v1_8_R2.Block nmsBlock = nmsiBlockData.getBlock();
 
 
-                            nmsBlock.a(nmsWorld, new BlockPosition(x, y, z), nmsiBlockData, (AxisAlignedBB) box.toAxisAlignedBB(), aabbs, null);
+                            List<AxisAlignedBB> preBoxes = new ArrayList<>();
+
+                            nmsBlock.updateShape(nmsWorld, new BlockPosition(x, y, z));
+                            nmsBlock.a(nmsWorld, new BlockPosition(x, y, z), nmsiBlockData, (AxisAlignedBB) box.toAxisAlignedBB(), preBoxes, null);
+
+                            if(preBoxes.size() > 0) {
+                                aabbs.addAll(preBoxes);
+                            } else {
+                                boxes.add(new BoundingBox((float) nmsBlock.B(), (float) nmsBlock.D(), (float) nmsBlock.F(), (float) nmsBlock.C(), (float) nmsBlock.E(), (float) nmsBlock.G()).add(block.getLocation().toVector()));
+                            }
                         }
                         /*
                         else {

@@ -8,5 +8,5 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 public class CommandMessages {
-    private String noPermission, invalidArguments, playerOnly, consoleOnly, primaryColor, secondaryColor, titleColor, errorColor, valueColor;
+    private String noPermission, invalidArguments, playerOnly, consoleOnly, primaryColor, secondaryColor, titleColor, errorColor, valueColor, successColor;
 }
