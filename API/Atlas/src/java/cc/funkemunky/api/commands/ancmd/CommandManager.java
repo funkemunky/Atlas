@@ -5,6 +5,7 @@ import cc.funkemunky.api.utils.Color;
 import cc.funkemunky.api.utils.JsonMessage;
 import cc.funkemunky.api.utils.MathUtils;
 import cc.funkemunky.api.utils.MiscUtils;
+import com.google.common.collect.Lists;
 import lombok.Getter;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandMap;
@@ -57,14 +58,14 @@ public class CommandManager implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, org.bukkit.command.Command cmd, String label, String[] strings) {
-        List<String> toFormatArgs = Arrays.asList(strings);
-        toFormatArgs.add(0, label);
-        String[] beforeArgs = (String[]) toFormatArgs.toArray();
+        List<String> toFormatArgs = Collections.singletonList(label);
+        Arrays.stream(strings).forEach(string -> toFormatArgs.add(string));
+        List<String> beforeArgs = new ArrayList<>(toFormatArgs);
 
-        for(int arg = beforeArgs.length; arg >= 1 ; arg--) {
+        for(int arg = beforeArgs.size(); arg >= 1 ; arg--) {
             StringBuffer buffer = new StringBuffer();
             for (int x = 0; x < arg; x++) {
-                buffer.append("." + beforeArgs[x].toLowerCase());
+                buffer.append("." + beforeArgs.get(x).toLowerCase());
             }
 
             if(commands.containsKey(buffer.toString())) {
@@ -77,7 +78,13 @@ public class CommandManager implements CommandExecutor {
                 } else if(command.consoleOnly() && !(sender instanceof ConsoleCommandSender)) {
                     sender.sendMessage(Color.Red + "This command can only be run via terminal.");
                 } else {
-                    String[] args = beforeArgs.length > 1 ? Arrays.copyOfRange(beforeArgs, buffer.toString().split(" ").length, beforeArgs.length) : new String[0];
+                    int size = beforeArgs.size() - buffer.toString().split(" ").length;
+                    String[] args = new String[size];
+
+                    for (int i = 0; i < args.length; i++) {
+                        int grabbyDabby = i + buffer.toString().split(" ").length;
+                        args[i] = beforeArgs.get(grabbyDabby);
+                    }
 
                     if(command.permission().length == 0 || Arrays.stream(command.permission()).anyMatch(sender::hasPermission)) {
                         CommandAdapter adapter = new CommandAdapter(sender, cmd, sender instanceof Player ? (Player) sender : null, label, args);
