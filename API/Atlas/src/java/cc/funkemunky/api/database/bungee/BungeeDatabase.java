@@ -16,8 +16,8 @@ import java.util.concurrent.TimeUnit;
 
 public class BungeeDatabase extends Database implements PluginMessageListener {
     private Set<String> requests = new HashSet<>();
-    public BungeeDatabase(String name, Plugin plugin, DatabaseType type) {
-        super(name, plugin, type);
+    public BungeeDatabase(String name, Plugin plugin) {
+        super(name, plugin, DatabaseType.BUNGEE);
 
         Atlas.getInstance().getServer().getMessenger().registerIncomingPluginChannel(Atlas.getInstance(), "Atlas_Data_Incoming", this);
     }

@@ -20,6 +20,8 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 @Getter
 public class CommandManager implements CommandExecutor {
@@ -57,17 +59,15 @@ public class CommandManager implements CommandExecutor {
 
 
     @Override
-    public boolean onCommand(CommandSender sender, org.bukkit.command.Command cmd, String label, String[] strings) {
-        List<String> toFormatArgs = Collections.singletonList(label);
-        Arrays.stream(strings).forEach(string -> toFormatArgs.add(string));
-        List<String> beforeArgs = new ArrayList<>(toFormatArgs);
+    public boolean onCommand(CommandSender sender, org.bukkit.command.Command cmd, String label, String[] args) {
 
-        for(int arg = beforeArgs.size(); arg >= 1 ; arg--) {
+        for(int arg = args.length; arg >= 0 ; arg--) {
             StringBuffer buffer = new StringBuffer();
+            buffer.append(label.toLowerCase());
             for (int x = 0; x < arg; x++) {
-                buffer.append("." + beforeArgs.get(x).toLowerCase());
+                buffer.append("." + args[x].toLowerCase());
             }
-
+            String bufferString = buffer.toString();
             if(commands.containsKey(buffer.toString())) {
                 Map.Entry<Method, Object> entry = commands.get(buffer.toString());
 
@@ -78,16 +78,12 @@ public class CommandManager implements CommandExecutor {
                 } else if(command.consoleOnly() && !(sender instanceof ConsoleCommandSender)) {
                     sender.sendMessage(Color.Red + "This command can only be run via terminal.");
                 } else {
-                    int size = beforeArgs.size() - buffer.toString().split(" ").length;
-                    String[] args = new String[size];
+                    int subCommand = bufferString.split("\\.").length - 1;
+                    String[] modArgs = IntStream.range(0, args.length - subCommand).mapToObj(i -> args[i + subCommand]).toArray(String[]::new);
 
-                    for (int i = 0; i < args.length; i++) {
-                        int grabbyDabby = i + buffer.toString().split(" ").length;
-                        args[i] = beforeArgs.get(grabbyDabby);
-                    }
-
+                    String labelFinal = IntStream.range(0, subCommand).mapToObj(x -> " " + args[x]).collect(Collectors.joining("", label, ""));
                     if(command.permission().length == 0 || Arrays.stream(command.permission()).anyMatch(sender::hasPermission)) {
-                        CommandAdapter adapter = new CommandAdapter(sender, cmd, sender instanceof Player ? (Player) sender : null, label, args);
+                        CommandAdapter adapter = new CommandAdapter(sender, cmd, sender instanceof Player ? (Player) sender : null, labelFinal, modArgs);
                         try {
                             entry.getKey().invoke(entry.getValue(), adapter);
                         } catch (Exception e) {

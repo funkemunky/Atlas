@@ -1,8 +1,10 @@
 package cc.funkemunky.api.database;
 
 import cc.funkemunky.api.Atlas;
+import cc.funkemunky.api.database.bungee.BungeeDatabase;
 import cc.funkemunky.api.database.flatfile.FlatfileDatabase;
 import cc.funkemunky.api.database.mongo.MongoDatabase;
+import cc.funkemunky.api.database.sql.MySQLDatabase;
 import lombok.Getter;
 
 import java.util.Map;
@@ -20,6 +22,12 @@ public class DatabaseManager {
                 break;
             case MONGO:
                 database = new MongoDatabase(name, Atlas.getInstance());
+                break;
+            case SQL:
+                database = new MySQLDatabase(name, Atlas.getInstance());
+                break;
+            case BUNGEE:
+                database = new BungeeDatabase(name, Atlas.getInstance());
                 break;
             default:
                 database = new FlatfileDatabase(name, Atlas.getInstance());
