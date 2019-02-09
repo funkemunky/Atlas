@@ -7,7 +7,10 @@ import lombok.Getter;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 @Getter
 public class WrappedInUseEntityPacket extends NMSObject {
@@ -29,9 +32,9 @@ public class WrappedInUseEntityPacket extends NMSObject {
         id = Objects.requireNonNull(fetch(fieldId));
         Enum fieldAct = Objects.nonNull(fetch(fieldAction)) ? fetch(fieldAction) : null;
         action = fieldAct == null ? EnumEntityUseAction.INTERACT_AT : EnumEntityUseAction.valueOf(fieldAct.name());
-        for (Entity entity : player.getWorld().getEntities()) {
-            if (entity.getEntityId() == id) this.entity = entity;
-        }
+        Optional<Entity> entityOp = player.getWorld().getEntities().stream().filter(entity -> entity.getEntityId() == id).findFirst();
+
+        entityOp.ifPresent(entity1 -> entity = entity1);
     }
 
     public enum EnumEntityUseAction {
