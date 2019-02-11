@@ -14,18 +14,21 @@ import cc.funkemunky.api.utils.*;
 import cc.funkemunky.api.utils.blockbox.BlockBoxManager;
 import cc.funkemunky.api.utils.blockbox.impl.BoundingBoxes;
 import lombok.Getter;
+import lombok.Setter;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.concurrent.*;
 
 @Getter
+@Setter
 @Init
 public class Atlas extends JavaPlugin {
     @Getter
@@ -46,11 +49,11 @@ public class Atlas extends JavaPlugin {
     @ConfigSetting(path = "updater")
     private boolean autoDownload = false;
 
-    @ConfigSetting(path = "init")
-    private boolean loadDependingPluginsOnStart = true;
-
     @ConfigSetting(name = "metrics")
     private boolean metricsEnabled = true;
+
+    @ConfigSetting(path = "init", name = "reloadDependingPlugins")
+    private boolean enableDependingPlugins = true;
 
     public void onEnable() {
         instance = this;
@@ -79,9 +82,9 @@ public class Atlas extends JavaPlugin {
         funkeCommandManager.addCommand(new AtlasCommand());
 
         if(ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.V1_13)) {
-            getServer().getMessenger().registerOutgoingPluginChannel(this, "Atlas_Data_Request");
-            getServer().getMessenger().registerOutgoingPluginChannel(this, "Atlas_Data_Outgoing");
-            getServer().getMessenger().registerOutgoingPluginChannel(this, "Atlas_Data_Incoming");
+            getServer().getMessenger().registerOutgoingPluginChannel(this, "Atlas_Request");
+            getServer().getMessenger().registerOutgoingPluginChannel(this, "Atlas_Outgoing");
+            getServer().getMessenger().registerOutgoingPluginChannel(this, "Atlas_Incoming");
         }
 
         MiscUtils.printToConsole(Color.Gray + "Starting scanner...");
@@ -106,6 +109,19 @@ public class Atlas extends JavaPlugin {
             }
         }
 
+        if(enableDependingPlugins) {
+            new BukkitRunnable() {
+                public void run() {
+                    MiscUtils.printToConsole("&7Reloading plugins using Atlas as a dependency...");
+                    Arrays.stream(Bukkit.getPluginManager().getPlugins()).filter(plugin -> !plugin.isEnabled() && plugin.getDescription().getDepend().contains("Atlas")).forEach(plugin -> {
+                        MiscUtils.unloadPlugin(plugin.getName());
+                        MiscUtils.loadPlugin(plugin.getName());
+                    });
+                    MiscUtils.printToConsole("&aCompleted!");
+                }
+            }.runTaskLaterAsynchronously(this, 40L);
+        }
+
         MiscUtils.printToConsole(Color.Green + "Successfully loaded Atlas and its utilities!");
     }
 
@@ -113,7 +129,10 @@ public class Atlas extends JavaPlugin {
         EventManager.clearRegistered();
         HandlerList.unregisterAll(this);
         Bukkit.getScheduler().cancelTasks(this);
+
+        Arrays.stream(Bukkit.getPluginManager().getPlugins()).filter(plugin -> plugin.getDescription().getDepend().contains("Atlas")).forEach(plugin -> Bukkit.getPluginManager().disablePlugin(plugin));
         threadPool.shutdownNow();
+        schedular.shutdownNow();
     }
 
     public void executeTask(Runnable runnable) {
@@ -161,7 +180,7 @@ public class Atlas extends JavaPlugin {
                         plugin.getServer().getPluginManager().registerEvents((Listener) obj, plugin);
                     } else if(obj instanceof cc.funkemunky.api.event.system.Listener) {
                         MiscUtils.printToConsole("&eFound " + clazz.getSimpleName() + " Atlas listener. Registering...");
-                        EventManager.register((cc.funkemunky.api.event.system.Listener) obj);
+                        EventManager.register(plugin, (cc.funkemunky.api.event.system.Listener) obj);
                     } else if(obj instanceof CommandExecutor && clazz.isAnnotationPresent(Commands.class)) {
                         Commands commands = (Commands) clazz.getAnnotation(Commands.class);
 
