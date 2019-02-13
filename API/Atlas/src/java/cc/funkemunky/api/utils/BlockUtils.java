@@ -300,7 +300,7 @@ public class BlockUtils {
     }
 
     public static boolean isChest(Block block) {
-        return block.getType().equals(Material.CHEST) || block.getType().equals(Material.TRAPPED_CHEST) || block.getType().equals(Material.ENDER_CHEST) || block.getType().equals(Material.getMaterial("SHULKER_BOX"));
+        return block.getType().equals(Material.CHEST) || block.getType().equals(Material.TRAPPED_CHEST) || block.getType().equals(Material.ENDER_CHEST) || block.getType().toString().contains("SHULKER");
     }
 
     public static boolean isPiston(Block block) {

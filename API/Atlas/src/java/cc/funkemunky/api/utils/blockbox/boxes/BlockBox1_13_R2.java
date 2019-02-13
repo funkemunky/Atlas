@@ -5,6 +5,7 @@ import cc.funkemunky.api.utils.BoundingBox;
 import cc.funkemunky.api.utils.MathUtils;
 import cc.funkemunky.api.utils.ReflectionsUtil;
 import cc.funkemunky.api.utils.blockbox.BlockBox;
+import lombok.val;
 import net.minecraft.server.v1_13_R2.*;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -41,16 +42,33 @@ public class BlockBox1_13_R2 implements BlockBox {
                         if (BlockUtils.collisionBoundingBoxes.containsKey(block.getType())) {
                             aabbs.add((AxisAlignedBB) BlockUtils.collisionBoundingBoxes.get(block.getType()).add(block.getLocation().toVector()).toAxisAlignedBB());
                         } else {
-                            net.minecraft.server.v1_13_R2.World nmsWorld = ((CraftWorld) world).getHandle();
-                            net.minecraft.server.v1_13_R2.IBlockData nmsiBlockData = ((CraftWorld) world).getHandle().getType(new BlockPosition(x, y, z));
+                            net.minecraft.server.v1_13_R2.BlockPosition pos = new net.minecraft.server.v1_13_R2.BlockPosition(x, y, z);
+                            net.minecraft.server.v1_13_R2.World nmsWorld = ((org.bukkit.craftbukkit.v1_13_R2.CraftWorld) world).getHandle();
+                            net.minecraft.server.v1_13_R2.IBlockData nmsiBlockData = ((org.bukkit.craftbukkit.v1_13_R2.CraftWorld) world).getHandle().getType(pos);
                             net.minecraft.server.v1_13_R2.Block nmsBlock = nmsiBlockData.getBlock();
 
-                            VoxelShape shape = nmsiBlockData.getBlock().a(nmsiBlockData, (IBlockAccess) nmsWorld, new BlockPosition(x, y, z));
+                            net.minecraft.server.v1_13_R2.VoxelShape shape = nmsiBlockData.getBlock().a(nmsiBlockData, (net.minecraft.server.v1_13_R2.IBlockAccess) nmsWorld,pos);
 
                             if (shape.toString().equals("EMPTY")) {
-                                aabbs.add(new AxisAlignedBB(block.getLocation().getX(), block.getLocation().getY(), block.getLocation().getZ(), block.getLocation().getX() + 1, block.getLocation().getY() + 1, block.getLocation().getZ() + 1));
+                                aabbs.add(new net.minecraft.server.v1_13_R2.AxisAlignedBB(block.getLocation().getX(), block.getLocation().getY(), block.getLocation().getZ(), block.getLocation().getX() + 1, block.getLocation().getY() + 1, block.getLocation().getZ() + 1));
                             } else {
                                 aabbs.add(shape.a().d(block.getLocation().getX(), block.getLocation().getY(), block.getLocation().getZ()));
+                            }
+
+                            if(nmsBlock instanceof net.minecraft.server.v1_13_R2.BlockShulkerBox) {
+                                net.minecraft.server.v1_13_R2.TileEntity tileentity = nmsWorld.getTileEntity(pos);
+                                net.minecraft.server.v1_13_R2.BlockShulkerBox shulker = (net.minecraft.server.v1_13_R2.BlockShulkerBox) nmsBlock;
+
+                                if(tileentity instanceof net.minecraft.server.v1_13_R2.TileEntityShulkerBox) {
+                                    net.minecraft.server.v1_13_R2.TileEntityShulkerBox entity = (net.minecraft.server.v1_13_R2.TileEntityShulkerBox) tileentity;
+                                    //Bukkit.broadcastMessage("entity");
+                                    aabbs.add(entity.a(nmsiBlockData));
+
+                                    val loc = block.getLocation();
+                                    if(entity.r().toString().contains("OPEN") || entity.r().toString().contains("CLOSING")) {
+                                        aabbs.add(new net.minecraft.server.v1_13_R2.AxisAlignedBB(loc.getX(),loc.getY(),loc.getZ(),loc.getX() + 1,loc.getY() + 1.5,loc.getZ() + 1));
+                                    }
+                                }
                             }
                         }
                         /*
@@ -90,15 +108,32 @@ public class BlockBox1_13_R2 implements BlockBox {
                         if (BlockUtils.collisionBoundingBoxes.containsKey(block.getType())) {
                             aabbs.add((AxisAlignedBB) BlockUtils.collisionBoundingBoxes.get(block.getType()).add(block.getLocation().toVector()).toAxisAlignedBB());
                         } else {
-                            net.minecraft.server.v1_13_R2.World nmsWorld = ((CraftWorld) world).getHandle();
-                            net.minecraft.server.v1_13_R2.IBlockData nmsiBlockData = ((CraftWorld) world).getHandle().getType(new BlockPosition(x, y, z));
+                            net.minecraft.server.v1_13_R2.BlockPosition pos = new net.minecraft.server.v1_13_R2.BlockPosition(x, y, z);
+                            net.minecraft.server.v1_13_R2.World nmsWorld = ((org.bukkit.craftbukkit.v1_13_R2.CraftWorld) world).getHandle();
+                            net.minecraft.server.v1_13_R2.IBlockData nmsiBlockData = ((org.bukkit.craftbukkit.v1_13_R2.CraftWorld) world).getHandle().getType(pos);
+                            net.minecraft.server.v1_13_R2.Block nmsBlock = nmsiBlockData.getBlock();
 
-                            VoxelShape shape = nmsiBlockData.getBlock().a(nmsiBlockData, (IBlockAccess) nmsWorld, new BlockPosition(x, y, z));
+                            net.minecraft.server.v1_13_R2.VoxelShape shape = nmsiBlockData.getBlock().a(nmsiBlockData, (net.minecraft.server.v1_13_R2.IBlockAccess) nmsWorld,pos);
 
                             if (shape.toString().equals("EMPTY")) {
-                                aabbs.add(new AxisAlignedBB(block.getLocation().getX(), block.getLocation().getY(), block.getLocation().getZ(), block.getLocation().getX() + 1, block.getLocation().getY() + 1, block.getLocation().getZ() + 1));
+                                aabbs.add(new net.minecraft.server.v1_13_R2.AxisAlignedBB(block.getLocation().getX(), block.getLocation().getY(), block.getLocation().getZ(), block.getLocation().getX() + 1, block.getLocation().getY() + 1, block.getLocation().getZ() + 1));
                             } else {
                                 aabbs.add(shape.a().d(block.getLocation().getX(), block.getLocation().getY(), block.getLocation().getZ()));
+                            }
+
+                            if(nmsBlock instanceof net.minecraft.server.v1_13_R2.BlockShulkerBox) {
+                                net.minecraft.server.v1_13_R2.TileEntity tileentity = nmsWorld.getTileEntity(pos);
+                                net.minecraft.server.v1_13_R2.BlockShulkerBox shulker = (net.minecraft.server.v1_13_R2.BlockShulkerBox) nmsBlock;
+
+                                if(tileentity instanceof net.minecraft.server.v1_13_R2.TileEntityShulkerBox) {
+                                    net.minecraft.server.v1_13_R2.TileEntityShulkerBox entity = (net.minecraft.server.v1_13_R2.TileEntityShulkerBox) tileentity;
+                                    //Bukkit.broadcastMessage("entity");
+                                    aabbs.add(entity.a(nmsiBlockData));
+
+                                    if(entity.r().toString().contains("OPEN") || entity.r().toString().contains("CLOSING")) {
+                                        aabbs.add(new net.minecraft.server.v1_13_R2.AxisAlignedBB(loc.getX(),loc.getY(),loc.getZ(),loc.getX() + 1,loc.getY() + 1.5,loc.getZ() + 1));
+                                    }
+                                }
                             }
                         }
                     }
