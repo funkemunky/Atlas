@@ -43,32 +43,33 @@ public class BlockBox1_11_R1 implements BlockBox {
                         if (BlockUtils.collisionBoundingBoxes.containsKey(block.getType())) {
                             aabbs.add((AxisAlignedBB) BlockUtils.collisionBoundingBoxes.get(block.getType()).add(block.getLocation().toVector()).toAxisAlignedBB());
                         } else {
-                            net.minecraft.server.v1_11_R1.World nmsWorld = ((CraftWorld) world).getHandle();
-                            net.minecraft.server.v1_11_R1.IBlockData nmsiBlockData = ((CraftWorld) world).getHandle().getType(new BlockPosition(x, y, z));
+                            net.minecraft.server.v1_11_R1.World nmsWorld = ((org.bukkit.craftbukkit.v1_11_R1.CraftWorld) world).getHandle();
+                            net.minecraft.server.v1_11_R1.BlockPosition pos = new net.minecraft.server.v1_11_R1.BlockPosition(x, y, z);
+                            net.minecraft.server.v1_11_R1.IBlockData nmsiBlockData = ((org.bukkit.craftbukkit.v1_11_R1.CraftWorld) world).getHandle().getType(pos);
                             net.minecraft.server.v1_11_R1.Block nmsBlock = nmsiBlockData.getBlock();
 
-                            List<AxisAlignedBB> preBoxes = new ArrayList<>();
+                            List<net.minecraft.server.v1_11_R1.AxisAlignedBB> preBoxes = new ArrayList<>();
 
-                            nmsBlock.updateState(nmsiBlockData, nmsWorld, new BlockPosition(x, y, z));
-                            nmsBlock.a(nmsiBlockData, nmsWorld, new BlockPosition(x, y, z), (AxisAlignedBB) box.toAxisAlignedBB(), preBoxes, null, true);
+                            nmsBlock.updateState(nmsiBlockData, nmsWorld, pos);
+                            nmsBlock.a(nmsiBlockData, nmsWorld, pos, (net.minecraft.server.v1_11_R1.AxisAlignedBB) box.toAxisAlignedBB(), preBoxes, null, true);
 
                             if(preBoxes.size() > 0) {
                                 aabbs.addAll(preBoxes);
                             } else {
-                                aabbs.add(nmsBlock.b(nmsiBlockData, nmsWorld, new BlockPosition(x, y, z)));
+                                aabbs.add(nmsBlock.b(nmsiBlockData, nmsWorld, new net.minecraft.server.v1_11_R1.BlockPosition(x, y, z)));
                             }
-                            if(nmsBlock instanceof BlockShulkerBox) {
-                                TileEntity tileentity = nmsWorld.getTileEntity(pos);
-                                BlockShulkerBox shulker = (BlockShulkerBox) nmsBlock;
+                            if(nmsBlock instanceof net.minecraft.server.v1_11_R1.BlockShulkerBox) {
+                                net.minecraft.server.v1_11_R1.TileEntity tileentity = nmsWorld.getTileEntity(pos);
+                                net.minecraft.server.v1_11_R1.BlockShulkerBox shulker = (net.minecraft.server.v1_11_R1.BlockShulkerBox) nmsBlock;
 
-                                if(tileentity instanceof TileEntityShulkerBox) {
-                                    TileEntityShulkerBox entity = (TileEntityShulkerBox) tileentity;
+                                if(tileentity instanceof net.minecraft.server.v1_11_R1.TileEntityShulkerBox) {
+                                    net.minecraft.server.v1_11_R1.TileEntityShulkerBox entity = (net.minecraft.server.v1_11_R1.TileEntityShulkerBox) tileentity;
                                     //Bukkit.broadcastMessage("entity");
                                     aabbs.add(entity.a(nmsiBlockData));
 
                                     val loc = block.getLocation();
                                     if(entity.p().toString().contains("OPEN")) {
-                                        aabbs.add(new AxisAlignedBB(loc.getX(),loc.getY(),loc.getZ(),loc.getX() + 1,loc.getY() + 1.5,loc.getZ() + 1));
+                                        aabbs.add(new net.minecraft.server.v1_11_R1.AxisAlignedBB(loc.getX(),loc.getY(),loc.getZ(),loc.getX() + 1,loc.getY() + 1.5,loc.getZ() + 1));
                                         Bukkit.broadcastMessage("OPEN");
                                     }
                                 }

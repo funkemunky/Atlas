@@ -95,20 +95,20 @@ public class BlockBox1_9_R2 implements BlockBox {
                         if (BlockUtils.collisionBoundingBoxes.containsKey(block.getType())) {
                             aabbs.add((AxisAlignedBB) BlockUtils.collisionBoundingBoxes.get(block.getType()).add(block.getLocation().toVector()).toAxisAlignedBB());
                         } else {
-                            net.minecraft.server.v1_9_R2.World nmsWorld = ((CraftWorld) world).getHandle();
-                            net.minecraft.server.v1_9_R2.IBlockData nmsiBlockData = ((CraftWorld) world).getHandle().getType(new BlockPosition(x, y, z));
+                            net.minecraft.server.v1_9_R2.World nmsWorld = ((org.bukkit.craftbukkit.v1_9_R2.CraftWorld) world).getHandle();
+                            net.minecraft.server.v1_9_R2.BlockPosition pos = new net.minecraft.server.v1_9_R2.BlockPosition(x, y, z);
+                            net.minecraft.server.v1_9_R2.IBlockData nmsiBlockData = ((org.bukkit.craftbukkit.v1_9_R2.CraftWorld) world).getHandle().getType(pos);
                             net.minecraft.server.v1_9_R2.Block nmsBlock = nmsiBlockData.getBlock();
 
+                            List<net.minecraft.server.v1_9_R2.AxisAlignedBB> preBoxes = new ArrayList<>();
 
-                            List<AxisAlignedBB> preBoxes = new ArrayList<>();
+                            nmsBlock.updateState(nmsiBlockData, nmsWorld, pos);
+                            nmsBlock.a(nmsiBlockData, nmsWorld, pos, (net.minecraft.server.v1_9_R2.AxisAlignedBB) box.toAxisAlignedBB(), preBoxes, null);
 
-                            nmsBlock.updateState(nmsiBlockData, nmsWorld, new BlockPosition(x, y, z));
-                            nmsBlock.a(nmsiBlockData, nmsWorld, new BlockPosition(x, y, z), (AxisAlignedBB) box.toAxisAlignedBB(), preBoxes, null);
-
-                            if(preBoxes.size() > 0 || !block.getType().toString().contains("SHULKER")) {
+                            if(preBoxes.size() > 0) {
                                 aabbs.addAll(preBoxes);
                             } else {
-                                aabbs.add(nmsBlock.a(nmsiBlockData, nmsWorld, new BlockPosition(x, y, z)));
+                                aabbs.add(nmsBlock.a(nmsiBlockData, nmsWorld, pos));
                             }
                         }
                         /*

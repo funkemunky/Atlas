@@ -5,7 +5,9 @@ import cc.funkemunky.api.utils.BoundingBox;
 import cc.funkemunky.api.utils.MathUtils;
 import cc.funkemunky.api.utils.ReflectionsUtil;
 import cc.funkemunky.api.utils.blockbox.BlockBox;
+import lombok.val;
 import net.minecraft.server.v1_10_R1.*;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -40,19 +42,20 @@ public class BlockBox1_10_R1 implements BlockBox {
                         if (BlockUtils.collisionBoundingBoxes.containsKey(block.getType())) {
                             aabbs.add((AxisAlignedBB) BlockUtils.collisionBoundingBoxes.get(block.getType()).add(block.getLocation().toVector()).toAxisAlignedBB());
                         } else {
-                            net.minecraft.server.v1_10_R1.World nmsWorld = ((CraftWorld) world).getHandle();
-                            net.minecraft.server.v1_10_R1.IBlockData nmsiBlockData = ((CraftWorld) world).getHandle().getType(new BlockPosition(x, y, z));
+                            net.minecraft.server.v1_10_R1.World nmsWorld = ((org.bukkit.craftbukkit.v1_10_R1.CraftWorld) world).getHandle();
+                            net.minecraft.server.v1_10_R1.BlockPosition pos = new net.minecraft.server.v1_10_R1.BlockPosition(x, y, z);
+                            net.minecraft.server.v1_10_R1.IBlockData nmsiBlockData = ((org.bukkit.craftbukkit.v1_10_R1.CraftWorld) world).getHandle().getType(pos);
                             net.minecraft.server.v1_10_R1.Block nmsBlock = nmsiBlockData.getBlock();
 
-                            List<AxisAlignedBB> preBoxes = new ArrayList<>();
+                            List<net.minecraft.server.v1_10_R1.AxisAlignedBB> preBoxes = new ArrayList<>();
 
-                            nmsBlock.updateState(nmsiBlockData, nmsWorld, new BlockPosition(x, y, z));
-                            nmsBlock.a(nmsiBlockData, nmsWorld, new BlockPosition(x, y, z), (AxisAlignedBB) box.toAxisAlignedBB(), preBoxes, null);
+                            nmsBlock.updateState(nmsiBlockData, nmsWorld, pos);
+                            nmsBlock.a(nmsiBlockData, nmsWorld, pos, (AxisAlignedBB) box.toAxisAlignedBB(), preBoxes, null);
 
-                            if(preBoxes.size() > 0 || !block.getType().toString().contains("SHULKER")) {
+                            if(preBoxes.size() > 0) {
                                 aabbs.addAll(preBoxes);
                             } else {
-                                aabbs.add(nmsBlock.a(nmsiBlockData, nmsWorld, new BlockPosition(x, y, z)));
+                                aabbs.add(nmsBlock.a(nmsiBlockData, nmsWorld, pos));
                             }
                         }
                         /*
