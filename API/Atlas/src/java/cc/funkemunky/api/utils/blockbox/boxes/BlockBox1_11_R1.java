@@ -5,7 +5,9 @@ import cc.funkemunky.api.utils.BoundingBox;
 import cc.funkemunky.api.utils.MathUtils;
 import cc.funkemunky.api.utils.ReflectionsUtil;
 import cc.funkemunky.api.utils.blockbox.BlockBox;
+import lombok.val;
 import net.minecraft.server.v1_11_R1.*;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -54,6 +56,22 @@ public class BlockBox1_11_R1 implements BlockBox {
                                 aabbs.addAll(preBoxes);
                             } else {
                                 aabbs.add(nmsBlock.b(nmsiBlockData, nmsWorld, new BlockPosition(x, y, z)));
+                            }
+                            if(nmsBlock instanceof BlockShulkerBox) {
+                                TileEntity tileentity = nmsWorld.getTileEntity(pos);
+                                BlockShulkerBox shulker = (BlockShulkerBox) nmsBlock;
+
+                                if(tileentity instanceof TileEntityShulkerBox) {
+                                    TileEntityShulkerBox entity = (TileEntityShulkerBox) tileentity;
+                                    //Bukkit.broadcastMessage("entity");
+                                    aabbs.add(entity.a(nmsiBlockData));
+
+                                    val loc = block.getLocation();
+                                    if(entity.p().toString().contains("OPEN")) {
+                                        aabbs.add(new AxisAlignedBB(loc.getX(),loc.getY(),loc.getZ(),loc.getX() + 1,loc.getY() + 1.5,loc.getZ() + 1));
+                                        Bukkit.broadcastMessage("OPEN");
+                                    }
+                                }
                             }
                         }
                         /*

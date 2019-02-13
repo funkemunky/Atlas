@@ -105,7 +105,7 @@ public class BlockBox1_9_R2 implements BlockBox {
                             nmsBlock.updateState(nmsiBlockData, nmsWorld, new BlockPosition(x, y, z));
                             nmsBlock.a(nmsiBlockData, nmsWorld, new BlockPosition(x, y, z), (AxisAlignedBB) box.toAxisAlignedBB(), preBoxes, null);
 
-                            if(preBoxes.size() > 0) {
+                            if(preBoxes.size() > 0 || !block.getType().toString().contains("SHULKER")) {
                                 aabbs.addAll(preBoxes);
                             } else {
                                 aabbs.add(nmsBlock.a(nmsiBlockData, nmsWorld, new BlockPosition(x, y, z)));

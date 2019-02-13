@@ -236,6 +236,30 @@ public class MiscUtils {
         return thing;
     }
 
+    public static List<File> getAtlasDependingPlugins() {
+        List<File> plugins = new ArrayList<>();
+
+        final File pluginDir = new File("plugins");
+        if (!pluginDir.isDirectory()) {
+            return plugins;
+        }
+        for (final File f : pluginDir.listFiles()) {
+            try {
+                if (f.getName().endsWith(".jar")) {
+                    final PluginDescriptionFile pdf = Atlas.getInstance().getPluginLoader().getPluginDescription(f);
+                    if (pdf.getDepend().contains("Atlas")) {
+                        plugins.add(f);
+                    }
+                }
+            }
+            catch (InvalidDescriptionException e2) {
+                //Empty catch block.
+            }
+        }
+
+        return plugins;
+    }
+
     public static void loadPlugin(final String pl) {
         Plugin targetPlugin = null;
         String msg = "";

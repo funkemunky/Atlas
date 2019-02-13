@@ -15,11 +15,14 @@ import cc.funkemunky.api.utils.blockbox.BlockBoxManager;
 import cc.funkemunky.api.utils.blockbox.impl.BoundingBoxes;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.val;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
+import org.bukkit.plugin.InvalidDescriptionException;
+import org.bukkit.plugin.InvalidPluginException;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -110,16 +113,19 @@ public class Atlas extends JavaPlugin {
         }
 
         if(enableDependingPlugins) {
-            new BukkitRunnable() {
-                public void run() {
-                    MiscUtils.printToConsole("&7Reloading plugins using Atlas as a dependency...");
-                    Arrays.stream(Bukkit.getPluginManager().getPlugins()).filter(plugin -> !plugin.isEnabled() && plugin.getDescription().getDepend().contains("Atlas")).forEach(plugin -> {
-                        MiscUtils.unloadPlugin(plugin.getName());
-                        MiscUtils.loadPlugin(plugin.getName());
-                    });
-                    MiscUtils.printToConsole("&aCompleted!");
+            MiscUtils.printToConsole("&7Reloading plugins using Atlas as a dependency...");
+            MiscUtils.getAtlasDependingPlugins().forEach(file -> {
+                try {
+                    val plDesc = getPluginLoader().getPluginDescription(file);
+
+                    if(Arrays.stream(getServer().getPluginManager().getPlugins()).noneMatch(plugin -> plugin.getName().equals(plDesc.getName()))) {
+                        getServer().getPluginManager().loadPlugin(file);
+                    }
+                } catch (InvalidDescriptionException | InvalidPluginException e) {
+                    e.printStackTrace();
                 }
-            }.runTaskLaterAsynchronously(this, 40L);
+            });
+            MiscUtils.printToConsole("&aCompleted!");
         }
 
         MiscUtils.printToConsole(Color.Green + "Successfully loaded Atlas and its utilities!");
@@ -130,7 +136,9 @@ public class Atlas extends JavaPlugin {
         HandlerList.unregisterAll(this);
         Bukkit.getScheduler().cancelTasks(this);
 
-        Arrays.stream(Bukkit.getPluginManager().getPlugins()).filter(plugin -> plugin.getDescription().getDepend().contains("Atlas")).forEach(plugin -> Bukkit.getPluginManager().disablePlugin(plugin));
+        Arrays.stream(Bukkit.getPluginManager().getPlugins()).filter(plugin -> plugin.getDescription().getDepend().contains("Atlas")).forEach(plugin -> {
+            MiscUtils.unloadPlugin(plugin.getName());
+        });
         threadPool.shutdownNow();
         schedular.shutdownNow();
     }
