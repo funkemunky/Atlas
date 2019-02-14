@@ -11,14 +11,7 @@
     <bookmark url="file://$PROJECT_DIR$/Atlas/src/java/cc/funkemunky/api/database/sql/MySQLDatabase.java" line="42" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a9dc43c0-7a81-4135-9d37-7a26978435ee" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Atlas/src/java/cc/funkemunky/api/utils/BlockUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/Atlas/src/java/cc/funkemunky/api/utils/BlockUtils.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Atlas/src/java/cc/funkemunky/api/utils/blockbox/boxes/BlockBox1_11_R1.java" beforeDir="false" afterPath="$PROJECT_DIR$/Atlas/src/java/cc/funkemunky/api/utils/blockbox/boxes/BlockBox1_11_R1.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Atlas/src/java/cc/funkemunky/api/utils/blockbox/boxes/BlockBox1_12_R1.java" beforeDir="false" afterPath="$PROJECT_DIR$/Atlas/src/java/cc/funkemunky/api/utils/blockbox/boxes/BlockBox1_12_R1.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Atlas/src/java/cc/funkemunky/api/utils/blockbox/boxes/BlockBox1_13_R1.java" beforeDir="false" afterPath="$PROJECT_DIR$/Atlas/src/java/cc/funkemunky/api/utils/blockbox/boxes/BlockBox1_13_R1.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Atlas/src/java/cc/funkemunky/api/utils/blockbox/boxes/BlockBox1_13_R2.java" beforeDir="false" afterPath="$PROJECT_DIR$/Atlas/src/java/cc/funkemunky/api/utils/blockbox/boxes/BlockBox1_13_R2.java" afterDir="false" />
-    </list>
+    <list default="true" id="a9dc43c0-7a81-4135-9d37-7a26978435ee" name="Default Changelist" comment="" />
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -30,7 +23,7 @@
     <session id="4320345">
       <usages-collector id="statistics.lifecycle.project">
         <counts>
-          <entry key="project.closed" value="10" />
+          <entry key="project.closed" value="11" />
           <entry key="project.open.time.0" value="3" />
           <entry key="project.open.time.1" value="3" />
           <entry key="project.open.time.2" value="1" />
@@ -156,10 +149,10 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="jar://$PROJECT_DIR$/../compiled-depends/spigot-1.13.1-R0.1-SNAPSHOT-b1919.jar!/org/bukkit/Material.class">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="154">
+            <state relative-caret-position="-36615">
               <caret line="829" column="24" selection-start-line="829" selection-start-column="21" selection-end-line="829" selection-end-column="24" />
             </state>
           </provider>
@@ -174,11 +167,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Atlas/src/java/cc/funkemunky/api/utils/BlockUtils.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="4896">
-              <caret line="302" column="199" selection-start-line="302" selection-start-column="199" selection-end-line="302" selection-end-column="199" />
+            <state relative-caret-position="282">
+              <caret line="302" column="200" selection-start-line="302" selection-start-column="200" selection-end-line="302" selection-end-column="200" />
             </state>
           </provider>
         </entry>
@@ -220,10 +213,10 @@
       <find>1_12_R1</find>
       <find>1_13_R1</find>
       <find>SHU</find>
-      <find>SHULKER_BOX</find>
       <find>float n()</find>
       <find>entity.p().toString().contains(&quot;OPEN&quot;) || entity.p().toString().contains(&quot;CLOSING&quot;)</find>
       <find>SHULKER</find>
+      <find>SHULKER_BOX</find>
     </findStrings>
     <replaceStrings>
       <replace>return new BoundingBox</replace>
@@ -288,9 +281,8 @@
     </option>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="-8" />
-    <option name="width" value="1680" />
-    <option name="height" value="938" />
+    <option name="width" value="1920" />
+    <option name="height" value="1080" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectView">
@@ -432,7 +424,7 @@
     <property name="Repository.Attach.JavaDocs" value="false" />
     <property name="Repository.Attach.Sources" value="false" />
     <property name="SearchEverywhereHistoryKey" value="BlockShul&#9;FILE&#9;jar://C:/Users/suckm/Documents/GitHub/Atlas/compiled-depends/spigot-1.12.2.jar!/net/minecraft/server/v1_12_R1/BlockShulkerBox.class&#10;net.minecraft.Material&#9;PSI&#9;JAVA://net.minecraft.server.v1_13_R2.Material&#10;org.bukkit.Material&#9;PSI&#9;JAVA://org.bukkit.Material&#10;org.bukkit.EntityType&#9;PSI&#9;JAVA://org.bukkit.entity.EntityType&#10;BlockSnow&#9;PSI&#9;JAVA://net.minecraft.server.v1_11_R1.BlockSnow&#10;BlockChest&#9;PSI&#9;JAVA://net.minecraft.server.v1_11_R1.BlockChest&#10;BlockStairs&#9;PSI&#9;JAVA://net.minecraft.server.v1_11_R1.BlockStairs&#10;MinecraftServer&#9;FILE&#9;jar://C:/Users/suckm/Documents/GitHub/Atlas/compiled-depends/paper-1.13.2.jar!/net/minecraft/server/v1_13_R2/MinecraftServer.class&#10;VoxelShape&#9;PSI&#9;JAVA://net.minecraft.server.v1_13_R2.VoxelShape&#10;org.bukkit.Block&#9;PSI&#9;JAVA://org.bukkit.block.Block&#10;BlockFace&#9;PSI&#9;JAVA://org.bukkit.block.BlockFace&#10;BlockPistonMoving&#9;PSI&#9;JAVA://net.minecraft.server.v1_8_R3.BlockPistonMoving&#10;BlockPistonExtension&#9;PSI&#9;JAVA://net.minecraft.server.v1_8_R3.BlockPistonExtension&#10;BlockPiston&#9;PSI&#9;JAVA://net.minecraft.server.v1_8_R3.BlockPiston&#10;Blocks&#9;PSI&#9;JAVA://net.minecraft.server.v1_8_R3.Blocks" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1550086034546" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1550092220131" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/../compiled-depends/spigot-1.8.8-R0.1-SNAPSHOT.jar!/" />
     <property name="project.structure.last.edited" value="Artifacts" />
     <property name="project.structure.proportion" value="0.17285156" />
@@ -471,9 +463,8 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
-    <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.28837952" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.28837952" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Image Layers" order="2" />
       <window_info id="Designer" order="3" />
@@ -481,16 +472,16 @@
       <window_info id="Capture Tool" order="5" />
       <window_info id="Favorites" order="6" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
-      <window_info active="true" anchor="bottom" id="Find" order="1" sideWeight="0.49946696" visible="true" weight="0.329718" />
+      <window_info anchor="bottom" id="Find" order="1" sideWeight="0.49946696" weight="0.329718" />
       <window_info anchor="bottom" id="Run" order="2" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="bottom" id="Terminal" order="7" />
-      <window_info anchor="bottom" id="Event Log" order="8" sideWeight="0.50053304" side_tool="true" visible="true" weight="0.329718" />
+      <window_info anchor="bottom" id="Event Log" order="8" sideWeight="0.5021322" side_tool="true" visible="true" weight="0.3275488" />
       <window_info anchor="bottom" id="Version Control" order="9" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Messages" order="10" sideWeight="0.49840087" weight="0.3275488" />
+      <window_info anchor="bottom" id="Messages" order="10" sideWeight="0.4978678" visible="true" weight="0.3275488" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
@@ -854,17 +845,17 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Atlas/src/java/cc/funkemunky/api/utils/BlockUtils.java">
+    <entry file="jar://$PROJECT_DIR$/../compiled-depends/spigot-1.13.1-R0.1-SNAPSHOT-b1919.jar!/org/bukkit/Material.class">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="4896">
-          <caret line="302" column="199" selection-start-line="302" selection-start-column="199" selection-end-line="302" selection-end-column="199" />
+        <state relative-caret-position="-36615">
+          <caret line="829" column="24" selection-start-line="829" selection-start-column="21" selection-end-line="829" selection-end-column="24" />
         </state>
       </provider>
     </entry>
-    <entry file="jar://$PROJECT_DIR$/../compiled-depends/spigot-1.13.1-R0.1-SNAPSHOT-b1919.jar!/org/bukkit/Material.class">
+    <entry file="file://$PROJECT_DIR$/Atlas/src/java/cc/funkemunky/api/utils/BlockUtils.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="154">
-          <caret line="829" column="24" selection-start-line="829" selection-start-column="21" selection-end-line="829" selection-end-column="24" />
+        <state relative-caret-position="282">
+          <caret line="302" column="200" selection-start-line="302" selection-start-column="200" selection-end-line="302" selection-end-column="200" />
         </state>
       </provider>
     </entry>

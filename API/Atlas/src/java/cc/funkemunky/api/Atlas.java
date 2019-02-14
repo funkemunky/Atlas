@@ -112,22 +112,6 @@ public class Atlas extends JavaPlugin {
             }
         }
 
-        if(enableDependingPlugins) {
-            MiscUtils.printToConsole("&7Reloading plugins using Atlas as a dependency...");
-            MiscUtils.getAtlasDependingPlugins().forEach(file -> {
-                try {
-                    val plDesc = getPluginLoader().getPluginDescription(file);
-
-                    if(Arrays.stream(getServer().getPluginManager().getPlugins()).noneMatch(plugin -> plugin.getName().equals(plDesc.getName()))) {
-                        getServer().getPluginManager().loadPlugin(file);
-                    }
-                } catch (InvalidDescriptionException | InvalidPluginException e) {
-                    e.printStackTrace();
-                }
-            });
-            MiscUtils.printToConsole("&aCompleted!");
-        }
-
         MiscUtils.printToConsole(Color.Green + "Successfully loaded Atlas and its utilities!");
     }
 
