@@ -16,6 +16,7 @@ import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class BlockBox1_9_R2 implements BlockBox {
     @Override
@@ -64,7 +65,7 @@ public class BlockBox1_9_R2 implements BlockBox {
             }
         }
 
-        aabbs.forEach(aabb -> boxes.add(ReflectionsUtil.toBoundingBox(aabb)));
+        aabbs.stream().filter(object -> object != null).forEach(aabb -> boxes.add(ReflectionsUtil.toBoundingBox(aabb)));
         return boxes;
     }
 
@@ -120,7 +121,7 @@ public class BlockBox1_9_R2 implements BlockBox {
                 }
             }
         }
-        aabbs.forEach(aabb -> boxes.add(ReflectionsUtil.toBoundingBox(aabb)));
+        aabbs.stream().filter(object -> object != null).forEach(aabb -> boxes.add(ReflectionsUtil.toBoundingBox(aabb)));
         return boxes;
     }
 

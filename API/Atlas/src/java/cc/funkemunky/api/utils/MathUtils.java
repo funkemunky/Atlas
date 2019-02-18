@@ -27,6 +27,14 @@ public class MathUtils {
     public static boolean approxEquals(double accuracy, double... equals) {
         return MathUtils.getDelta(Arrays.stream(equals).sum() / equals.length, equals[0]) < accuracy;
     }
+    public static double getDistanceToBox(Vector vec, BoundingBox box) {
+        return vec.distance(getCenterOfBox(box));
+    }
+
+    public static Vector getCenterOfBox(BoundingBox box) {
+        return box.getMinimum().midpoint(box.getMaximum());
+    }
+
 
     private static long gcd(long x, long y) {
         return (y == 0) ? x : gcd(y, x % y);

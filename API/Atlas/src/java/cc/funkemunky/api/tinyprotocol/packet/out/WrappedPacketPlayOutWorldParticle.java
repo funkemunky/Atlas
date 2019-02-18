@@ -59,7 +59,7 @@ public class WrappedPacketPlayOutWorldParticle {
             ReflectionsUtil.getMethodValue(ReflectionsUtil.getMethod(ReflectionsUtil.getNMSClass("PlayerConnection"), "sendPacket", ReflectionsUtil.getNMSClass("Packet")), pCon, packet);
         } else {
             try {
-                packet = ReflectionsUtil.getNMSClass("PacketPlayOutWorldParticles").getConstructor(String.class, boolean.class, float.class, float.class, float.class, float.class, float.class, float.class, float.class, int.class, int[].class).newInstance(type.toString(), j, x, y, z, xOffset, yOffset, zOffset, speed, amount, data);
+                packet = ReflectionsUtil.getNMSClass("PacketPlayOutWorldParticles").getConstructor(String.class, float.class, float.class, float.class, float.class, float.class, float.class, float.class, int.class).newInstance(type.toString(), x, y, z, xOffset, yOffset, zOffset, speed, amount);
             } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e1) {
                 e1.printStackTrace();
             }

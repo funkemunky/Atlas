@@ -116,7 +116,7 @@ public class BlockBox1_7_R4 implements BlockBox {
             }
         }
 
-        aabbs.forEach(aabb -> boxes.add(ReflectionsUtil.toBoundingBox(aabb)));
+        aabbs.stream().filter(object -> object != null).forEach(aabb -> boxes.add(ReflectionsUtil.toBoundingBox(aabb)));
         return boxes;
     }
 

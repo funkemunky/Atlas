@@ -36,7 +36,6 @@ import java.util.concurrent.*;
 public class Atlas extends JavaPlugin {
     @Getter
     private static Atlas instance;
-    private TinyProtocolHandler tinyProtocolHandler;
     private BlockBoxManager blockBoxManager;
     private ExecutorService threadPool;
     private ScheduledExecutorService schedular;
@@ -48,6 +47,7 @@ public class Atlas extends JavaPlugin {
     private Mongo mongo;
     private DatabaseManager databaseManager;
     private BoundingBoxes boxes;
+    private TinyProtocolHandler tinyProtocolHandler;
 
     @ConfigSetting(path = "updater")
     private boolean autoDownload = false;
@@ -61,16 +61,12 @@ public class Atlas extends JavaPlugin {
     public void onEnable() {
         instance = this;
         saveDefaultConfig();
-
+        tinyProtocolHandler = new TinyProtocolHandler();
         consoleSender = Bukkit.getConsoleSender();
 
         MiscUtils.printToConsole(Color.Red + "Loading Atlas...");
         threadPool = Executors.newFixedThreadPool(4);
         schedular = Executors.newSingleThreadScheduledExecutor();
-
-        schedular.schedule(() -> {
-            tinyProtocolHandler = new TinyProtocolHandler();
-        }, 2, TimeUnit.SECONDS);
 
         blockBoxManager = new BlockBoxManager();
         commandManager = new CommandManager(this);

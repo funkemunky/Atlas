@@ -68,7 +68,7 @@ public class BlockBox1_10_R1 implements BlockBox {
             }
         }
 
-        aabbs.forEach(aabb -> boxes.add(ReflectionsUtil.toBoundingBox(aabb)));
+        aabbs.stream().filter(object -> object != null).forEach(aabb -> boxes.add(ReflectionsUtil.toBoundingBox(aabb)));
         return boxes;
     }
 
@@ -123,7 +123,7 @@ public class BlockBox1_10_R1 implements BlockBox {
                 }
             }
         }
-        aabbs.forEach(aabb -> boxes.add(ReflectionsUtil.toBoundingBox(aabb)));
+        aabbs.stream().filter(object -> object != null).forEach(aabb -> boxes.add(ReflectionsUtil.toBoundingBox(aabb)));
         return boxes;
     }
 
