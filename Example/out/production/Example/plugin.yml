@@ -1,0 +1,5 @@
+name: ExamplePlugin
+main: cc.funkemunky.example.Example
+description: An Atlas example plugin.
+version: 1.0
+author: funkemunky

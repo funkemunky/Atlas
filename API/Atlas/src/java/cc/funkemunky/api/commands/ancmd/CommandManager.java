@@ -1,11 +1,9 @@
 package cc.funkemunky.api.commands.ancmd;
 
-import cc.funkemunky.api.commands.FunkeArgument;
 import cc.funkemunky.api.utils.Color;
 import cc.funkemunky.api.utils.JsonMessage;
 import cc.funkemunky.api.utils.MathUtils;
 import cc.funkemunky.api.utils.MiscUtils;
-import com.google.common.collect.Lists;
 import lombok.Getter;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandMap;
@@ -83,7 +81,7 @@ public class CommandManager implements CommandExecutor {
 
                     String labelFinal = IntStream.range(0, subCommand).mapToObj(x -> " " + args[x]).collect(Collectors.joining("", label, ""));
                     if(command.permission().length == 0 || Arrays.stream(command.permission()).anyMatch(sender::hasPermission)) {
-                        CommandAdapter adapter = new CommandAdapter(sender, cmd, sender instanceof Player ? (Player) sender : null, labelFinal, modArgs);
+                        CommandAdapter adapter = new CommandAdapter(sender, cmd, sender instanceof Player ? (Player) sender : null, labelFinal, command, modArgs);
                         try {
                             entry.getKey().invoke(entry.getValue(), adapter);
                         } catch (Exception e) {
@@ -103,9 +101,7 @@ public class CommandManager implements CommandExecutor {
         return new ColorScheme(Color.Gold + Color.Bold, Color.Gray, Color.Yellow, Color.White, Color.Dark_Gray, Color.Red, Color.White);
     }
 
-    public void runHelpMessage(CommandAdapter command, CommandSender sender, @Nullable ColorScheme scheme) {
-        ColorScheme colorScheme = scheme != null ? scheme : getDefaultScheme();
-
+    public void runHelpMessage(CommandAdapter command, CommandSender sender, ColorScheme scheme) {
         try {
             int page = command.getArgs().length > 0 ? Integer.parseInt(command.getArgs()[0]) : 1;
             Set<Command> argumentSet = new HashSet<>();
@@ -120,7 +116,28 @@ public class CommandManager implements CommandExecutor {
 
             List<Command> arguments = new ArrayList<>(argumentSet);
 
+            sender.sendMessage(MiscUtils.line(Color.Dark_Gray));
+            sender.sendMessage(scheme.getTitle() + command.getAnnotation().display() + scheme.getBody() + " Help " + scheme.getValue() + "Page (" + page + " / " + (int) MathUtils.round(arguments.size() / 6D) + ")");
+            sender.sendMessage("");
+            sender.sendMessage(Color.translate(scheme.getBody2nd()) + "<> " + scheme.getBody() + "= required. " + scheme.getBody2nd() + " [] " + scheme.getBody() +  "= optional.");
+            sender.sendMessage("");
             if (sender instanceof Player) {
+                StringBuilder cmdaliasesFormatted = new StringBuilder();
+                List<String> cmdaliases = Arrays.asList(command.getAnnotation().aliases());
+                if (cmdaliases.size() > 0) {
+                    for (String aliase : cmdaliases) {
+                        cmdaliasesFormatted.append(scheme.getValue()).append(aliase).append(scheme.getBody()).append(", ");
+                    }
+                    int length = cmdaliasesFormatted.length();
+                    cmdaliasesFormatted = new StringBuilder(cmdaliasesFormatted.substring(0, length - 2));
+                } else {
+                    cmdaliasesFormatted = new StringBuilder(scheme.getError() + "None");
+                }
+                JsonMessage cmdMessage = new JsonMessage();
+                String commandText = Color.translate((command.getAnnotation().permission().length > 0 ? scheme.getTitle() + "Permissions: " + scheme.getValue() + " " + Arrays.toString(command.getAnnotation().permission()) : scheme.getTitle() + "Permission: " + scheme.getValue() + "none")
+                        + "\n" + scheme.getTitle() +  "Aliases: " + scheme.getValue() + cmdaliasesFormatted);
+                cmdMessage.addText(scheme.getBody()+ "/" + scheme.getValue() + command.getLabel().toLowerCase() + scheme.getBody() + " to " + command.getAnnotation().description()).addHoverText(commandText);
+                cmdMessage.sendToPlayer((Player) sender);
                 for (int i = (page - 1) * 6; i < Math.min(page * 6, arguments.size()); i++) {
                     JsonMessage message = new JsonMessage();
 
@@ -129,28 +146,30 @@ public class CommandManager implements CommandExecutor {
                     List<String> aliases = Arrays.asList(argument.aliases());
                     if (aliases.size() > 0) {
                         for (String aliase : aliases) {
-                            aliasesFormatted.append(colorScheme.getValue()).append(aliase).append(colorScheme.getBody()).append(", ");
+                            aliasesFormatted.append(scheme.getValue()).append(aliase).append(scheme.getBody()).append(", ");
                         }
                         int length = aliasesFormatted.length();
                         aliasesFormatted = new StringBuilder(aliasesFormatted.substring(0, length - 2));
                     } else {
-                        aliasesFormatted = new StringBuilder(colorScheme.getError() + "None");
+                        aliasesFormatted = new StringBuilder(scheme.getError() + "None");
                     }
 
 
-                    String hoverText = Color.translate((argument.permission().length > 0 ? colorScheme.getTitle() + "Permissions: " + colorScheme.getValue() + " " + Arrays.toString(argument.permission()) : colorScheme.getTitle() + "Permission: " + colorScheme.getValue() + "none")
-                            + "\n" + colorScheme.getTitle() +  "Aliases: " + colorScheme.getValue() + aliasesFormatted);
-                    message.addText(colorScheme.getBody()+ "/" + command.getLabel().toLowerCase() + colorScheme.getValue() + " " + argument.display() + colorScheme.getBody() + " to " + argument.description()).addHoverText(hoverText);
+                    String hoverText = Color.translate((argument.permission().length > 0 ? scheme.getTitle() + "Permissions: " + scheme.getValue() + " " + Arrays.toString(argument.permission()) : scheme.getTitle() + "Permission: " + scheme.getValue() + "none")
+                            + "\n" + scheme.getTitle() +  "Aliases: " + scheme.getValue() + aliasesFormatted.toString());
+                    message.addText(scheme.getBody()+ "/" + command.getLabel().toLowerCase() + scheme.getValue() + " " + argument.display() + scheme.getBody() + " to " + argument.description()).addHoverText(hoverText);
                     message.sendToPlayer((Player) sender);
                 }
             } else {
+                sender.sendMessage(scheme.getBody()+ "/" + scheme.getValue() + command.getLabel().toLowerCase() + scheme.getBody() + " to " + command.getAnnotation().description());
                 for (int i = (page - 1) * 6; i < Math.min(arguments.size(), page * 6); i++) {
                     Command argument = arguments.get(i);
-                    sender.sendMessage(colorScheme.getBody()+ "/" + command.getLabel().toLowerCase() + colorScheme.getValue() + " " + argument.display() + colorScheme.getBody() + " to " + argument.description());
+                    sender.sendMessage(scheme.getBody()+ "/" + command.getLabel().toLowerCase() + scheme.getValue() + " " + argument.display() + scheme.getBody() + " to " + argument.description());
                 }
             }
+            sender.sendMessage(MiscUtils.line(Color.Dark_Gray));
         } catch(NumberFormatException e) {
-            sender.sendMessage(colorScheme.getError() + "The page input must be a number only!");
+            sender.sendMessage(scheme.getError() + "The page input must be a number only!");
         }
         /*try {
             int page = args.length > 0 ? Integer.parseInt(args[0]) : 1;

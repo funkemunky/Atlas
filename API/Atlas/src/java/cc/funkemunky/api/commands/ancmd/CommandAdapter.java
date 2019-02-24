@@ -15,5 +15,6 @@ public class CommandAdapter {
     private Command command;
     private Player player;
     private String label;
+    private cc.funkemunky.api.commands.ancmd.Command annotation;
     private String[] args;
 }

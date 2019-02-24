@@ -37,7 +37,7 @@ public class SpigotCompleter implements TabCompleter {
                 Entry<Method, Object> entry = completers.get(cmdLabel);
                 try {
                     return (List<String>) entry.getKey().invoke(entry.getValue(),
-                            new CommandAdapter(sender, command, sender instanceof Player ? (Player) sender : null, label, args));
+                            new CommandAdapter(sender, command, sender instanceof Player ? (Player) sender : null, label, null, args));
                 } catch (IllegalArgumentException | IllegalAccessException | InvocationTargetException e) {
                     e.printStackTrace();
                 }
