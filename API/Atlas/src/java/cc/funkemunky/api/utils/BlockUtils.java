@@ -274,6 +274,10 @@ public class BlockUtils {
     public static boolean isLiquid(Block block) {
         return block.getType().toString().contains("WATER") || block.getType().toString().contains("LAVA");
     }
+    
+    public static boolean isStationaryLiquid(Block block) {
+        return isLiquid(block) && (block.getType() == Material.STATIONARY_LAVA || block.getType() == Material.STATIONARY_WATER);
+    }
 
     public static boolean isClimbableBlock(Block block) {
         return block.getType() == Material.LADDER || block.getType() == Material.VINE;
