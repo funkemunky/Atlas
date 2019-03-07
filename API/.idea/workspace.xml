@@ -227,7 +227,7 @@
       </list>
     </option>
   </component>
-  <component name="ProjectFrameBounds" extendedState="7">
+  <component name="ProjectFrameBounds" extendedState="6">
     <option name="x" value="2" />
     <option name="y" value="6" />
     <option name="width" value="1936" />
@@ -375,7 +375,7 @@
     <property name="SearchEverywhereHistoryKey" value="BlockShul&#9;FILE&#9;jar://C:/Users/suckm/Documents/GitHub/Atlas/compiled-depends/spigot-1.12.2.jar!/net/minecraft/server/v1_12_R1/BlockShulkerBox.class&#10;net.minecraft.Material&#9;PSI&#9;JAVA://net.minecraft.server.v1_13_R2.Material&#10;org.bukkit.Material&#9;PSI&#9;JAVA://org.bukkit.Material&#10;org.bukkit.EntityType&#9;PSI&#9;JAVA://org.bukkit.entity.EntityType&#10;BlockSnow&#9;PSI&#9;JAVA://net.minecraft.server.v1_11_R1.BlockSnow&#10;BlockChest&#9;PSI&#9;JAVA://net.minecraft.server.v1_11_R1.BlockChest&#10;BlockStairs&#9;PSI&#9;JAVA://net.minecraft.server.v1_11_R1.BlockStairs&#10;MinecraftServer&#9;FILE&#9;jar://C:/Users/suckm/Documents/GitHub/Atlas/compiled-depends/paper-1.13.2.jar!/net/minecraft/server/v1_13_R2/MinecraftServer.class&#10;VoxelShape&#9;PSI&#9;JAVA://net.minecraft.server.v1_13_R2.VoxelShape&#10;org.bukkit.Block&#9;PSI&#9;JAVA://org.bukkit.block.Block&#10;BlockFace&#9;PSI&#9;JAVA://org.bukkit.block.BlockFace&#10;BlockPistonMoving&#9;PSI&#9;JAVA://net.minecraft.server.v1_8_R3.BlockPistonMoving&#10;BlockPistonExtension&#9;PSI&#9;JAVA://net.minecraft.server.v1_8_R3.BlockPistonExtension&#10;BlockPiston&#9;PSI&#9;JAVA://net.minecraft.server.v1_8_R3.BlockPiston&#10;Blocks&#9;PSI&#9;JAVA://net.minecraft.server.v1_8_R3.Blocks" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1551980860853" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1551980988678" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/../../nSpigot" />
     <property name="project.structure.last.edited" value="Artifacts" />
     <property name="project.structure.proportion" value="0.17285156" />
