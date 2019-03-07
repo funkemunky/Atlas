@@ -12,8 +12,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a9dc43c0-7a81-4135-9d37-7a26978435ee" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Atlas/src/java/cc/funkemunky/api/tinyprotocol/packet/in/WrappedInUseEntityPacket.java" beforeDir="false" afterPath="$PROJECT_DIR$/Atlas/src/java/cc/funkemunky/api/tinyprotocol/packet/in/WrappedInUseEntityPacket.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Atlas/src/java/cc/funkemunky/api/updater/Updater.java" beforeDir="false" afterPath="$PROJECT_DIR$/Atlas/src/java/cc/funkemunky/api/updater/Updater.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/artifacts/Atlas_jar/Atlas.jar" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/Atlas_jar/Atlas.jar" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -25,10 +25,10 @@
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Atlas/src/java/cc/funkemunky/api/commands/impl/AtlasCommand.java">
+        <entry file="file://$PROJECT_DIR$/Atlas/src/resources/plugin.yml">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="68">
-              <caret line="8" column="13" selection-start-line="8" selection-start-column="13" selection-end-line="8" selection-end-column="13" />
+            <state relative-caret-position="34">
+              <caret line="2" column="16" selection-start-line="2" selection-start-column="16" selection-end-line="2" selection-end-column="16" />
             </state>
           </provider>
         </entry>
@@ -42,7 +42,7 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Atlas/src/java/cc/funkemunky/api/updater/Updater.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="102">
@@ -60,11 +60,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Atlas/src/java/cc/funkemunky/api/tinyprotocol/packet/in/WrappedInUseEntityPacket.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="323">
-              <caret line="36" column="38" lean-forward="true" selection-start-line="36" selection-start-column="38" selection-end-line="36" selection-end-column="38" />
+            <state relative-caret-position="374">
+              <caret line="39" column="41" selection-start-line="39" selection-start-column="41" selection-end-line="39" selection-end-column="41" />
             </state>
           </provider>
         </entry>
@@ -218,12 +218,12 @@
         <option value="$PROJECT_DIR$/Atlas/src/java/cc/funkemunky/api/utils/blockbox/boxes/BlockBox1_12_R1.java" />
         <option value="$PROJECT_DIR$/Atlas/src/java/cc/funkemunky/api/utils/blockbox/boxes/BlockBox1_13_R2.java" />
         <option value="$PROJECT_DIR$/Atlas/src/java/cc/funkemunky/api/utils/blockbox/boxes/BlockBox1_13_R1.java" />
-        <option value="$PROJECT_DIR$/Atlas/src/resources/plugin.yml" />
         <option value="$PROJECT_DIR$/Atlas/src/java/cc/funkemunky/api/commands/ancmd/CommandAdapter.java" />
         <option value="$PROJECT_DIR$/Atlas/src/java/cc/funkemunky/api/commands/ancmd/SpigotCompleter.java" />
         <option value="$PROJECT_DIR$/Atlas/src/java/cc/funkemunky/api/commands/ancmd/CommandManager.java" />
-        <option value="$PROJECT_DIR$/Atlas/src/java/cc/funkemunky/api/updater/Updater.java" />
         <option value="$PROJECT_DIR$/Atlas/src/java/cc/funkemunky/api/tinyprotocol/packet/in/WrappedInUseEntityPacket.java" />
+        <option value="$PROJECT_DIR$/Atlas/src/resources/plugin.yml" />
+        <option value="$PROJECT_DIR$/Atlas/src/java/cc/funkemunky/api/updater/Updater.java" />
       </list>
     </option>
   </component>
@@ -272,76 +272,6 @@
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="java" type="462c0819:PsiDirectoryNode" />
               <item name="api" type="462c0819:PsiDirectoryNode" />
-              <item name="commands" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="API" type="b2602c69:ProjectViewProjectNode" />
-              <item name="Atlas" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="api" type="462c0819:PsiDirectoryNode" />
-              <item name="commands" type="462c0819:PsiDirectoryNode" />
-              <item name="ancmd" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="API" type="b2602c69:ProjectViewProjectNode" />
-              <item name="Atlas" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="api" type="462c0819:PsiDirectoryNode" />
-              <item name="commands" type="462c0819:PsiDirectoryNode" />
-              <item name="impl" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="API" type="b2602c69:ProjectViewProjectNode" />
-              <item name="Atlas" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="api" type="462c0819:PsiDirectoryNode" />
-              <item name="event" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="API" type="b2602c69:ProjectViewProjectNode" />
-              <item name="Atlas" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="api" type="462c0819:PsiDirectoryNode" />
-              <item name="tinyprotocol" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="API" type="b2602c69:ProjectViewProjectNode" />
-              <item name="Atlas" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="api" type="462c0819:PsiDirectoryNode" />
-              <item name="tinyprotocol" type="462c0819:PsiDirectoryNode" />
-              <item name="packet" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="API" type="b2602c69:ProjectViewProjectNode" />
-              <item name="Atlas" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="api" type="462c0819:PsiDirectoryNode" />
-              <item name="tinyprotocol" type="462c0819:PsiDirectoryNode" />
-              <item name="packet" type="462c0819:PsiDirectoryNode" />
-              <item name="in" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="API" type="b2602c69:ProjectViewProjectNode" />
-              <item name="Atlas" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="api" type="462c0819:PsiDirectoryNode" />
-              <item name="tinyprotocol" type="462c0819:PsiDirectoryNode" />
-              <item name="reflection" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="API" type="b2602c69:ProjectViewProjectNode" />
-              <item name="Atlas" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="api" type="462c0819:PsiDirectoryNode" />
               <item name="updater" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
@@ -375,7 +305,7 @@
     <property name="SearchEverywhereHistoryKey" value="BlockShul&#9;FILE&#9;jar://C:/Users/suckm/Documents/GitHub/Atlas/compiled-depends/spigot-1.12.2.jar!/net/minecraft/server/v1_12_R1/BlockShulkerBox.class&#10;net.minecraft.Material&#9;PSI&#9;JAVA://net.minecraft.server.v1_13_R2.Material&#10;org.bukkit.Material&#9;PSI&#9;JAVA://org.bukkit.Material&#10;org.bukkit.EntityType&#9;PSI&#9;JAVA://org.bukkit.entity.EntityType&#10;BlockSnow&#9;PSI&#9;JAVA://net.minecraft.server.v1_11_R1.BlockSnow&#10;BlockChest&#9;PSI&#9;JAVA://net.minecraft.server.v1_11_R1.BlockChest&#10;BlockStairs&#9;PSI&#9;JAVA://net.minecraft.server.v1_11_R1.BlockStairs&#10;MinecraftServer&#9;FILE&#9;jar://C:/Users/suckm/Documents/GitHub/Atlas/compiled-depends/paper-1.13.2.jar!/net/minecraft/server/v1_13_R2/MinecraftServer.class&#10;VoxelShape&#9;PSI&#9;JAVA://net.minecraft.server.v1_13_R2.VoxelShape&#10;org.bukkit.Block&#9;PSI&#9;JAVA://org.bukkit.block.Block&#10;BlockFace&#9;PSI&#9;JAVA://org.bukkit.block.BlockFace&#10;BlockPistonMoving&#9;PSI&#9;JAVA://net.minecraft.server.v1_8_R3.BlockPistonMoving&#10;BlockPistonExtension&#9;PSI&#9;JAVA://net.minecraft.server.v1_8_R3.BlockPistonExtension&#10;BlockPiston&#9;PSI&#9;JAVA://net.minecraft.server.v1_8_R3.BlockPiston&#10;Blocks&#9;PSI&#9;JAVA://net.minecraft.server.v1_8_R3.Blocks" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1551980988678" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1551981096052" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/../../nSpigot" />
     <property name="project.structure.last.edited" value="Artifacts" />
     <property name="project.structure.proportion" value="0.17285156" />
@@ -415,16 +345,15 @@
       <workItem from="1550844348534" duration="941000" />
       <workItem from="1551029647682" duration="5899000" />
       <workItem from="1551396054493" duration="672000" />
-      <workItem from="1551980406095" duration="369000" />
+      <workItem from="1551980406095" duration="690000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="16005000" />
+    <option name="totallyTimeSpent" value="16326000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
-    <editor active="true" />
     <layout>
       <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.32036248" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
@@ -759,13 +688,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Atlas/src/resources/plugin.yml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="34">
-          <caret line="2" column="16" selection-start-line="2" selection-start-column="16" selection-end-line="2" selection-end-column="16" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Atlas/src/java/cc/funkemunky/api/commands/ancmd/CommandManager.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="2023">
@@ -836,13 +758,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Atlas/src/java/cc/funkemunky/api/updater/Updater.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="102">
-          <caret line="15" column="48" selection-start-line="15" selection-start-column="48" selection-end-line="15" selection-end-column="48" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Atlas/src/java/cc/funkemunky/api/tinyprotocol/reflection/MethodInvoker.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="68">
@@ -852,8 +767,22 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/Atlas/src/java/cc/funkemunky/api/tinyprotocol/packet/in/WrappedInUseEntityPacket.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="323">
-          <caret line="36" column="38" lean-forward="true" selection-start-line="36" selection-start-column="38" selection-end-line="36" selection-end-column="38" />
+        <state relative-caret-position="374">
+          <caret line="39" column="41" selection-start-line="39" selection-start-column="41" selection-end-line="39" selection-end-column="41" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Atlas/src/resources/plugin.yml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="34">
+          <caret line="2" column="16" selection-start-line="2" selection-start-column="16" selection-end-line="2" selection-end-column="16" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Atlas/src/java/cc/funkemunky/api/updater/Updater.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="102">
+          <caret line="15" column="48" selection-start-line="15" selection-start-column="48" selection-end-line="15" selection-end-column="48" />
         </state>
       </provider>
     </entry>
