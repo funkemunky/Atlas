@@ -87,58 +87,7 @@ public class BlockBox1_9_R2 implements BlockBox {
 
     @Override
     public List<BoundingBox> getSpecificBox(Location loc) {
-        World world = loc.getWorld();
-
-        AxisAlignedBB collisionBox = (AxisAlignedBB) new BoundingBox(loc.toVector(), loc.toVector()).grow(1f, 1f, 1f).toAxisAlignedBB();
-        List<AxisAlignedBB> boxList = ((CraftWorld) world).getHandle().a(collisionBox);
-
-        List<AxisAlignedBB> aabbs = new ArrayList<>();
-        List<BoundingBox> boxes = new ArrayList<>();
-
-        BoundingBox box = new BoundingBox(loc.toVector(), loc.toVector()).grow(2, 2, 2);
-        int minX = MathUtils.floor(box.minX);
-        int maxX = MathUtils.floor(box.maxX + 1);
-        int minY = MathUtils.floor(box.minY);
-        int maxY = MathUtils.floor(box.maxY + 1);
-        int minZ = MathUtils.floor(box.minZ);
-        int maxZ = MathUtils.floor(box.maxZ + 1);
-
-
-        for (int x = minX; x < maxX; x++) {
-            for (int z = minZ; z < maxZ; z++) {
-                for (int y = minY - 1; y < maxY; y++) {
-                    org.bukkit.block.Block block = BlockUtils.getBlock(new Location(world, x, y, z));
-                    if (!block.getType().equals(Material.AIR) && block.getLocation().equals(loc)) {
-                        if (BlockUtils.collisionBoundingBoxes.containsKey(block.getType())) {
-                            aabbs.add((AxisAlignedBB) BlockUtils.collisionBoundingBoxes.get(block.getType()).add(block.getLocation().toVector()).toAxisAlignedBB());
-                        } else {
-                            net.minecraft.server.v1_9_R2.World nmsWorld = ((org.bukkit.craftbukkit.v1_9_R2.CraftWorld) world).getHandle();
-                            net.minecraft.server.v1_9_R2.BlockPosition pos = new net.minecraft.server.v1_9_R2.BlockPosition(x, y, z);
-                            net.minecraft.server.v1_9_R2.IBlockData nmsiBlockData = ((org.bukkit.craftbukkit.v1_9_R2.CraftWorld) world).getHandle().getType(pos);
-                            net.minecraft.server.v1_9_R2.Block nmsBlock = nmsiBlockData.getBlock();
-
-                            List<net.minecraft.server.v1_9_R2.AxisAlignedBB> preBoxes = new ArrayList<>();
-
-                            nmsBlock.updateState(nmsiBlockData, nmsWorld, pos);
-                            nmsBlock.a(nmsiBlockData, nmsWorld, pos, (net.minecraft.server.v1_9_R2.AxisAlignedBB) box.toAxisAlignedBB(), preBoxes, null);
-
-                            if(preBoxes.size() > 0) {
-                                aabbs.addAll(preBoxes);
-                            } else {
-                                aabbs.add(nmsBlock.a(nmsiBlockData, nmsWorld, pos));
-                            }
-                        }
-                        /*
-                        else {
-                            BoundingBox blockBox = new BoundingBox((float) nmsBlock.B(), (float) nmsBlock.D(), (float) nmsBlock.F(), (float) nmsBlock.C(), (float) nmsBlock.E(), (float) nmsBlock.G());
-                        }*/
-
-                    }
-                }
-            }
-        }
-        aabbs.stream().filter(object -> object != null).forEach(aabb -> boxes.add(ReflectionsUtil.toBoundingBox(aabb)));
-        return boxes;
+        return getCollidingBoxes(loc.getWorld(), new BoundingBox(loc.toVector(), loc.toVector()));
     }
 
     @Override

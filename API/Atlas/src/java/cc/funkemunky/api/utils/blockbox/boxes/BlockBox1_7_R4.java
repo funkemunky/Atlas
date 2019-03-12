@@ -89,52 +89,7 @@ public class BlockBox1_7_R4 implements BlockBox {
 
     @Override
     public List<BoundingBox> getSpecificBox(Location loc) {
-        World world = loc.getWorld();
-
-        BoundingBox box = new BoundingBox(loc.toVector(), loc.toVector()).grow(1,1,1);
-
-        List<AxisAlignedBB> aabbs = new ArrayList<>();
-        List<BoundingBox> boxes = new ArrayList<>();
-
-        int minX = MathUtils.floor(box.minX);
-        int maxX = MathUtils.floor(box.maxX + 1);
-        int minY = MathUtils.floor(box.minY);
-        int maxY = MathUtils.floor(box.maxY + 1);
-        int minZ = MathUtils.floor(box.minZ);
-        int maxZ = MathUtils.floor(box.maxZ + 1);
-
-
-        for (int x = minX; x < maxX; x++) {
-            for (int z = minZ; z < maxZ; z++) {
-                for (int y = minY - 1; y < maxY; y++) {
-                    org.bukkit.block.Block block = BlockUtils.getBlock(new Location(world, x, y, z));
-                    if (!block.getType().equals(Material.AIR) && block.getLocation().distance(BlockUtils.getBlock(loc).getLocation()) < 1) {
-                        if (BlockUtils.collisionBoundingBoxes.containsKey(block.getType())) {
-                            aabbs.add((AxisAlignedBB) BlockUtils.collisionBoundingBoxes.get(block.getType()).add(block.getLocation().toVector()).toAxisAlignedBB());
-                        } else {
-                            net.minecraft.server.v1_7_R4.World nmsWorld = ((CraftWorld) world).getHandle();
-                            net.minecraft.server.v1_7_R4.Block nmsBlock = ((CraftWorld) world).getHandle().getType(x, y, z);
-
-
-                            List<AxisAlignedBB> preBoxes = new ArrayList<>();
-
-                            nmsBlock.updateShape(nmsWorld, x, y, z);
-                            nmsBlock.a(nmsWorld, x, y, z, (AxisAlignedBB) box.toAxisAlignedBB(), preBoxes, null);
-
-                            if(preBoxes.size() > 0) {
-                                aabbs.addAll(preBoxes);
-                            } else {
-                                boxes.add(new BoundingBox((float) nmsBlock.x(), (float) nmsBlock.z(), (float) nmsBlock.B(), (float) nmsBlock.y(), (float) nmsBlock.A(), (float) nmsBlock.C()).add(block.getLocation().toVector()));
-                            }
-                        }
-
-                    }
-                }
-            }
-        }
-
-        aabbs.stream().filter(object -> object != null).forEach(aabb -> boxes.add(ReflectionsUtil.toBoundingBox(aabb)));
-        return boxes;
+        return getCollidingBoxes(loc.getWorld(), new BoundingBox(loc.toVector(), loc.toVector()));
     }
 
     @Override
