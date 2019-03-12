@@ -17,11 +17,11 @@ import org.bukkit.craftbukkit.v1_13_R1.entity.CraftLivingEntity;
 import org.bukkit.craftbukkit.v1_13_R1.entity.CraftPlayer;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
-import org.bukkit.util.Vector;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.FutureTask;
 
 public class BlockBox1_13_R1 implements BlockBox {
@@ -51,7 +51,7 @@ public class BlockBox1_13_R1 implements BlockBox {
                             net.minecraft.server.v1_13_R1.IBlockData nmsiBlockData = ((CraftWorld) world).getHandle().getType(pos);
                             net.minecraft.server.v1_13_R1.Block nmsBlock = nmsiBlockData.getBlock();
 
-                            VoxelShape shape = nmsiBlockData.getBlock().a(nmsiBlockData, (IBlockAccess) nmsWorld,pos);
+                            VoxelShape shape = nmsiBlockData.getBlock().a(nmsiBlockData, (IBlockAccess) nmsWorld, pos);
 
                             FutureTask<?> task = new FutureTask<>(() -> {
                                 if (shape.toString().equals("EMPTY")) {
@@ -62,30 +62,34 @@ public class BlockBox1_13_R1 implements BlockBox {
                                 return null;
                             });
 
-                            if(nmsBlock instanceof net.minecraft.server.v1_13_R1.BlockShulkerBox) {
+                            if (nmsBlock instanceof net.minecraft.server.v1_13_R1.BlockShulkerBox) {
                                 net.minecraft.server.v1_13_R1.TileEntity tileentity = nmsWorld.getTileEntity(pos);
                                 net.minecraft.server.v1_13_R1.BlockShulkerBox shulker = (net.minecraft.server.v1_13_R1.BlockShulkerBox) nmsBlock;
 
-                                if(tileentity instanceof net.minecraft.server.v1_13_R1.TileEntityShulkerBox) {
+                                if (tileentity instanceof net.minecraft.server.v1_13_R1.TileEntityShulkerBox) {
                                     net.minecraft.server.v1_13_R1.TileEntityShulkerBox entity = (net.minecraft.server.v1_13_R1.TileEntityShulkerBox) tileentity;
                                     //Bukkit.broadcastMessage("entity");
                                     aabbs.add(entity.a(nmsiBlockData));
 
                                     val loc = block.getLocation();
-                                    if(entity.r().toString().contains("OPEN") || entity.r().toString().contains("CLOSING")) {
-                                        aabbs.add(new net.minecraft.server.v1_13_R1.AxisAlignedBB(loc.getX(),loc.getY(),loc.getZ(),loc.getX() + 1,loc.getY() + 1.5,loc.getZ() + 1));
+                                    if (entity.r().toString().contains("OPEN") || entity.r().toString().contains("CLOSING")) {
+                                        aabbs.add(new net.minecraft.server.v1_13_R1.AxisAlignedBB(loc.getX(), loc.getY(), loc.getZ(), loc.getX() + 1, loc.getY() + 1.5, loc.getZ() + 1));
                                     }
                                 }
                             }
 
                             //We check if this isn't loaded and offload it to the main thread to prevent errors or corruption.
-                            if(!isChunkLoaded(block.getLocation())) {
+                            if (!isChunkLoaded(block.getLocation())) {
                                 Bukkit.getScheduler().runTask(Atlas.getInstance(), task);
                             } else {
                                 Atlas.getInstance().getBlockBoxManager().getExecutor().submit(task);
                             }
 
-                            if(task.isDone()) continue;
+                            try {
+                                task.get();
+                            } catch (InterruptedException | ExecutionException e) {
+                                e.printStackTrace();
+                            }
                         }
                         /*
                         else {

@@ -18,6 +18,8 @@ import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.FutureTask;
 
 public class BlockBox1_8_R3 implements BlockBox {
@@ -40,7 +42,7 @@ public class BlockBox1_8_R3 implements BlockBox {
                 for (int y = minY - 1; y < maxY; y++) {
                     Location loc = new Location(world, x, y, z);
 
-                    if(isChunkLoaded(loc)) {
+                    if (isChunkLoaded(loc)) {
                         org.bukkit.block.Block block = BlockUtils.getBlock(loc);
                         if (!block.getType().equals(Material.AIR)) {
                             if (BlockUtils.collisionBoundingBoxes.containsKey(block.getType())) {
@@ -57,7 +59,7 @@ public class BlockBox1_8_R3 implements BlockBox {
                                     nmsBlock.updateShape(nmsWorld, pos);
                                     nmsBlock.a(nmsWorld, pos, nmsiBlockData, (AxisAlignedBB) box.toAxisAlignedBB(), preBoxes, null);
 
-                                    if(preBoxes.size() > 0) {
+                                    if (preBoxes.size() > 0) {
                                         aabbs.addAll(preBoxes);
                                     } else {
                                         boxes.add(new BoundingBox((float) nmsBlock.B(), (float) nmsBlock.D(), (float) nmsBlock.F(), (float) nmsBlock.C(), (float) nmsBlock.E(), (float) nmsBlock.G()).add(block.getLocation().toVector()));
@@ -66,13 +68,17 @@ public class BlockBox1_8_R3 implements BlockBox {
                                 });
 
                                 //We check if this isn't loaded and offload it to the main thread to prevent errors or corruption.
-                                if(!isChunkLoaded(block.getLocation())) {
+                                if (!isChunkLoaded(block.getLocation())) {
                                     Bukkit.getScheduler().runTask(Atlas.getInstance(), task);
                                 } else {
                                     Atlas.getInstance().getBlockBoxManager().getExecutor().submit(task);
                                 }
 
-                                if(task.isDone()) continue;
+                                try {
+                                    task.get();
+                                } catch (InterruptedException | ExecutionException e) {
+                                    e.printStackTrace();
+                                }
                             }
                         /*
                         else {
@@ -85,7 +91,7 @@ public class BlockBox1_8_R3 implements BlockBox {
             }
         }
 
-        aabbs.stream().filter(object -> object != null).forEach(aabb -> boxes.add(ReflectionsUtil.toBoundingBox(aabb)));
+        aabbs.stream().filter(Objects::nonNull).forEach(aabb -> boxes.add(ReflectionsUtil.toBoundingBox(aabb)));
         return boxes;
     }
 

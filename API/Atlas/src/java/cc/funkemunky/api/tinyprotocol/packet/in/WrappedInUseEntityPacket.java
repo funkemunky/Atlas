@@ -54,12 +54,10 @@ public class WrappedInUseEntityPacket extends NMSObject {
 
         Bukkit.getScheduler().runTask(Atlas.getInstance(), task);
 
-        if(task.isDone()) {
-            try {
-                entity = task.get();
-            } catch (InterruptedException | ExecutionException e) {
-                e.printStackTrace();
-            }
+        try {
+            entity = task.get();
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
         }
     }
 

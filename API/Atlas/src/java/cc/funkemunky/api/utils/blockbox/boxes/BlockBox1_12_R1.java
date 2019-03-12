@@ -20,8 +20,8 @@ import org.bukkit.entity.Player;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.FutureTask;
-import java.util.concurrent.atomic.AtomicInteger;
 
 public class BlockBox1_12_R1 implements BlockBox {
     @Override
@@ -58,7 +58,7 @@ public class BlockBox1_12_R1 implements BlockBox {
                                 nmsBlock.updateState(nmsiBlockData, nmsWorld, pos);
                                 nmsBlock.a(nmsiBlockData, nmsWorld, pos, (AxisAlignedBB) box.toAxisAlignedBB(), preBoxes, null, true);
 
-                                if(preBoxes.size() > 0) {
+                                if (preBoxes.size() > 0) {
                                     aabbs.addAll(preBoxes);
                                 } else {
                                     aabbs.add(nmsBlock.b(nmsiBlockData, nmsWorld, new BlockPosition(aX, aY, aZ)));
@@ -67,26 +67,30 @@ public class BlockBox1_12_R1 implements BlockBox {
                             });
 
                             //We check if this isn't loaded and offload it to the main thread to prevent errors or corruption.
-                            if(!isChunkLoaded(block.getLocation())) {
+                            if (!isChunkLoaded(block.getLocation())) {
                                 Bukkit.getScheduler().runTask(Atlas.getInstance(), task);
                             } else {
                                 Atlas.getInstance().getBlockBoxManager().getExecutor().submit(task);
                             }
 
-                            if(task.isDone()) {
-                                if (nmsBlock instanceof BlockShulkerBox) {
-                                    TileEntity tileentity = nmsWorld.getTileEntity(pos);
-                                    BlockShulkerBox shulker = (BlockShulkerBox) nmsBlock;
+                            try {
+                                task.get();
+                            } catch (InterruptedException | ExecutionException e) {
+                                e.printStackTrace();
+                            }
 
-                                    if (tileentity instanceof TileEntityShulkerBox) {
-                                        TileEntityShulkerBox entity = (TileEntityShulkerBox) tileentity;
-                                        //Bukkit.broadcastMessage("entity");
-                                        aabbs.add(entity.a(nmsiBlockData));
+                            if (nmsBlock instanceof BlockShulkerBox) {
+                                TileEntity tileentity = nmsWorld.getTileEntity(pos);
+                                BlockShulkerBox shulker = (BlockShulkerBox) nmsBlock;
 
-                                        val loc = block.getLocation();
-                                        if (entity.p().toString().contains("OPEN") || entity.p().toString().contains("CLOSING")) {
-                                            aabbs.add(new AxisAlignedBB(loc.getX(), loc.getY(), loc.getZ(), loc.getX() + 1, loc.getY() + 1.5, loc.getZ() + 1));
-                                        }
+                                if (tileentity instanceof TileEntityShulkerBox) {
+                                    TileEntityShulkerBox entity = (TileEntityShulkerBox) tileentity;
+                                    //Bukkit.broadcastMessage("entity");
+                                    aabbs.add(entity.a(nmsiBlockData));
+
+                                    val loc = block.getLocation();
+                                    if (entity.p().toString().contains("OPEN") || entity.p().toString().contains("CLOSING")) {
+                                        aabbs.add(new AxisAlignedBB(loc.getX(), loc.getY(), loc.getZ(), loc.getX() + 1, loc.getY() + 1.5, loc.getZ() + 1));
                                     }
                                 }
                             }

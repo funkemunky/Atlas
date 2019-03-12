@@ -12,16 +12,15 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
-import org.bukkit.craftbukkit.v1_13_R2.CraftWorld;
 import org.bukkit.craftbukkit.v1_13_R2.entity.CraftLivingEntity;
 import org.bukkit.craftbukkit.v1_13_R2.entity.CraftPlayer;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
-import org.bukkit.util.Vector;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.FutureTask;
 
 public class BlockBox1_13_R2 implements BlockBox {
@@ -51,7 +50,7 @@ public class BlockBox1_13_R2 implements BlockBox {
                             net.minecraft.server.v1_13_R2.IBlockData nmsiBlockData = ((org.bukkit.craftbukkit.v1_13_R2.CraftWorld) world).getHandle().getType(pos);
                             net.minecraft.server.v1_13_R2.Block nmsBlock = nmsiBlockData.getBlock();
 
-                            net.minecraft.server.v1_13_R2.VoxelShape shape = nmsiBlockData.getBlock().a(nmsiBlockData, (net.minecraft.server.v1_13_R2.IBlockAccess) nmsWorld,pos);
+                            net.minecraft.server.v1_13_R2.VoxelShape shape = nmsiBlockData.getBlock().a(nmsiBlockData, (net.minecraft.server.v1_13_R2.IBlockAccess) nmsWorld, pos);
 
                             FutureTask<?> task = new FutureTask<>(() -> {
                                 if (shape.toString().equals("EMPTY")) {
@@ -62,30 +61,34 @@ public class BlockBox1_13_R2 implements BlockBox {
                                 return null;
                             });
 
-                            if(nmsBlock instanceof net.minecraft.server.v1_13_R2.BlockShulkerBox) {
+                            if (nmsBlock instanceof net.minecraft.server.v1_13_R2.BlockShulkerBox) {
                                 net.minecraft.server.v1_13_R2.TileEntity tileentity = nmsWorld.getTileEntity(pos);
                                 net.minecraft.server.v1_13_R2.BlockShulkerBox shulker = (net.minecraft.server.v1_13_R2.BlockShulkerBox) nmsBlock;
 
-                                if(tileentity instanceof net.minecraft.server.v1_13_R2.TileEntityShulkerBox) {
+                                if (tileentity instanceof net.minecraft.server.v1_13_R2.TileEntityShulkerBox) {
                                     net.minecraft.server.v1_13_R2.TileEntityShulkerBox entity = (net.minecraft.server.v1_13_R2.TileEntityShulkerBox) tileentity;
                                     //Bukkit.broadcastMessage("entity");
                                     aabbs.add(entity.a(nmsiBlockData));
 
                                     val loc = block.getLocation();
-                                    if(entity.r().toString().contains("OPEN") || entity.r().toString().contains("CLOSING")) {
-                                        aabbs.add(new net.minecraft.server.v1_13_R2.AxisAlignedBB(loc.getX(),loc.getY(),loc.getZ(),loc.getX() + 1,loc.getY() + 1.5,loc.getZ() + 1));
+                                    if (entity.r().toString().contains("OPEN") || entity.r().toString().contains("CLOSING")) {
+                                        aabbs.add(new net.minecraft.server.v1_13_R2.AxisAlignedBB(loc.getX(), loc.getY(), loc.getZ(), loc.getX() + 1, loc.getY() + 1.5, loc.getZ() + 1));
                                     }
                                 }
                             }
 
                             //We check if this isn't loaded and offload it to the main thread to prevent errors or corruption.
-                            if(!isChunkLoaded(block.getLocation())) {
+                            if (!isChunkLoaded(block.getLocation())) {
                                 Bukkit.getScheduler().runTask(Atlas.getInstance(), task);
                             } else {
                                 Atlas.getInstance().getBlockBoxManager().getExecutor().submit(task);
                             }
 
-                            if(task.isDone()) continue;
+                            try {
+                                task.get();
+                            } catch (InterruptedException | ExecutionException e) {
+                                e.printStackTrace();
+                            }
                         }
                         /*
                         else {

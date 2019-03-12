@@ -18,6 +18,7 @@ import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.FutureTask;
 
 public class BlockBox1_7_R4 implements BlockBox {
@@ -56,7 +57,7 @@ public class BlockBox1_7_R4 implements BlockBox {
                                 nmsBlock.updateShape(nmsWorld, aX, aY, aZ);
                                 nmsBlock.a(nmsWorld, aX, aY, aZ, (AxisAlignedBB) box.toAxisAlignedBB(), preBoxes, null);
 
-                                if(preBoxes.size() > 0) {
+                                if (preBoxes.size() > 0) {
                                     aabbs.addAll(preBoxes);
                                 } else {
                                     boxes.add(new BoundingBox((float) nmsBlock.x(), (float) nmsBlock.z(), (float) nmsBlock.B(), (float) nmsBlock.y(), (float) nmsBlock.A(), (float) nmsBlock.C()).add(block.getLocation().toVector()));
@@ -65,13 +66,17 @@ public class BlockBox1_7_R4 implements BlockBox {
                             });
 
                             //We check if this isn't loaded and offload it to the main thread to prevent errors or corruption.
-                            if(!isChunkLoaded(block.getLocation())) {
+                            if (!isChunkLoaded(block.getLocation())) {
                                 Bukkit.getScheduler().runTask(Atlas.getInstance(), task);
                             } else {
                                 Atlas.getInstance().getBlockBoxManager().getExecutor().submit(task);
                             }
 
-                            if(task.isDone()) continue;
+                            try {
+                                task.get();
+                            } catch (InterruptedException | ExecutionException e) {
+                                e.printStackTrace();
+                            }
                         }
                         /*
                         else {

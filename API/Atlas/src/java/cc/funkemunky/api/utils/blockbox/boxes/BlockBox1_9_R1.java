@@ -11,13 +11,13 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
-import org.bukkit.craftbukkit.v1_9_R1.CraftWorld;
 import org.bukkit.craftbukkit.v1_9_R1.entity.CraftPlayer;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.FutureTask;
 
 public class BlockBox1_9_R1 implements BlockBox {
@@ -53,7 +53,7 @@ public class BlockBox1_9_R1 implements BlockBox {
                                 nmsBlock.updateState(nmsiBlockData, nmsWorld, pos);
                                 nmsBlock.a(nmsiBlockData, nmsWorld, pos, (AxisAlignedBB) box.toAxisAlignedBB(), preBoxes, null);
 
-                                if(preBoxes.size() > 0) {
+                                if (preBoxes.size() > 0) {
                                     aabbs.addAll(preBoxes);
                                 } else {
                                     aabbs.add(nmsBlock.a(nmsiBlockData, nmsWorld, pos));
@@ -63,13 +63,17 @@ public class BlockBox1_9_R1 implements BlockBox {
                             });
 
                             //We check if this isn't loaded and offload it to the main thread to prevent errors or corruption.
-                            if(!isChunkLoaded(block.getLocation())) {
+                            if (!isChunkLoaded(block.getLocation())) {
                                 Bukkit.getScheduler().runTask(Atlas.getInstance(), task);
                             } else {
                                 Atlas.getInstance().getBlockBoxManager().getExecutor().submit(task);
                             }
 
-                            if(task.isDone()) continue;
+                            try {
+                                task.get();
+                            } catch (InterruptedException | ExecutionException e) {
+                                e.printStackTrace();
+                            }
                         }
                         /*
                         else {
