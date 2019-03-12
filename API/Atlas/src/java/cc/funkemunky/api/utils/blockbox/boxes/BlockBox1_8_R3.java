@@ -1,11 +1,13 @@
 package cc.funkemunky.api.utils.blockbox.boxes;
 
+import cc.funkemunky.api.Atlas;
 import cc.funkemunky.api.utils.BlockUtils;
 import cc.funkemunky.api.utils.BoundingBox;
 import cc.funkemunky.api.utils.MathUtils;
 import cc.funkemunky.api.utils.ReflectionsUtil;
 import cc.funkemunky.api.utils.blockbox.BlockBox;
 import net.minecraft.server.v1_8_R3.*;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -16,6 +18,7 @@ import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.FutureTask;
 
 public class BlockBox1_8_R3 implements BlockBox {
     @Override
@@ -46,17 +49,30 @@ public class BlockBox1_8_R3 implements BlockBox {
                                 net.minecraft.server.v1_8_R3.World nmsWorld = ((CraftWorld) world).getHandle();
                                 net.minecraft.server.v1_8_R3.IBlockData nmsiBlockData = ((CraftWorld) world).getHandle().getType(new BlockPosition(x, y, z));
                                 net.minecraft.server.v1_8_R3.Block nmsBlock = nmsiBlockData.getBlock();
+                                net.minecraft.server.v1_8_R3.BlockPosition pos = new BlockPosition(x, y, z);
 
-                                List<AxisAlignedBB> preBoxes = new ArrayList<>();
+                                FutureTask<?> task = new FutureTask<>(() -> {
+                                    List<AxisAlignedBB> preBoxes = new ArrayList<>();
 
-                                nmsBlock.updateShape(nmsWorld, new BlockPosition(x, y, z));
-                                nmsBlock.a(nmsWorld, new BlockPosition(x, y, z), nmsiBlockData, (AxisAlignedBB) box.toAxisAlignedBB(), preBoxes, null);
+                                    nmsBlock.updateShape(nmsWorld, pos);
+                                    nmsBlock.a(nmsWorld, pos, nmsiBlockData, (AxisAlignedBB) box.toAxisAlignedBB(), preBoxes, null);
 
-                                if(preBoxes.size() > 0) {
-                                    aabbs.addAll(preBoxes);
+                                    if(preBoxes.size() > 0) {
+                                        aabbs.addAll(preBoxes);
+                                    } else {
+                                        boxes.add(new BoundingBox((float) nmsBlock.B(), (float) nmsBlock.D(), (float) nmsBlock.F(), (float) nmsBlock.C(), (float) nmsBlock.E(), (float) nmsBlock.G()).add(block.getLocation().toVector()));
+                                    }
+                                    return null;
+                                });
+
+                                //We check if this isn't loaded and offload it to the main thread to prevent errors or corruption.
+                                if(!isChunkLoaded(block.getLocation())) {
+                                    Bukkit.getScheduler().runTask(Atlas.getInstance(), task);
                                 } else {
-                                    boxes.add(new BoundingBox((float) nmsBlock.B(), (float) nmsBlock.D(), (float) nmsBlock.F(), (float) nmsBlock.C(), (float) nmsBlock.E(), (float) nmsBlock.G()).add(block.getLocation().toVector()));
+                                    Atlas.getInstance().getBlockBoxManager().getExecutor().submit(task);
                                 }
+
+                                if(task.isDone()) continue;
                             }
                         /*
                         else {

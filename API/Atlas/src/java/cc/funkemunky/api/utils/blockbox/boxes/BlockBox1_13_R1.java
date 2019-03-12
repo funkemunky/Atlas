@@ -1,5 +1,6 @@
 package cc.funkemunky.api.utils.blockbox.boxes;
 
+import cc.funkemunky.api.Atlas;
 import cc.funkemunky.api.utils.BlockUtils;
 import cc.funkemunky.api.utils.BoundingBox;
 import cc.funkemunky.api.utils.MathUtils;
@@ -7,6 +8,7 @@ import cc.funkemunky.api.utils.ReflectionsUtil;
 import cc.funkemunky.api.utils.blockbox.BlockBox;
 import lombok.val;
 import net.minecraft.server.v1_13_R1.*;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -19,6 +21,7 @@ import org.bukkit.util.Vector;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.FutureTask;
 
 public class BlockBox1_13_R1 implements BlockBox {
     @Override
@@ -115,11 +118,14 @@ public class BlockBox1_13_R1 implements BlockBox {
 
                             VoxelShape shape = nmsiBlockData.getBlock().a(nmsiBlockData, (IBlockAccess) nmsWorld,pos);
 
-                            if (shape.toString().equals("EMPTY")) {
-                                aabbs.add(new AxisAlignedBB(block.getLocation().getX(), block.getLocation().getY(), block.getLocation().getZ(), block.getLocation().getX() + 1, block.getLocation().getY() + 1, block.getLocation().getZ() + 1));
-                            } else {
-                                aabbs.add(shape.a().d(block.getLocation().getX(), block.getLocation().getY(), block.getLocation().getZ()));
-                            }
+                            FutureTask<?> task = new FutureTask<>(() -> {
+                                if (shape.toString().equals("EMPTY")) {
+                                    aabbs.add(new AxisAlignedBB(block.getLocation().getX(), block.getLocation().getY(), block.getLocation().getZ(), block.getLocation().getX() + 1, block.getLocation().getY() + 1, block.getLocation().getZ() + 1));
+                                } else {
+                                    aabbs.add(shape.a().d(block.getLocation().getX(), block.getLocation().getY(), block.getLocation().getZ()));
+                                }
+                                return null;
+                            });
 
                             if(nmsBlock instanceof net.minecraft.server.v1_13_R1.BlockShulkerBox) {
                                 net.minecraft.server.v1_13_R1.TileEntity tileentity = nmsWorld.getTileEntity(pos);
@@ -135,6 +141,15 @@ public class BlockBox1_13_R1 implements BlockBox {
                                     }
                                 }
                             }
+
+                            //We check if this isn't loaded and offload it to the main thread to prevent errors or corruption.
+                            if(!isChunkLoaded(block.getLocation())) {
+                                Bukkit.getScheduler().runTask(Atlas.getInstance(), task);
+                            } else {
+                                Atlas.getInstance().getBlockBoxManager().getExecutor().submit(task);
+                            }
+
+                            if(task.isDone()) continue;
                         }
                     }
                 }

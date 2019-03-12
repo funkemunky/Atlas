@@ -1,5 +1,6 @@
 package cc.funkemunky.api.utils.blockbox.boxes;
 
+import cc.funkemunky.api.Atlas;
 import cc.funkemunky.api.utils.BlockUtils;
 import cc.funkemunky.api.utils.BoundingBox;
 import cc.funkemunky.api.utils.MathUtils;
@@ -18,6 +19,7 @@ import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.FutureTask;
 
 public class BlockBox1_10_R1 implements BlockBox {
     @Override
@@ -47,16 +49,28 @@ public class BlockBox1_10_R1 implements BlockBox {
                             net.minecraft.server.v1_10_R1.IBlockData nmsiBlockData = ((org.bukkit.craftbukkit.v1_10_R1.CraftWorld) world).getHandle().getType(pos);
                             net.minecraft.server.v1_10_R1.Block nmsBlock = nmsiBlockData.getBlock();
 
-                            List<net.minecraft.server.v1_10_R1.AxisAlignedBB> preBoxes = new ArrayList<>();
+                            FutureTask<List<AxisAlignedBB>> task = new FutureTask<>(() -> {
+                                List<AxisAlignedBB> preBoxes = new ArrayList<>();
+                                nmsBlock.updateState(nmsiBlockData, nmsWorld, pos);
+                                nmsBlock.a(nmsiBlockData, nmsWorld, pos, (AxisAlignedBB) box.toAxisAlignedBB(), preBoxes, null);
 
-                            nmsBlock.updateState(nmsiBlockData, nmsWorld, pos);
-                            nmsBlock.a(nmsiBlockData, nmsWorld, pos, (AxisAlignedBB) box.toAxisAlignedBB(), preBoxes, null);
+                                if(preBoxes.size() > 0) {
+                                    aabbs.addAll(preBoxes);
+                                } else {
+                                    aabbs.add(nmsBlock.a(nmsiBlockData, nmsWorld, pos));
+                                }
 
-                            if(preBoxes.size() > 0) {
-                                aabbs.addAll(preBoxes);
+                                return null;
+                            });
+
+                            //We check if this isn't loaded and offload it to the main thread to prevent errors or corruption.
+                            if(!isChunkLoaded(block.getLocation())) {
+                                Bukkit.getScheduler().runTask(Atlas.getInstance(), task);
                             } else {
-                                aabbs.add(nmsBlock.a(nmsiBlockData, nmsWorld, pos));
+                                Atlas.getInstance().getBlockBoxManager().getExecutor().submit(task);
                             }
+
+                            if(task.isDone()) continue;
                         }
                         /*
                         else {
