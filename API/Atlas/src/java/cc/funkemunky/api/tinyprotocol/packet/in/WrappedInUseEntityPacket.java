@@ -41,23 +41,13 @@ public class WrappedInUseEntityPacket extends NMSObject {
         Enum fieldAct = Objects.nonNull(fetch(fieldAction)) ? fetch(fieldAction) : null;
         action = fieldAct == null ? EnumEntityUseAction.INTERACT_AT : EnumEntityUseAction.valueOf(fieldAct.name());
 
-        FutureTask<Entity> task = new FutureTask<>(() -> {
-            List<Entity> entities = player.getWorld().getEntities();
+        List<Entity> entities = ReflectionsUtil.getEntitiesInWorld(player.getWorld());
 
-            for (Entity ent : entities) {
-                if(id == ent.getEntityId()) {
-                    return ent;
-                }
+        for (Entity ent : entities) {
+            if(id == ent.getEntityId()) {
+                entity = ent;
+                break;
             }
-            return null;
-        });
-
-        Bukkit.getScheduler().runTask(Atlas.getInstance(), task);
-
-        try {
-            entity = task.get();
-        } catch (InterruptedException | ExecutionException e) {
-            e.printStackTrace();
         }
     }
 

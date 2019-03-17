@@ -2,11 +2,9 @@ package cc.funkemunky.api.utils;
 
 import cc.funkemunky.api.Atlas;
 import cc.funkemunky.api.tinyprotocol.api.ProtocolVersion;
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.Server;
+import org.bukkit.*;
 import org.bukkit.block.Block;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.material.Step;
@@ -17,8 +15,10 @@ import java.io.File;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 import java.util.logging.Level;
 
 public class ReflectionsUtil {
@@ -128,6 +128,21 @@ public class ReflectionsUtil {
             return newInstance(blockPosition, location.getBlockX(), location.getBlockY(), location.getBlockZ());
         }
         return null;
+    }
+
+    public static List<org.bukkit.entity.Entity> getEntitiesInWorld(org.bukkit.World world) {
+        Object worldHandle = getWorldHandle(world);
+        List<org.bukkit.entity.Entity> toReturn = new ArrayList<>();
+        List<Object> entityList = new ArrayList<>((List<Object>) getFieldValue(getFieldByName(getNMSClass("World"), "entityList"), worldHandle));
+
+        Class<?> entity = getNMSClass("Entity");
+        entityList.forEach(object -> {
+            Object bEntity = getMethodValue(getMethod(entity, "getBukkitEntity"), object);
+            if(bEntity != null) {
+                toReturn.add((org.bukkit.entity.Entity) bEntity);
+            }
+        });
+        return toReturn;
     }
 
     public static BoundingBox getBlockBoundingBox(Block block) {
