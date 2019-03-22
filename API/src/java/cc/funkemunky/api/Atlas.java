@@ -67,17 +67,27 @@ public class Atlas extends JavaPlugin {
 
     public void onEnable() {
         instance = this;
-        threadPool = new ExecutorService[threadCount];
-        saveDefaultConfig();
-        tinyProtocolHandler = new TinyProtocolHandler();
         consoleSender = Bukkit.getConsoleSender();
 
         MiscUtils.printToConsole(Color.Red + "Loading Atlas...");
+        saveDefaultConfig();
+
+        MiscUtils.printToConsole(Color.Gray + "Starting scanner...");
+        initializeScanner(getClass(), this, commandManager);
+
+        threadPool = new ExecutorService[threadCount];
+        tinyProtocolHandler = new TinyProtocolHandler();
+
+        profileStart = System.currentTimeMillis();
+        profile = new BaseProfiler();
+
+        MiscUtils.printToConsole(Color.Gray + "Firing up the thread turbines...");
         for (int i = 0; i < threadPool.length; i++) {
-            threadPool[i] = Executors.newSingleThreadScheduledExecutor();
+            threadPool[i] = Executors.newSingleThreadExecutor();
         }
         schedular = Executors.newSingleThreadScheduledExecutor();
 
+        MiscUtils.printToConsole(Color.Gray + "Loading utilities and managers...");
         blockBoxManager = new BlockBoxManager();
         commandManager = new CommandManager(this);
         funkeCommandManager = new FunkeCommandManager();
@@ -96,20 +106,18 @@ public class Atlas extends JavaPlugin {
             getServer().getMessenger().registerOutgoingPluginChannel(this, "Atlas_Incoming");
         }
 
-        MiscUtils.printToConsole(Color.Gray + "Starting scanner...");
-        initializeScanner(getClass(), this, commandManager);
-
+        MiscUtils.printToConsole(Color.Gray + "Loading other managers and utilities...");
         boxes = new BoundingBoxes();
-        profileStart = System.currentTimeMillis();
-        profile = new BaseProfiler();
 
         mongo = new Mongo();
         databaseManager = new DatabaseManager();
 
         if(metricsEnabled) {
+            MiscUtils.printToConsole(Color.Gray + "Setting up bStats Metrics...");
             metrics = new Metrics(this);
         }
 
+        MiscUtils.printToConsole(Color.Gray + "Checking for updates...");
         if(updater.needsToUpdate()) {
             MiscUtils.printToConsole(Color.Yellow + "There is an update available. See more information with /atlas update.");
 
@@ -124,15 +132,18 @@ public class Atlas extends JavaPlugin {
     }
 
     public void onDisable() {
+        MiscUtils.printToConsole(Color.Gray + "Unloading all Atlas hooks...");
         EventManager.clearRegistered();
         HandlerList.unregisterAll(this);
         Bukkit.getScheduler().cancelTasks(this);
 
+        MiscUtils.printToConsole(Color.Gray + "Disabling all plugins that depend on Atlas to prevent any errors...");
         Arrays.stream(Bukkit.getPluginManager().getPlugins()).filter(plugin -> plugin.getDescription().getDepend().contains("Atlas")).forEach(plugin -> {
             MiscUtils.unloadPlugin(plugin.getName());
         });
         shutDownAllThreads();
         schedular.shutdownNow();
+        MiscUtils.printToConsole(Color.Red + "Completed shutdown process.");
     }
 
     public void executeTask(Runnable runnable) {
