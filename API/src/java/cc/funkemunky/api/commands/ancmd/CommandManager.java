@@ -1,5 +1,6 @@
 package cc.funkemunky.api.commands.ancmd;
 
+import cc.funkemunky.api.Atlas;
 import cc.funkemunky.api.utils.Color;
 import cc.funkemunky.api.utils.JsonMessage;
 import cc.funkemunky.api.utils.MathUtils;
@@ -58,7 +59,6 @@ public class CommandManager implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, org.bukkit.command.Command cmd, String label, String[] args) {
-
         for(int arg = args.length; arg >= 0 ; arg--) {
             StringBuffer buffer = new StringBuffer();
             buffer.append(label.toLowerCase());
@@ -67,6 +67,7 @@ public class CommandManager implements CommandExecutor {
             }
             String bufferString = buffer.toString();
             if(commands.containsKey(buffer.toString())) {
+                Atlas.getInstance().getProfile().start("anCommand:" + cmd.getLabel());
                 Map.Entry<Method, Object> entry = commands.get(buffer.toString());
 
                 Command command = entry.getKey().getAnnotation(Command.class);
@@ -91,6 +92,7 @@ public class CommandManager implements CommandExecutor {
                         sender.sendMessage(Color.translate(command.noPermissionMessage()));
                     }
                 }
+                Atlas.getInstance().getProfile().stop("anCommand:" + cmd.getLabel());
                 break;
             }
         }

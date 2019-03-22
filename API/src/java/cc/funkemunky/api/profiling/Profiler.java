@@ -10,4 +10,6 @@ public interface Profiler {
     void stop(String name);
 
     void stop();
+
+    void reset();
 }

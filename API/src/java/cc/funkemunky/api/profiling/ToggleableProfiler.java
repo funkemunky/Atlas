@@ -40,6 +40,16 @@ public class ToggleableProfiler implements Profiler {
     }
 
     @Override
+    public void reset() {
+        lastSample = totalCalls = 0;
+        timings.clear();
+        calls.clear();
+        stddev.clear();
+        total.clear();
+        samples.clear();
+    }
+
+    @Override
     public void stop(String name) {
         if (enabled) {
             long extense = System.nanoTime();

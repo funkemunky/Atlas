@@ -13,6 +13,7 @@ import java.util.concurrent.FutureTask;
 
 public class EventManager {
     private static final Map<Map.Entry<Plugin, Listener>, List<Method>> registered = new ConcurrentHashMap<>();
+    public static boolean enabled = true;
 
     public static void register(Plugin plugin, Listener listener) {
         for (Method method : listener.getClass().getMethods()) {
@@ -77,16 +78,22 @@ public class EventManager {
     }
 
     private static Event call(Event event) {
-        for (Map.Entry<Plugin, Listener> entry : registered.keySet()) {
-            for (Method method : registered.get(entry)) {
-                if (method.getParameterTypes()[0] == event.getClass()) {
-                    try {
-                        method.invoke(entry.getValue(), event);
-                    } catch (Exception e) {
-                        e.printStackTrace();
+        if(enabled) {
+            Atlas.getInstance().getProfile().start("event:" + event.getClass().getName());
+            for (Map.Entry<Plugin, Listener> entry : registered.keySet()) {
+                for (Method method : registered.get(entry)) {
+                    if (method.getParameterTypes()[0] == event.getClass()) {
+                        try {
+                            Atlas.getInstance().getProfile().start("event:" + event.getClass().getName() + ":" + method.getClass().getName() + "#" + method.getName() + "()");
+                            method.invoke(entry.getValue(), event);
+                            Atlas.getInstance().getProfile().stop("event:" + event.getClass().getName() + ":" + method.getClass().getName() + "#" + method.getName() + "()");
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
                     }
                 }
             }
+            Atlas.getInstance().getProfile().stop("event:" + event.getClass().getName());
         }
         return event;
     }

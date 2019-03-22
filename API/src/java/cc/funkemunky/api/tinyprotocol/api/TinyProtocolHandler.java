@@ -12,27 +12,47 @@ public class TinyProtocolHandler {
     @Getter
     private static AbstractTinyProtocol instance;
 
+    public static boolean enabled = true;
+
     public TinyProtocolHandler() {
         TinyProtocolHandler self = this;
+        // 1.8+ and 1.7 NMS have different class paths for their libraries used. This is why we have to separate the two.
+        // These feed the packets asynchronously, before Minecraft processes it, into our own methods to process and be used as an API.
         instance = ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.V1_8) ? new TinyProtocol1_7(Atlas.getInstance()) {
             @Override
             public Object onPacketOutAsync(Player receiver, Object packet) {
-                return self.onPacketOutAsync(receiver, packet);
+                if(enabled) {
+                    return self.onPacketOutAsync(receiver, packet);
+                } else {
+                    return packet;
+                }
             }
 
             @Override
             public Object onPacketInAsync(Player sender, Object packet) {
-                return self.onPacketInAsync(sender, packet);
+                if(enabled) {
+                    return self.onPacketInAsync(sender, packet);
+                } else {
+                    return packet;
+                }
             }
         } : new TinyProtocol1_8(Atlas.getInstance()) {
             @Override
             public Object onPacketOutAsync(Player receiver, Object packet) {
-                return self.onPacketOutAsync(receiver, packet);
+                if(enabled) {
+                    return self.onPacketOutAsync(receiver, packet);
+                } else {
+                    return packet;
+                }
             }
 
             @Override
             public Object onPacketInAsync(Player sender, Object packet) {
-                return self.onPacketInAsync(sender, packet);
+                if(enabled) {
+                    return self.onPacketInAsync(sender, packet);
+                } else {
+                    return packet;
+                }
             }
         };
     }

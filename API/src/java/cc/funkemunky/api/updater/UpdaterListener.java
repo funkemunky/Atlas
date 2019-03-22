@@ -6,6 +6,7 @@ import cc.funkemunky.api.utils.Color;
 import cc.funkemunky.api.utils.ConfigSetting;
 import cc.funkemunky.api.utils.Init;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 
@@ -14,7 +15,9 @@ public class UpdaterListener implements Listener {
 
     @ConfigSetting(path = "updater")
     private boolean notifyOnJoin = true;
-    @EventHandler
+    /*We set the event priority to lowest so it appears after (if no other plugin sets it to this)
+    every other message a player is sent on join.*/
+    @EventHandler(priority = EventPriority.LOWEST)
     public void onEvent(PlayerJoinEvent event) {
         if(event.getPlayer().hasPermission("api.admin")
                 && notifyOnJoin && Atlas.getInstance().getUpdater().needsToUpdate()) {

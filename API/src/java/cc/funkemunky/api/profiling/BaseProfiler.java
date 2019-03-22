@@ -33,6 +33,16 @@ public class BaseProfiler implements Profiler {
     }
 
     @Override
+    public void reset() {
+        lastSample = totalCalls = 0;
+        timings.clear();
+        calls.clear();
+        stddev.clear();
+        total.clear();
+        samples.clear();
+    }
+
+    @Override
     public void stop(String name) {
         long extense = System.nanoTime();
         long start = timings.get(name);

@@ -21,15 +21,20 @@ public class UpdateArgument extends FunkeArgument {
         if(args.length > 1) {
             switch (args[1].toLowerCase()) {
                 case "check": {
+                    sender.sendMessage(Color.Gray + "Running update check...");
+                    Atlas.getInstance().getUpdater().runUpdateCheck(); // Refreshes the update information from the pastebin server.
                     sender.sendMessage(MiscUtils.line(Color.Dark_Gray));
                     sender.sendMessage(Color.translate("&eLatest Version: &f" + Atlas.getInstance().getUpdater().getVersion()));
                     sender.sendMessage(Color.translate("&eCurrent Version: &f" + Atlas.getInstance().getDescription().getVersion()));
                     sender.sendMessage("");
 
-                    if (Atlas.getInstance().getUpdater().needsToUpdateIfImportant()) {
-                        sender.sendMessage(Color.Red + Color.Italics + "It is important that you update since compatibility is shaky.");
-                    } else if (Atlas.getInstance().getUpdater().needsToUpdate()) {
-                        sender.sendMessage(Color.Yellow + Color.Italics + "You are fine not updating if you don't have to.");
+                    if(Atlas.getInstance().getUpdater().needsToUpdate()) {
+                        sender.sendMessage(Color.Green + Color.Bold + "There is an update available!");
+                        if (Atlas.getInstance().getUpdater().needsToUpdateIfImportant()) {
+                            sender.sendMessage(Color.Red + Color.Italics + "It is important that you update since compatibility is shaky.");
+                        } else {
+                            sender.sendMessage(Color.Yellow + Color.Italics + "You are fine not updating if you don't have to.");
+                        }
                     } else {
                         sender.sendMessage(Color.Green + "You are on the latest version, no need to worry.");
                     }
@@ -40,7 +45,8 @@ public class UpdateArgument extends FunkeArgument {
                 case "update": {
                     if (args.length > 2) {
                         sender.sendMessage(Color.Red + "Downloading the latest version...");
-                        Atlas.getInstance().getUpdater().downloadNewVersion();
+                        Atlas.getInstance().getUpdater().downloadNewVersion(); //Downloads the latest version from the github link set in the pastebin server.
+                        // The server needs restarting or (maybe) reloading to prevent any errors from hiccups when reloading.
                         sender.sendMessage(Color.Green + "Downloaded! Restart your server to use the downloaded version.");
                     } else {
                         sender.sendMessage(Color.Green + "You need to confirm this decision by typing " + Color.Yellow + " /atlas " + args[1].toLowerCase() + " confirm" + Color.Gray + "!");

@@ -13,7 +13,7 @@ import java.nio.file.StandardCopyOption;
 
 @Getter
 public class Updater {
-    private int update = - 1, currentUpdate = 21;
+    private int update = - 1, currentUpdate = 22;
     private String version, downloadLink;
     private File pluginLocation;
     private boolean importantUpdate = true;
@@ -22,6 +22,10 @@ public class Updater {
     private boolean checkForUpdates = true;
 
     public Updater() {
+        runUpdateCheck();
+    }
+
+    public void runUpdateCheck() {
         if(checkForUpdates) {
             String[] toSort = readFromUpdaterPastebin();
 
@@ -35,7 +39,6 @@ public class Updater {
             }
         } else {
             version = Atlas.getInstance().getDescription().getVersion();
-
         }
     }
 

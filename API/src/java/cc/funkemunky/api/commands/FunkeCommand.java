@@ -1,5 +1,6 @@
 package cc.funkemunky.api.commands;
 
+import cc.funkemunky.api.Atlas;
 import cc.funkemunky.api.utils.Color;
 import cc.funkemunky.api.utils.JsonMessage;
 import cc.funkemunky.api.utils.MathUtils;
@@ -63,6 +64,7 @@ public abstract class FunkeCommand
     }
 
     public List<String> onTabComplete(CommandSender commandSender, Command command, String label, String[] args) {
+        Atlas.getInstance().getProfile().start("command:" + getName() + "#tabComplete");
         List<String> toReturn = new ArrayList<>();
 
         if (label.equalsIgnoreCase(name)) {
@@ -96,11 +98,13 @@ public abstract class FunkeCommand
             }
 
         }
+        Atlas.getInstance().getProfile().stop("command:" + getName() + "#tabComplete");
         return toReturn.size() == 0 ? null : toReturn;
     }
 
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
+        Atlas.getInstance().getProfile().start("command:" + getName() + "#onCommand");
         if (this.permission != null && !sender.hasPermission(this.permission)) {
             sender.sendMessage(commandMessages.getErrorColor() + commandMessages.getNoPermission());
             return true;
@@ -168,6 +172,7 @@ public abstract class FunkeCommand
                 }
             }
         }
+        Atlas.getInstance().getProfile().stop("command:" + getName() + "#onCommand");
         return true;
     }
 

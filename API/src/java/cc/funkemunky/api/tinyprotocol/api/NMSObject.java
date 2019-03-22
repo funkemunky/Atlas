@@ -4,6 +4,7 @@
 
 package cc.funkemunky.api.tinyprotocol.api;
 
+import cc.funkemunky.api.Atlas;
 import cc.funkemunky.api.tinyprotocol.reflection.FieldAccessor;
 import cc.funkemunky.api.tinyprotocol.reflection.MethodInvoker;
 import cc.funkemunky.api.tinyprotocol.reflection.Reflection;
@@ -32,8 +33,10 @@ public abstract class NMSObject {
     private Player player;
 
     public NMSObject(Object object) {
+        Atlas.getInstance().getProfile().start("processor:" + object.getClass().getName());
         this.object = object;
         process(player, ProtocolVersion.getGameVersion());
+        Atlas.getInstance().getProfile().stop("processor:" + object.getClass().getName());
     }
 
     public NMSObject(Object object, Player player) {

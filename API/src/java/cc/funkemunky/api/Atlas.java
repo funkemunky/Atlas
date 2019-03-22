@@ -38,7 +38,7 @@ public class Atlas extends JavaPlugin {
     @Getter
     private static Atlas instance;
     private BlockBoxManager blockBoxManager;
-    private ExecutorService threadPool;
+    private ExecutorService[] threadPool;
     private ScheduledExecutorService schedular;
     private ConsoleCommandSender consoleSender;
     private CommandManager commandManager;
@@ -48,6 +48,8 @@ public class Atlas extends JavaPlugin {
     private Metrics metrics;
     private Mongo mongo;
     private DatabaseManager databaseManager;
+    private int currentThread = 0;
+    private long profileStart;
     private BoundingBoxes boxes;
     private TinyProtocolHandler tinyProtocolHandler;
 
@@ -60,14 +62,20 @@ public class Atlas extends JavaPlugin {
     @ConfigSetting(path = "init", name = "reloadDependingPlugins")
     private boolean enableDependingPlugins = true;
 
+    @ConfigSetting(name = "threadCount")
+    private int threadCount = 4;
+
     public void onEnable() {
         instance = this;
+        threadPool = new ExecutorService[threadCount];
         saveDefaultConfig();
         tinyProtocolHandler = new TinyProtocolHandler();
         consoleSender = Bukkit.getConsoleSender();
 
         MiscUtils.printToConsole(Color.Red + "Loading Atlas...");
-        threadPool = Executors.newFixedThreadPool(4);
+        for (int i = 0; i < threadPool.length; i++) {
+            threadPool[i] = Executors.newSingleThreadScheduledExecutor();
+        }
         schedular = Executors.newSingleThreadScheduledExecutor();
 
         blockBoxManager = new BlockBoxManager();
@@ -92,6 +100,7 @@ public class Atlas extends JavaPlugin {
         initializeScanner(getClass(), this, commandManager);
 
         boxes = new BoundingBoxes();
+        profileStart = System.currentTimeMillis();
         profile = new BaseProfiler();
 
         mongo = new Mongo();
@@ -122,7 +131,7 @@ public class Atlas extends JavaPlugin {
         Arrays.stream(Bukkit.getPluginManager().getPlugins()).filter(plugin -> plugin.getDescription().getDepend().contains("Atlas")).forEach(plugin -> {
             MiscUtils.unloadPlugin(plugin.getName());
         });
-        threadPool.shutdownNow();
+        shutDownAllThreads();
         schedular.shutdownNow();
     }
 
@@ -135,6 +144,20 @@ public class Atlas extends JavaPlugin {
         } catch (Exception ex) {
             ex.getCause().printStackTrace();
         }
+    }
+
+    public void shutDownAllThreads() {
+        for (ExecutorService executorService : threadPool) {
+            executorService.shutdownNow();
+        }
+    }
+
+    public ExecutorService getThreadPool() {
+        ExecutorService service = threadPool[currentThread];
+
+        currentThread = currentThread >= threadPool.length - 1 ? 0 : currentThread + 1;
+
+        return service;
     }
 
     public void initializeScanner(Class<?> mainClass, JavaPlugin plugin, CommandManager manager) {
