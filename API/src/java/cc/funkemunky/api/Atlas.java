@@ -7,6 +7,7 @@ import cc.funkemunky.api.database.DatabaseManager;
 import cc.funkemunky.api.event.system.EventManager;
 import cc.funkemunky.api.metrics.Metrics;
 import cc.funkemunky.api.mongo.Mongo;
+import cc.funkemunky.api.profiling.BaseProfiler;
 import cc.funkemunky.api.tinyprotocol.api.ProtocolVersion;
 import cc.funkemunky.api.tinyprotocol.api.TinyProtocolHandler;
 import cc.funkemunky.api.updater.Updater;
@@ -43,6 +44,7 @@ public class Atlas extends JavaPlugin {
     private CommandManager commandManager;
     private FunkeCommandManager funkeCommandManager;
     private Updater updater;
+    private BaseProfiler profile;
     private Metrics metrics;
     private Mongo mongo;
     private DatabaseManager databaseManager;
@@ -90,6 +92,7 @@ public class Atlas extends JavaPlugin {
         initializeScanner(getClass(), this, commandManager);
 
         boxes = new BoundingBoxes();
+        profile = new BaseProfiler();
 
         mongo = new Mongo();
         databaseManager = new DatabaseManager();
