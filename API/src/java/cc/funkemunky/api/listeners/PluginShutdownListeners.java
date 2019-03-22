@@ -19,10 +19,8 @@ public class PluginShutdownListeners implements Listener {
         if(event.getPlugin().getDescription().getDepend().contains("Atlas")) {
             MiscUtils.printToConsole("&c" + event.getPlugin().getName() + " &7is being shutdown. Removing its hooks and listeners...");
             EventManager.unregisterAll(event.getPlugin());
-            Atlas.getInstance().getThreadPool().shutdownNow();
+            Atlas.getInstance().shutDownAllThreads();
             Atlas.getInstance().getSchedular().shutdownNow();
-            Atlas.getInstance().setThreadPool(Executors.newFixedThreadPool(4));
-            Atlas.getInstance().setSchedular(Executors.newScheduledThreadPool(2));
             MiscUtils.printToConsole("&aCompleted!");
         }
     }
