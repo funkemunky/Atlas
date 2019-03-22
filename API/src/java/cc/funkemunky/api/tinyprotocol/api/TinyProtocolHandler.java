@@ -1,10 +1,9 @@
 package cc.funkemunky.api.tinyprotocol.api;
 
 import cc.funkemunky.api.Atlas;
-import cc.funkemunky.api.event.custom.PacketRecieveEvent;
+import cc.funkemunky.api.event.custom.PacketReceiveEvent;
 import cc.funkemunky.api.event.custom.PacketSendEvent;
 import cc.funkemunky.api.event.system.EventManager;
-import cc.funkemunky.api.utils.Init;
 import lombok.Getter;
 import org.bukkit.entity.Player;
 
@@ -86,9 +85,9 @@ public class TinyProtocolHandler {
         //Converting the later packets into their equivalent, more understandable legacy types.
         packetName = packetName.replaceAll("PacketPlayInUseItem", "PacketPlayInBlockPlace");
 
-        PacketRecieveEvent event = new PacketRecieveEvent(sender, packet, packetName);
+        PacketReceiveEvent event = new PacketReceiveEvent(sender, packet, packetName);
 
-        event = (PacketRecieveEvent) EventManager.callEvent(event);
+        event = (PacketReceiveEvent) EventManager.callEvent(event);
 
         return !event.isCancelled() ? event.getPacket() : null;
     }

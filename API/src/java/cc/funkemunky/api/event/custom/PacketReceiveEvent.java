@@ -7,7 +7,7 @@ import lombok.Setter;
 import org.bukkit.entity.Player;
 
 @Getter
-public class PacketRecieveEvent extends Event implements Cancellable {
+public class PacketReceiveEvent extends Event implements Cancellable {
     private Player player;
     @Setter
     private Object packet;
@@ -16,7 +16,7 @@ public class PacketRecieveEvent extends Event implements Cancellable {
     private String type;
     private long timeStamp;
 
-    public PacketRecieveEvent(Player player, Object packet, String type) {
+    public PacketReceiveEvent(Player player, Object packet, String type) {
         this.player = player;
         this.packet = packet;
         this.type = type;
