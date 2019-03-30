@@ -2,18 +2,18 @@ package cc.funkemunky.api.event.system;
 
 import cc.funkemunky.api.Atlas;
 import lombok.val;
+import org.bukkit.event.EventPriority;
 import org.bukkit.plugin.Plugin;
 
 import javax.annotation.Nullable;
 import java.lang.reflect.Method;
 import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.FutureTask;
+import java.util.concurrent.*;
 
 public class EventManager {
     private static final Map<Map.Entry<Plugin, Listener>, List<Method>> registered = new ConcurrentHashMap<>();
     public static boolean enabled = true;
+    private static ExecutorService eventExecutor = Executors.newSingleThreadExecutor();;
 
     public static void register(Plugin plugin, Listener listener) {
         for (Method method : listener.getClass().getMethods()) {
@@ -67,7 +67,7 @@ public class EventManager {
     public static Event callEvent(Event event) {
         FutureTask<Event> futureTask = new FutureTask<>(() -> call(event));
 
-        Atlas.getInstance().getThreadPool().submit(futureTask);
+        eventExecutor.submit(futureTask);
 
         try {
             return futureTask.get();
@@ -81,7 +81,21 @@ public class EventManager {
         if(enabled) {
             Atlas.getInstance().getProfile().start("event:" + event.getClass().getName());
             for (Map.Entry<Plugin, Listener> entry : registered.keySet()) {
-                for (Method method : registered.get(entry)) {
+                val methods = registered.get(entry);
+
+                methods.stream()
+                        .filter(method -> method.isAnnotationPresent(EventMethod.class) && method.getParameterTypes()[0] == event.getClass())
+                        .sorted(Comparator.comparingInt(method -> EventPriority.HIGHEST.getSlot() - method.getAnnotation(EventMethod.class).priority().getPriority()))
+                        .forEachOrdered(method -> {
+                            try {
+                                Atlas.getInstance().getProfile().start("event:" + event.getClass().getName() + ":" + method.getClass().getName() + "#" + method.getName() + "()");
+                                method.invoke(entry.getValue(), event);
+                                Atlas.getInstance().getProfile().stop("event:" + event.getClass().getName() + ":" + method.getClass().getName() + "#" + method.getName() + "()");
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        });
+                /*for (Method method : registered.get(entry)) {
                     if (method.getParameterTypes()[0] == event.getClass()) {
                         try {
                             Atlas.getInstance().getProfile().start("event:" + event.getClass().getName() + ":" + method.getClass().getName() + "#" + method.getName() + "()");
@@ -91,7 +105,7 @@ public class EventManager {
                             e.printStackTrace();
                         }
                     }
-                }
+                }*/
             }
             Atlas.getInstance().getProfile().stop("event:" + event.getClass().getName());
         }
