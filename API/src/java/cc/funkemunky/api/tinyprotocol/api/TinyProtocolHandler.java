@@ -1,9 +1,9 @@
 package cc.funkemunky.api.tinyprotocol.api;
 
 import cc.funkemunky.api.Atlas;
-import cc.funkemunky.api.event.custom.PacketReceiveEvent;
-import cc.funkemunky.api.event.custom.PacketSendEvent;
 import cc.funkemunky.api.event.system.EventManager;
+import cc.funkemunky.api.events.impl.PacketReceiveEvent;
+import cc.funkemunky.api.events.impl.PacketSendEvent;
 import lombok.Getter;
 import org.bukkit.entity.Player;
 
@@ -72,7 +72,9 @@ public class TinyProtocolHandler {
 
         PacketSendEvent event = new PacketSendEvent(sender, packet, packetName);
 
-        event = (PacketSendEvent) EventManager.callEvent(event);
+        EventManager.callEvent(new cc.funkemunky.api.event.custom.PacketSendEvent(sender, packet, packetName));
+
+        Atlas.getInstance().getEventManager().callEvent(event);
 
         return !event.isCancelled() ? event.getPacket() : null;
     }
@@ -87,7 +89,9 @@ public class TinyProtocolHandler {
 
         PacketReceiveEvent event = new PacketReceiveEvent(sender, packet, packetName);
 
-        event = (PacketReceiveEvent) EventManager.callEvent(event);
+        EventManager.callEvent(new cc.funkemunky.api.event.custom.PacketReceiveEvent(sender, packet, packetName));
+
+        Atlas.getInstance().getEventManager().callEvent(event);
 
         return !event.isCancelled() ? event.getPacket() : null;
     }

@@ -8,5 +8,5 @@ import java.lang.annotation.Target;
 @Retention(value = RetentionPolicy.RUNTIME)
 @Target(value = {ElementType.METHOD})
 public @interface Listen {
-    ListenerPriority priorty() default ListenerPriority.NONE;
+    ListenerPriority priority() default ListenerPriority.NONE;
 }
