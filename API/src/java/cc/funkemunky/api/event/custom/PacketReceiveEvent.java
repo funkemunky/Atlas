@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.entity.Player;
 
+@Deprecated
 @Getter
 public class PacketReceiveEvent extends Event implements Cancellable {
     private Player player;

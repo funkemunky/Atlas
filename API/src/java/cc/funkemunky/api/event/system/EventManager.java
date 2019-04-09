@@ -10,6 +10,7 @@ import java.lang.reflect.Method;
 import java.util.*;
 import java.util.concurrent.*;
 
+@Deprecated
 public class EventManager {
     private static final Map<Map.Entry<Plugin, Listener>, List<Method>> registered = new ConcurrentHashMap<>();
     public static boolean enabled = true;

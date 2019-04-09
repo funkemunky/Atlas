@@ -23,7 +23,7 @@ public class ToggleArgument extends FunkeArgument {
                 case "event":
                 case "events": {
                     EventManager.enabled = !EventManager.enabled;
-                    sender.sendMessage(Color.translate("&7The Atlas Event System has been toggled " + (EventManager.enabled ? "&aon" : "&coff") + "&7."));
+                    sender.sendMessage(Color.translate("&7The Atlas AtlasEvent System has been toggled " + (EventManager.enabled ? "&aon" : "&coff") + "&7."));
                     break;
                 }
                 case "packets": {

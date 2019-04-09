@@ -4,7 +4,8 @@ import cc.funkemunky.api.commands.FunkeCommandManager;
 import cc.funkemunky.api.commands.ancmd.CommandManager;
 import cc.funkemunky.api.commands.impl.AtlasCommand;
 import cc.funkemunky.api.database.DatabaseManager;
-import cc.funkemunky.api.event.system.EventManager;
+import cc.funkemunky.api.events.AtlasListener;
+import cc.funkemunky.api.events.EventManager;
 import cc.funkemunky.api.metrics.Metrics;
 import cc.funkemunky.api.mongo.Mongo;
 import cc.funkemunky.api.profiling.BaseProfiler;
@@ -52,6 +53,7 @@ public class Atlas extends JavaPlugin {
     private long profileStart;
     private BoundingBoxes boxes;
     private TinyProtocolHandler tinyProtocolHandler;
+    private EventManager eventManager;
 
     @ConfigSetting(path = "updater")
     private boolean autoDownload = false;
@@ -71,6 +73,7 @@ public class Atlas extends JavaPlugin {
 
         MiscUtils.printToConsole(Color.Red + "Loading Atlas...");
         saveDefaultConfig();
+        eventManager = new EventManager();
 
         MiscUtils.printToConsole(Color.Gray + "Starting scanner...");
         initializeScanner(getClass(), this, commandManager);
@@ -133,7 +136,7 @@ public class Atlas extends JavaPlugin {
 
     public void onDisable() {
         MiscUtils.printToConsole(Color.Gray + "Unloading all Atlas hooks...");
-        EventManager.clearRegistered();
+        cc.funkemunky.api.event.system.EventManager.clearRegistered();
         HandlerList.unregisterAll(this);
         Bukkit.getScheduler().cancelTasks(this);
 
@@ -204,8 +207,11 @@ public class Atlas extends JavaPlugin {
                         MiscUtils.printToConsole("&eFound " + clazz.getSimpleName() + " Bukkit listener. Registering...");
                         plugin.getServer().getPluginManager().registerEvents((Listener) obj, plugin);
                     } else if(obj instanceof cc.funkemunky.api.event.system.Listener) {
-                        MiscUtils.printToConsole("&eFound " + clazz.getSimpleName() + " Atlas listener. Registering...");
-                        EventManager.register(plugin, (cc.funkemunky.api.event.system.Listener) obj);
+                        MiscUtils.printToConsole("&eFound " + clazz.getSimpleName() + "(deprecated) Atlas listener. Registering...");
+                        cc.funkemunky.api.event.system.EventManager.register(plugin, (cc.funkemunky.api.event.system.Listener) obj);
+                    } else if(obj instanceof AtlasListener) {
+                        MiscUtils.printToConsole("&eFound " + clazz.getSimpleName() + "Atlas listener. Registering...");
+                        eventManager.registerListeners((AtlasListener) obj, plugin);
                     } else if(obj instanceof CommandExecutor && clazz.isAnnotationPresent(Commands.class)) {
                         Commands commands = (Commands) clazz.getAnnotation(Commands.class);
 

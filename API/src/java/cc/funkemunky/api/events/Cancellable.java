@@ -1,6 +1,5 @@
-package cc.funkemunky.api.event.system;
+package cc.funkemunky.api.events;
 
-@Deprecated
 public interface Cancellable {
     boolean isCancelled();
 
