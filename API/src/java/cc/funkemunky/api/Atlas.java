@@ -81,24 +81,27 @@ public class Atlas extends JavaPlugin {
 
         MiscUtils.printToConsole(Color.Red + "Loading Atlas...");
         saveDefaultConfig();
+
+        MiscUtils.printToConsole(Color.Gray + "Firing up the thread turbines...");
+        threadPool = new ExecutorService[threadCount];
+
+        for (int i = 0; i < threadPool.length; i++) {
+            threadPool[i] = Executors.newSingleThreadExecutor();
+        }
+        schedular = Executors.newSingleThreadScheduledExecutor();
+
         eventManager = new EventManager();
 
-        MiscUtils.printToConsole(Color.Gray + "Starting scanner...");
+        MiscUtils.printToConsole(Color.Gray + "Starting scanner...");;
+
         initializeScanner(getClass(), this, true, true);
 
-        threadPool = new ExecutorService[threadCount];
         tinyProtocolHandler = new TinyProtocolHandler();
 
         pluginLoaderHandler = new PluginLoaderHandler();
 
         profileStart = System.currentTimeMillis();
         profile = new BaseProfiler();
-
-        MiscUtils.printToConsole(Color.Gray + "Firing up the thread turbines...");
-        for (int i = 0; i < threadPool.length; i++) {
-            threadPool[i] = Executors.newSingleThreadExecutor();
-        }
-        schedular = Executors.newSingleThreadScheduledExecutor();
 
         MiscUtils.printToConsole(Color.Gray + "Loading utilities and managers...");
         blockBoxManager = new BlockBoxManager();

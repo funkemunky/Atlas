@@ -5,6 +5,7 @@ import cc.funkemunky.api.event.system.EventManager;
 import cc.funkemunky.api.events.impl.PacketReceiveEvent;
 import cc.funkemunky.api.events.impl.PacketSendEvent;
 import lombok.Getter;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 public class TinyProtocolHandler {
@@ -64,6 +65,8 @@ public class TinyProtocolHandler {
     public static int getProtocolVersion(Player player) {
         return instance.getProtocolVersion(player);
     }
+
+    private boolean didPosition = false;
 
     public Object onPacketOutAsync(Player sender, Object packet) {
         String name = packet.getClass().getName();

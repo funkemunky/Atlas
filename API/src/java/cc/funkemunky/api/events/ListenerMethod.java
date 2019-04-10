@@ -14,5 +14,5 @@ class ListenerMethod {
     private Plugin plugin;
     private Method method;
     private AtlasListener listener;
-    private ListenerPriority listenerPriority;
+    public ListenerPriority listenerPriority;
 }

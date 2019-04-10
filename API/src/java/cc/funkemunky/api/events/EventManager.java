@@ -18,7 +18,7 @@ import java.util.concurrent.FutureTask;
 
 @Getter
 public class EventManager {
-    private final SortedSet<ListenerMethod> listenerMethods = new ConcurrentSkipListSet<>(Comparator.comparingInt(method -> method.getListenerPriority().getPriority()));
+    private final SortedSet<ListenerMethod> listenerMethods = new ConcurrentSkipListSet<>(Comparator.comparing(method -> method.getListenerPriority().getPriority(), Comparator.reverseOrder()));
     private boolean paused = false;
 
     public void registerListener(Method method, AtlasListener listener, Plugin plugin) throws ListenParamaterException {
