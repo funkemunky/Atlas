@@ -35,19 +35,6 @@ public class MathUtils {
         return box.getMinimum().midpoint(box.getMaximum());
     }
 
-
-    private static long gcd(long x, long y) {
-        return (y == 0) ? x : gcd(y, x % y);
-    }
-
-    public static long gcd(long... numbers) {
-        return Arrays.stream(numbers).reduce(0, MathUtils::gcd);
-    }
-
-    public static long lcm(long... numbers) {
-        return Arrays.stream(numbers).reduce(1, (x, y) -> x * (y / gcd(x, y)));
-    }
-
     public static int tryParse(String string) {
         Object object = ProtocolVersion.getGameVersion().isAbove(ProtocolVersion.V1_7_10)
                 ? ReflectionsUtil.getMethodValue(
@@ -61,6 +48,17 @@ public class MathUtils {
         return -1;
     }
 
+    //A lighter version of the Java hypotenuse function.
+    public static double hypot(double... value) {
+        double total = 0;
+
+        for (double val : value) {
+            total += (val * val);
+        }
+
+        return Math.sqrt(total);
+    }
+
     public static boolean playerMoved(Vector from, Vector to) {
         return from.distance(to) > 0;
     }
@@ -70,6 +68,40 @@ public class MathUtils {
     }
     public static boolean elapsed(long time, long needed) {
         return Math.abs(System.currentTimeMillis() - time) >= needed;
+    }
+
+    //Euclid's algorithim
+    public static long gcd(long a, long b)
+    {
+        while (b > 0)
+        {
+            long temp = b;
+            b = a % b; // % is remainder
+            a = temp;
+        }
+        return a;
+    }
+
+    //Euclid's algorithim
+    public static long gcd(long... input)
+    {
+        long result = input[0];
+        for(int i = 1; i < input.length; i++) result = gcd(result, input[i]);
+        return result;
+    }
+
+    //Euclid's algorithim
+    public static long lcm(long a, long b)
+    {
+        return a * (b / gcd(a, b));
+    }
+
+    //Euclid's algorithim
+    public static long lcm(long... input)
+    {
+        long result = input[0];
+        for(int i = 1; i < input.length; i++) result = lcm(result, input[i]);
+        return result;
     }
 
     public static float getDelta(float one, float two) {
@@ -93,8 +125,8 @@ public class MathUtils {
         return Math.sqrt(deltaX * deltaX + deltaZ * deltaZ);
     }
 
-    public static long millisToTicks(long millis) {
-        return millis / 50;
+    public static int millisToTicks(long millis) {
+        return (int) Math.ceil(millis / 50D);
     }
 
     public static double getVerticalDistance(Location from, Location to) {

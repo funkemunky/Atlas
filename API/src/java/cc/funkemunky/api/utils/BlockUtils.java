@@ -4,9 +4,11 @@ import cc.funkemunky.api.Atlas;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -327,6 +329,29 @@ public class BlockUtils {
         String name = stack.getType().name().toLowerCase();
 
         return name.contains("axe") || name.contains("spade") || name.contains("shovel") || name.contains("shear") || name.contains("sword");
+    }
+
+    public static List<Block> getBlocks(BoundingBox box, World world) {
+        List<Block> block = new ArrayList<>();
+
+        Atlas.getInstance().getBlockBoxManager().getBlockBox().getCollidingBoxes(world, box).forEach(box2 -> BlockUtils.getBlock(box2.getMinimum().toLocation(world)));
+        return block;
+    }
+
+    public static Location findGround(World world, Location point) {
+        for (int y = point.toVector().getBlockY(); y > 0; y--) {
+            Location loc = new Location(world, point.getX(), y, point.getZ());
+            Block block = BlockUtils.getBlock(loc);
+
+            if (block.getType().isBlock() && block.getType().isSolid() && !block.isEmpty()) {
+                Location toReturn = loc.clone();
+
+                toReturn.setY(y + 1);
+
+                return toReturn;
+            }
+        }
+        return point;
     }
 
     private void setupCollisionBB() {

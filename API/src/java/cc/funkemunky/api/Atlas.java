@@ -6,6 +6,8 @@ import cc.funkemunky.api.commands.impl.AtlasCommand;
 import cc.funkemunky.api.database.DatabaseManager;
 import cc.funkemunky.api.events.AtlasListener;
 import cc.funkemunky.api.events.EventManager;
+import cc.funkemunky.api.events.impl.TickEvent;
+import cc.funkemunky.api.handlers.PluginLoaderHandler;
 import cc.funkemunky.api.metrics.Metrics;
 import cc.funkemunky.api.mongo.Mongo;
 import cc.funkemunky.api.profiling.BaseProfiler;
@@ -21,6 +23,7 @@ import lombok.val;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.ConsoleCommandSender;
+import org.bukkit.craftbukkit.libs.jline.internal.Nullable;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.InvalidDescriptionException;
@@ -54,6 +57,8 @@ public class Atlas extends JavaPlugin {
     private BoundingBoxes boxes;
     private TinyProtocolHandler tinyProtocolHandler;
     private EventManager eventManager;
+    private int currentTicks;
+    private PluginLoaderHandler pluginLoaderHandler;
 
     @ConfigSetting(path = "updater")
     private boolean autoDownload = false;
@@ -67,6 +72,9 @@ public class Atlas extends JavaPlugin {
     @ConfigSetting(name = "threadCount")
     private int threadCount = 4;
 
+    @ConfigSetting(path = "ticking", name = "runAsync")
+    private boolean runAsync = false;
+
     public void onEnable() {
         instance = this;
         consoleSender = Bukkit.getConsoleSender();
@@ -76,10 +84,12 @@ public class Atlas extends JavaPlugin {
         eventManager = new EventManager();
 
         MiscUtils.printToConsole(Color.Gray + "Starting scanner...");
-        initializeScanner(getClass(), this, commandManager);
+        initializeScanner(getClass(), this, true, true);
 
         threadPool = new ExecutorService[threadCount];
         tinyProtocolHandler = new TinyProtocolHandler();
+
+        pluginLoaderHandler = new PluginLoaderHandler();
 
         profileStart = System.currentTimeMillis();
         profile = new BaseProfiler();
@@ -100,6 +110,8 @@ public class Atlas extends JavaPlugin {
         new MiscUtils();
 
         updater = new Updater();
+
+        runTasks();
 
         funkeCommandManager.addCommand(new AtlasCommand());
 
@@ -140,6 +152,8 @@ public class Atlas extends JavaPlugin {
         HandlerList.unregisterAll(this);
         Bukkit.getScheduler().cancelTasks(this);
 
+        eventManager.clearAllRegistered();
+
         MiscUtils.printToConsole(Color.Gray + "Disabling all plugins that depend on Atlas to prevent any errors...");
         Arrays.stream(Bukkit.getPluginManager().getPlugins()).filter(plugin -> plugin.getDescription().getDepend().contains("Atlas")).forEach(plugin -> {
             MiscUtils.unloadPlugin(plugin.getName());
@@ -149,15 +163,40 @@ public class Atlas extends JavaPlugin {
         MiscUtils.printToConsole(Color.Red + "Completed shutdown process.");
     }
 
-    public void executeTask(Runnable runnable) {
-        Future future = getThreadPool().submit(runnable);
+    public <T extends Object> T executeTask(FutureTask<T> future) {
+        getThreadPool().submit(future);
         try {
-            if(future.isDone()) {
-                future.get();
-            }
+            return future.get();
         } catch (Exception ex) {
             ex.getCause().printStackTrace();
         }
+        return null;
+    }
+
+    public void executeTask(Runnable runnable) {
+        getThreadPool().execute(runnable);
+    }
+
+    private void runTasks() {
+        //This allows us to use ticks for intervalTime comparisons to allow for more parallel calculations to actual Minecraft
+        //and it also has the added benefit of being lighter than using System.currentTimeMillis.
+        //WARNING: This may be a bit buggy with "legacy" versions of PaperSpigot since they broke the runnable.
+        //If you are using PaperSpigot,
+        if(!runAsync) {
+            new BukkitRunnable() {
+                public void run() {
+                    runTickEvent();
+                }
+            }.runTaskTimer(this, 1L, 1L);
+        } else {
+            getSchedular().scheduleAtFixedRate(this::runTickEvent, 50L, 50L, TimeUnit.MILLISECONDS);
+        }
+    }
+
+    private void runTickEvent() {
+        TickEvent tickEvent = new TickEvent(currentTicks++);
+
+        Atlas.getInstance().getEventManager().callEvent(tickEvent);
     }
 
     public void shutDownAllThreads() {
@@ -174,7 +213,7 @@ public class Atlas extends JavaPlugin {
         return service;
     }
 
-    public void initializeScanner(Class<?> mainClass, JavaPlugin plugin, CommandManager manager) {
+    public void initializeScanner(Class<?> mainClass, JavaPlugin plugin, CommandManager manager, boolean loadListeners, boolean loadCommands, @Nullable FutureTask<?>... otherThingsToLoad) {
         ClassScanner.scanFile(null, mainClass).stream().filter(c -> {
             try {
                 Class clazz = Class.forName(c);
@@ -203,16 +242,16 @@ public class Atlas extends JavaPlugin {
                     Object obj = clazz.equals(mainClass) ? plugin : clazz.newInstance();
                     Init annotation = (Init) clazz.getAnnotation(Init.class);
 
-                    if (obj instanceof Listener) {
+                    if (loadListeners && obj instanceof Listener) {
                         MiscUtils.printToConsole("&eFound " + clazz.getSimpleName() + " Bukkit listener. Registering...");
                         plugin.getServer().getPluginManager().registerEvents((Listener) obj, plugin);
-                    } else if(obj instanceof cc.funkemunky.api.event.system.Listener) {
+                    } else if(loadListeners && obj instanceof cc.funkemunky.api.event.system.Listener) {
                         MiscUtils.printToConsole("&eFound " + clazz.getSimpleName() + "(deprecated) Atlas listener. Registering...");
                         cc.funkemunky.api.event.system.EventManager.register(plugin, (cc.funkemunky.api.event.system.Listener) obj);
-                    } else if(obj instanceof AtlasListener) {
+                    } else if(loadListeners && obj instanceof AtlasListener) {
                         MiscUtils.printToConsole("&eFound " + clazz.getSimpleName() + "Atlas listener. Registering...");
                         eventManager.registerListeners((AtlasListener) obj, plugin);
-                    } else if(obj instanceof CommandExecutor && clazz.isAnnotationPresent(Commands.class)) {
+                    } else if(loadCommands && obj instanceof CommandExecutor && clazz.isAnnotationPresent(Commands.class)) {
                         Commands commands = (Commands) clazz.getAnnotation(Commands.class);
 
                         Arrays.stream(commands.commands()).forEach(label -> {
@@ -223,7 +262,9 @@ public class Atlas extends JavaPlugin {
                         });
                     }
 
-                    if(annotation.commands()) manager.registerCommands(obj);
+                    if(loadCommands && annotation.commands()) manager.registerCommands(obj);
+
+                    if(otherThingsToLoad != null) Arrays.stream(otherThingsToLoad).forEachOrdered(task -> task.run());
 
                     Arrays.stream(clazz.getDeclaredFields()).filter(field -> field.isAnnotationPresent(ConfigSetting.class)).forEach(field -> {
                         String name = field.getAnnotation(ConfigSetting.class).name();
@@ -250,5 +291,21 @@ public class Atlas extends JavaPlugin {
                 e.printStackTrace();
             }
         });
+    }
+
+    public void initializeScanner(Class<?> mainClass, JavaPlugin plugin) {
+        initializeScanner(mainClass, plugin, getCommandManager(), true, true, null);
+    }
+
+    public void initializeScanner(Class<?> mainClass, JavaPlugin plugin, CommandManager manager) {
+        initializeScanner(mainClass, plugin, manager, true, true, null);
+    }
+
+    public void initializeScanner(Class<?> mainClass, JavaPlugin plugin, boolean loadListeners, boolean loadCommands) {
+        initializeScanner(mainClass, plugin, getCommandManager(), loadListeners, loadCommands, null);
+    }
+
+    public void initializeScanner(Class<?> mainClass, JavaPlugin plugin, boolean loadListeners, boolean loadCommands, FutureTask<?>... otherThingsToLoad) {
+        initializeScanner(mainClass, plugin, getCommandManager(), loadListeners, loadCommands, otherThingsToLoad);
     }
 }
