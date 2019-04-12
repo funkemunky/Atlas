@@ -68,7 +68,7 @@ public class EventManager {
             FutureTask<Boolean> callTask = new FutureTask<>(() -> {
                 if(event instanceof Cancellable) {
                     for (ListenerMethod lm : listenerMethods) {
-                        if(!lm.getMethod().getParameterTypes()[0].equals(event.getClass())) continue;
+                        if(lm.getMethod().getParameterTypes().length == 0 || !lm.getMethod().getParameterTypes()[0].equals(event.getClass())) continue;
 
                         try {
                             lm.getMethod().invoke(lm.getListener(), event);
@@ -82,7 +82,7 @@ public class EventManager {
                     }
                 } else {
                     for (ListenerMethod lm : listenerMethods) {
-                        if(!lm.getMethod().getParameterTypes()[0].equals(event.getClass())) continue;
+                        if(lm.getMethod().getParameterTypes().length == 0 || !lm.getMethod().getParameterTypes()[0].equals(event.getClass())) continue;
 
                         try {
                             lm.getMethod().invoke(lm.getListener(), event);

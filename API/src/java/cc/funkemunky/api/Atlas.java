@@ -211,7 +211,7 @@ public class Atlas extends JavaPlugin {
     public ExecutorService getThreadPool() {
         ExecutorService service = threadPool[currentThread];
 
-        currentThread = currentThread >= threadPool.length - 1 ? 0 : currentThread + 1;
+        currentThread = currentThread >= threadPool.length - 2 ? 0 : currentThread + 1;
 
         return service;
     }
