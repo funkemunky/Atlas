@@ -64,11 +64,7 @@ public class BlockBox1_9_R2 implements BlockBox {
                             });
 
                             //We check if this isn't loaded and offload it to the main thread to prevent errors or corruption.
-                            if (!isChunkLoaded(block.getLocation())) {
-                                Bukkit.getScheduler().runTask(Atlas.getInstance(), task);
-                            } else {
-                                Atlas.getInstance().getBlockBoxManager().getExecutor().submit(task);
-                            }
+                            Bukkit.getScheduler().runTask(Atlas.getInstance(), task);
 
                             try {
                                 task.get();
