@@ -18,6 +18,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 import java.util.concurrent.FutureTask;
 
+@Init
 public class PluginLoaderHandler implements Listener {
 
     @Getter
