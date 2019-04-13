@@ -45,13 +45,12 @@ public class BlockBox1_8_R2 implements BlockBox {
                         if (BlockUtils.collisionBoundingBoxes.containsKey(block.getType())) {
                             aabbs.add((AxisAlignedBB) BlockUtils.collisionBoundingBoxes.get(block.getType()).add(block.getLocation().toVector()).toAxisAlignedBB());
                         } else {
-                            net.minecraft.server.v1_8_R2.World nmsWorld = ((CraftWorld) world).getHandle();
-                            net.minecraft.server.v1_8_R2.IBlockData nmsiBlockData = ((CraftWorld) world).getHandle().getType(new BlockPosition(x, y, z));
-                            net.minecraft.server.v1_8_R2.Block nmsBlock = nmsiBlockData.getBlock();
-
-                            net.minecraft.server.v1_8_R2.BlockPosition pos = new BlockPosition(x, y, z);
-
+                            final int aX = x, aY = y, aZ = z;
                             FutureTask<?> task = new FutureTask<>(() -> {
+                                net.minecraft.server.v1_8_R2.World nmsWorld = ((CraftWorld) world).getHandle();
+                                net.minecraft.server.v1_8_R2.BlockPosition pos = new BlockPosition(aX, aY, aZ);
+                                net.minecraft.server.v1_8_R2.IBlockData nmsiBlockData = ((CraftWorld) world).getHandle().getType(pos);
+                                net.minecraft.server.v1_8_R2.Block nmsBlock = nmsiBlockData.getBlock();
                                 List<AxisAlignedBB> preBoxes = new ArrayList<>();
 
                                 nmsBlock.updateShape(nmsWorld, pos);

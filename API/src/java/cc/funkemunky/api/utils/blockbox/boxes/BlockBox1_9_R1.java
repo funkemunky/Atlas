@@ -43,12 +43,12 @@ public class BlockBox1_9_R1 implements BlockBox {
                         if (BlockUtils.collisionBoundingBoxes.containsKey(block.getType())) {
                             aabbs.add((AxisAlignedBB) BlockUtils.collisionBoundingBoxes.get(block.getType()).add(block.getLocation().toVector()).toAxisAlignedBB());
                         } else {
-                            net.minecraft.server.v1_9_R1.World nmsWorld = ((org.bukkit.craftbukkit.v1_9_R1.CraftWorld) world).getHandle();
-                            net.minecraft.server.v1_9_R1.BlockPosition pos = new net.minecraft.server.v1_9_R1.BlockPosition(x, y, z);
-                            net.minecraft.server.v1_9_R1.IBlockData nmsiBlockData = ((org.bukkit.craftbukkit.v1_9_R1.CraftWorld) world).getHandle().getType(pos);
-                            net.minecraft.server.v1_9_R1.Block nmsBlock = nmsiBlockData.getBlock();
-
+                            final int aX = x, aY = y, aZ = z;
                             FutureTask<List<AxisAlignedBB>> task = new FutureTask<>(() -> {
+                                net.minecraft.server.v1_9_R1.World nmsWorld = ((org.bukkit.craftbukkit.v1_9_R1.CraftWorld) world).getHandle();
+                                net.minecraft.server.v1_9_R1.BlockPosition pos = new net.minecraft.server.v1_9_R1.BlockPosition(aX, aY, aZ);
+                                net.minecraft.server.v1_9_R1.IBlockData nmsiBlockData = ((org.bukkit.craftbukkit.v1_9_R1.CraftWorld) world).getHandle().getType(pos);
+                                net.minecraft.server.v1_9_R1.Block nmsBlock = nmsiBlockData.getBlock();
                                 List<AxisAlignedBB> preBoxes = new ArrayList<>();
                                 nmsBlock.updateState(nmsiBlockData, nmsWorld, pos);
                                 nmsBlock.a(nmsiBlockData, nmsWorld, pos, (AxisAlignedBB) box.toAxisAlignedBB(), preBoxes, null);

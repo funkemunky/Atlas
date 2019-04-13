@@ -44,12 +44,12 @@ public class BlockBox1_7_R4 implements BlockBox {
                         if (BlockUtils.collisionBoundingBoxes.containsKey(block.getType())) {
                             aabbs.add((AxisAlignedBB) BlockUtils.collisionBoundingBoxes.get(block.getType()).add(block.getLocation().toVector()).toAxisAlignedBB());
                         } else {
-                            net.minecraft.server.v1_7_R4.World nmsWorld = ((CraftWorld) world).getHandle();
-                            net.minecraft.server.v1_7_R4.Block nmsBlock = ((CraftWorld) world).getHandle().getType(x, y, z);
 
                             final int aX = x, aY = y, aZ = z;
 
                             FutureTask<?> task = new FutureTask<>(() -> {
+                                net.minecraft.server.v1_7_R4.World nmsWorld = ((CraftWorld) world).getHandle();
+                                net.minecraft.server.v1_7_R4.Block nmsBlock = ((CraftWorld) world).getHandle().getType(aX, aY, aZ);
                                 nmsBlock.a(nmsWorld, aX, aY, aZ, (AxisAlignedBB) box.toAxisAlignedBB(), aabbs, null);
 
                                 List<AxisAlignedBB> preBoxes = new ArrayList<>();
