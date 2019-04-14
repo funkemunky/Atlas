@@ -45,13 +45,13 @@ public class BlockBox1_11_R1 implements BlockBox {
                         if (BlockUtils.collisionBoundingBoxes.containsKey(block.getType())) {
                             aabbs.add((AxisAlignedBB) BlockUtils.collisionBoundingBoxes.get(block.getType()).add(block.getLocation().toVector()).toAxisAlignedBB());
                         } else {
-                            net.minecraft.server.v1_11_R1.World nmsWorld = ((org.bukkit.craftbukkit.v1_11_R1.CraftWorld) world).getHandle();
-                            net.minecraft.server.v1_11_R1.BlockPosition pos = new net.minecraft.server.v1_11_R1.BlockPosition(x, y, z);
-                            net.minecraft.server.v1_11_R1.IBlockData nmsiBlockData = ((org.bukkit.craftbukkit.v1_11_R1.CraftWorld) world).getHandle().getType(pos);
-                            net.minecraft.server.v1_11_R1.Block nmsBlock = nmsiBlockData.getBlock();
 
                             final int aX = x, aY = y, aZ = z;
                             FutureTask<List<AxisAlignedBB>> task = new FutureTask<>(() -> {
+                                net.minecraft.server.v1_11_R1.World nmsWorld = ((org.bukkit.craftbukkit.v1_11_R1.CraftWorld) world).getHandle();
+                                net.minecraft.server.v1_11_R1.BlockPosition pos = new net.minecraft.server.v1_11_R1.BlockPosition(aX, aY, aZ);
+                                net.minecraft.server.v1_11_R1.IBlockData nmsiBlockData = ((org.bukkit.craftbukkit.v1_11_R1.CraftWorld) world).getHandle().getType(pos);
+                                net.minecraft.server.v1_11_R1.Block nmsBlock = nmsiBlockData.getBlock();
                                 List<AxisAlignedBB> preBoxes = new ArrayList<>();
                                 nmsBlock.updateState(nmsiBlockData, nmsWorld, pos);
                                 nmsBlock.a(nmsiBlockData, nmsWorld, pos, (AxisAlignedBB) box.toAxisAlignedBB(), preBoxes, null, true);
@@ -61,9 +61,8 @@ public class BlockBox1_11_R1 implements BlockBox {
                                 } else {
                                     aabbs.add(nmsBlock.b(nmsiBlockData, nmsWorld, new BlockPosition(aX, aY, aZ)));
                                 }
-                                return null;
-                            });
 
+<<<<<<< HEAD
                             if (!isChunkLoaded(block.getLocation())) {
                                 Bukkit.getScheduler().runTask(Atlas.getInstance(), task);
                             } else {
@@ -72,19 +71,27 @@ public class BlockBox1_11_R1 implements BlockBox {
                             if (nmsBlock instanceof net.minecraft.server.v1_11_R1.BlockShulkerBox) {
                                 net.minecraft.server.v1_11_R1.TileEntity tileentity = nmsWorld.getTileEntity(pos);
                                 net.minecraft.server.v1_11_R1.BlockShulkerBox shulker = (net.minecraft.server.v1_11_R1.BlockShulkerBox) nmsBlock;
+=======
+                                if (nmsBlock instanceof net.minecraft.server.v1_11_R1.BlockShulkerBox) {
+                                    net.minecraft.server.v1_11_R1.TileEntity tileentity = nmsWorld.getTileEntity(pos);
+                                    net.minecraft.server.v1_11_R1.BlockShulkerBox shulker = (net.minecraft.server.v1_11_R1.BlockShulkerBox) nmsBlock;
+>>>>>>> 201c24586bae0f758a448e52416c0b470c239890
 
-                                if (tileentity instanceof net.minecraft.server.v1_11_R1.TileEntityShulkerBox) {
-                                    net.minecraft.server.v1_11_R1.TileEntityShulkerBox entity = (net.minecraft.server.v1_11_R1.TileEntityShulkerBox) tileentity;
-                                    //Bukkit.broadcastMessage("entity");
-                                    aabbs.add(entity.a(nmsiBlockData));
+                                    if (tileentity instanceof net.minecraft.server.v1_11_R1.TileEntityShulkerBox) {
+                                        net.minecraft.server.v1_11_R1.TileEntityShulkerBox entity = (net.minecraft.server.v1_11_R1.TileEntityShulkerBox) tileentity;
+                                        //Bukkit.broadcastMessage("entity");
+                                        aabbs.add(entity.a(nmsiBlockData));
 
-                                    val loc = block.getLocation();
-                                    if (entity.p().toString().contains("OPEN") || entity.p().toString().contains("CLOSING")) {
-                                        aabbs.add(new net.minecraft.server.v1_11_R1.AxisAlignedBB(loc.getX(), loc.getY(), loc.getZ(), loc.getX() + 1, loc.getY() + 1.5, loc.getZ() + 1));
+                                        val loc = block.getLocation();
+                                        if (entity.p().toString().contains("OPEN") || entity.p().toString().contains("CLOSING")) {
+                                            aabbs.add(new net.minecraft.server.v1_11_R1.AxisAlignedBB(loc.getX(), loc.getY(), loc.getZ(), loc.getX() + 1, loc.getY() + 1.5, loc.getZ() + 1));
+                                        }
                                     }
                                 }
-                            }
 
+
+                                return null;
+                            });
                             //We check if this isn't loaded and offload it to the main thread to prevent errors or corruption.
                             if (!isChunkLoaded(block.getLocation())) {
                                 Bukkit.getScheduler().runTask(Atlas.getInstance(), task);
