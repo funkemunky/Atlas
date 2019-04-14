@@ -64,7 +64,11 @@ public class BlockBox1_9_R2 implements BlockBox {
                             });
 
                             //We check if this isn't loaded and offload it to the main thread to prevent errors or corruption.
-                            Bukkit.getScheduler().runTask(Atlas.getInstance(), task);
+                            if (!isChunkLoaded(block.getLocation())) {
+                                Bukkit.getScheduler().runTask(Atlas.getInstance(), task);
+                            } else {
+                                Atlas.getInstance().getBlockBoxManager().getExecutor().submit(task);
+                            }
 
                             try {
                                 task.get();
@@ -119,5 +123,10 @@ public class BlockBox1_9_R2 implements BlockBox {
         EntityPlayer entityPlayer = ((CraftPlayer) player).getHandle();
         EntityTrackerEntry entry = ((WorldServer) entityPlayer.getWorld()).tracker.trackedEntities.get(entityPlayer.getId());
         return entry.b().getId();
+    }
+
+    @Override
+    public float getAiSpeed(Player player) {
+        return ((CraftPlayer) player).getHandle().cl();
     }
 }

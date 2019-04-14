@@ -64,7 +64,11 @@ public class BlockBox1_11_R1 implements BlockBox {
                                 return null;
                             });
 
-                            Bukkit.getScheduler().runTask(Atlas.getInstance(), task);
+                            if (!isChunkLoaded(block.getLocation())) {
+                                Bukkit.getScheduler().runTask(Atlas.getInstance(), task);
+                            } else {
+                                Atlas.getInstance().getBlockBoxManager().getExecutor().submit(task);
+                            }
                             if (nmsBlock instanceof net.minecraft.server.v1_11_R1.BlockShulkerBox) {
                                 net.minecraft.server.v1_11_R1.TileEntity tileentity = nmsWorld.getTileEntity(pos);
                                 net.minecraft.server.v1_11_R1.BlockShulkerBox shulker = (net.minecraft.server.v1_11_R1.BlockShulkerBox) nmsBlock;
@@ -82,7 +86,11 @@ public class BlockBox1_11_R1 implements BlockBox {
                             }
 
                             //We check if this isn't loaded and offload it to the main thread to prevent errors or corruption.
-                            Bukkit.getScheduler().runTask(Atlas.getInstance(), task);
+                            if (!isChunkLoaded(block.getLocation())) {
+                                Bukkit.getScheduler().runTask(Atlas.getInstance(), task);
+                            } else {
+                                Atlas.getInstance().getBlockBoxManager().getExecutor().submit(task);
+                            }
 
                             try {
                                 task.get();
@@ -137,5 +145,10 @@ public class BlockBox1_11_R1 implements BlockBox {
         EntityPlayer entityPlayer = ((CraftPlayer) player).getHandle();
         EntityTrackerEntry entry = ((WorldServer) entityPlayer.getWorld()).tracker.trackedEntities.get(entityPlayer.getId());
         return entry.b().getId();
+    }
+
+    @Override
+    public float getAiSpeed(Player player) {
+        return ((CraftPlayer) player).getHandle().cq();
     }
 }
