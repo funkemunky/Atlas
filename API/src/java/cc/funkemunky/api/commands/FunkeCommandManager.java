@@ -1,20 +1,28 @@
 package cc.funkemunky.api.commands;
 
 import lombok.Getter;
+import lombok.val;
+import org.bukkit.plugin.Plugin;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 @Getter
 public class FunkeCommandManager {
-    private final List<FunkeCommand> commands;
+    private final Map<Plugin, List<FunkeCommand>> commands;
 
     public FunkeCommandManager() {
-        commands = new CopyOnWriteArrayList<>();
+        commands = new ConcurrentHashMap<>();
     }
 
-    public void addCommand(FunkeCommand command) {
-        commands.add(command);
+    public void addCommand(Plugin plugin, FunkeCommand command) {
+        val list = commands.getOrDefault(plugin, new ArrayList<>());
+
+        list.add(command);
+
+        commands.put(plugin, list);
     }
 
     public void removeAllCommands() {
@@ -22,11 +30,21 @@ public class FunkeCommandManager {
     }
 
     public void removeCommand(String name) {
-        commands.stream().filter(cmd -> cmd.getName().equalsIgnoreCase(name)).forEach(commands::remove);
+        commands.keySet().forEach(key -> {
+            val list = commands.get(key);
+
+            list.stream().filter(cmd -> cmd.getName().equalsIgnoreCase(name)).forEach(list::remove);
+        });
     }
 
     public void removeCommand(FunkeCommand command) {
-        commands.remove(command);
+        commands.keySet().stream().filter(key -> commands.get(key).contains(command)).forEach(key -> {
+            val list = commands.get(key);
+
+            list.remove(command);
+
+            commands.put(key, list);
+        });
     }
 }
 

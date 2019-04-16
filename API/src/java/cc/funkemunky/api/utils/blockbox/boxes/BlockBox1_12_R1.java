@@ -80,10 +80,6 @@ public class BlockBox1_12_R1 implements BlockBox {
                                 return null;
                             });
 
-<<<<<<< HEAD
-=======
-                            //We check if this isn't loaded and offload it to the main thread to prevent errors or corruption.
->>>>>>> 201c24586bae0f758a448e52416c0b470c239890
                             if (!isChunkLoaded(block.getLocation())) {
                                 Bukkit.getScheduler().runTask(Atlas.getInstance(), task);
                             } else {

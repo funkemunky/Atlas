@@ -116,7 +116,7 @@ public class Atlas extends JavaPlugin {
 
         runTasks();
 
-        funkeCommandManager.addCommand(new AtlasCommand());
+        funkeCommandManager.addCommand(this, new AtlasCommand());
 
         if(ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.V1_13)) {
             getServer().getMessenger().registerOutgoingPluginChannel(this, "Atlas_Request");
@@ -265,9 +265,9 @@ public class Atlas extends JavaPlugin {
                         });
                     }
 
-                    if(loadCommands && annotation.commands()) manager.registerCommands(obj);
+                    if(loadCommands && annotation.commands()) manager.registerCommands(plugin, obj);
 
-                    if(otherThingsToLoad != null) Arrays.stream(otherThingsToLoad).forEachOrdered(task -> task.run());
+                    if(otherThingsToLoad != null) Arrays.stream(otherThingsToLoad).forEachOrdered(FutureTask::run);
 
                     Arrays.stream(clazz.getDeclaredFields()).filter(field -> field.isAnnotationPresent(ConfigSetting.class)).forEach(field -> {
                         String name = field.getAnnotation(ConfigSetting.class).name();

@@ -6,6 +6,7 @@ import cc.funkemunky.api.utils.JsonMessage;
 import cc.funkemunky.api.utils.MathUtils;
 import cc.funkemunky.api.utils.MiscUtils;
 import lombok.Getter;
+import lombok.val;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandMap;
 import org.bukkit.command.CommandSender;
@@ -13,6 +14,7 @@ import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.SimplePluginManager;
+import org.bukkit.plugin.java.JavaPlugin;
 
 import javax.annotation.Nullable;
 import java.lang.reflect.Field;
@@ -24,7 +26,7 @@ import java.util.stream.IntStream;
 
 @Getter
 public class CommandManager implements CommandExecutor {
-    private Map<String, Map.Entry<Method, Object>> commands = new ConcurrentHashMap<>();
+    private Map<String, CommandRegister> commands = new ConcurrentHashMap<>();
     private Plugin plugin;
     private CommandMap map;
 
@@ -42,18 +44,29 @@ public class CommandManager implements CommandExecutor {
         }
     }
 
-    public void registerCommands(Object clazz) {
+    public void registerCommands(Plugin plugin, Object clazz) {
         try {
 
             Arrays.stream(clazz.getClass().getMethods()).filter(method -> method.isAnnotationPresent(Command.class) && method.getParameterCount() > 0 && method.getParameters()[0].getType() == CommandAdapter.class).forEach(method -> {
                 Command annotation = method.getAnnotation(Command.class);
 
-                registerCommand(annotation, annotation.name(), method, clazz);
-                Arrays.stream(annotation.aliases()).forEach(alias -> registerCommand(annotation, alias, method, clazz));
+                registerCommand(plugin, annotation, annotation.name(), method, clazz);
+                Arrays.stream(annotation.aliases()).forEach(alias -> registerCommand(plugin, annotation, alias, method, clazz));
             });
         } catch(Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public void unregisterCommands(Plugin plugin) {
+        commands.keySet().stream().filter(key -> commands.get(key).getPlugin().getName().equals(plugin.getName())).forEach(key -> {
+            val cmd = commands.get(key);
+
+            val name = key.split(".")[0];
+
+            map.getCommand(name).unregister(map);
+            commands.remove(key);
+        });
     }
 
 
@@ -68,9 +81,9 @@ public class CommandManager implements CommandExecutor {
             String bufferString = buffer.toString();
             if(commands.containsKey(buffer.toString())) {
                 Atlas.getInstance().getProfile().start("anCommand:" + cmd.getLabel());
-                Map.Entry<Method, Object> entry = commands.get(buffer.toString());
+                CommandRegister entry = commands.get(buffer.toString());
 
-                Command command = entry.getKey().getAnnotation(Command.class);
+                Command command = entry.getMethod().getAnnotation(Command.class);
 
                 if(command.playerOnly() && !(sender instanceof Player)) {
                     sender.sendMessage(Color.Red + "This command is for players only!");
@@ -84,7 +97,7 @@ public class CommandManager implements CommandExecutor {
                     if(command.permission().length == 0 || Arrays.stream(command.permission()).anyMatch(sender::hasPermission)) {
                         CommandAdapter adapter = new CommandAdapter(sender, cmd, sender instanceof Player ? (Player) sender : null, labelFinal, command, modArgs);
                         try {
-                            entry.getKey().invoke(entry.getValue(), adapter);
+                            entry.getMethod().invoke(entry.getObject(), adapter);
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
@@ -109,9 +122,9 @@ public class CommandManager implements CommandExecutor {
             Set<Command> argumentSet = new HashSet<>();
 
             commands.keySet().stream().filter(key -> key.contains(".") && key.startsWith(command.getLabel().toLowerCase())).forEach(key -> {
-                Map.Entry<Method, Object> map = commands.get(key);
+                CommandRegister reg = commands.get(key);
 
-                Command cmd = map.getKey().getAnnotation(Command.class);
+                Command cmd = reg.getMethod().getAnnotation(Command.class);
 
                 argumentSet.add(cmd);
             });
@@ -231,12 +244,14 @@ public class CommandManager implements CommandExecutor {
         }*/
     }
 
-    public void registerCommand(Command command, String label, Method method, Object clazz) {
+    public void registerCommand(Plugin plugin, Command command, String label, Method method, Object clazz) {
         Command annotation = method.getAnnotation(Command.class);
 
-        commands.put(annotation.name().toLowerCase(), new AbstractMap.SimpleEntry<>(method, clazz));
+        CommandRegister cmdReg = new CommandRegister(plugin, method, clazz);
 
-        Arrays.stream(annotation.aliases()).forEach(alias -> commands.put(alias.toLowerCase(), new AbstractMap.SimpleEntry<>(method, clazz)));
+        commands.put(annotation.name().toLowerCase(), cmdReg);
+
+        Arrays.stream(annotation.aliases()).forEach(alias -> commands.put(alias.toLowerCase(), cmdReg));
         MiscUtils.printToConsole(Color.Yellow + "Registered ancmd: " + annotation.name());
 
         String cmdLabel = label.split("\\.")[0].toLowerCase();
