@@ -1,5 +1,6 @@
 package cc.funkemunky.api;
 
+import cc.funkemunky.api.bungee.BungeeManager;
 import cc.funkemunky.api.commands.FunkeCommandManager;
 import cc.funkemunky.api.commands.ancmd.CommandManager;
 import cc.funkemunky.api.commands.impl.AtlasCommand;
@@ -59,6 +60,7 @@ public class Atlas extends JavaPlugin {
     private EventManager eventManager;
     private int currentTicks;
     private PluginLoaderHandler pluginLoaderHandler;
+    private BungeeManager bungeeManager;
 
     @ConfigSetting(path = "updater")
     private boolean autoDownload = false;
@@ -145,6 +147,8 @@ public class Atlas extends JavaPlugin {
                 MiscUtils.printToConsole(Color.Green + "Atlas v" + updater.getVersion() + " has been downloaded. Please restart/reload your server to import it.");
             }
         }
+
+        bungeeManager = new BungeeManager();
 
         MiscUtils.printToConsole(Color.Green + "Successfully loaded Atlas and its utilities!");
     }

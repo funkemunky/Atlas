@@ -5,13 +5,21 @@ import cc.funkemunky.api.database.bungee.BungeeDatabase;
 import cc.funkemunky.api.database.flatfile.FlatfileDatabase;
 import cc.funkemunky.api.database.mongo.MongoDatabase;
 import cc.funkemunky.api.database.sql.MySQLDatabase;
+import cc.funkemunky.api.utils.ConfigSetting;
+import cc.funkemunky.api.utils.Init;
 import lombok.Getter;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 @Getter
+@Init
 public class DatabaseManager {
+
+    @ConfigSetting(path = "database.bungee.updater", name = "rateInSeconds")
+    private int bungeeRate = 60;
+
+
     private Map<String, Database> databases = new ConcurrentHashMap<>();
 
     public void createDatabase(String name, DatabaseType type) {

@@ -1,120 +1,71 @@
 package cc.funkemunky.api.database.bungee;
 
 import cc.funkemunky.api.Atlas;
+import cc.funkemunky.api.bungee.BungeeObject;
+import cc.funkemunky.api.bungee.Criteria;
+import cc.funkemunky.api.bungee.RequestType;
 import cc.funkemunky.api.database.Database;
 import cc.funkemunky.api.database.DatabaseType;
-import cc.funkemunky.api.utils.MiscUtils;
-import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
+import lombok.val;
 import org.bukkit.plugin.Plugin;
-import org.bukkit.plugin.messaging.PluginMessageListener;
 
-import java.io.*;
-import java.util.HashSet;
-import java.util.Set;
+import java.io.IOException;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
-public class BungeeDatabase extends Database implements PluginMessageListener {
-    private Set<String> requests = new HashSet<>();
+public class BungeeDatabase extends Database {
     public BungeeDatabase(String name, Plugin plugin) {
         super(name, plugin, DatabaseType.BUNGEE);
 
-        Atlas.getInstance().getServer().getMessenger().registerIncomingPluginChannel(Atlas.getInstance(), "Atlas_Data_Incoming", this);
+        //Running the updater.
+        Atlas.getInstance().getSchedular().scheduleAtFixedRate(this::loadDatabase, Atlas.getInstance().getDatabaseManager().getBungeeRate(), Atlas.getInstance().getDatabaseManager().getBungeeRate(), TimeUnit.SECONDS);
     }
 
     @Override
     public void loadDatabase() {
+        Atlas.getInstance().getBungeeManager().requestObject(RequestType.DATABASE, getName(), "*");
+
         try {
-            ByteArrayOutputStream bStream = new ByteArrayOutputStream();
-            DataOutputStream outputStream = new DataOutputStream(bStream);
+            val objects = Atlas.getInstance().getBungeeManager().getObjectWithCriteria(Criteria.STARTS_WITH, "db_" + getName(), 6500L);
 
-            outputStream.writeInt(Bukkit.getPort());
-            outputStream.writeUTF(getName());
-            outputStream.writeUTF("*");
-
-            Atlas.getInstance().getServer().sendPluginMessage(Atlas.getInstance(), "Atlas_Data_Request", bStream.toByteArray());
-        } catch(Exception e) {
+            objects.forEach(obj -> getDatabaseValues().put(obj.getId().replace("db_", ""), obj.getObject()));
+        } catch (InterruptedException | ExecutionException | TimeoutException e) {
             e.printStackTrace();
         }
     }
 
     @Override
     public void saveDatabase() {
-        //Empty as this is unnecessary.
+        getDatabaseValues().keySet().forEach(key -> {
+            String id = "db_" + key;
+
+            BungeeObject object = new BungeeObject(id, System.currentTimeMillis(), getDatabaseValues().get(key));
+
+            try {
+                Atlas.getInstance().getBungeeManager().sendObject(object);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
     }
 
     @Override
     public void inputField(String key, Object object) {
+        String id = "db_" + key;
+        BungeeObject bObject = new BungeeObject(id, System.currentTimeMillis(), object);
+
         try {
-            ByteArrayOutputStream bStream = new ByteArrayOutputStream();
-            DataOutputStream outputStream = new DataOutputStream(bStream);
-
-            outputStream.writeUTF(getName());
-            outputStream.writeUTF(key);
-            outputStream.writeUTF(object.getClass().getName());
-            outputStream.writeUTF(object.toString());
-
-            Atlas.getInstance().getServer().sendPluginMessage(Atlas.getInstance(), "Atlas_Data_Outgoing", bStream.toByteArray());
-        } catch(Exception e) {
+            Atlas.getInstance().getBungeeManager().sendObject(bObject);
+        } catch (IOException e) {
             e.printStackTrace();
         }
+
+        getDatabaseValues().put(key, object);
     }
 
     @Override
     public Object getField(String key) {
-        requests.add(key);
-
-        try {
-            long tick = 0;
-            Atlas.getInstance().getSchedular().schedule(() -> requests.remove(key), 10, TimeUnit.SECONDS);
-            while(requests.contains(key)) {
-
-            }
-        } catch(Exception e) {
-            e.printStackTrace();
-        } finally {
-            return getDatabaseValues().get(key);
-        }
-    }
-
-    @Override
-    public void onPluginMessageReceived(String s, Player player, byte[] bytes) {
-
-        try {
-            ByteArrayInputStream bStream = new ByteArrayInputStream(bytes);
-            DataInputStream inputStream = new DataInputStream(bStream);
-            String db = inputStream.readUTF();
-
-            if(db.equals(getName())) {
-                String key = inputStream.readUTF();
-                switch(key) {
-                    case "*": {
-                        while(inputStream.read(bytes) < bytes.length) {
-                            String[] line = inputStream.readUTF().split(";");
-
-                            if(line.length > 2) {
-                                String keyLoop = line[0], className = line[1], objectString = line[2];
-
-                                getDatabaseValues().put(keyLoop, MiscUtils.parseObjectFromString(objectString, Class.forName(className)));
-                            }
-                        }
-                        break;
-                    }
-                    case "Error": break;
-                    default: {
-                        String className = inputStream.readUTF();
-                        String objectString = inputStream.readUTF();
-                        Object object = MiscUtils.parseObjectFromString(objectString, Class.forName(className));
-
-                        getDatabaseValues().put(key, object);
-                        requests.remove(key);
-                        break;
-                    }
-
-                }
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        return getDatabaseValues().getOrDefault(key, null);
     }
 }
