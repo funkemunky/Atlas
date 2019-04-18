@@ -170,7 +170,7 @@ public abstract class TinyProtocol1_8 implements AbstractTinyProtocol {
 
                 // Don't inject players that have been explicitly uninjected
                 if (!uninjectedChannels.contains(channel)) {
-                    injectPlayer(e.getPlayer());
+                    Bukkit.getScheduler().runTaskLater(Atlas.getInstance(), () -> injectPlayer(e.getPlayer()), 1L); //We delay it on the main thread since servers do occasionally lag.
                 }
             }
 

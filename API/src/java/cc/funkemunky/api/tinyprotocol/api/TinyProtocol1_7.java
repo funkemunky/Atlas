@@ -1,5 +1,6 @@
 package cc.funkemunky.api.tinyprotocol.api;
 
+import cc.funkemunky.api.Atlas;
 import cc.funkemunky.api.tinyprotocol.reflection.FieldAccessor;
 import cc.funkemunky.api.tinyprotocol.reflection.MethodInvoker;
 import cc.funkemunky.api.tinyprotocol.reflection.Reflection;
@@ -18,6 +19,7 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.logging.Level;
 
@@ -169,7 +171,7 @@ public abstract class TinyProtocol1_7 implements AbstractTinyProtocol {
 
                 // Don't inject players that have been explicitly uninjected
                 if (!uninjectedChannels.contains(channel)) {
-                    injectPlayer(e.getPlayer());
+                    Bukkit.getScheduler().runTaskLater(Atlas.getInstance(), () -> injectPlayer(e.getPlayer()), 1L); //We delay it on the main thread since servers do occasionally lag.
                 }
             }
 
