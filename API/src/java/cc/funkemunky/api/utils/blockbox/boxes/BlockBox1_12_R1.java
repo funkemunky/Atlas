@@ -22,6 +22,8 @@ import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.FutureTask;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
 public class BlockBox1_12_R1 implements BlockBox {
     @Override
@@ -87,8 +89,8 @@ public class BlockBox1_12_R1 implements BlockBox {
                             }
 
                             try {
-                                task.get();
-                            } catch (InterruptedException | ExecutionException e) {
+                                task.get(2, TimeUnit.SECONDS);
+                            } catch (InterruptedException | ExecutionException | TimeoutException e) {
                                 e.printStackTrace();
                             }
                         }
