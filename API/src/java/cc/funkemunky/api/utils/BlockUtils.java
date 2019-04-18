@@ -13,6 +13,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.FutureTask;
+import java.util.concurrent.TimeUnit;
 
 public class BlockUtils {
 
@@ -34,7 +35,7 @@ public class BlockUtils {
             });
             Bukkit.getScheduler().runTask(Atlas.getInstance(), futureTask);
             try {
-                return futureTask.get();
+                return futureTask.get(2, TimeUnit.SECONDS);
             } catch (Exception ex) {
                 ex.printStackTrace();
             }

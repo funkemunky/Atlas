@@ -12,9 +12,7 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.SortedSet;
 import java.util.TreeSet;
-import java.util.concurrent.ConcurrentSkipListSet;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.FutureTask;
+import java.util.concurrent.*;
 
 @Getter
 public class EventManager {
@@ -98,8 +96,8 @@ public class EventManager {
             Atlas.getInstance().getThreadPool().submit(callTask);
 
             try {
-                return callTask.get();
-            } catch (InterruptedException | ExecutionException e) {
+                return callTask.get(6, TimeUnit.SECONDS);
+            } catch (InterruptedException | ExecutionException | TimeoutException e) {
                 e.printStackTrace();
             }
         }
