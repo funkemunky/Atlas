@@ -23,6 +23,6 @@
 hs_err_pid*
 
 # intellij files
-*.xml
+**/.idea/**
 *.iml
 **/out/*.*
