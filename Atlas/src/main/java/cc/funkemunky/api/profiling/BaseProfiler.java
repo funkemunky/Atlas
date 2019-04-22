@@ -2,6 +2,7 @@ package cc.funkemunky.api.profiling;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class BaseProfiler implements Profiler {
     public Map<String, Long> timings = new HashMap<>();
@@ -43,6 +44,15 @@ public class BaseProfiler implements Profiler {
     }
 
     @Override
+    public Map<String, Double> results() {
+        return total.keySet().parallelStream().collect(Collectors.toMap(key -> key, key -> {
+            long totalMS = total.get(key);
+            int totalCalls = calls.get(key);
+            return totalMS / (double) totalCalls;
+        }));
+    }
+
+    @Override
     public void stop(String name) {
         long extense = System.nanoTime();
         long start = timings.get(name);
@@ -70,6 +80,8 @@ public class BaseProfiler implements Profiler {
         total.put(name, lastTotal + time);
         lastSample = System.currentTimeMillis();
     }
+
+
 }
 
 

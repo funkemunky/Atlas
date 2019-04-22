@@ -1,5 +1,7 @@
 package cc.funkemunky.api.profiling;
 
+import java.util.Map;
+
 public interface Profiler {
     void start(String name);
 
@@ -12,4 +14,6 @@ public interface Profiler {
     void stop();
 
     void reset();
+
+    Map<String, Double> results();
 }
