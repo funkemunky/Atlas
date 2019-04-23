@@ -15,5 +15,5 @@ public interface Profiler {
 
     void reset();
 
-    Map<String, Double> results();
+    Map<String, Double> results(ResultsType type);
 }
