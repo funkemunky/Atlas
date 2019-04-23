@@ -47,12 +47,12 @@ public class BaseProfiler implements Profiler {
     public Map<String, Double> results(ResultsType type) {
         if(type.equals(ResultsType.TOTAL)) {
             return total.keySet().parallelStream().collect(Collectors.toMap(key -> key, key -> {
-                long totalMS = total.get(key);
+                double totalMS = total.get(key) / 1000000D;
                 int totalCalls = calls.get(key);
-                return totalMS / (double) totalCalls;
+                return totalMS / totalCalls;
             }));
         } else {
-            return samples.keySet().parallelStream().collect(Collectors.toMap(key -> key, key -> (double) samples.get(key)));
+            return samples.keySet().parallelStream().collect(Collectors.toMap(key -> key, key -> samples.get(key) / 1000000D));
         }
     }
 
