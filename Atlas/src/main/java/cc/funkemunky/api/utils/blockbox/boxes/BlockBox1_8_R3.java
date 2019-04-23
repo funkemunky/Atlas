@@ -23,7 +23,6 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.FutureTask;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
-import java.util.stream.IntStream;
 
 public class BlockBox1_8_R3 implements BlockBox {
     @Override
@@ -40,9 +39,9 @@ public class BlockBox1_8_R3 implements BlockBox {
         int maxZ = MathUtils.floor(box.maxZ + 1);
 
 
-        IntStream.range(minX, maxX).parallel().forEach(x -> {
-            IntStream.range(minY, maxY).parallel().forEach(y -> {
-                IntStream.range(minZ, maxZ).parallel().forEach(z -> {
+        for (int x = minX; x < maxX; x++) {
+            for (int z = minZ; z < maxZ; z++) {
+                for (int y = minY - 1; y < maxY; y++) {
                     Location loc = new Location(world, x, y, z);
 
                     if (isChunkLoaded(loc)) {
@@ -90,9 +89,9 @@ public class BlockBox1_8_R3 implements BlockBox {
 
                         }
                     }
-                });
-            });
-        });
+                }
+            }
+        }
 
         aabbs.stream().filter(Objects::nonNull).forEach(aabb -> boxes.add(ReflectionsUtil.toBoundingBox(aabb)));
         return boxes;

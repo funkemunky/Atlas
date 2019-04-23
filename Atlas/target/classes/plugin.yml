@@ -1,6 +1,10 @@
 name: Atlas
 main: cc.funkemunky.api.Atlas
+<<<<<<< HEAD
 version: 1.2-PRE-b11
+=======
+version: 1.2-PRE-b9
+>>>>>>> parent of 71b8b14... New Atlas Improvements (I hope)
 author: funkemunky
 commands:
   atlas:

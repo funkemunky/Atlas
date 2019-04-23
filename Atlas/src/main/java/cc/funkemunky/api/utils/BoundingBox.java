@@ -1,15 +1,17 @@
 package cc.funkemunky.api.utils;
 
 import cc.funkemunky.api.Atlas;
+import net.minecraft.server.v1_8_R3.AxisAlignedBB;
+import net.minecraft.server.v1_8_R3.BlockPosition;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.craftbukkit.v1_8_R3.CraftWorld;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.IntStream;
 
 public class BoundingBox {
 
@@ -101,9 +103,9 @@ public class BoundingBox {
         int maxZ = MathUtils.floor(this.maxZ + 1);
 
 
-        IntStream.range(minX, maxX).parallel().forEach(x -> {
-            IntStream.range(minY, maxY).parallel().forEach(y -> {
-                IntStream.range(minZ, maxZ).parallel().forEach(z -> {
+        for (int x = minX; x < maxX; x++) {
+            for (int z = minZ; z < maxZ; z++) {
+                for (int y = minY - 1; y < maxY; y++) {
                     Location loc = new Location(player.getWorld(), x, y, z);
 
                     if (Atlas.getInstance().getBlockBoxManager().getBlockBox().isChunkLoaded(loc)) {
@@ -112,9 +114,9 @@ public class BoundingBox {
                             toReturn.addAll(Atlas.getInstance().getBoxes().getBoundingBox(block));
                         }
                     }
-                });
-            });
-        });
+                }
+            }
+        }
         return toReturn;
     }
 

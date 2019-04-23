@@ -2,7 +2,6 @@ package cc.funkemunky.api.profiling;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 public class BaseProfiler implements Profiler {
     public Map<String, Long> timings = new HashMap<>();
@@ -44,6 +43,7 @@ public class BaseProfiler implements Profiler {
     }
 
     @Override
+<<<<<<< HEAD
     public Map<String, Double> results(ResultsType type) {
         if(type.equals(ResultsType.TOTAL)) {
             return total.keySet().parallelStream().collect(Collectors.toMap(key -> key, key -> {
@@ -57,6 +57,8 @@ public class BaseProfiler implements Profiler {
     }
 
     @Override
+=======
+>>>>>>> parent of 71b8b14... New Atlas Improvements (I hope)
     public void stop(String name) {
         long extense = System.nanoTime();
         long start = timings.get(name);
@@ -84,8 +86,6 @@ public class BaseProfiler implements Profiler {
         total.put(name, lastTotal + time);
         lastSample = System.currentTimeMillis();
     }
-
-
 }
 
 
