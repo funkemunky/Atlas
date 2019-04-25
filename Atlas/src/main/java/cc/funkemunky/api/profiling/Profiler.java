@@ -1,5 +1,7 @@
 package cc.funkemunky.api.profiling;
 
+import java.util.Map;
+
 public interface Profiler {
     void start(String name);
 
@@ -12,9 +14,6 @@ public interface Profiler {
     void stop();
 
     void reset();
-<<<<<<< HEAD
 
     Map<String, Double> results(ResultsType type);
-=======
->>>>>>> parent of 71b8b14... New Atlas Improvements (I hope)
 }
