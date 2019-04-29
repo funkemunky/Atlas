@@ -1,5 +1,0 @@
-updater:
-  autoDownload: false
-  checkForUpdates: true
-  notifyOnJoin: true
-metrics: true
