@@ -140,6 +140,7 @@ public abstract class Packet {
         public static final String ABILITIES = CLIENT + "Abilities";
         public static final String HELD_ITEM_SLOT = CLIENT + "HeldItemSlot";
         public static final String CLOSE_WINDOW = CLIENT + "CloseWindow";
+        public static final String TAB_COMPLETE = CLIENT + "TabComplete";
     }
 
     public static class Server {

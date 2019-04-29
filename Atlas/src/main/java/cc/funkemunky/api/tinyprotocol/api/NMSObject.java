@@ -144,6 +144,7 @@ public abstract class NMSObject {
         public static final String CLIENT_COMMAND = CLIENT + "ClientCommand";
         public static final String CLOSE_WINDOW = CLIENT + "CloseWindow";
         public static final String ABILITIES = CLIENT + "Abilities";
+        public static final String TAB_COMPLETE = CLIENT + "TabComplete";
     }
 
     public static class Server {
