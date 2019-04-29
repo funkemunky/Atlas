@@ -71,7 +71,6 @@ public class CommandManager implements CommandExecutor {
 
             val name = split.length > 0 ? split[0] : key;
 
-            map.getCommand(name).unregister(map);
             commands.remove(key);
         });
     }
