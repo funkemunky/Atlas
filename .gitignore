@@ -28,4 +28,6 @@ hs_err_pid*
 **/out/*.*
 *.ist
 *.py
-**/**/*.xml
+*.lst
+*.properties
+**/target/**
