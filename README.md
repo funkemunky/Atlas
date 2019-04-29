@@ -15,38 +15,33 @@ Atlas is an all-in-one and cohesive API for developers who want to improve their
 
 #### Creating an event
 ```java
-package cc.funkemunky.fiona.events.custom;
+package cc.funkemunky.anticheat.api.event;
 
-import cc.funkemunky.api.event.system.Cancellable;
-import cc.funkemunky.api.event.system.Event;
-import cc.funkemunky.fiona.utils.FionaLocation;
+import cc.funkemunky.api.events.AtlasEvent;
+import cc.funkemunky.api.events.Cancellable;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
-import org.bukkit.entity.Player;
 
-@Getter
-public class PacketFunkeMoveEvent
-        extends Event
-        implements Cancellable {
-    private Player player;
-    private FionaLocation from, to;
-    private boolean cancelled, onGround, jumped;
 
-    public PacketFunkeMoveEvent(Player player, FionaLocation from, FionaLocation to, boolean onGround, boolean jumped) {
-        this.player = player;
-        this.from = from;
-        this.to = to;
-        this.onGround = onGround;
-        this.jumped = jumped;
+public class TickEvent extends AtlasEvent implements Cancellable {
+    private int currentTick;
+
+    public TickEvent(int currentTick) {
+        this.currentTick = currentTick;
+    }
+
+    public int getCurrentTick() {
+        return currentTick;
     }
 
     @Override
     public boolean isCancelled() {
-        return this.cancelled;
+        return false;
     }
 
     @Override
-    public void setCancelled(boolean cancelled) {
-        this.cancelled = cancelled;
+    public void setCancelled(boolean b) {
+
     }
 }
 
@@ -54,32 +49,45 @@ public class PacketFunkeMoveEvent
 
 ### Calling an event
 ```java
- PacketFunkeMoveEvent event = new PacketFunkeMoveEvent(data.player, new FionaLocation(data.movement.from), new FionaLocation(to), packet.isGround(), data.movement.hasJumped);
-            if (data.lastTeleport.hasPassed(5) && (packet.isLook() || to.distance(data.movement.from) > 0.005) && data.lastLogin.hasPassed(40)) {
-                EventManager.callEvent(event);
+new BukkitRunnable() {
+            public void run() {
+                TickEvent tickEvent = new TickEvent(currentTicks++);
+
+                Atlas.getInstance().getEventManager().callEvent(tickEvent);
             }
+        }.runTaskTimerAsynchronously(this, 1L, 1L);
 ```
 
 ### Example Listener
 ```java
-package cc.funkemunky.fiona.events.bukkit;
+package cc.funkemunky.anticheat.impl.listeners;
 
-import cc.funkemunky.fiona.events.custom.PacketFunkeMoveEvent;
-import cc.funkemunky.fiona.events.system.EventMethod;
-import cc.funkemunky.fiona.events.system.Listener;
+import cc.funkemunky.anticheat.Rock;
+import cc.funkemunky.anticheat.api.data.PlayerData;
+import cc.funkemunky.anticheat.api.event.TickEvent;
+import cc.funkemunky.api.Atlas;
+import cc.funkemunky.api.events.AtlasListener;
+import cc.funkemunky.api.events.Listen;
+import cc.funkemunky.api.utils.Init;
 
-public class DataEvents implements Listener {
-	@EventMethod
-    public void onPacketMoveEvent(PacketFunkeMoveEvent event) {
-        //blah blah blah
+@Init
+public class FunkeListeners implements AtlasListener {
+
+    @Listen
+    public void onTickEvent(TickEvent event) {
+        Atlas.getInstance().executeTask(() -> Rock.getInstance().getDataManager().getDataObjects().keySet().forEach(key -> {
+            PlayerData data = Rock.getInstance().getDataManager().getDataObjects().get(key);
+
+            data.getActionProcessor().update(data);
+        }));
     }
 }
 ```
 
 ### Registering a Listener
 ```java
-private void registerEvents() {
-        EventManager.register(new DataEvents());
+public void onEnable() {
+        Atlas.getInstance().getEventManager().registerListeners(new FunkeListeners(), this);
 }
 ```
 
@@ -94,7 +102,7 @@ TinyProtocolHandler.sendPacket(e.getPlayer(), new WrappedOutKeepAlivePacket(233 
 
 #### Client Packets
 ```java
-@EventMethod
+@Listen
     public void onEvent(PacketRecieveEvent e) {
         if(e.getType().equals(Packet.Client.ENTITY_ACTION)) {
             WrappedInEntityActionPacket packet = new WrappedInEntityActionPacket(e.getPacket(), e.getPlayer());
@@ -119,7 +127,7 @@ TinyProtocolHandler.sendPacket(e.getPlayer(), new WrappedOutKeepAlivePacket(233 
 
 #### Server Packets
 ```java
- @EventMethod
+ @Listen
     public void onPacketSend(PacketSendEvent e) {
         PlayerData data = Fiona.getInstance().getDataManager().getPlayerData(e.getPlayer());
 
