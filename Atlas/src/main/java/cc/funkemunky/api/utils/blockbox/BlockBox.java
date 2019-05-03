@@ -21,6 +21,7 @@ public interface BlockBox {
 
     float getMovementFactor(Player player);
 
+    @Deprecated
     int getTrackerId(Player player);
 
     float getAiSpeed(Player player);
