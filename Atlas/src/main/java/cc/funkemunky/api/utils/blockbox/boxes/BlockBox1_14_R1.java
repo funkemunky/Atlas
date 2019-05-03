@@ -7,13 +7,13 @@ import cc.funkemunky.api.utils.MathUtils;
 import cc.funkemunky.api.utils.ReflectionsUtil;
 import cc.funkemunky.api.utils.blockbox.BlockBox;
 import lombok.val;
-import net.minecraft.server.v1_13_R2.*;
+import net.minecraft.server.v1_14_R1.*;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
-import org.bukkit.craftbukkit.v1_13_R2.entity.CraftLivingEntity;
-import org.bukkit.craftbukkit.v1_13_R2.entity.CraftPlayer;
+import org.bukkit.craftbukkit.v1_14_R1.entity.CraftLivingEntity;
+import org.bukkit.craftbukkit.v1_14_R1.entity.CraftPlayer;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 
@@ -25,7 +25,7 @@ import java.util.concurrent.FutureTask;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
-public class BlockBox1_13_R2 implements BlockBox {
+public class BlockBox1_14_R1 implements BlockBox {
     @Override
     public List<BoundingBox> getCollidingBoxes(World world, BoundingBox box) {
         List<AxisAlignedBB> aabbs = new ArrayList<>();
@@ -49,30 +49,30 @@ public class BlockBox1_13_R2 implements BlockBox {
                         } else {
                             final int aX = x, aY = y, aZ = z;
                             FutureTask<?> task = new FutureTask<>(() -> {
-                                net.minecraft.server.v1_13_R2.BlockPosition pos = new net.minecraft.server.v1_13_R2.BlockPosition(aX, aY, aZ);
-                                net.minecraft.server.v1_13_R2.World nmsWorld = ((org.bukkit.craftbukkit.v1_13_R2.CraftWorld) world).getHandle();
-                                net.minecraft.server.v1_13_R2.IBlockData nmsiBlockData = ((org.bukkit.craftbukkit.v1_13_R2.CraftWorld) world).getHandle().getType(pos);
-                                net.minecraft.server.v1_13_R2.Block nmsBlock = nmsiBlockData.getBlock();
+                                net.minecraft.server.v1_14_R1.BlockPosition pos = new net.minecraft.server.v1_14_R1.BlockPosition(aX, aY, aZ);
+                                net.minecraft.server.v1_14_R1.World nmsWorld = ((org.bukkit.craftbukkit.v1_14_R1.CraftWorld) world).getHandle();
+                                net.minecraft.server.v1_14_R1.IBlockData nmsiBlockData = ((org.bukkit.craftbukkit.v1_14_R1.CraftWorld) world).getHandle().getType(pos);
+                                net.minecraft.server.v1_14_R1.Block nmsBlock = nmsiBlockData.getBlock();
 
-                                net.minecraft.server.v1_13_R2.VoxelShape shape = nmsiBlockData.getCollisionShape(nmsWorld, pos);
+                                net.minecraft.server.v1_14_R1.VoxelShape shape = nmsiBlockData.getCollisionShape(nmsWorld, pos);
                                 if (shape.toString().equals("EMPTY")) {
-                                    aabbs.add(new net.minecraft.server.v1_13_R2.AxisAlignedBB(block.getLocation().getX(), block.getLocation().getY(), block.getLocation().getZ(), block.getLocation().getX() + 1, block.getLocation().getY() + 1, block.getLocation().getZ() + 1));
+                                    aabbs.add(new net.minecraft.server.v1_14_R1.AxisAlignedBB(block.getLocation().getX(), block.getLocation().getY(), block.getLocation().getZ(), block.getLocation().getX() + 1, block.getLocation().getY() + 1, block.getLocation().getZ() + 1));
                                 } else {
                                     aabbs.addAll(shape.d());
                                 }
 
-                                if (nmsBlock instanceof net.minecraft.server.v1_13_R2.BlockShulkerBox) {
-                                    net.minecraft.server.v1_13_R2.TileEntity tileentity = nmsWorld.getTileEntity(pos);
-                                    net.minecraft.server.v1_13_R2.BlockShulkerBox shulker = (net.minecraft.server.v1_13_R2.BlockShulkerBox) nmsBlock;
+                                if (nmsBlock instanceof net.minecraft.server.v1_14_R1.BlockShulkerBox) {
+                                    net.minecraft.server.v1_14_R1.TileEntity tileentity = nmsWorld.getTileEntity(pos);
+                                    net.minecraft.server.v1_14_R1.BlockShulkerBox shulker = (net.minecraft.server.v1_14_R1.BlockShulkerBox) nmsBlock;
 
-                                    if (tileentity instanceof net.minecraft.server.v1_13_R2.TileEntityShulkerBox) {
-                                        net.minecraft.server.v1_13_R2.TileEntityShulkerBox entity = (net.minecraft.server.v1_13_R2.TileEntityShulkerBox) tileentity;
+                                    if (tileentity instanceof net.minecraft.server.v1_14_R1.TileEntityShulkerBox) {
+                                        net.minecraft.server.v1_14_R1.TileEntityShulkerBox entity = (net.minecraft.server.v1_14_R1.TileEntityShulkerBox) tileentity;
                                         //Bukkit.broadcastMessage("entity");
                                         aabbs.add(entity.a(nmsiBlockData));
 
                                         val loc = block.getLocation();
-                                        if (entity.r().toString().contains("OPEN") || entity.r().toString().contains("CLOSING")) {
-                                            aabbs.add(new net.minecraft.server.v1_13_R2.AxisAlignedBB(loc.getX(), loc.getY(), loc.getZ(), loc.getX() + 1, loc.getY() + 1.5, loc.getZ() + 1));
+                                        if (entity.s().toString().contains("OPEN") || entity.s().toString().contains("CLOSING")) {
+                                            aabbs.add(new net.minecraft.server.v1_14_R1.AxisAlignedBB(loc.getX(), loc.getY(), loc.getZ(), loc.getX() + 1, loc.getY() + 1.5, loc.getZ() + 1));
                                         }
                                     }
                                 }
@@ -113,9 +113,9 @@ public class BlockBox1_13_R2 implements BlockBox {
 
     @Override
     public boolean isChunkLoaded(Location loc) {
-        net.minecraft.server.v1_13_R2.World world = ((org.bukkit.craftbukkit.v1_13_R2.CraftWorld) loc.getWorld()).getHandle();
+        net.minecraft.server.v1_14_R1.World world = ((org.bukkit.craftbukkit.v1_14_R1.CraftWorld) loc.getWorld()).getHandle();
 
-        return !world.isClientSide && world.isLoaded(new net.minecraft.server.v1_13_R2.BlockPosition(loc.getBlockX(), 0, loc.getBlockZ())) && world.getChunkAtWorldCoords(new net.minecraft.server.v1_13_R2.BlockPosition(loc.getBlockX(), 0, loc.getBlockZ())).y();
+        return !world.isClientSide && world.isLoaded(new net.minecraft.server.v1_14_R1.BlockPosition(loc.getBlockX(), 0, loc.getBlockZ())) && world.getChunkAtWorldCoords(new net.minecraft.server.v1_14_R1.BlockPosition(loc.getBlockX(), 0, loc.getBlockZ())).r();
     }
 
     @Override
@@ -125,8 +125,8 @@ public class BlockBox1_13_R2 implements BlockBox {
 
     @Override
     public boolean isUsingItem(Player player) {
-        net.minecraft.server.v1_13_R2.EntityLiving entity = ((org.bukkit.craftbukkit.v1_13_R2.entity.CraftLivingEntity) player).getHandle();
-        return entity.cW() != null && entity.cW().l() != net.minecraft.server.v1_13_R2.EnumAnimation.NONE;
+        net.minecraft.server.v1_14_R1.EntityLiving entity = ((org.bukkit.craftbukkit.v1_14_R1.entity.CraftLivingEntity) player).getHandle();
+        return entity.dl() != null && entity.dl().l() != net.minecraft.server.v1_14_R1.EnumAnimation.NONE;
     }
 
     @Override
@@ -136,13 +136,11 @@ public class BlockBox1_13_R2 implements BlockBox {
 
     @Override
     public int getTrackerId(Player player) {
-        EntityPlayer entityPlayer = ((CraftPlayer) player).getHandle();
-        EntityTrackerEntry entry = ((WorldServer) entityPlayer.getWorld()).tracker.trackedEntities.get(entityPlayer.getId());
-        return entry.b().getId();
+        return player.getEntityId();
     }
 
     @Override
     public float getAiSpeed(Player player) {
-        return ((CraftPlayer) player).getHandle().cK();
+        return ((CraftPlayer) player).getHandle().da();
     }
 }

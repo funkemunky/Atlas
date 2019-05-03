@@ -6,7 +6,7 @@
 
     <groupId>cc.funkemunky.plugins</groupId>
     <artifactId>Atlas</artifactId>
-    <version>1.2</version>
+    <version>1.2.1</version>
 
     <build>
         <defaultGoal>clean package</defaultGoal>
@@ -159,6 +159,18 @@
             <groupId>org.github.paperspigot</groupId>
             <artifactId>1.13.2</artifactId>
             <version>1.13.2</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.github.spigot</groupId>
+            <artifactId>1.13.2</artifactId>
+            <version>1.13.2</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.github.spigot</groupId>
+            <artifactId>1.14</artifactId>
+            <version>1.14</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>

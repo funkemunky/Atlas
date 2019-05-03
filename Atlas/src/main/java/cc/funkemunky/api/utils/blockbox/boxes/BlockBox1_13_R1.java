@@ -55,11 +55,11 @@ public class BlockBox1_13_R1 implements BlockBox {
                                 net.minecraft.server.v1_13_R1.IBlockData nmsiBlockData = ((CraftWorld) world).getHandle().getType(pos);
                                 net.minecraft.server.v1_13_R1.Block nmsBlock = nmsiBlockData.getBlock();
 
-                                VoxelShape shape = nmsiBlockData.getBlock().a(nmsiBlockData, (IBlockAccess) nmsWorld, pos);
+                                VoxelShape shape = nmsiBlockData.h(nmsWorld, pos);
                                 if (shape.toString().equals("EMPTY")) {
                                     aabbs.add(new AxisAlignedBB(block.getLocation().getX(), block.getLocation().getY(), block.getLocation().getZ(), block.getLocation().getX() + 1, block.getLocation().getY() + 1, block.getLocation().getZ() + 1));
                                 } else {
-                                    aabbs.add(shape.a().d(block.getLocation().getX(), block.getLocation().getY(), block.getLocation().getZ()));
+                                    aabbs.addAll(shape.d());
                                 }
 
                                 if (nmsBlock instanceof net.minecraft.server.v1_13_R1.BlockShulkerBox) {
