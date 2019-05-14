@@ -14,9 +14,7 @@ import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.SimplePluginManager;
-import org.bukkit.plugin.java.JavaPlugin;
 
-import javax.annotation.Nullable;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.*;
@@ -65,11 +63,16 @@ public class CommandManager implements CommandExecutor {
 
     public void unregisterCommands(Plugin plugin) {
         commands.keySet().stream().filter(key -> commands.get(key).getPlugin().getName().equals(plugin.getName())).forEach(key -> {
-            val cmd = commands.get(key);
 
             val split = key.split(".");
 
-            val name = split.length > 0 ? split[0] : key;
+            val name = split[0];
+
+            val cmd = map.getCommand(name);
+
+            if(cmd != null) {
+                cmd.unregister(map);
+            }
 
             commands.remove(key);
         });
