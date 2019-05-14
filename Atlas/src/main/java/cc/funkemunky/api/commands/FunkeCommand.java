@@ -159,7 +159,7 @@ public abstract class FunkeCommand
                         continue;
 
                     if ((argument.getPermission() == null || sender.hasPermission(adminPerm)
-                            || sender.hasPermission(permission))) {
+                            || Arrays.stream(argument.getPermission()).anyMatch(sender::hasPermission))) {
                         if(!argument.isPlayerOnly() || sender instanceof Player) {
                             argument.onArgument(sender, cmd, args);
                         } else {

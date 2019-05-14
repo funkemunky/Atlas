@@ -95,10 +95,12 @@ public class EventManager {
 
             Atlas.getInstance().getThreadPool().submit(callTask);
 
-            try {
-                return callTask.get(6, TimeUnit.SECONDS);
-            } catch (InterruptedException | ExecutionException | TimeoutException e) {
-                e.printStackTrace();
+            if(event instanceof Cancellable) {
+                try {
+                    return callTask.get(6, TimeUnit.SECONDS);
+                } catch (InterruptedException | ExecutionException | TimeoutException e) {
+                    e.printStackTrace();
+                }
             }
         }
         return true;

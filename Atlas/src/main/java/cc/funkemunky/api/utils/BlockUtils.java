@@ -35,7 +35,7 @@ public class BlockUtils {
             });
             Bukkit.getScheduler().runTask(Atlas.getInstance(), futureTask);
             try {
-                return futureTask.get(2, TimeUnit.SECONDS);
+                return futureTask.get(5, TimeUnit.MILLISECONDS);
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
