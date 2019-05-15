@@ -16,24 +16,44 @@ public class FunkeFile {
         this.file = new File(Plugin.getDataFolder() + File.separator + Path);
         this.file.mkdirs();
         this.file = new File(Plugin.getDataFolder() + File.separator + Path, Name);
-        try {
-            this.file.createNewFile();
-        } catch (IOException e) {
-            e.printStackTrace();
+        if(!file.exists()) {
+            try {
+                this.file.createNewFile();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
         this.name = Name;
 
         readFile();
     }
 
-    public FunkeFile(File file, String name) {
+    public FunkeFile(String name) {
         this.file = Atlas.getInstance().getDataFolder();
         this.file.mkdirs();
         this.file = new File(Atlas.getInstance().getDataFolder(), name);
-        try {
-            this.file.createNewFile();
-        } catch (IOException e) {
-            e.printStackTrace();
+
+        if(!file.exists()) {
+            try {
+                this.file.createNewFile();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        this.name = name;
+
+        readFile();
+    }
+
+    public FunkeFile(File file) {
+        this.file = file;
+
+        if(!file.exists()) {
+            try {
+                this.file.createNewFile();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
         this.name = name;
 
