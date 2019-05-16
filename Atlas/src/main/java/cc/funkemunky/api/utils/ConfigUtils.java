@@ -50,7 +50,7 @@ public class ConfigUtils {
         yamlOptions.setAllowUnicode("UTF-8");
         yamlRepresenter.setDefaultFlowStyle(DumperOptions.FlowStyle.BLOCK);
         String header = buildHeader(yaml);
-        String dump = yaml.dump(this.getValues(false));
+        String dump = dump(this.getValues(false));
         if (dump.equals("{}\n")) {
             dump = "";
         }
