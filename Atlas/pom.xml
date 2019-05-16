@@ -6,7 +6,7 @@
 
     <groupId>cc.funkemunky.plugins</groupId>
     <artifactId>Atlas</artifactId>
-    <version>1.2.1</version>
+    <version>1.2.1-PRE-b3</version>
 
     <build>
         <defaultGoal>clean package</defaultGoal>

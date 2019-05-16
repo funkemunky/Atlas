@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.FutureTask;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
 public class BlockUtils {
 
@@ -35,9 +36,11 @@ public class BlockUtils {
             });
             Bukkit.getScheduler().runTask(Atlas.getInstance(), futureTask);
             try {
-                return futureTask.get(5, TimeUnit.MILLISECONDS);
-            } catch (Exception ex) {
-                ex.printStackTrace();
+                return futureTask.get(4, TimeUnit.MILLISECONDS);
+            } catch (TimeoutException ex) {
+               return null;
+            } catch(Exception e) {
+                e.printStackTrace();
             }
             return null;
         }
