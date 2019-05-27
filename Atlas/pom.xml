@@ -6,7 +6,7 @@
 
     <groupId>cc.funkemunky.plugins</groupId>
     <artifactId>Atlas</artifactId>
-    <version>1.2.1-PRE-b3</version>
+    <version>1.2.1</version>
 
     <build>
         <defaultGoal>clean package</defaultGoal>
@@ -63,12 +63,6 @@
             <groupId>one.util</groupId>
             <artifactId>streamex</artifactId>
             <version>0.6.8</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>cc.funkemunky.utils</groupId>
-            <artifactId>asm-all</artifactId>
-            <version>5.2</version>
             <scope>compile</scope>
         </dependency>
         <dependency>

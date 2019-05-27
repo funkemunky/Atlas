@@ -55,10 +55,12 @@ public class BlockBox1_13_R2 implements BlockBox {
                                 net.minecraft.server.v1_13_R2.Block nmsBlock = nmsiBlockData.getBlock();
 
                                 net.minecraft.server.v1_13_R2.VoxelShape shape = nmsiBlockData.getCollisionShape(nmsWorld, pos);
-                                if (shape.toString().equals("EMPTY")) {
+
+                                val aabbsVoxel = shape.d();
+                                if (aabbsVoxel.size() == 0) {
                                     aabbs.add(new net.minecraft.server.v1_13_R2.AxisAlignedBB(block.getLocation().getX(), block.getLocation().getY(), block.getLocation().getZ(), block.getLocation().getX() + 1, block.getLocation().getY() + 1, block.getLocation().getZ() + 1));
                                 } else {
-                                    aabbs.addAll(shape.d());
+                                    aabbs.addAll(aabbsVoxel);
                                 }
 
                                 if (nmsBlock instanceof net.minecraft.server.v1_13_R2.BlockShulkerBox) {

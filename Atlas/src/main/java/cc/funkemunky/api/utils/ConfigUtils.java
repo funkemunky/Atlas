@@ -22,7 +22,7 @@ import java.util.*;
 
 public class ConfigUtils {
 
-    public static void addCommentToLine(File file, String line, String comment) {
+    /*public static void addCommentToLine(File file, String line, String comment) {
 
     }
 
@@ -91,7 +91,7 @@ public class ConfigUtils {
         }
     }
 
-    private static static YamlConfigurationOptions options(FileConfiguration config) {
+    private static YamlConfigurationOptions options(FileConfiguration config) {
         val method = ReflectionsUtil.getMethod(YamlConfiguration.class, "options");
         return (YamlConfigurationOptions) ReflectionsUtil.getMethodValue(method, config);
     }
@@ -127,5 +127,5 @@ public class ConfigUtils {
 
             return builder.toString();
         }
-    }
+    }*/
 }

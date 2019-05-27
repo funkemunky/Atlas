@@ -30,10 +30,7 @@ public class BlockUtils {
         if (location.getWorld().isChunkLoaded(location.getBlockX() >> 4, location.getBlockZ() >> 4)) {
             return location.getBlock();
         } else {
-            FutureTask<Block> futureTask = new FutureTask<>(() -> {
-                location.getWorld().loadChunk(location.getBlockX() >> 4, location.getBlockZ() >> 4);
-                return location.getBlock();
-            });
+            FutureTask<Block> futureTask = new FutureTask<>(location::getBlock);
             Bukkit.getScheduler().runTask(Atlas.getInstance(), futureTask);
             try {
                 return futureTask.get(4, TimeUnit.MILLISECONDS);

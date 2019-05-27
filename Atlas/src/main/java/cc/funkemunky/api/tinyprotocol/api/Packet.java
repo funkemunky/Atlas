@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.bukkit.entity.Player;
 
+import javax.xml.bind.annotation.XmlIDREF;
 import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.Map;
@@ -123,12 +124,17 @@ public abstract class Packet {
 
         public static final String KEEP_ALIVE = CLIENT + "KeepAlive";
         public static final String FLYING = CLIENT + "Flying";
-        public static final String POSITION = FLYING + "$" + CLIENT + "Position";
-        public static final String POSITION_LOOK = FLYING + "$" + CLIENT + "PositionLook";
-        public static final String LOOK = FLYING + "$" + CLIENT + "Look";
-        public static final String LEGACY_POSITION = CLIENT + "Position";
-        public static final String LEGACY_POSITION_LOOK = CLIENT + "PositionLook";
-        public static final String LEGACY_LOOK = CLIENT + "Look";
+
+        public static final String POSITION = CLIENT + "Position";
+        public static final String POSITION_LOOK = CLIENT + "PositionLook";
+        public static final String LOOK = CLIENT + "Look";
+        @Deprecated
+        public static final String LEGACY_POSITION = FLYING + "$" + CLIENT + "Position";
+        @Deprecated
+        public static final String LEGACY_POSITION_LOOK = FLYING + "$" + CLIENT + "PositionLook";
+        @Deprecated
+        public static final String LEGACY_LOOK = FLYING + "$" + CLIENT + "Look";
+
         public static final String TRANSACTION = CLIENT + "Transaction";
         public static final String BLOCK_DIG = CLIENT + "BlockDig";
         public static final String ENTITY_ACTION = CLIENT + "EntityAction";

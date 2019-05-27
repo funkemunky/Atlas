@@ -88,7 +88,11 @@ public class TinyProtocolHandler {
         String packetName = name.substring(index + 1);
 
         //Converting the later packets into their equivalent, more understandable legacy types.
-        packetName = packetName.replaceAll("PacketPlayInUseItem", "PacketPlayInBlockPlace");
+        packetName = packetName
+                .replaceAll("PacketPlayInUseItem", "PacketPlayInBlockPlace")
+                .replaceAll(Packet.Client.LEGACY_LOOK, Packet.Client.LOOK)
+                .replaceAll(Packet.Client.LEGACY_POSITION, Packet.Client.POSITION)
+                .replaceAll(Packet.Client.LEGACY_POSITION_LOOK, Packet.Client.POSITION_LOOK);
 
         PacketReceiveEvent event = new PacketReceiveEvent(sender, packet, packetName);
 
