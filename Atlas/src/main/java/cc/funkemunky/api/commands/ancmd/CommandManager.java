@@ -47,7 +47,12 @@ public class CommandManager implements CommandExecutor {
         }
     }
 
+    @Deprecated
     public void registerCommands(Plugin plugin, Object clazz) {
+        registerCommands(clazz);
+    }
+
+    public void registerCommands(Object clazz) {
         try {
 
             Arrays.stream(clazz.getClass().getMethods()).filter(method -> method.isAnnotationPresent(Command.class) && method.getParameterCount() > 0 && method.getParameters()[0].getType() == CommandAdapter.class).forEach(method -> {
@@ -61,6 +66,7 @@ public class CommandManager implements CommandExecutor {
         }
     }
 
+    @Deprecated
     public void unregisterCommands(Plugin plugin) {
         commands.keySet().stream().filter(key -> commands.get(key).getPlugin().getName().equals(plugin.getName())).forEach(key -> {
 
@@ -253,7 +259,7 @@ public class CommandManager implements CommandExecutor {
         }*/
     }
 
-    public void registerCommand(Plugin plugin, Command command, String label, Method method, Object clazz) {
+    public void registerCommand(Command command, String label, Method method, Object clazz) {
         Command annotation = method.getAnnotation(Command.class);
 
         CommandRegister cmdReg = new CommandRegister(plugin, method, clazz);
@@ -267,7 +273,6 @@ public class CommandManager implements CommandExecutor {
 
         if (map.getCommand(cmdLabel) == null) {
             SpigotCommand cmd = new SpigotCommand(cmdLabel, this, plugin);
-
             Arrays.stream(annotation.tabCompletions()).forEach(string -> cmd.completer.addCompleter(string, method, clazz));
             map.register(plugin.getName(), cmd);
         }
@@ -277,5 +282,10 @@ public class CommandManager implements CommandExecutor {
         if (!command.usage().equalsIgnoreCase("") && cmdLabel == label) {
             map.getCommand(cmdLabel).setUsage(command.usage());
         }
+    }
+
+    @Deprecated
+    public void registerCommand(Plugin plugin, Command command, String label, Method method, Object clazz) {
+        registerCommand(command, label, method, clazz);
     }
 }
