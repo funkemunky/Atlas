@@ -7,10 +7,8 @@ import cc.funkemunky.api.utils.MathUtils;
 import cc.funkemunky.api.utils.MiscUtils;
 import lombok.Getter;
 import lombok.val;
-import org.bukkit.command.CommandExecutor;
-import org.bukkit.command.CommandMap;
-import org.bukkit.command.CommandSender;
-import org.bukkit.command.ConsoleCommandSender;
+import org.bukkit.Bukkit;
+import org.bukkit.command.*;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.SimplePluginManager;
@@ -26,7 +24,8 @@ import java.util.stream.IntStream;
 public class CommandManager implements CommandExecutor {
     private Map<String, CommandRegister> commands = new ConcurrentHashMap<>();
     private Plugin plugin;
-    private CommandMap map;
+    private SimpleCommandMap map;
+    private List<SpigotCommand> registered = new ArrayList<>();
 
     public CommandManager(Plugin plugin) {
         this.plugin = plugin;
@@ -40,7 +39,7 @@ public class CommandManager implements CommandExecutor {
             try {
                 Field field = SimplePluginManager.class.getDeclaredField("commandMap");
                 field.setAccessible(true);
-                map = (CommandMap) field.get(manager);
+                map = (SimpleCommandMap) field.get(manager);
             } catch (IllegalArgumentException | SecurityException | NoSuchFieldException | IllegalAccessException e) {
                 e.printStackTrace();
             }
@@ -84,6 +83,39 @@ public class CommandManager implements CommandExecutor {
         });
     }
 
+    public void unregisterCommands() {
+        registered.forEach(cmd -> {
+            MiscUtils.printToConsole(Color.Yellow + "Unregistered " + cmd.getLabel());
+            unregisterBukkitCommand(cmd);
+        });
+        commands.clear();
+    }
+
+    private Object getPrivateField(Object object, String field)throws SecurityException,
+            NoSuchFieldException, IllegalArgumentException, IllegalAccessException {
+        Class<?> clazz = object.getClass();
+        Field objectField = clazz.getDeclaredField(field);
+        objectField.setAccessible(true);
+        Object result = objectField.get(object);
+        objectField.setAccessible(false);
+        return result;
+    }
+
+    public void unregisterBukkitCommand(org.bukkit.command.Command cmd) {
+        try {
+            Object map = getPrivateField(getMap(), "knownCommands");
+            @SuppressWarnings("unchecked")
+            HashMap<String, Command> knownCommands = (HashMap<String, Command>) map;
+            knownCommands.remove(cmd.getName());
+            for (String alias : cmd.getAliases()){
+                if(knownCommands.containsKey(alias) && knownCommands.get(alias).toString().contains(Atlas.getInstance().getName())){
+                    knownCommands.remove(alias);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
     @Override
     public boolean onCommand(CommandSender sender, org.bukkit.command.Command cmd, String label, String[] args) {
@@ -275,6 +307,8 @@ public class CommandManager implements CommandExecutor {
             SpigotCommand cmd = new SpigotCommand(cmdLabel, this, plugin);
             Arrays.stream(annotation.tabCompletions()).forEach(string -> cmd.completer.addCompleter(string, method, clazz));
             map.register(plugin.getName(), cmd);
+
+            registered.add(cmd);
         }
         if (!command.description().equalsIgnoreCase("") && cmdLabel == label) {
             map.getCommand(cmdLabel).setDescription(command.description());

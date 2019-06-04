@@ -156,6 +156,7 @@ public class Atlas extends JavaPlugin {
         Bukkit.getScheduler().cancelTasks(this);
 
         eventManager.clearAllRegistered();
+        getCommandManager().unregisterCommands();
 
         MiscUtils.printToConsole(Color.Gray + "Disabling all plugins that depend on Atlas to prevent any errors...");
         Arrays.stream(Bukkit.getPluginManager().getPlugins()).filter(plugin -> plugin.getDescription().getDepend().contains("Atlas")).forEach(plugin -> {
@@ -163,6 +164,7 @@ public class Atlas extends JavaPlugin {
         });
         shutdownExecutor();
         schedular.shutdownNow();
+
         MiscUtils.printToConsole(Color.Red + "Completed shutdown process.");
     }
 
@@ -274,7 +276,7 @@ public class Atlas extends JavaPlugin {
                         });
                     }
 
-                    if(loadCommands && annotation.commands()) manager.registerCommands(plugin, obj);
+                    if(loadCommands && annotation.commands()) manager.registerCommands(obj);
 
                     if(otherThingsToLoad != null) Arrays.stream(otherThingsToLoad).forEachOrdered(FutureTask::run);
 
@@ -317,7 +319,7 @@ public class Atlas extends JavaPlugin {
         initializeScanner(mainClass, plugin, getCommandManager(), loadListeners, loadCommands, null);
     }
 
-    public void initializeScanner(Class<?> mainClass, JavaPlugin plugin, boolean loadListeners, boolean loadCommands, FutureTask<?>... otherThingsToLoad) {
+    public void initializeScanner(Class<?> mainClass, JavaPlugin plugin, boolean loadListeners, boolean loadCommands, @Nullable FutureTask<?>... otherThingsToLoad) {
         initializeScanner(mainClass, plugin, getCommandManager(), loadListeners, loadCommands, otherThingsToLoad);
     }
 }
