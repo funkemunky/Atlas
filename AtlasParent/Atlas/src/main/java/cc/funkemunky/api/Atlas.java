@@ -4,6 +4,7 @@ import cc.funkemunky.api.bungee.BungeeManager;
 import cc.funkemunky.api.commands.FunkeCommandManager;
 import cc.funkemunky.api.commands.ancmd.CommandManager;
 import cc.funkemunky.api.commands.impl.AtlasCommand;
+import cc.funkemunky.api.database.DatabaseManager;
 import cc.funkemunky.api.events.AtlasListener;
 import cc.funkemunky.api.events.EventManager;
 import cc.funkemunky.api.events.impl.TickEvent;
@@ -60,6 +61,7 @@ public class Atlas extends JavaPlugin {
     private PluginLoaderHandler pluginLoaderHandler;
     private BungeeManager bungeeManager;
     private boolean done;
+    private DatabaseManager databaseManager;
     private ChannelInjector channelInjector;
 
     @ConfigSetting(path = "updater")
@@ -96,6 +98,7 @@ public class Atlas extends JavaPlugin {
 
         pluginLoaderHandler = new PluginLoaderHandler();
         tinyProtocolHandler =  new TinyProtocolHandler();
+        databaseManager = new DatabaseManager();
 
         profileStart = System.currentTimeMillis();
         profile = new BaseProfiler();

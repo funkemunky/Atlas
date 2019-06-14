@@ -86,11 +86,7 @@ public class TinyProtocolHandler {
     public Object onPacketInAsync(Player sender, Object packet) {
         String name = packet.getClass().getName();
         int index = name.lastIndexOf(".");
-        String packetName = name.substring(index + 1);
-
-        //Converting the later packets into their equivalent, more understandable legacy types.
-        packetName = packetName
-                .replaceAll("PacketPlayInUseItem", "PacketPlayInBlockPlace")
+        String packetName = name.substring(index + 1).replaceAll("PacketPlayInUseItem", "PacketPlayInBlockPlace")
                 .replaceAll(Packet.Client.LEGACY_LOOK, Packet.Client.LOOK)
                 .replaceAll(Packet.Client.LEGACY_POSITION, Packet.Client.POSITION)
                 .replaceAll(Packet.Client.LEGACY_POSITION_LOOK, Packet.Client.POSITION_LOOK);
