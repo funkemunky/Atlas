@@ -1,3 +1,6 @@
+## Download
+Download the latest stable release on Spigot: https://www.spigotmc.org/resources/atlas-custom-packet-listening-numerous-utils-block-boundingboxes-1-7-1-13.66845/
+
 ## Description
 #### What is Atlas?
 Atlas is an all-in-one and cohesive API for developers who want to improve their Bukkit plugins or anti-cheats.
