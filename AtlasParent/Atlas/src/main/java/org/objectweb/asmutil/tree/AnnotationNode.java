@@ -29,11 +29,11 @@
  */
 package org.objectweb.asmutil.tree;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.objectweb.asmutil.AnnotationVisitor;
 import org.objectweb.asmutil.Opcodes;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A node that represents an annotation.

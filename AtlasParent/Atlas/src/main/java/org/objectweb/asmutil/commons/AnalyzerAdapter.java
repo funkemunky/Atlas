@@ -29,16 +29,12 @@
  */
 package org.objectweb.asmutil.commons;
 
+import org.objectweb.asmutil.*;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import org.objectweb.asmutil.Label;
-import org.objectweb.asmutil.MethodVisitor;
-import org.objectweb.asmutil.Opcodes;
-import org.objectweb.asmutil.Type;
-import org.objectweb.asmutil.Handle;
 
 /**
  * A {@link MethodVisitor} that keeps track of stack map frame changes between

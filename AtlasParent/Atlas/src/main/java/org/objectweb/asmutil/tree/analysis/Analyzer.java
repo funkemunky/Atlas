@@ -29,14 +29,14 @@
  */
 package org.objectweb.asmutil.tree.analysis;
 
+import org.objectweb.asmutil.Opcodes;
+import org.objectweb.asmutil.Type;
+import org.objectweb.asmutil.tree.*;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import org.objectweb.asmutil.Opcodes;
-import org.objectweb.asmutil.Type;
-import org.objectweb.asmutil.tree.*;
 
 /**
  * A semantic bytecode analyzer. <i>This class does not fully check that JSR and

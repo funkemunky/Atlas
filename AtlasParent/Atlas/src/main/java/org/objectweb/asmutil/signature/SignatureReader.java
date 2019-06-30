@@ -29,8 +29,6 @@
  */
 package org.objectweb.asmutil.signature;
 
-import org.objectweb.asmutil.signature.SignatureVisitor;
-
 /**
  * A type signature parser to make a signature visitor visit an existing
  * signature.

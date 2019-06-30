@@ -2,7 +2,10 @@ package cc.funkemunky.api.commands.impl;
 
 import cc.funkemunky.api.Atlas;
 import cc.funkemunky.api.commands.FunkeCommand;
-import cc.funkemunky.api.commands.impl.args.*;
+import cc.funkemunky.api.commands.impl.args.ProfileArgument;
+import cc.funkemunky.api.commands.impl.args.ReloadArgument;
+import cc.funkemunky.api.commands.impl.args.ToggleArgument;
+import cc.funkemunky.api.commands.impl.args.UpdateArgument;
 
 public class AtlasCommand extends FunkeCommand {
     public AtlasCommand() {

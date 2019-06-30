@@ -31,7 +31,6 @@
 package org.objectweb.asmutil.commons;
 
 import org.objectweb.asmutil.Opcodes;
-import org.objectweb.asmutil.commons.SignatureRemapper;
 import org.objectweb.asmutil.signature.SignatureVisitor;
 
 /**

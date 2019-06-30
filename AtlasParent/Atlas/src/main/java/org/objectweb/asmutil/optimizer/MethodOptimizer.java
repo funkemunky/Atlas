@@ -29,18 +29,11 @@
  */
 package org.objectweb.asmutil.optimizer;
 
-import java.util.HashMap;
-
-import org.objectweb.asmutil.AnnotationVisitor;
-import org.objectweb.asmutil.FieldVisitor;
-import org.objectweb.asmutil.Label;
-import org.objectweb.asmutil.MethodVisitor;
-import org.objectweb.asmutil.Opcodes;
-import org.objectweb.asmutil.Type;
-import org.objectweb.asmutil.TypePath;
-import org.objectweb.asmutil.Attribute;
+import org.objectweb.asmutil.*;
 import org.objectweb.asmutil.commons.MethodRemapper;
 import org.objectweb.asmutil.commons.Remapper;
+
+import java.util.HashMap;
 
 /**
  * A {@link MethodVisitor} that renames fields and methods, and removes debug

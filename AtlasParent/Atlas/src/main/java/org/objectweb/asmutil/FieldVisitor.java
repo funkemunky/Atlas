@@ -29,9 +29,6 @@
  */
 package org.objectweb.asmutil;
 
-import org.objectweb.asmutil.TypePath;
-import org.objectweb.asmutil.TypeReference;
-
 /**
  * A visitor to visit a Java field. The methods of this class must be called in
  * the following order: ( <tt>visitAnnotation</tt> |

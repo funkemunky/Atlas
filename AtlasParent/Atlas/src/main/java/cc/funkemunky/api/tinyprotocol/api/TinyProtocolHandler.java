@@ -5,7 +5,6 @@ import cc.funkemunky.api.event.system.EventManager;
 import cc.funkemunky.api.events.impl.PacketReceiveEvent;
 import cc.funkemunky.api.events.impl.PacketSendEvent;
 import lombok.Getter;
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 @Deprecated
@@ -86,10 +85,10 @@ public class TinyProtocolHandler {
     public Object onPacketInAsync(Player sender, Object packet) {
         String name = packet.getClass().getName();
         int index = name.lastIndexOf(".");
-        String packetName = name.substring(index + 1).replaceAll("PacketPlayInUseItem", "PacketPlayInBlockPlace")
-                .replaceAll(Packet.Client.LEGACY_LOOK, Packet.Client.LOOK)
-                .replaceAll(Packet.Client.LEGACY_POSITION, Packet.Client.POSITION)
-                .replaceAll(Packet.Client.LEGACY_POSITION_LOOK, Packet.Client.POSITION_LOOK);
+        String packetName = name.substring(index + 1).replace("PacketPlayInUseItem", "PacketPlayInBlockPlace")
+                .replace(Packet.Client.LEGACY_LOOK, Packet.Client.LOOK)
+                .replace(Packet.Client.LEGACY_POSITION, Packet.Client.POSITION)
+                .replace(Packet.Client.LEGACY_POSITION_LOOK, Packet.Client.POSITION_LOOK);
 
         PacketReceiveEvent event = new PacketReceiveEvent(sender, packet, packetName);
 

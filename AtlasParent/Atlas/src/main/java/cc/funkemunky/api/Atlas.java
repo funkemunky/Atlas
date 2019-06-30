@@ -271,13 +271,16 @@ public class Atlas extends JavaPlugin {
                     if (loadListeners && obj instanceof Listener) {
                         MiscUtils.printToConsole("&eFound " + clazz.getSimpleName() + " Bukkit listener. Registering...");
                         plugin.getServer().getPluginManager().registerEvents((Listener) obj, plugin);
-                    } else if(loadListeners && obj instanceof cc.funkemunky.api.event.system.Listener) {
-                        MiscUtils.printToConsole("&eFound " + clazz.getSimpleName() + "(deprecated) Atlas listener. Registering...");
+                    }
+                    if(loadListeners && obj instanceof cc.funkemunky.api.event.system.Listener) {
+                        MiscUtils.printToConsole("&eFound " + clazz.getSimpleName() + " (deprecated) Atlas listener. Registering...");
                         cc.funkemunky.api.event.system.EventManager.register(plugin, (cc.funkemunky.api.event.system.Listener) obj);
-                    } else if(loadListeners && obj instanceof AtlasListener) {
-                        MiscUtils.printToConsole("&eFound " + clazz.getSimpleName() + "Atlas listener. Registering...");
+                    }
+                    if(loadListeners && obj instanceof AtlasListener) {
+                        MiscUtils.printToConsole("&eFound " + clazz.getSimpleName() + " Atlas listener. Registering...");
                         eventManager.registerListeners((AtlasListener) obj, plugin);
-                    } else if(loadCommands && obj instanceof CommandExecutor && clazz.isAnnotationPresent(Commands.class)) {
+                    }
+                    if(loadCommands && obj instanceof CommandExecutor && clazz.isAnnotationPresent(Commands.class)) {
                         Commands commands = (Commands) clazz.getAnnotation(Commands.class);
 
                         Arrays.stream(commands.commands()).forEach(label -> {

@@ -30,8 +30,6 @@
 
 package org.objectweb.asmutil;
 
-import org.objectweb.asmutil.Label;
-
 /**
  * Information about a class being parsed in a {@link ClassReader}.
  * 

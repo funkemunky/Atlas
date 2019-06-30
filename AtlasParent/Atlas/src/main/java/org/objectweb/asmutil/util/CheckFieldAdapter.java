@@ -29,12 +29,7 @@
  */
 package org.objectweb.asmutil.util;
 
-import org.objectweb.asmutil.AnnotationVisitor;
-import org.objectweb.asmutil.Attribute;
-import org.objectweb.asmutil.FieldVisitor;
-import org.objectweb.asmutil.Opcodes;
-import org.objectweb.asmutil.TypePath;
-import org.objectweb.asmutil.TypeReference;
+import org.objectweb.asmutil.*;
 
 /**
  * A {@link FieldVisitor} that checks that its methods are properly used.

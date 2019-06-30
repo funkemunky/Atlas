@@ -29,6 +29,8 @@
  */
 package org.objectweb.asmutil.optimizer;
 
+import org.objectweb.asmutil.Type;
+
 import java.io.BufferedInputStream;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -36,8 +38,6 @@ import java.io.InputStream;
 import java.util.HashSet;
 import java.util.Properties;
 import java.util.Set;
-
-import org.objectweb.asmutil.Type;
 
 /**
  * A MAPPING from names to names, used to rename classes, fields and methods.

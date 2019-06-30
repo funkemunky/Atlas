@@ -29,24 +29,13 @@
  */
 package org.objectweb.asmutil.util;
 
+import org.objectweb.asmutil.*;
+import org.objectweb.asmutil.signature.SignatureReader;
+
 import java.io.FileInputStream;
 import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.Map;
-
-import org.objectweb.asmutil.Attribute;
-import org.objectweb.asmutil.ClassReader;
-import org.objectweb.asmutil.Label;
-import org.objectweb.asmutil.Opcodes;
-import org.objectweb.asmutil.Type;
-import org.objectweb.asmutil.TypePath;
-import org.objectweb.asmutil.TypeReference;
-import org.objectweb.asmutil.signature.SignatureReader;
-import org.objectweb.asmutil.util.Printer;
-import org.objectweb.asmutil.util.Textifiable;
-import org.objectweb.asmutil.util.TraceClassVisitor;
-import org.objectweb.asmutil.util.TraceSignatureVisitor;
-import org.objectweb.asmutil.Handle;
 
 /**
  * A {@link org.objectweb.asmutil.util.Printer} that prints a disassembled view of the classes it visits.

@@ -30,14 +30,7 @@
 
 package org.objectweb.asmutil.commons;
 
-import org.objectweb.asmutil.AnnotationVisitor;
-import org.objectweb.asmutil.Label;
-import org.objectweb.asmutil.MethodVisitor;
-import org.objectweb.asmutil.Opcodes;
-import org.objectweb.asmutil.TypePath;
-import org.objectweb.asmutil.commons.LocalVariablesSorter;
-import org.objectweb.asmutil.commons.RemappingAnnotationAdapter;
-import org.objectweb.asmutil.Handle;
+import org.objectweb.asmutil.*;
 
 /**
  * A {@link org.objectweb.asmutil.commons.LocalVariablesSorter} for type mapping.

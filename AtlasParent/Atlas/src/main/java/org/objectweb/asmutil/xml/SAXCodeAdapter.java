@@ -29,20 +29,12 @@
  */
 package org.objectweb.asmutil.xml;
 
+import org.objectweb.asmutil.*;
+import org.objectweb.asmutil.util.Printer;
+import org.xml.sax.helpers.AttributesImpl;
+
 import java.util.HashMap;
 import java.util.Map;
-
-import org.objectweb.asmutil.AnnotationVisitor;
-import org.objectweb.asmutil.Label;
-import org.objectweb.asmutil.MethodVisitor;
-import org.objectweb.asmutil.Opcodes;
-import org.objectweb.asmutil.Type;
-import org.objectweb.asmutil.TypePath;
-import org.objectweb.asmutil.util.Printer;
-import org.objectweb.asmutil.xml.SAXAdapter;
-import org.objectweb.asmutil.xml.SAXAnnotationAdapter;
-import org.objectweb.asmutil.Handle;
-import org.xml.sax.helpers.AttributesImpl;
 
 /**
  * A {@link MethodVisitor} that generates SAX 2.0 events from the visited

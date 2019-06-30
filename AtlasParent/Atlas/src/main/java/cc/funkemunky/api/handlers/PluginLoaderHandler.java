@@ -4,7 +4,6 @@ import cc.funkemunky.api.Atlas;
 import cc.funkemunky.api.utils.AutoLoad;
 import cc.funkemunky.api.utils.Init;
 import cc.funkemunky.api.utils.MiscUtils;
-import io.netty.util.internal.ConcurrentSet;
 import lombok.Getter;
 import lombok.val;
 import org.bukkit.event.EventHandler;

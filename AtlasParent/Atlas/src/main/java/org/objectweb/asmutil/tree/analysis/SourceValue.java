@@ -29,11 +29,9 @@
  */
 package org.objectweb.asmutil.tree.analysis;
 
-import java.util.Set;
-
-import org.objectweb.asmutil.tree.analysis.SmallSet;
-import org.objectweb.asmutil.tree.analysis.Value;
 import org.objectweb.asmutil.tree.AbstractInsnNode;
+
+import java.util.Set;
 
 /**
  * A {@link org.objectweb.asmutil.tree.analysis.Value} that is represented by its type in a two types type system.

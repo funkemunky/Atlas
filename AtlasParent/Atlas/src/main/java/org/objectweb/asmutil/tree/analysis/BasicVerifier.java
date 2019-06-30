@@ -29,15 +29,13 @@
  */
 package org.objectweb.asmutil.tree.analysis;
 
-import java.util.List;
-
 import org.objectweb.asmutil.Type;
-import org.objectweb.asmutil.tree.analysis.BasicInterpreter;
-import org.objectweb.asmutil.tree.analysis.Value;
 import org.objectweb.asmutil.tree.AbstractInsnNode;
 import org.objectweb.asmutil.tree.FieldInsnNode;
 import org.objectweb.asmutil.tree.InvokeDynamicInsnNode;
 import org.objectweb.asmutil.tree.MethodInsnNode;
+
+import java.util.List;
 
 /**
  * An extended {@link org.objectweb.asmutil.tree.analysis.BasicInterpreter} that checks that bytecode instructions

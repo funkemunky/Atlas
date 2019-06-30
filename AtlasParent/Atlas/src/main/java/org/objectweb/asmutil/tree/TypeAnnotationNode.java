@@ -32,7 +32,6 @@ package org.objectweb.asmutil.tree;
 import org.objectweb.asmutil.Opcodes;
 import org.objectweb.asmutil.TypePath;
 import org.objectweb.asmutil.TypeReference;
-import org.objectweb.asmutil.tree.AnnotationNode;
 
 /**
  * A node that represents a type annotationn.

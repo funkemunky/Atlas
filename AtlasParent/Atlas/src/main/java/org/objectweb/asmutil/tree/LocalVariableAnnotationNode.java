@@ -30,17 +30,11 @@
 
 package org.objectweb.asmutil.tree;
 
+import org.objectweb.asmutil.*;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
-import org.objectweb.asmutil.Label;
-import org.objectweb.asmutil.MethodVisitor;
-import org.objectweb.asmutil.Opcodes;
-import org.objectweb.asmutil.TypePath;
-import org.objectweb.asmutil.TypeReference;
-import org.objectweb.asmutil.tree.LabelNode;
-import org.objectweb.asmutil.tree.TypeAnnotationNode;
 
 /**
  * A node that represents a type annotation on a local or resource variable.

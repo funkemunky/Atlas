@@ -2,15 +2,16 @@ package cc.funkemunky.api.bungee;
 
 import cc.funkemunky.api.Atlas;
 import lombok.Getter;
-import lombok.var;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.messaging.PluginMessageListener;
 
 import java.io.*;
-import java.util.*;
-import java.util.concurrent.*;
-import java.util.stream.Collectors;
+import java.util.Comparator;
+import java.util.SortedSet;
+import java.util.TreeSet;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
 
 @Getter
 public class BungeeManager implements PluginMessageListener {

@@ -29,9 +29,9 @@
  */
 package org.objectweb.asmutil.tree.analysis;
 
-import java.util.List;
-
 import org.objectweb.asmutil.Type;
+
+import java.util.List;
 
 /**
  * An extended {@link BasicVerifier} that performs more precise verifications.

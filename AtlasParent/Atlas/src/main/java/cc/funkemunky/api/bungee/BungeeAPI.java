@@ -3,7 +3,6 @@ package cc.funkemunky.api.bungee;
 import cc.funkemunky.api.Atlas;
 import cc.funkemunky.api.utils.Color;
 import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
 
 import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;

@@ -29,11 +29,10 @@
  */
 package org.objectweb.asmutil.tree;
 
+import org.objectweb.asmutil.MethodVisitor;
+
 import java.util.ListIterator;
 import java.util.NoSuchElementException;
-
-import org.objectweb.asmutil.MethodVisitor;
-import org.objectweb.asmutil.tree.LabelNode;
 
 /**
  * A doubly linked list of {@link AbstractInsnNode} objects. <i>This

@@ -29,15 +29,7 @@
  */
 package org.objectweb.asmutil.util;
 
-import org.objectweb.asmutil.AnnotationVisitor;
-import org.objectweb.asmutil.Attribute;
-import org.objectweb.asmutil.Label;
-import org.objectweb.asmutil.MethodVisitor;
-import org.objectweb.asmutil.Opcodes;
-import org.objectweb.asmutil.TypePath;
-import org.objectweb.asmutil.util.Printer;
-import org.objectweb.asmutil.util.TraceAnnotationVisitor;
-import org.objectweb.asmutil.Handle;
+import org.objectweb.asmutil.*;
 
 /**
  * A {@link MethodVisitor} that prints the methods it visits with a

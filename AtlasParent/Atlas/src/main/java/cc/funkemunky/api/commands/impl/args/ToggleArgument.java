@@ -1,6 +1,5 @@
 package cc.funkemunky.api.commands.impl.args;
 
-import cc.funkemunky.api.Atlas;
 import cc.funkemunky.api.commands.FunkeArgument;
 import cc.funkemunky.api.commands.FunkeCommand;
 import cc.funkemunky.api.event.system.EventManager;

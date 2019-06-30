@@ -30,8 +30,6 @@
 
 package org.objectweb.asmutil;
 
-import org.objectweb.asmutil.Opcodes;
-
 /**
  * A reference to a field or a method.
  * 

@@ -29,9 +29,9 @@
  */
 package org.objectweb.asmutil.util;
 
-import java.util.Map;
-
 import org.objectweb.asmutil.Label;
+
+import java.util.Map;
 
 /**
  * An {@link org.objectweb.asmutil.Attribute Attribute} that can print a readable

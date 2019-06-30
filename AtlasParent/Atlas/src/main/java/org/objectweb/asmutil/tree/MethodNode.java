@@ -29,33 +29,11 @@
  */
 package org.objectweb.asmutil.tree;
 
+import org.objectweb.asmutil.*;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
-import org.objectweb.asmutil.AnnotationVisitor;
-import org.objectweb.asmutil.Attribute;
-import org.objectweb.asmutil.ClassVisitor;
-import org.objectweb.asmutil.Label;
-import org.objectweb.asmutil.MethodVisitor;
-import org.objectweb.asmutil.Opcodes;
-import org.objectweb.asmutil.Type;
-import org.objectweb.asmutil.TypePath;
-import org.objectweb.asmutil.tree.AnnotationNode;
-import org.objectweb.asmutil.tree.FieldInsnNode;
-import org.objectweb.asmutil.tree.IincInsnNode;
-import org.objectweb.asmutil.tree.InsnList;
-import org.objectweb.asmutil.tree.InsnNode;
-import org.objectweb.asmutil.tree.InvokeDynamicInsnNode;
-import org.objectweb.asmutil.tree.JumpInsnNode;
-import org.objectweb.asmutil.tree.LabelNode;
-import org.objectweb.asmutil.tree.LineNumberNode;
-import org.objectweb.asmutil.tree.LocalVariableNode;
-import org.objectweb.asmutil.tree.MultiANewArrayInsnNode;
-import org.objectweb.asmutil.tree.TableSwitchInsnNode;
-import org.objectweb.asmutil.tree.TryCatchBlockNode;
-import org.objectweb.asmutil.tree.TypeAnnotationNode;
-import org.objectweb.asmutil.Handle;
 
 /**
  * A node that represents a method.

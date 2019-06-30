@@ -29,15 +29,11 @@
  */
 package org.objectweb.asmutil.util;
 
+import org.objectweb.asmutil.*;
+
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
-
-import org.objectweb.asmutil.Attribute;
-import org.objectweb.asmutil.Label;
-import org.objectweb.asmutil.Opcodes;
-import org.objectweb.asmutil.TypePath;
-import org.objectweb.asmutil.Handle;
 
 /**
  * An abstract converter from visit events to text.

@@ -34,8 +34,6 @@ import org.objectweb.asmutil.AnnotationVisitor;
 import org.objectweb.asmutil.FieldVisitor;
 import org.objectweb.asmutil.Opcodes;
 import org.objectweb.asmutil.TypePath;
-import org.objectweb.asmutil.commons.FieldRemapper;
-import org.objectweb.asmutil.commons.RemappingAnnotationAdapter;
 
 /**
  * A {@link FieldVisitor} adapter for type remapping.

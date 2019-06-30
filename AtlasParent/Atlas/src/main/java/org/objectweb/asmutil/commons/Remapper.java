@@ -30,12 +30,11 @@
 
 package org.objectweb.asmutil.commons;
 
+import org.objectweb.asmutil.Handle;
 import org.objectweb.asmutil.Type;
-import org.objectweb.asmutil.commons.SignatureRemapper;
 import org.objectweb.asmutil.signature.SignatureReader;
 import org.objectweb.asmutil.signature.SignatureVisitor;
 import org.objectweb.asmutil.signature.SignatureWriter;
-import org.objectweb.asmutil.Handle;
 
 /**
  * A class responsible for remapping types and names. Subclasses can override

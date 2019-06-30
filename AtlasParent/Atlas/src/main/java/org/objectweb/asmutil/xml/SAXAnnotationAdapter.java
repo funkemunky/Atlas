@@ -29,7 +29,6 @@
  */
 package org.objectweb.asmutil.xml;
 
-import org.objectweb.asmutil.xml.SAXAdapter;
 import org.objectweb.asmutil.AnnotationVisitor;
 import org.objectweb.asmutil.Opcodes;
 import org.objectweb.asmutil.Type;

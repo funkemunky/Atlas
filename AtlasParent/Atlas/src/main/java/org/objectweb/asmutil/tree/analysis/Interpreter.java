@@ -29,12 +29,10 @@
  */
 package org.objectweb.asmutil.tree.analysis;
 
-import java.util.List;
-
 import org.objectweb.asmutil.Type;
-import org.objectweb.asmutil.tree.analysis.Analyzer;
-import org.objectweb.asmutil.tree.analysis.Value;
 import org.objectweb.asmutil.tree.AbstractInsnNode;
+
+import java.util.List;
 
 /**
  * A semantic bytecode interpreter. More precisely, this interpreter only

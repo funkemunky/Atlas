@@ -30,13 +30,13 @@
 
 package org.objectweb.asmutil.commons;
 
-import java.util.Collections;
-import java.util.Comparator;
-
 import org.objectweb.asmutil.MethodVisitor;
 import org.objectweb.asmutil.Opcodes;
 import org.objectweb.asmutil.tree.MethodNode;
 import org.objectweb.asmutil.tree.TryCatchBlockNode;
+
+import java.util.Collections;
+import java.util.Comparator;
 
 /**
  * A {@link MethodVisitor} adapter to sort the exception handlers. The handlers

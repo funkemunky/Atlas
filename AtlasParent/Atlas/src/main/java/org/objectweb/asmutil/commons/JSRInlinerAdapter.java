@@ -29,21 +29,13 @@
  */
 package org.objectweb.asmutil.commons;
 
-import java.util.AbstractMap;
-import java.util.ArrayList;
-import java.util.BitSet;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
 import org.objectweb.asmutil.Label;
 import org.objectweb.asmutil.MethodVisitor;
 import org.objectweb.asmutil.Opcodes;
 import org.objectweb.asmutil.Type;
 import org.objectweb.asmutil.tree.*;
+
+import java.util.*;
 
 /**
  * A {@link org.objectweb.asmutil.MethodVisitor} that removes JSR instructions and

@@ -29,17 +29,9 @@
  */
 package org.objectweb.asmutil.util;
 
-import java.io.PrintWriter;
+import org.objectweb.asmutil.*;
 
-import org.objectweb.asmutil.AnnotationVisitor;
-import org.objectweb.asmutil.Attribute;
-import org.objectweb.asmutil.ClassVisitor;
-import org.objectweb.asmutil.FieldVisitor;
-import org.objectweb.asmutil.MethodVisitor;
-import org.objectweb.asmutil.Opcodes;
-import org.objectweb.asmutil.TypePath;
-import org.objectweb.asmutil.util.TraceAnnotationVisitor;
-import org.objectweb.asmutil.util.TraceFieldVisitor;
+import java.io.PrintWriter;
 
 /**
  * A {@link ClassVisitor} that prints the classes it visits with a

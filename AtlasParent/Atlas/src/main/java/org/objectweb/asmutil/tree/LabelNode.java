@@ -29,10 +29,10 @@
  */
 package org.objectweb.asmutil.tree;
 
-import java.util.Map;
-
 import org.objectweb.asmutil.Label;
 import org.objectweb.asmutil.MethodVisitor;
+
+import java.util.Map;
 
 /**
  * An {@link AbstractInsnNode} that encapsulates a {@link Label}.

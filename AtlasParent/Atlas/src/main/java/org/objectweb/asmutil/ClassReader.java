@@ -29,10 +29,6 @@
  */
 package org.objectweb.asmutil;
 
-import org.objectweb.asmutil.ClassVisitor;
-import org.objectweb.asmutil.Context;
-import org.objectweb.asmutil.Label;
-
 import java.io.IOException;
 import java.io.InputStream;
 

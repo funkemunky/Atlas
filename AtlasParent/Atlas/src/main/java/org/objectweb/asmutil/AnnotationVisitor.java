@@ -29,10 +29,6 @@
  */
 package org.objectweb.asmutil;
 
-import org.objectweb.asmutil.ClassReader;
-import org.objectweb.asmutil.Opcodes;
-import org.objectweb.asmutil.Type;
-
 /**
  * A visitor to visit a Java annotation. The methods of this class must be
  * called in the following order: ( <tt>visit</tt> | <tt>visitEnum</tt> |

@@ -29,15 +29,10 @@
  */
 package org.objectweb.asmutil.tree;
 
+import org.objectweb.asmutil.*;
+
 import java.util.ArrayList;
 import java.util.List;
-
-import org.objectweb.asmutil.AnnotationVisitor;
-import org.objectweb.asmutil.Attribute;
-import org.objectweb.asmutil.ClassVisitor;
-import org.objectweb.asmutil.FieldVisitor;
-import org.objectweb.asmutil.Opcodes;
-import org.objectweb.asmutil.TypePath;
 
 /**
  * A node that represents a field.

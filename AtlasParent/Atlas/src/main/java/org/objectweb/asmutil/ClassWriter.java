@@ -29,9 +29,6 @@
  */
 package org.objectweb.asmutil;
 
-import org.objectweb.asmutil.ClassReader;
-import org.objectweb.asmutil.ClassVisitor;
-
 /**
  * A {@link org.objectweb.asmutil.ClassVisitor} that generates classes in bytecode form. More
  * precisely this visitor generates a byte array conforming to the Java class

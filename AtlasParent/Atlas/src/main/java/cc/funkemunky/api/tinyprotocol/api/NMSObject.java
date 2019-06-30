@@ -76,12 +76,44 @@ public abstract class NMSObject {
         return null;
     }
 
+    public static Object construct(Object p, String packet, Object... args) {
+        try {
+            Class<?> c = constructors.get(packet);
+            if (c == null) {
+                c = Reflection.getMinecraftClass(packet);
+                constructors.put(packet, c);
+            }
+            Field[] fields = c.getDeclaredFields();
+            int failed = 0;
+            for (int i = 0; i < args.length; i++) {
+                Object o = args[i];
+                if (o == null) continue;
+                fields[i - failed].setAccessible(true);
+                try {
+                    fields[i - failed].set(p, o);
+                } catch (Exception e) {
+                    //attempt to continue
+                    failed++;
+                }
+            }
+            return p;
+        } catch (Exception e) {
+            System.out.println("The plugin cannot work as protocol incompatibilities were detected... Disabling...");
+            e.printStackTrace();
+        }
+        return null;
+    }
+
     public static ItemStack toBukkitStack(Object nmsStack) {
         return (ItemStack) asCraftMirror.invoke(null, nmsStack);
     }
 
     public static <T> FieldAccessor<T> fetchField(String className, Class<T> fieldType, int index) {
         return Reflection.getFieldSafe(Reflection.NMS_PREFIX + "." + className, fieldType, index);
+    }
+
+    public static <T> FieldAccessor<T> fetchFieldByName(String className, String name, Class<T> fieldType) {
+        return Reflection.getField(Reflection.NMS_PREFIX + "." + className, name, fieldType);
     }
 
     public static <T> FieldAccessor<T> fetchField(String className, String fieldType, int index) {
@@ -109,13 +141,14 @@ public abstract class NMSObject {
     }
 
     public static class Type {
-        public static final String WATCHABLE_OBJECT = (Reflection.VERSION.startsWith("v1_7") || Reflection.VERSION.startsWith("v1_8_R1")) ? "WatchableObject" : "DataWatcher$WatchableObject";
+        public static final String WATCHABLE_OBJECT = (ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.V1_8_5)) ? "WatchableObject" : "DataWatcher$WatchableObject";
         public static final String BASEBLOCKPOSITION = "BaseBlockPosition";
         public static final String BLOCKPOSITION = "BlockPosition";
         public static final String ITEMSTACK = Reflection.NMS_PREFIX + ".ItemStack";
         public static final String ENTITY = Reflection.NMS_PREFIX + ".Entity";
         public static final String DATAWATCHER = Reflection.NMS_PREFIX + ".DataWatcher";
         public static final String DATAWATCHEROBJECT = Reflection.NMS_PREFIX + ".DataWatcherObject";
+        public static final String CHATMESSAGE = Reflection.NMS_PREFIX + ".ChatMessage";
         public static final String CRAFTITEMSTACK = Reflection.OBC_PREFIX + ".inventory.CraftItemStack";
         public static final String GAMEPROFILE = (Reflection.VERSION.startsWith("v1_7") ? "net.minecraft.util." : "") + "com.mojang.authlib.GameProfile";
         public static final String PROPERTYMAP = (Reflection.VERSION.startsWith("v1_7") ? "net.minecraft.util." : "") + "com.mojang.authlib.PropertyMap";
@@ -172,5 +205,6 @@ public abstract class NMSObject {
         public static final String LEGACY_REL_POSITION_LOOK = SERVER + "EntityMoveLook";
         public static final String LEGACY_REL_LOOK = SERVER + "EntityLook";
         public static final String ABILITIES = SERVER + "Abilities";
+        public static final String OPEN_WINDOW = SERVER + "OpenWindow";
     }
 }

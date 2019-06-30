@@ -29,13 +29,12 @@
  */
 package org.objectweb.asmutil.tree.analysis;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.objectweb.asmutil.Opcodes;
 import org.objectweb.asmutil.Type;
-import org.objectweb.asmutil.tree.analysis.Value;
 import org.objectweb.asmutil.tree.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A symbolic execution stack frame. A stack frame contains a set of local

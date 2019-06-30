@@ -29,6 +29,11 @@
  */
 package org.objectweb.asmutil.commons;
 
+import org.objectweb.asmutil.ClassVisitor;
+import org.objectweb.asmutil.FieldVisitor;
+import org.objectweb.asmutil.MethodVisitor;
+import org.objectweb.asmutil.Opcodes;
+
 import java.io.ByteArrayOutputStream;
 import java.io.DataOutput;
 import java.io.DataOutputStream;
@@ -37,11 +42,6 @@ import java.security.MessageDigest;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-
-import org.objectweb.asmutil.ClassVisitor;
-import org.objectweb.asmutil.FieldVisitor;
-import org.objectweb.asmutil.MethodVisitor;
-import org.objectweb.asmutil.Opcodes;
 
 /**
  * A {@link ClassVisitor} that adds a serial version unique identifier to a

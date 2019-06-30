@@ -33,8 +33,6 @@ import org.objectweb.asmutil.AnnotationVisitor;
 import org.objectweb.asmutil.FieldVisitor;
 import org.objectweb.asmutil.Opcodes;
 import org.objectweb.asmutil.TypePath;
-import org.objectweb.asmutil.xml.SAXAdapter;
-import org.objectweb.asmutil.xml.SAXAnnotationAdapter;
 import org.xml.sax.Attributes;
 
 /**

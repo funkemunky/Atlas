@@ -29,8 +29,6 @@
  */
 package org.objectweb.asmutil;
 
-import org.objectweb.asmutil.Label;
-
 /**
  * Information about an exception handler block.
  * 

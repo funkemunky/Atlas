@@ -32,7 +32,6 @@ package org.objectweb.asmutil.util;
 import org.objectweb.asmutil.AnnotationVisitor;
 import org.objectweb.asmutil.Opcodes;
 import org.objectweb.asmutil.Type;
-import org.objectweb.asmutil.util.CheckMethodAdapter;
 
 /**
  * An {@link AnnotationVisitor} that checks that its methods are properly used.

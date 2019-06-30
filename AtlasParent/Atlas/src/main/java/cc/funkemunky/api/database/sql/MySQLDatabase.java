@@ -3,13 +3,10 @@ package cc.funkemunky.api.database.sql;
 import cc.funkemunky.api.database.Database;
 import cc.funkemunky.api.database.DatabaseType;
 import cc.funkemunky.api.utils.ConfigSetting;
-import cc.funkemunky.api.utils.Init;
 import cc.funkemunky.api.utils.MiscUtils;
 import org.bukkit.plugin.Plugin;
 
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.List;
 
 public class MySQLDatabase extends Database {
     private Connection connection;

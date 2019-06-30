@@ -32,7 +32,6 @@ package org.objectweb.asmutil.commons;
 
 import org.objectweb.asmutil.AnnotationVisitor;
 import org.objectweb.asmutil.Opcodes;
-import org.objectweb.asmutil.commons.AnnotationRemapper;
 
 /**
  * An {@link AnnotationVisitor} adapter for type remapping.

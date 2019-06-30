@@ -29,17 +29,6 @@
  */
 package org.objectweb.asmutil;
 
-import org.objectweb.asmutil.AnnotationVisitor;
-import org.objectweb.asmutil.AnnotationWriter;
-import org.objectweb.asmutil.Attribute;
-import org.objectweb.asmutil.ByteVector;
-import org.objectweb.asmutil.ClassReader;
-import org.objectweb.asmutil.ClassWriter;
-import org.objectweb.asmutil.FieldVisitor;
-import org.objectweb.asmutil.Opcodes;
-import org.objectweb.asmutil.Type;
-import org.objectweb.asmutil.TypePath;
-
 /**
  * An {@link org.objectweb.asmutil.FieldVisitor} that generates Java fields in bytecode form.
  * 

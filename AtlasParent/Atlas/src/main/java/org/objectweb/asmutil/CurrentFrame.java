@@ -30,10 +30,6 @@
 
 package org.objectweb.asmutil;
 
-import org.objectweb.asmutil.ClassWriter;
-import org.objectweb.asmutil.Frame;
-import org.objectweb.asmutil.Item;
-
 /**
  * Information about the input stack map frame at the "current" instruction of a
  * method. This is implemented as a Frame subclass for a "basic block"

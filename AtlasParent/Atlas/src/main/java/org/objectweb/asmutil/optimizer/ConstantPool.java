@@ -29,11 +29,11 @@
  */
 package org.objectweb.asmutil.optimizer;
 
-import java.util.HashMap;
-
+import org.objectweb.asmutil.Handle;
 import org.objectweb.asmutil.Opcodes;
 import org.objectweb.asmutil.Type;
-import org.objectweb.asmutil.Handle;
+
+import java.util.HashMap;
 
 /**
  * A constant pool.

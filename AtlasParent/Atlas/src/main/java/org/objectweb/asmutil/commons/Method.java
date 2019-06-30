@@ -29,10 +29,10 @@
  */
 package org.objectweb.asmutil.commons;
 
+import org.objectweb.asmutil.Type;
+
 import java.util.HashMap;
 import java.util.Map;
-
-import org.objectweb.asmutil.Type;
 
 /**
  * A named method descriptor.

@@ -29,15 +29,15 @@
  */
 package org.objectweb.asmutil.xml;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
-
 import org.objectweb.asmutil.*;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 
 /**
  * A {@link org.xml.sax.ContentHandler ContentHandler} that transforms XML

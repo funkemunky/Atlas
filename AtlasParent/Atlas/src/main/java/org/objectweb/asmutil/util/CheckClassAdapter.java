@@ -29,32 +29,17 @@
  */
 package org.objectweb.asmutil.util;
 
-import java.io.FileInputStream;
-import java.io.PrintWriter;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-
-import org.objectweb.asmutil.AnnotationVisitor;
-import org.objectweb.asmutil.Attribute;
-import org.objectweb.asmutil.ClassReader;
-import org.objectweb.asmutil.ClassVisitor;
-import org.objectweb.asmutil.FieldVisitor;
-import org.objectweb.asmutil.Label;
-import org.objectweb.asmutil.MethodVisitor;
-import org.objectweb.asmutil.Opcodes;
-import org.objectweb.asmutil.Type;
-import org.objectweb.asmutil.TypePath;
-import org.objectweb.asmutil.TypeReference;
-import org.objectweb.asmutil.util.CheckFieldAdapter;
+import org.objectweb.asmutil.*;
 import org.objectweb.asmutil.tree.ClassNode;
 import org.objectweb.asmutil.tree.MethodNode;
 import org.objectweb.asmutil.tree.analysis.Analyzer;
 import org.objectweb.asmutil.tree.analysis.BasicValue;
 import org.objectweb.asmutil.tree.analysis.Frame;
 import org.objectweb.asmutil.tree.analysis.SimpleVerifier;
+
+import java.io.FileInputStream;
+import java.io.PrintWriter;
+import java.util.*;
 
 /**
  * A {@link ClassVisitor} that checks that its methods are properly used. More

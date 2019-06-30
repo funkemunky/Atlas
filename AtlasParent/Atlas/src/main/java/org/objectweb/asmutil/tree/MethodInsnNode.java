@@ -29,11 +29,10 @@
  */
 package org.objectweb.asmutil.tree;
 
-import java.util.Map;
-
 import org.objectweb.asmutil.MethodVisitor;
 import org.objectweb.asmutil.Opcodes;
-import org.objectweb.asmutil.tree.LabelNode;
+
+import java.util.Map;
 
 /**
  * A node that represents a method instruction. A method instruction is an

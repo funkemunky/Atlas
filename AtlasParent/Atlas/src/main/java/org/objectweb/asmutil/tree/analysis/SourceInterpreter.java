@@ -29,14 +29,13 @@
  */
 package org.objectweb.asmutil.tree.analysis;
 
+import org.objectweb.asmutil.Opcodes;
+import org.objectweb.asmutil.Type;
+import org.objectweb.asmutil.tree.*;
+
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
-import org.objectweb.asmutil.Opcodes;
-import org.objectweb.asmutil.Type;
-import org.objectweb.asmutil.tree.analysis.SmallSet;
-import org.objectweb.asmutil.tree.*;
 
 /**
  * An {@link Interpreter} for {@link SourceValue} values.

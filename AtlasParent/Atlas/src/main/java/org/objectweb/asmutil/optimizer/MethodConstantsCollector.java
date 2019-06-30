@@ -29,12 +29,7 @@
  */
 package org.objectweb.asmutil.optimizer;
 
-import org.objectweb.asmutil.AnnotationVisitor;
-import org.objectweb.asmutil.Label;
-import org.objectweb.asmutil.MethodVisitor;
-import org.objectweb.asmutil.Opcodes;
-import org.objectweb.asmutil.TypePath;
-import org.objectweb.asmutil.Handle;
+import org.objectweb.asmutil.*;
 
 /**
  * An {@link MethodVisitor} that collects the {@link Constant}s of the methods

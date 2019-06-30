@@ -29,8 +29,6 @@
  */
 package org.objectweb.asmutil;
 
-import org.objectweb.asmutil.ClassReader;
-
 /**
  * Defines the JVM opcodes, access flags and array type codes. This interface
  * does not define all the JVM opcodes because some opcodes are automatically

@@ -29,12 +29,7 @@
  */
 package org.objectweb.asmutil.commons;
 
-import org.objectweb.asmutil.AnnotationVisitor;
-import org.objectweb.asmutil.Label;
-import org.objectweb.asmutil.MethodVisitor;
-import org.objectweb.asmutil.Opcodes;
-import org.objectweb.asmutil.Type;
-import org.objectweb.asmutil.TypePath;
+import org.objectweb.asmutil.*;
 
 /**
  * A {@link MethodVisitor} that renumbers local variables in their order of

@@ -30,7 +30,6 @@
 package org.objectweb.asmutil.tree.analysis;
 
 import org.objectweb.asmutil.Type;
-import org.objectweb.asmutil.tree.analysis.Value;
 
 /**
  * A {@link org.objectweb.asmutil.tree.analysis.Value} that is represented by its type in a seven types type system.

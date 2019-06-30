@@ -29,14 +29,13 @@
  */
 package org.objectweb.asmutil.tree;
 
+import org.objectweb.asmutil.MethodVisitor;
+import org.objectweb.asmutil.Opcodes;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
-
-import org.objectweb.asmutil.MethodVisitor;
-import org.objectweb.asmutil.Opcodes;
-import org.objectweb.asmutil.tree.LabelNode;
 
 /**
  * A node that represents a stack map frame. These nodes are pseudo instruction

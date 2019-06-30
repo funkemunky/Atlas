@@ -29,25 +29,11 @@
  */
 package org.objectweb.asmutil.tree;
 
+import org.objectweb.asmutil.MethodVisitor;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-
-import org.objectweb.asmutil.MethodVisitor;
-import org.objectweb.asmutil.tree.FieldInsnNode;
-import org.objectweb.asmutil.tree.FrameNode;
-import org.objectweb.asmutil.tree.IincInsnNode;
-import org.objectweb.asmutil.tree.InsnList;
-import org.objectweb.asmutil.tree.InsnNode;
-import org.objectweb.asmutil.tree.InvokeDynamicInsnNode;
-import org.objectweb.asmutil.tree.JumpInsnNode;
-import org.objectweb.asmutil.tree.LabelNode;
-import org.objectweb.asmutil.tree.LineNumberNode;
-import org.objectweb.asmutil.tree.MethodInsnNode;
-import org.objectweb.asmutil.tree.MultiANewArrayInsnNode;
-import org.objectweb.asmutil.tree.TableSwitchInsnNode;
-import org.objectweb.asmutil.tree.TypeAnnotationNode;
-import org.objectweb.asmutil.tree.TypeInsnNode;
 
 /**
  * A node that represents a bytecode instruction. <i>An instruction can appear

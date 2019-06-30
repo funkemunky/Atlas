@@ -29,8 +29,6 @@
  */
 package org.objectweb.asmutil;
 
-import org.objectweb.asmutil.TypeReference;
-
 /**
  * A visitor to visit a Java class. The methods of this class must be called in
  * the following order: <tt>visit</tt> [ <tt>visitSource</tt> ] [

@@ -29,11 +29,7 @@
  */
 package org.objectweb.asmutil.optimizer;
 
-import org.objectweb.asmutil.AnnotationVisitor;
-import org.objectweb.asmutil.FieldVisitor;
-import org.objectweb.asmutil.Opcodes;
-import org.objectweb.asmutil.TypePath;
-import org.objectweb.asmutil.Attribute;
+import org.objectweb.asmutil.*;
 
 /**
  * A {@link FieldVisitor} that collects the {@link Constant}s of the fields it

@@ -30,12 +30,7 @@
 
 package org.objectweb.asmutil.commons;
 
-import org.objectweb.asmutil.AnnotationVisitor;
-import org.objectweb.asmutil.ClassVisitor;
-import org.objectweb.asmutil.FieldVisitor;
-import org.objectweb.asmutil.MethodVisitor;
-import org.objectweb.asmutil.Opcodes;
-import org.objectweb.asmutil.TypePath;
+import org.objectweb.asmutil.*;
 
 /**
  * A {@link ClassVisitor} for type remapping.

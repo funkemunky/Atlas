@@ -29,10 +29,10 @@
  */
 package org.objectweb.asmutil.tree;
 
-import java.util.Map;
-
 import org.objectweb.asmutil.MethodVisitor;
 import org.objectweb.asmutil.Opcodes;
+
+import java.util.Map;
 
 /**
  * A node that represents a MULTIANEWARRAY instruction.

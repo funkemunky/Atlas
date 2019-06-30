@@ -29,9 +29,6 @@
  */
 package org.objectweb.asmutil;
 
-import org.objectweb.asmutil.ClassWriter;
-import org.objectweb.asmutil.Label;
-
 /**
  * An edge in the control flow graph of a method body. See {@link org.objectweb.asmutil.Label Label}.
  * 

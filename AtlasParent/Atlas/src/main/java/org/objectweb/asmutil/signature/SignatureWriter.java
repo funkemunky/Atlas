@@ -30,7 +30,6 @@
 package org.objectweb.asmutil.signature;
 
 import org.objectweb.asmutil.Opcodes;
-import org.objectweb.asmutil.signature.SignatureVisitor;
 
 /**
  * A signature visitor that generates signatures in string format.

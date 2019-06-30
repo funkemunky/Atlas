@@ -29,17 +29,11 @@
  */
 package org.objectweb.asmutil.commons;
 
+import org.objectweb.asmutil.*;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
-import org.objectweb.asmutil.ClassVisitor;
-import org.objectweb.asmutil.Label;
-import org.objectweb.asmutil.MethodVisitor;
-import org.objectweb.asmutil.Opcodes;
-import org.objectweb.asmutil.Type;
-import org.objectweb.asmutil.commons.LocalVariablesSorter;
-import org.objectweb.asmutil.Handle;
 
 /**
  * A {@link org.objectweb.asmutil.MethodVisitor} with convenient methods to generate

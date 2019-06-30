@@ -29,14 +29,14 @@
  */
 package org.objectweb.asmutil.tree;
 
+import org.objectweb.asmutil.Label;
+import org.objectweb.asmutil.MethodVisitor;
+import org.objectweb.asmutil.Opcodes;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
-
-import org.objectweb.asmutil.Label;
-import org.objectweb.asmutil.MethodVisitor;
-import org.objectweb.asmutil.Opcodes;
 
 /**
  * A node that represents a TABLESWITCH instruction.

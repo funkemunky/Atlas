@@ -30,10 +30,10 @@
 
 package org.objectweb.asmutil.commons;
 
-import java.util.Stack;
-
 import org.objectweb.asmutil.Opcodes;
 import org.objectweb.asmutil.signature.SignatureVisitor;
+
+import java.util.Stack;
 
 /**
  * A {@link SignatureVisitor} adapter for type mapping.

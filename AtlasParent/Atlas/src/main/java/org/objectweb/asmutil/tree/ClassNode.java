@@ -29,22 +29,11 @@
  */
 package org.objectweb.asmutil.tree;
 
+import org.objectweb.asmutil.*;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
-import org.objectweb.asmutil.AnnotationVisitor;
-import org.objectweb.asmutil.Attribute;
-import org.objectweb.asmutil.ClassVisitor;
-import org.objectweb.asmutil.FieldVisitor;
-import org.objectweb.asmutil.MethodVisitor;
-import org.objectweb.asmutil.Opcodes;
-import org.objectweb.asmutil.TypePath;
-import org.objectweb.asmutil.tree.AnnotationNode;
-import org.objectweb.asmutil.tree.FieldNode;
-import org.objectweb.asmutil.tree.InnerClassNode;
-import org.objectweb.asmutil.tree.MethodNode;
-import org.objectweb.asmutil.tree.TypeAnnotationNode;
 
 /**
  * A node that represents a class.

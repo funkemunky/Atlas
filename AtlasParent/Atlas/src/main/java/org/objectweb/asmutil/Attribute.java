@@ -29,11 +29,6 @@
  */
 package org.objectweb.asmutil;
 
-import org.objectweb.asmutil.ByteVector;
-import org.objectweb.asmutil.ClassReader;
-import org.objectweb.asmutil.ClassWriter;
-import org.objectweb.asmutil.Label;
-
 /**
  * A non standard class, field, method or code attribute.
  * 

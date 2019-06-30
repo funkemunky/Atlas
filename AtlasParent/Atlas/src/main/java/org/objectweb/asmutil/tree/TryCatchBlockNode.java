@@ -29,9 +29,9 @@
  */
 package org.objectweb.asmutil.tree;
 
-import java.util.List;
-
 import org.objectweb.asmutil.MethodVisitor;
+
+import java.util.List;
 
 /**
  * A node that represents a try catch block.

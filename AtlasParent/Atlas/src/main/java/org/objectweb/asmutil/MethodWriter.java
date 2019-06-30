@@ -29,24 +29,6 @@
  */
 package org.objectweb.asmutil;
 
-import org.objectweb.asmutil.AnnotationVisitor;
-import org.objectweb.asmutil.AnnotationWriter;
-import org.objectweb.asmutil.Attribute;
-import org.objectweb.asmutil.ByteVector;
-import org.objectweb.asmutil.ClassReader;
-import org.objectweb.asmutil.ClassWriter;
-import org.objectweb.asmutil.CurrentFrame;
-import org.objectweb.asmutil.Edge;
-import org.objectweb.asmutil.Frame;
-import org.objectweb.asmutil.Handle;
-import org.objectweb.asmutil.Handler;
-import org.objectweb.asmutil.Item;
-import org.objectweb.asmutil.Label;
-import org.objectweb.asmutil.MethodVisitor;
-import org.objectweb.asmutil.Opcodes;
-import org.objectweb.asmutil.Type;
-import org.objectweb.asmutil.TypePath;
-
 /**
  * A {@link org.objectweb.asmutil.MethodVisitor} that generates methods in bytecode form. Each visit
  * method of this class appends the bytecode corresponding to the visited

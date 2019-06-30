@@ -29,26 +29,15 @@
  */
 package org.objectweb.asmutil.optimizer;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStream;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Properties;
-import java.util.Set;
-import java.util.TreeSet;
-
 import org.objectweb.asmutil.ClassReader;
 import org.objectweb.asmutil.ClassWriter;
-import org.objectweb.asmutil.Type;
 import org.objectweb.asmutil.Handle;
+import org.objectweb.asmutil.Type;
 import org.objectweb.asmutil.commons.Remapper;
 import org.objectweb.asmutil.commons.SimpleRemapper;
+
+import java.io.*;
+import java.util.*;
 
 /**
  * A class file shrinker utility.

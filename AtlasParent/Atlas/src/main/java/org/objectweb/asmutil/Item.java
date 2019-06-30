@@ -29,8 +29,6 @@
  */
 package org.objectweb.asmutil;
 
-import org.objectweb.asmutil.ClassWriter;
-
 /**
  * A constant pool item. Constant pool items can be created with the 'newXXX'
  * methods in the {@link org.objectweb.asmutil.ClassWriter} class.

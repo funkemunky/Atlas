@@ -29,10 +29,9 @@
  */
 package org.objectweb.asmutil.tree;
 
-import java.util.Map;
-
 import org.objectweb.asmutil.MethodVisitor;
-import org.objectweb.asmutil.tree.LabelNode;
+
+import java.util.Map;
 
 /**
  * A node that represents a jump instruction. A jump instruction is an

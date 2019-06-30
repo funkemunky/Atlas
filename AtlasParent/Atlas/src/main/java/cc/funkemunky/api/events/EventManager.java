@@ -2,7 +2,6 @@ package cc.funkemunky.api.events;
 
 import cc.funkemunky.api.Atlas;
 import cc.funkemunky.api.events.exceptions.ListenParamaterException;
-import cc.funkemunky.api.utils.MiscUtils;
 import lombok.Getter;
 import org.bukkit.plugin.Plugin;
 
@@ -11,7 +10,6 @@ import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.SortedSet;
-import java.util.TreeSet;
 import java.util.concurrent.*;
 
 @Getter
@@ -66,7 +64,7 @@ public class EventManager {
             FutureTask<Boolean> callTask = new FutureTask<>(() -> {
                 if(event instanceof Cancellable) {
                     for (ListenerMethod lm : listenerMethods) {
-                        if(lm.getMethod().getParameterTypes().length == 0 || !lm.getMethod().getParameterTypes()[0].equals(event.getClass())) continue;
+                        if(lm.getMethod().getParameterTypes().length != 1 || !lm.getMethod().getParameterTypes()[0].getName().equals(event.getClass().getName())) continue;
 
                         try {
                             lm.getMethod().invoke(lm.getListener(), event);
@@ -80,7 +78,7 @@ public class EventManager {
                     }
                 } else {
                     for (ListenerMethod lm : listenerMethods) {
-                        if(lm.getMethod().getParameterTypes().length == 0 || !lm.getMethod().getParameterTypes()[0].equals(event.getClass())) continue;
+                        if(lm.getMethod().getParameterTypes().length != 1 || !lm.getMethod().getParameterTypes()[0].getName().equals(event.getClass().getName())) continue;
 
                         try {
                             lm.getMethod().invoke(lm.getListener(), event);

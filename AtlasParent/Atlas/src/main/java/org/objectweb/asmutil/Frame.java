@@ -29,11 +29,6 @@
  */
 package org.objectweb.asmutil;
 
-import org.objectweb.asmutil.ClassWriter;
-import org.objectweb.asmutil.Edge;
-import org.objectweb.asmutil.Item;
-import org.objectweb.asmutil.Label;
-
 /**
  * Information about the input and output stack map frames of a basic block.
  * 

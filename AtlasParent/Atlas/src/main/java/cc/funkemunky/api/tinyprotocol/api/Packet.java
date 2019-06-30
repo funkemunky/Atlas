@@ -11,7 +11,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.bukkit.entity.Player;
 
-import javax.xml.bind.annotation.XmlIDREF;
 import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.Map;

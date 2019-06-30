@@ -29,9 +29,6 @@
  */
 package org.objectweb.asmutil;
 
-import org.objectweb.asmutil.ClassWriter;
-import org.objectweb.asmutil.TypeReference;
-
 /**
  * An {@link AnnotationVisitor} that generates annotations in bytecode form.
  * 

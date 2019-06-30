@@ -29,9 +29,9 @@
  */
 package org.objectweb.asmutil.tree;
 
-import java.util.Map;
-
 import org.objectweb.asmutil.MethodVisitor;
+
+import java.util.Map;
 
 /**
  * A node that represents a field instruction. A field instruction is an

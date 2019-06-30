@@ -29,10 +29,10 @@
  */
 package org.objectweb.asmutil.optimizer;
 
-import java.util.Arrays;
-
 import org.objectweb.asmutil.ClassWriter;
 import org.objectweb.asmutil.Handle;
+
+import java.util.Arrays;
 
 /**
  * A constant pool item.

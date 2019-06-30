@@ -3,7 +3,7 @@ package cc.funkemunky.api.utils.blockbox.impl;
 import cc.funkemunky.api.utils.BoundingBox;
 import lombok.Getter;
 import lombok.Setter;
-import org.bukkit.Material ;
+import org.bukkit.Material;
 import org.bukkit.block.Block;
 
 import java.util.List;

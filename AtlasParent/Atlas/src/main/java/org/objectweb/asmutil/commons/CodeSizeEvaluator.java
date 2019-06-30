@@ -29,10 +29,10 @@
  */
 package org.objectweb.asmutil.commons;
 
+import org.objectweb.asmutil.Handle;
 import org.objectweb.asmutil.Label;
 import org.objectweb.asmutil.MethodVisitor;
 import org.objectweb.asmutil.Opcodes;
-import org.objectweb.asmutil.Handle;
 
 /**
  * A {@link MethodVisitor} that can be used to approximate method size.

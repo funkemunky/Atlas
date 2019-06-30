@@ -29,7 +29,6 @@
  */
 package org.objectweb.asmutil.tree.analysis;
 
-import org.objectweb.asmutil.tree.analysis.Value;
 import org.objectweb.asmutil.tree.AbstractInsnNode;
 
 /**
