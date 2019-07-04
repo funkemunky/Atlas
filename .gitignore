@@ -29,5 +29,3 @@ hs_err_pid*
 *.ist
 *.py
 *.lst
-*.properties
-**/target/**
