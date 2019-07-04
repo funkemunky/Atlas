@@ -48,34 +48,50 @@ public class BlockBox1_13_R2 implements BlockBox {
                             aabbs.add((AxisAlignedBB) BlockUtils.collisionBoundingBoxes.get(block.getType()).add(block.getLocation().toVector()).toAxisAlignedBB());
                         } else {
                             final int aX = x, aY = y, aZ = z;
-                            net.minecraft.server.v1_13_R2.BlockPosition pos = new net.minecraft.server.v1_13_R2.BlockPosition(aX, aY, aZ);
-                            net.minecraft.server.v1_13_R2.World nmsWorld = ((org.bukkit.craftbukkit.v1_13_R2.CraftWorld) world).getHandle();
-                            net.minecraft.server.v1_13_R2.IBlockData nmsiBlockData = ((org.bukkit.craftbukkit.v1_13_R2.CraftWorld) world).getHandle().getType(pos);
-                            net.minecraft.server.v1_13_R2.Block nmsBlock = nmsiBlockData.getBlock();
+                            FutureTask<?> task = new FutureTask<>(() -> {
+                                net.minecraft.server.v1_13_R2.BlockPosition pos = new net.minecraft.server.v1_13_R2.BlockPosition(aX, aY, aZ);
+                                net.minecraft.server.v1_13_R2.World nmsWorld = ((org.bukkit.craftbukkit.v1_13_R2.CraftWorld) world).getHandle();
+                                net.minecraft.server.v1_13_R2.IBlockData nmsiBlockData = ((org.bukkit.craftbukkit.v1_13_R2.CraftWorld) world).getHandle().getType(pos);
+                                net.minecraft.server.v1_13_R2.Block nmsBlock = nmsiBlockData.getBlock();
 
-                            net.minecraft.server.v1_13_R2.VoxelShape shape = nmsiBlockData.getCollisionShape(nmsWorld, pos);
+                                net.minecraft.server.v1_13_R2.VoxelShape shape = nmsiBlockData.getCollisionShape(nmsWorld, pos);
 
-                            val aabbsVoxel = shape.d();
-                            if (aabbsVoxel.size() == 0) {
-                                aabbs.add(new net.minecraft.server.v1_13_R2.AxisAlignedBB(block.getLocation().getX(), block.getLocation().getY(), block.getLocation().getZ(), block.getLocation().getX() + 1, block.getLocation().getY() + 1, block.getLocation().getZ() + 1));
-                            } else {
-                                aabbs.addAll(aabbsVoxel);
-                            }
+                                val aabbsVoxel = shape.d();
+                                if (aabbsVoxel.size() == 0) {
+                                    aabbs.add(new net.minecraft.server.v1_13_R2.AxisAlignedBB(block.getLocation().getX(), block.getLocation().getY(), block.getLocation().getZ(), block.getLocation().getX() + 1, block.getLocation().getY() + 1, block.getLocation().getZ() + 1));
+                                } else {
+                                    aabbs.addAll(aabbsVoxel);
+                                }
 
-                            if (nmsBlock instanceof net.minecraft.server.v1_13_R2.BlockShulkerBox) {
-                                net.minecraft.server.v1_13_R2.TileEntity tileentity = nmsWorld.getTileEntity(pos);
-                                net.minecraft.server.v1_13_R2.BlockShulkerBox shulker = (net.minecraft.server.v1_13_R2.BlockShulkerBox) nmsBlock;
+                                if (nmsBlock instanceof net.minecraft.server.v1_13_R2.BlockShulkerBox) {
+                                    net.minecraft.server.v1_13_R2.TileEntity tileentity = nmsWorld.getTileEntity(pos);
+                                    net.minecraft.server.v1_13_R2.BlockShulkerBox shulker = (net.minecraft.server.v1_13_R2.BlockShulkerBox) nmsBlock;
 
-                                if (tileentity instanceof net.minecraft.server.v1_13_R2.TileEntityShulkerBox) {
-                                    net.minecraft.server.v1_13_R2.TileEntityShulkerBox entity = (net.minecraft.server.v1_13_R2.TileEntityShulkerBox) tileentity;
-                                    //Bukkit.broadcastMessage("entity");
-                                    aabbs.add(entity.a(nmsiBlockData));
+                                    if (tileentity instanceof net.minecraft.server.v1_13_R2.TileEntityShulkerBox) {
+                                        net.minecraft.server.v1_13_R2.TileEntityShulkerBox entity = (net.minecraft.server.v1_13_R2.TileEntityShulkerBox) tileentity;
+                                        //Bukkit.broadcastMessage("entity");
+                                        aabbs.add(entity.a(nmsiBlockData));
 
-                                    val loc = block.getLocation();
-                                    if (entity.r().toString().contains("OPEN") || entity.r().toString().contains("CLOSING")) {
-                                        aabbs.add(new net.minecraft.server.v1_13_R2.AxisAlignedBB(loc.getX(), loc.getY(), loc.getZ(), loc.getX() + 1, loc.getY() + 1.5, loc.getZ() + 1));
+                                        val loc = block.getLocation();
+                                        if (entity.r().toString().contains("OPEN") || entity.r().toString().contains("CLOSING")) {
+                                            aabbs.add(new net.minecraft.server.v1_13_R2.AxisAlignedBB(loc.getX(), loc.getY(), loc.getZ(), loc.getX() + 1, loc.getY() + 1.5, loc.getZ() + 1));
+                                        }
                                     }
                                 }
+                                return null;
+                            });
+
+                            //We check if this isn't loaded and offload it to the main thread to prevent errors or corruption.
+                            if (!isChunkLoaded(block.getLocation())) {
+                                Bukkit.getScheduler().runTask(Atlas.getInstance(), task);
+                            } else {
+                                Atlas.getInstance().getBlockBoxManager().getExecutor().submit(task);
+                            }
+
+                            try {
+                                task.get(2, TimeUnit.SECONDS);
+                            } catch (InterruptedException | ExecutionException | TimeoutException e) {
+                                e.printStackTrace();
                             }
                         }
                         /*
