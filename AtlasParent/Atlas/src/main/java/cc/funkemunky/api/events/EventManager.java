@@ -11,6 +11,7 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.SortedSet;
 import java.util.concurrent.*;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 @Getter
 public class EventManager {
@@ -63,29 +64,29 @@ public class EventManager {
         if(!paused) {
             FutureTask<Boolean> callTask = new FutureTask<>(() -> {
                 if(event instanceof Cancellable) {
-                    for (ListenerMethod lm : listenerMethods) {
-                        if(lm.getMethod().getParameterTypes().length != 1 || !lm.getMethod().getParameterTypes()[0].getName().equals(event.getClass().getName())) continue;
-
+                    String className = event.getClass().getName();
+                    AtomicBoolean atomic = new AtomicBoolean(true);
+                    listenerMethods.parallelStream().filter(lm -> lm.getClassName().equals(className)).forEach(lm -> {
                         try {
                             lm.getMethod().invoke(lm.getListener(), event);
 
                             if(((Cancellable) event).isCancelled()) {
-                                return false;
+                                atomic.set(false);
                             }
                         } catch (IllegalAccessException | InvocationTargetException e) {
                             e.printStackTrace();
                         }
-                    }
+                    });
+                    return atomic.get();
                 } else {
-                    for (ListenerMethod lm : listenerMethods) {
-                        if(lm.getMethod().getParameterTypes().length != 1 || !lm.getMethod().getParameterTypes()[0].getName().equals(event.getClass().getName())) continue;
-
+                    String className = event.getClass().getName();
+                    listenerMethods.parallelStream().filter(lm -> lm.getClassName().equals(className)).forEach(lm -> {
                         try {
                             lm.getMethod().invoke(lm.getListener(), event);
                         } catch (IllegalAccessException | InvocationTargetException e) {
                             e.printStackTrace();
                         }
-                    }
+                    });
                 }
 
                 return true;
@@ -95,9 +96,9 @@ public class EventManager {
 
             if(event instanceof Cancellable) {
                 try {
-                    return callTask.get(6, TimeUnit.SECONDS);
+                    return callTask.get(5, TimeUnit.MILLISECONDS);
                 } catch (InterruptedException | ExecutionException | TimeoutException e) {
-                    e.printStackTrace();
+                    return true;
                 }
             }
         }

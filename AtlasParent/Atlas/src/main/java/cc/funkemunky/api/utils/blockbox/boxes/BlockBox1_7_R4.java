@@ -48,36 +48,19 @@ public class BlockBox1_7_R4 implements BlockBox {
                         } else {
 
                             final int aX = x, aY = y, aZ = z;
+                            net.minecraft.server.v1_7_R4.World nmsWorld = ((CraftWorld) world).getHandle();
+                            net.minecraft.server.v1_7_R4.Block nmsBlock = ((CraftWorld) world).getHandle().getType(aX, aY, aZ);
+                            nmsBlock.a(nmsWorld, aX, aY, aZ, (AxisAlignedBB) box.toAxisAlignedBB(), aabbs, null);
 
-                            FutureTask<?> task = new FutureTask<>(() -> {
-                                net.minecraft.server.v1_7_R4.World nmsWorld = ((CraftWorld) world).getHandle();
-                                net.minecraft.server.v1_7_R4.Block nmsBlock = ((CraftWorld) world).getHandle().getType(aX, aY, aZ);
-                                nmsBlock.a(nmsWorld, aX, aY, aZ, (AxisAlignedBB) box.toAxisAlignedBB(), aabbs, null);
+                            List<AxisAlignedBB> preBoxes = new ArrayList<>();
 
-                                List<AxisAlignedBB> preBoxes = new ArrayList<>();
+                            nmsBlock.updateShape(nmsWorld, aX, aY, aZ);
+                            nmsBlock.a(nmsWorld, aX, aY, aZ, (AxisAlignedBB) box.toAxisAlignedBB(), preBoxes, null);
 
-                                nmsBlock.updateShape(nmsWorld, aX, aY, aZ);
-                                nmsBlock.a(nmsWorld, aX, aY, aZ, (AxisAlignedBB) box.toAxisAlignedBB(), preBoxes, null);
-
-                                if (preBoxes.size() > 0) {
-                                    aabbs.addAll(preBoxes);
-                                } else {
-                                    boxes.add(new BoundingBox((float) nmsBlock.x(), (float) nmsBlock.z(), (float) nmsBlock.B(), (float) nmsBlock.y(), (float) nmsBlock.A(), (float) nmsBlock.C()).add(block.getLocation().toVector()));
-                                }
-                                return null;
-                            });
-
-                            //We check if this isn't loaded and offload it to the main thread to prevent errors or corruption.
-                            if (!isChunkLoaded(block.getLocation())) {
-                                Bukkit.getScheduler().runTask(Atlas.getInstance(), task);
+                            if (preBoxes.size() > 0) {
+                                aabbs.addAll(preBoxes);
                             } else {
-                                Atlas.getInstance().getBlockBoxManager().getExecutor().submit(task);
-                            }
-
-                            try {
-                                task.get(2, TimeUnit.SECONDS);
-                            } catch (InterruptedException | ExecutionException | TimeoutException e) {
-                                e.printStackTrace();
+                                boxes.add(new BoundingBox((float) nmsBlock.x(), (float) nmsBlock.z(), (float) nmsBlock.B(), (float) nmsBlock.y(), (float) nmsBlock.A(), (float) nmsBlock.C()).add(block.getLocation().toVector()));
                             }
                         }
                         /*
