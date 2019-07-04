@@ -25,7 +25,6 @@ hs_err_pid*
 # intellij files
 **/.idea/**
 *.iml
-**/out/*.*
 *.ist
 *.py
 *.lst
