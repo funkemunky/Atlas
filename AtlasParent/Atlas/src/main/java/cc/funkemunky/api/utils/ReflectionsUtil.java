@@ -84,6 +84,10 @@ public class ReflectionsUtil {
         }
     }
 
+    public static Object getMinecraftServer() {
+        return getMethodValue(getMethod(getCBClass("MinecraftServer"), "getServer"), Bukkit.getServer());
+    }
+
     private static Vector getBoxMax(Object box) {
         if (hasField(box.getClass(), "d")) {
             double x = (double) getFieldValue(getFieldByName(box.getClass(), "d"), box);

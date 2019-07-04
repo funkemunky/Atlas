@@ -63,6 +63,7 @@ public class Atlas extends JavaPlugin {
     private boolean done;
     private DatabaseManager databaseManager;
     private ChannelInjector channelInjector;
+    private ExecutorService service;
 
     @ConfigSetting(path = "updater")
     private boolean autoDownload = false;
@@ -72,9 +73,6 @@ public class Atlas extends JavaPlugin {
 
     @ConfigSetting(path = "init", name = "reloadDependingPlugins")
     private boolean enableDependingPlugins = true;
-
-    @ConfigSetting(name = "threadCount")
-    private int threadCount = 4;
 
     @ConfigSetting(path = "ticking", name = "runAsync")
     private boolean runAsync = false;
@@ -87,7 +85,7 @@ public class Atlas extends JavaPlugin {
         saveDefaultConfig();
 
         MiscUtils.printToConsole(Color.Gray + "Firing up the thread turbines...");
-        loadExecutor();
+        service = Executors.newSingleThreadScheduledExecutor();
 
         eventManager = new EventManager();
         carbon = new Carbon();
@@ -181,7 +179,7 @@ public class Atlas extends JavaPlugin {
     }
 
     public <T extends Object> T executeTask(FutureTask<T> future) {
-        getThreadPool().submit(future);
+        service.submit(future);
         try {
             return future.get();
         } catch (Exception ex) {
@@ -191,22 +189,11 @@ public class Atlas extends JavaPlugin {
     }
 
     public void executeTask(Runnable runnable) {
-        getThreadPool().execute(runnable);
-    }
-
-    public void loadExecutor() {
-        threadPool = new ExecutorService[threadCount];
-
-        for (int i = 0; i < threadPool.length; i++) {
-            threadPool[i] = Executors.newSingleThreadExecutor();
-        }
-        schedular = Executors.newSingleThreadScheduledExecutor();
+        service.execute(runnable);
     }
 
     public void shutdownExecutor() {
-        for (ExecutorService executorService : threadPool) {
-            executorService.shutdownNow();
-        }
+        service.shutdownNow();
     }
 
     private void runTasks() {
@@ -229,14 +216,6 @@ public class Atlas extends JavaPlugin {
         TickEvent tickEvent = new TickEvent(currentTicks++);
 
         Atlas.getInstance().getEventManager().callEvent(tickEvent);
-    }
-
-    public ExecutorService getThreadPool() {
-        ExecutorService service = threadPool[currentThread];
-
-        currentThread = currentThread >= threadPool.length - 2 ? 0 : currentThread + 1;
-
-        return service;
     }
 
     public void initializeScanner(Class<?> mainClass, JavaPlugin plugin, CommandManager manager, boolean loadListeners, boolean loadCommands, @Nullable FutureTask<?>... otherThingsToLoad) {

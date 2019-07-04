@@ -23,7 +23,6 @@ public class PluginShutdownListeners implements Listener {
             Atlas.getInstance().getSchedular().shutdownNow();
             Atlas.getInstance().getFunkeCommandManager().removeAll(event.getPlugin());
             Atlas.getInstance().shutdownExecutor();
-            Atlas.getInstance().loadExecutor();
             Atlas.getInstance().setSchedular(Executors.newSingleThreadScheduledExecutor());
             MiscUtils.printToConsole("&aCompleted!");
         }

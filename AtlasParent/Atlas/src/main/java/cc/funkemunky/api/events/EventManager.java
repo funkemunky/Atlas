@@ -91,7 +91,7 @@ public class EventManager {
                 return true;
             });
 
-            Atlas.getInstance().getThreadPool().submit(callTask);
+            Atlas.getInstance().getService().submit(callTask);
 
             if(event instanceof Cancellable) {
                 try {
