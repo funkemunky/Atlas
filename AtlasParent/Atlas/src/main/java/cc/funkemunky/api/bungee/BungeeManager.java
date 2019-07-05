@@ -17,7 +17,6 @@ import java.util.concurrent.ScheduledExecutorService;
 public class BungeeManager implements PluginMessageListener {
     private String channelOut = "atlasdata:out", channelIn = "atlasdata:in";
     private SortedSet<BungeeObject> objects = new TreeSet<>(Comparator.comparing(BungeeObject::getTimeStamp, Comparator.reverseOrder()));
-    private ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
     private BungeeAPI bungeeAPI;
 
     public BungeeManager() {

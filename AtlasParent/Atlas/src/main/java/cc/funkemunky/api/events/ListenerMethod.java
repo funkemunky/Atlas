@@ -7,7 +7,6 @@ import org.bukkit.plugin.Plugin;
 
 import java.lang.reflect.Method;
 
-@AllArgsConstructor
 @Getter
 @Setter
 class ListenerMethod {
@@ -15,4 +14,13 @@ class ListenerMethod {
     private Method method;
     private AtlasListener listener;
     public ListenerPriority listenerPriority;
+    private String className;
+
+    public ListenerMethod(Plugin plugin, Method method, AtlasListener listener, ListenerPriority listenerPriority) {
+        this.plugin = plugin;
+        this.method = method;
+        this.listener = listener;
+        this.listenerPriority = listenerPriority;
+        this.className = method.getParameterTypes()[0].getName();
+    }
 }

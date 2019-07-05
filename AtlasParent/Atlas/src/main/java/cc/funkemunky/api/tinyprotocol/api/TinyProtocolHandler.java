@@ -75,7 +75,7 @@ public class TinyProtocolHandler {
 
         PacketSendEvent event = new PacketSendEvent(sender, packet, packetName);
 
-        EventManager.callEvent(new cc.funkemunky.api.event.custom.PacketSendEvent(sender, packet, packetName));
+        //EventManager.callEvent(new cc.funkemunky.api.event.custom.PacketSendEvent(sender, packet, packetName));
 
         Atlas.getInstance().getEventManager().callEvent(event);
 
@@ -92,7 +92,7 @@ public class TinyProtocolHandler {
 
         PacketReceiveEvent event = new PacketReceiveEvent(sender, packet, packetName);
 
-        EventManager.callEvent(new cc.funkemunky.api.event.custom.PacketReceiveEvent(sender, packet, packetName));
+        //EventManager.callEvent(new cc.funkemunky.api.event.custom.PacketReceiveEvent(sender, packet, packetName));
 
         Atlas.getInstance().getEventManager().callEvent(event);
 

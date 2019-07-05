@@ -14,7 +14,6 @@ import java.util.concurrent.*;
 public class EventManager {
     private static final Map<Map.Entry<Plugin, Listener>, List<Method>> registered = new ConcurrentHashMap<>();
     public static boolean enabled = true;
-    private static ExecutorService eventExecutor = Executors.newSingleThreadExecutor();;
 
     public static void register(Plugin plugin, Listener listener) {
         for (Method method : listener.getClass().getMethods()) {
@@ -68,7 +67,7 @@ public class EventManager {
     public static Event callEvent(Event event) {
         FutureTask<Event> futureTask = new FutureTask<>(() -> call(event));
 
-        eventExecutor.submit(futureTask);
+        futureTask.run();
 
         try {
             return futureTask.get();

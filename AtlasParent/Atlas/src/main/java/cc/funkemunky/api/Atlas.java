@@ -165,7 +165,8 @@ public class Atlas extends JavaPlugin {
             MiscUtils.unloadPlugin(plugin.getName());
         });
         shutdownExecutor();
-        schedular.shutdownNow();
+        schedular.shutdown();
+
 
         MiscUtils.printToConsole(Color.Red + "Completed shutdown process.");
     }
@@ -193,7 +194,7 @@ public class Atlas extends JavaPlugin {
     }
 
     public void shutdownExecutor() {
-        service.shutdownNow();
+        service.shutdown();
     }
 
     private void runTasks() {

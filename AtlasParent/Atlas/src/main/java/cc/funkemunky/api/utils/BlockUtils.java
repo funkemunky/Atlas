@@ -30,15 +30,6 @@ public class BlockUtils {
         if (Atlas.getInstance().getBlockBoxManager().getBlockBox().isChunkLoaded(location)) {
             return location.getBlock();
         } else {
-            FutureTask<Block> futureTask = new FutureTask<>(location::getBlock);
-            Bukkit.getScheduler().runTask(Atlas.getInstance(), futureTask);
-            try {
-                return futureTask.get(50, TimeUnit.MILLISECONDS);
-            } catch (TimeoutException ex) {
-               return null;
-            } catch(Exception e) {
-                e.printStackTrace();
-            }
             return null;
         }
     }
