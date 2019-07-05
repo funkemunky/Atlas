@@ -4,9 +4,14 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
+    <parent>
+        <groupId>cc.funkemunky.utils</groupId>
+        <version>1.3.5</version>
+        <artifactId>atlas-parent</artifactId>
+    </parent>
+
     <groupId>cc.funkemunky.plugins</groupId>
     <artifactId>Atlas</artifactId>
-    <version>1.3.4</version>
 
     <scm>
         <connection>scm:svn:http://127.0.0.1/dummy</connection>
@@ -14,12 +19,6 @@
         <tag>HEAD</tag>
         <url>http://127.0.0.1/dummy</url>
     </scm>
-
-    <parent>
-        <groupId>cc.funkemunky.utils</groupId>
-        <version>1.3.4</version>
-        <artifactId>atlas-parent</artifactId>
-    </parent>
 
     <build>
         <plugins>

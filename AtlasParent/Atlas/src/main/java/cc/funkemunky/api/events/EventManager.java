@@ -2,7 +2,9 @@ package cc.funkemunky.api.events;
 
 import cc.funkemunky.api.Atlas;
 import cc.funkemunky.api.events.exceptions.ListenParamaterException;
+import cc.funkemunky.api.utils.MathUtils;
 import lombok.Getter;
+import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
 
 import java.lang.reflect.InvocationTargetException;
@@ -62,11 +64,12 @@ public class EventManager {
 
     public boolean callEvent(AtlasEvent event) {
         if(!paused) {
+            Atlas.getInstance().getProfile().start("event:" + event.getClass().getSimpleName());
             FutureTask<Boolean> callTask = new FutureTask<>(() -> {
                 if(event instanceof Cancellable) {
                     String className = event.getClass().getName();
                     AtomicBoolean atomic = new AtomicBoolean(true);
-                    listenerMethods.parallelStream().filter(lm -> lm.getClassName().equals(className)).forEach(lm -> {
+                    listenerMethods.stream().filter(lm -> lm.getClassName().equals(className)).forEach(lm -> {
                         try {
                             lm.getMethod().invoke(lm.getListener(), event);
 
@@ -80,7 +83,7 @@ public class EventManager {
                     return atomic.get();
                 } else {
                     String className = event.getClass().getName();
-                    listenerMethods.parallelStream().filter(lm -> lm.getClassName().equals(className)).forEach(lm -> {
+                    listenerMethods.stream().filter(lm -> lm.getClassName().equals(className)).forEach(lm -> {
                         try {
                             lm.getMethod().invoke(lm.getListener(), event);
                         } catch (IllegalAccessException | InvocationTargetException e) {
@@ -96,11 +99,15 @@ public class EventManager {
 
             if(event instanceof Cancellable) {
                 try {
-                    return callTask.get(5, TimeUnit.MILLISECONDS);
+                    boolean get = callTask.get(5, TimeUnit.MILLISECONDS);
+                    Atlas.getInstance().getProfile().stop("event:" + event.getClass().getSimpleName());
+
+                    return get;
                 } catch (InterruptedException | ExecutionException | TimeoutException e) {
                     return true;
                 }
             }
+            Atlas.getInstance().getProfile().stop("event:" + event.getClass().getSimpleName());
         }
         return true;
     }
