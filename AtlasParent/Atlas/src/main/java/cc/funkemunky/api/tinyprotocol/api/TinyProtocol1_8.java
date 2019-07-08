@@ -1,6 +1,5 @@
 package cc.funkemunky.api.tinyprotocol.api;
 
-import cc.funkemunky.api.Atlas;
 import cc.funkemunky.api.tinyprotocol.reflection.FieldAccessor;
 import cc.funkemunky.api.tinyprotocol.reflection.MethodInvoker;
 import cc.funkemunky.api.tinyprotocol.reflection.Reflection;
@@ -163,17 +162,15 @@ public abstract class TinyProtocol1_8 implements AbstractTinyProtocol {
 
             @EventHandler(priority = EventPriority.LOWEST)
             public final void onPlayerLogin(PlayerJoinEvent e) {
-                Atlas.getInstance().getService().execute(() -> {
-                    if (closed)
-                        return;
+                if (closed)
+                    return;
 
-                    Channel channel = getChannel(e.getPlayer());
+                Channel channel = getChannel(e.getPlayer());
 
-                    // Don't inject players that have been explicitly uninjected
-                    if (!uninjectedChannels.contains(channel)) {
-                        injectPlayer(e.getPlayer());
-                    }
-                });
+                // Don't inject players that have been explicitly uninjected
+                if (!uninjectedChannels.contains(channel)) {
+                    injectPlayer(e.getPlayer());
+                }
             }
 
             @EventHandler
@@ -358,12 +355,11 @@ public abstract class TinyProtocol1_8 implements AbstractTinyProtocol {
             PacketInterceptor interceptor = (PacketInterceptor) channel.pipeline().get(handlerName);
 
             // Inject our packet interceptor
-            if (interceptor != null) {
-                channel.pipeline().remove(handlerName);
+            if (interceptor == null) {
+                interceptor = new PacketInterceptor();
+                channel.pipeline().addBefore("packet_handler", handlerName, interceptor);
+                uninjectedChannels.remove(channel);
             }
-            interceptor = new PacketInterceptor();
-            channel.pipeline().addBefore("packet_handler", handlerName, interceptor);
-            uninjectedChannels.remove(channel);
 
             return interceptor;
         } catch (IllegalArgumentException e) {

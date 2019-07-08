@@ -7,14 +7,12 @@ import org.bukkit.plugin.Plugin;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.SortedSet;
-import java.util.concurrent.ConcurrentSkipListSet;
+import java.util.*;
+import java.util.concurrent.*;
 
 @Getter
 public class EventManager {
-    private final SortedSet<ListenerMethod> listenerMethods = new ConcurrentSkipListSet<>(Comparator.comparing(method -> method.getListenerPriority().getPriority(), Comparator.reverseOrder()));
+    private final SortedSet<ListenerMethod> listenerMethods = new TreeSet<>(Comparator.comparing(method -> method.getListenerPriority().getPriority(), Comparator.reverseOrder()));
     private boolean paused = false;
 
     public void registerListener(Method method, AtlasListener listener, Plugin plugin) throws ListenParamaterException {
@@ -61,18 +59,45 @@ public class EventManager {
 
     public boolean callEvent(AtlasEvent event) {
         if(!paused) {
-            Atlas.getInstance().getService().execute(() -> {
-                Atlas.getInstance().getProfile().start("event:" + event.getClass().getSimpleName());
-                String className = event.getClass().getName();
-                listenerMethods.stream().filter(lm -> lm.getClassName().equals(className)).forEach(lm -> {
-                    try {
-                        lm.getMethod().invoke(lm.getListener(), event);
-                    } catch (IllegalAccessException | InvocationTargetException e) {
-                        e.printStackTrace();
+            FutureTask<Boolean> callTask = new FutureTask<>(() -> {
+                if(event instanceof Cancellable) {
+                    for (ListenerMethod lm : listenerMethods) {
+                        if(lm.getMethod().getParameterTypes().length != 1 || !lm.getMethod().getParameterTypes()[0].getName().equals(event.getClass().getName())) continue;
+
+                        try {
+                            lm.getMethod().invoke(lm.getListener(), event);
+
+                            if(((Cancellable) event).isCancelled()) {
+                                return false;
+                            }
+                        } catch (IllegalAccessException | InvocationTargetException e) {
+                            e.printStackTrace();
+                        }
                     }
-                });
-                Atlas.getInstance().getProfile().stop("event:" + event.getClass().getSimpleName());
+                } else {
+                    for (ListenerMethod lm : listenerMethods) {
+                        if(lm.getMethod().getParameterTypes().length != 1 || !lm.getMethod().getParameterTypes()[0].getName().equals(event.getClass().getName())) continue;
+
+                        try {
+                            lm.getMethod().invoke(lm.getListener(), event);
+                        } catch (IllegalAccessException | InvocationTargetException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+
+                return true;
             });
+
+            Atlas.getInstance().getService().submit(callTask);
+
+            if(event instanceof Cancellable) {
+                try {
+                    return callTask.get(50, TimeUnit.MILLISECONDS);
+                } catch (InterruptedException | ExecutionException | TimeoutException e) {
+                    e.printStackTrace();
+                }
+            }
         }
         return true;
     }

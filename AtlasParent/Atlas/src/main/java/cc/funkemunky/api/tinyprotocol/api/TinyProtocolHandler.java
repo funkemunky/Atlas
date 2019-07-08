@@ -6,7 +6,6 @@ import cc.funkemunky.api.events.impl.PacketSendEvent;
 import lombok.Getter;
 import org.bukkit.entity.Player;
 
-@Deprecated
 public class TinyProtocolHandler {
     @Getter
     private static AbstractTinyProtocol instance;

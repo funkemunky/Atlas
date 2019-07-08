@@ -6,7 +6,6 @@ package cc.funkemunky.api.tinyprotocol.api;
 
 import org.bukkit.entity.Player;
 
-@Deprecated
 public interface AbstractTinyProtocol {
     void sendPacket(Player player, Object packet);
 
