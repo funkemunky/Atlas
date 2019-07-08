@@ -1,13 +1,11 @@
 package cc.funkemunky.api.utils.blockbox.boxes;
 
-import cc.funkemunky.api.Atlas;
 import cc.funkemunky.api.utils.BlockUtils;
 import cc.funkemunky.api.utils.BoundingBox;
 import cc.funkemunky.api.utils.MathUtils;
 import cc.funkemunky.api.utils.ReflectionsUtil;
 import cc.funkemunky.api.utils.blockbox.BlockBox;
 import net.minecraft.server.v1_8_R3.*;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -19,10 +17,6 @@ import org.bukkit.entity.Player;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.FutureTask;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
 
 public class BlockBox1_8_R3 implements BlockBox {
     @Override

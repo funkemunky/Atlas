@@ -2,9 +2,7 @@ package cc.funkemunky.api.events;
 
 import cc.funkemunky.api.Atlas;
 import cc.funkemunky.api.events.exceptions.ListenParamaterException;
-import cc.funkemunky.api.utils.MathUtils;
 import lombok.Getter;
-import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
 
 import java.lang.reflect.InvocationTargetException;
@@ -12,8 +10,7 @@ import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.SortedSet;
-import java.util.concurrent.*;
-import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.ConcurrentSkipListSet;
 
 @Getter
 public class EventManager {
@@ -64,50 +61,18 @@ public class EventManager {
 
     public boolean callEvent(AtlasEvent event) {
         if(!paused) {
-            Atlas.getInstance().getProfile().start("event:" + event.getClass().getSimpleName());
-            FutureTask<Boolean> callTask = new FutureTask<>(() -> {
-                if(event instanceof Cancellable) {
-                    String className = event.getClass().getName();
-                    AtomicBoolean atomic = new AtomicBoolean(true);
-                    listenerMethods.stream().filter(lm -> lm.getClassName().equals(className)).forEach(lm -> {
-                        try {
-                            lm.getMethod().invoke(lm.getListener(), event);
-
-                            if(((Cancellable) event).isCancelled()) {
-                                atomic.set(false);
-                            }
-                        } catch (IllegalAccessException | InvocationTargetException e) {
-                            e.printStackTrace();
-                        }
-                    });
-                    return atomic.get();
-                } else {
-                    String className = event.getClass().getName();
-                    listenerMethods.stream().filter(lm -> lm.getClassName().equals(className)).forEach(lm -> {
-                        try {
-                            lm.getMethod().invoke(lm.getListener(), event);
-                        } catch (IllegalAccessException | InvocationTargetException e) {
-                            e.printStackTrace();
-                        }
-                    });
-                }
-
-                return true;
+            Atlas.getInstance().getService().execute(() -> {
+                Atlas.getInstance().getProfile().start("event:" + event.getClass().getSimpleName());
+                String className = event.getClass().getName();
+                listenerMethods.stream().filter(lm -> lm.getClassName().equals(className)).forEach(lm -> {
+                    try {
+                        lm.getMethod().invoke(lm.getListener(), event);
+                    } catch (IllegalAccessException | InvocationTargetException e) {
+                        e.printStackTrace();
+                    }
+                });
+                Atlas.getInstance().getProfile().stop("event:" + event.getClass().getSimpleName());
             });
-
-            Atlas.getInstance().getService().submit(callTask);
-
-            if(event instanceof Cancellable) {
-                try {
-                    boolean get = callTask.get(5, TimeUnit.MILLISECONDS);
-                    Atlas.getInstance().getProfile().stop("event:" + event.getClass().getSimpleName());
-
-                    return get;
-                } catch (InterruptedException | ExecutionException | TimeoutException e) {
-                    return true;
-                }
-            }
-            Atlas.getInstance().getProfile().stop("event:" + event.getClass().getSimpleName());
         }
         return true;
     }

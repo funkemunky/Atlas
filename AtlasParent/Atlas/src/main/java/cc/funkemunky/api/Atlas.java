@@ -14,7 +14,6 @@ import cc.funkemunky.api.profiling.BaseProfiler;
 import cc.funkemunky.api.settings.MongoSettings;
 import cc.funkemunky.api.tinyprotocol.api.ProtocolVersion;
 import cc.funkemunky.api.tinyprotocol.api.TinyProtocolHandler;
-import cc.funkemunky.api.tinyprotocol.api.packets.ChannelInjector;
 import cc.funkemunky.api.updater.Updater;
 import cc.funkemunky.api.utils.*;
 import cc.funkemunky.api.utils.blockbox.BlockBoxManager;
@@ -62,7 +61,6 @@ public class Atlas extends JavaPlugin {
     private BungeeManager bungeeManager;
     private boolean done;
     private DatabaseManager databaseManager;
-    private ChannelInjector channelInjector;
     private ExecutorService service;
 
     @ConfigSetting(path = "updater")
@@ -85,7 +83,7 @@ public class Atlas extends JavaPlugin {
         saveDefaultConfig();
 
         MiscUtils.printToConsole(Color.Gray + "Firing up the thread turbines...");
-        service = Executors.newSingleThreadScheduledExecutor();
+        service = Executors.newFixedThreadPool(2);
 
         eventManager = new EventManager();
         carbon = new Carbon();
@@ -111,7 +109,6 @@ public class Atlas extends JavaPlugin {
         new MiscUtils();
 
         updater = new Updater();
-        //channelInjector = new ChannelInjector();
 
         runTasks();
 
