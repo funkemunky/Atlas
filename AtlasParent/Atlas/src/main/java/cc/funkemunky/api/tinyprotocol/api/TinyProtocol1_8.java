@@ -1,5 +1,6 @@
 package cc.funkemunky.api.tinyprotocol.api;
 
+import cc.funkemunky.api.Atlas;
 import cc.funkemunky.api.tinyprotocol.reflection.FieldAccessor;
 import cc.funkemunky.api.tinyprotocol.reflection.MethodInvoker;
 import cc.funkemunky.api.tinyprotocol.reflection.Reflection;
@@ -169,7 +170,7 @@ public abstract class TinyProtocol1_8 implements AbstractTinyProtocol {
 
                 // Don't inject players that have been explicitly uninjected
                 if (!uninjectedChannels.contains(channel)) {
-                    injectPlayer(e.getPlayer());
+                    Atlas.getInstance().getService().execute(() -> injectPlayer(e.getPlayer()));
                 }
             }
 
@@ -490,6 +491,7 @@ public abstract class TinyProtocol1_8 implements AbstractTinyProtocol {
             }
 
             try {
+                msg = onPacketInAsync(player, msg);
             } catch (Exception e) {
                 plugin.getLogger().log(Level.SEVERE, "Error in onPacketInAsync().", e);
             }
@@ -502,6 +504,7 @@ public abstract class TinyProtocol1_8 implements AbstractTinyProtocol {
         @Override
         public void write(ChannelHandlerContext ctx, Object msg, ChannelPromise promise) throws Exception {
             try {
+                msg = onPacketOutAsync(player, msg);
             } catch (Exception e) {
                 plugin.getLogger().log(Level.SEVERE, "Error in onPacketOutAsync().", e);
             }

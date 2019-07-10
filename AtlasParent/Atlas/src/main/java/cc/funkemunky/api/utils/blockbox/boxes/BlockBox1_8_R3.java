@@ -90,7 +90,7 @@ public class BlockBox1_8_R3 implements BlockBox {
     @Override
     public boolean isUsingItem(Player player) {
         net.minecraft.server.v1_8_R3.EntityHuman entity = ((org.bukkit.craftbukkit.v1_8_R3.entity.CraftHumanEntity) player).getHandle();
-        return entity.bS() && entity.bZ().getItem().e(entity.bZ()) != net.minecraft.server.v1_8_R3.EnumAnimation.NONE;
+        return entity.bS() && entity.bZ() != null && entity.bZ().getItem().e(entity.bZ()) != net.minecraft.server.v1_8_R3.EnumAnimation.NONE;
     }
 
     @Override

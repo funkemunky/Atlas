@@ -59,45 +59,17 @@ public class EventManager {
 
     public boolean callEvent(AtlasEvent event) {
         if(!paused) {
-            FutureTask<Boolean> callTask = new FutureTask<>(() -> {
-                if(event instanceof Cancellable) {
-                    for (ListenerMethod lm : listenerMethods) {
-                        if(lm.getMethod().getParameterTypes().length != 1 || !lm.getMethod().getParameterTypes()[0].getName().equals(event.getClass().getName())) continue;
+            Atlas.getInstance().getService().execute(() -> {
+                for (ListenerMethod lm : listenerMethods) {
+                    if(lm.getMethod().getParameterTypes().length != 1 || !lm.getMethod().getParameterTypes()[0].getName().equals(event.getClass().getName())) continue;
 
-                        try {
-                            lm.getMethod().invoke(lm.getListener(), event);
-
-                            if(((Cancellable) event).isCancelled()) {
-                                return false;
-                            }
-                        } catch (IllegalAccessException | InvocationTargetException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                } else {
-                    for (ListenerMethod lm : listenerMethods) {
-                        if(lm.getMethod().getParameterTypes().length != 1 || !lm.getMethod().getParameterTypes()[0].getName().equals(event.getClass().getName())) continue;
-
-                        try {
-                            lm.getMethod().invoke(lm.getListener(), event);
-                        } catch (IllegalAccessException | InvocationTargetException e) {
-                            e.printStackTrace();
-                        }
+                    try {
+                        lm.getMethod().invoke(lm.getListener(), event);
+                    } catch (IllegalAccessException | InvocationTargetException e) {
+                        e.printStackTrace();
                     }
                 }
-
-                return true;
             });
-
-            Atlas.getInstance().getService().submit(callTask);
-
-            if(event instanceof Cancellable) {
-                try {
-                    return callTask.get(50, TimeUnit.MILLISECONDS);
-                } catch (InterruptedException | ExecutionException | TimeoutException e) {
-                    e.printStackTrace();
-                }
-            }
         }
         return true;
     }

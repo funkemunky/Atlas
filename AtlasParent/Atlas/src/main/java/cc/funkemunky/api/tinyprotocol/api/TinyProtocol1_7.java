@@ -490,7 +490,7 @@ public abstract class TinyProtocol1_7 implements AbstractTinyProtocol {
             }
 
             try {
-               // msg = onPacketInAsync(player, msg);
+                msg = onPacketInAsync(player, msg);
             } catch (Exception e) {
                 plugin.getLogger().log(Level.SEVERE, "Error in onPacketInAsync().", e);
             }
@@ -503,7 +503,7 @@ public abstract class TinyProtocol1_7 implements AbstractTinyProtocol {
         @Override
         public void write(ChannelHandlerContext ctx, Object msg, ChannelPromise promise) throws Exception {
             try {
-                //msg = onPacketOutAsync(player, msg);
+                msg = onPacketOutAsync(player, msg);
             } catch (Exception e) {
                 plugin.getLogger().log(Level.SEVERE, "Error in onPacketOutAsync().", e);
             }

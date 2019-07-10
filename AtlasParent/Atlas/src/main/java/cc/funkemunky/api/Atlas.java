@@ -84,11 +84,12 @@ public class Atlas extends JavaPlugin {
 
         MiscUtils.printToConsole(Color.Gray + "Firing up the thread turbines...");
         service = Executors.newFixedThreadPool(2);
+        schedular = Executors.newSingleThreadScheduledExecutor();
 
         eventManager = new EventManager();
         carbon = new Carbon();
 
-        MiscUtils.printToConsole(Color.Gray + "Starting scanner...");;
+        MiscUtils.printToConsole(Color.Gray + "Starting scanner...");
 
         initializeScanner(getClass(), this, true, true);
 
@@ -111,6 +112,7 @@ public class Atlas extends JavaPlugin {
         updater = new Updater();
 
         runTasks();
+        initCarbon();
 
         funkeCommandManager.addCommand(this, new AtlasCommand());
 
