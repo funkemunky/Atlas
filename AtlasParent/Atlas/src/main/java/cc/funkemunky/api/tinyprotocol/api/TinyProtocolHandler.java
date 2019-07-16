@@ -1,13 +1,11 @@
 package cc.funkemunky.api.tinyprotocol.api;
 
 import cc.funkemunky.api.Atlas;
-import cc.funkemunky.api.event.system.EventManager;
 import cc.funkemunky.api.events.impl.PacketReceiveEvent;
 import cc.funkemunky.api.events.impl.PacketSendEvent;
 import lombok.Getter;
 import org.bukkit.entity.Player;
 
-@Deprecated
 public class TinyProtocolHandler {
     @Getter
     private static AbstractTinyProtocol instance;

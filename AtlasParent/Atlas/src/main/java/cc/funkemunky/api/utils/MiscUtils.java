@@ -3,7 +3,6 @@ package cc.funkemunky.api.utils;
 import cc.funkemunky.api.Atlas;
 import cc.funkemunky.api.tinyprotocol.packet.out.WrappedPacketPlayOutWorldParticle;
 import cc.funkemunky.api.tinyprotocol.packet.types.WrappedEnumParticle;
-import cc.funkemunky.api.tinyprotocol.reflection.Reflection;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.command.PluginCommand;
@@ -20,8 +19,6 @@ import org.bukkit.util.Vector;
 import java.io.File;
 import java.lang.reflect.Field;
 import java.util.*;
-import java.util.concurrent.Executors;
-import java.util.concurrent.FutureTask;
 
 public class MiscUtils {
 

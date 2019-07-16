@@ -1,6 +1,5 @@
 package cc.funkemunky.api.tinyprotocol.api;
 
-import cc.funkemunky.api.Atlas;
 import cc.funkemunky.api.tinyprotocol.reflection.FieldAccessor;
 import cc.funkemunky.api.tinyprotocol.reflection.MethodInvoker;
 import cc.funkemunky.api.tinyprotocol.reflection.Reflection;
@@ -29,7 +28,6 @@ import java.util.logging.Level;
  *
  * @author Kristian
  */
-@Deprecated
 public abstract class TinyProtocol1_7 implements AbstractTinyProtocol {
     private static final AtomicInteger ID = new AtomicInteger(0);
 
@@ -44,7 +42,7 @@ public abstract class TinyProtocol1_7 implements AbstractTinyProtocol {
     private static final Class<Object> serverConnectionClass = Reflection.getUntypedClass("{nms}.ServerConnection");
     private static final FieldAccessor<Object> getMinecraftServer = Reflection.getField("{obc}.CraftServer", minecraftServerClass, 0);
     private static final FieldAccessor<Object> getServerConnection = Reflection.getField(minecraftServerClass, serverConnectionClass, 0);
-    private static final MethodInvoker getNetworkMarkers = Reflection.getTypedMethod(serverConnectionClass, 0, List.class, serverConnectionClass);
+    private static final MethodInvoker getNetworkMarkers = Reflection.getTypedMethod(serverConnectionClass, null, List.class, serverConnectionClass);
 
     // Packets we have to intercept
     private static final Class<?> PACKET_SET_PROTOCOL = Reflection.getMinecraftClass("PacketHandshakingInSetProtocol");
@@ -171,7 +169,7 @@ public abstract class TinyProtocol1_7 implements AbstractTinyProtocol {
 
                 // Don't inject players that have been explicitly uninjected
                 if (!uninjectedChannels.contains(channel)) {
-                    Bukkit.getScheduler().runTaskLater(Atlas.getInstance(), () -> injectPlayer(e.getPlayer()), 1L); //We delay it on the main thread since servers do occasionally lag.
+                    injectPlayer(e.getPlayer());
                 }
             }
 
@@ -194,7 +192,7 @@ public abstract class TinyProtocol1_7 implements AbstractTinyProtocol {
         boolean looking = true;
 
         // We need to synchronize against this list
-        networkManagers = (List) getNetworkMarkers.invoke(null, serverConnection);
+        networkManagers = (List<Object>) getNetworkMarkers.invoke(null, serverConnection);
         createServerChannelHandler();
 
         // Find the correct list, or implicitly throw an exception

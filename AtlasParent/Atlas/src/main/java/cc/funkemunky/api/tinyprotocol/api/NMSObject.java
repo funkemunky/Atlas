@@ -206,5 +206,6 @@ public abstract class NMSObject {
         public static final String LEGACY_REL_LOOK = SERVER + "EntityLook";
         public static final String ABILITIES = SERVER + "Abilities";
         public static final String OPEN_WINDOW = SERVER + "OpenWindow";
+        public static final String HELD_ITEM = SERVER + "HeldItemSlot";
     }
 }

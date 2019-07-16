@@ -4,9 +4,6 @@ import cc.funkemunky.api.tinyprotocol.api.ProtocolVersion;
 import cc.funkemunky.api.tinyprotocol.reflection.Reflection;
 import lombok.Getter;
 
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-
 @Getter
 public class BlockBoxManager {
     private BlockBox blockBox;

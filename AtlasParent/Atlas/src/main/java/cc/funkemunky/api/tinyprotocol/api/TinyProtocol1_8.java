@@ -29,7 +29,6 @@ import java.util.logging.Level;
  *
  * @author Kristian
  */
-@Deprecated
 public abstract class TinyProtocol1_8 implements AbstractTinyProtocol {
     private static final AtomicInteger ID = new AtomicInteger(0);
 
@@ -78,7 +77,7 @@ public abstract class TinyProtocol1_8 implements AbstractTinyProtocol {
     protected Plugin plugin;
 
     /**
-     * Construct a new instance of TinyProtocol, and start intercepting packets for all connected clients and future clients.
+     * Construct a new instance of TinyProtocol1_8, and start intercepting packets for all connected clients and future clients.
      * <p>
      * You can construct multiple instances per plugin.
      *
@@ -171,7 +170,7 @@ public abstract class TinyProtocol1_8 implements AbstractTinyProtocol {
 
                 // Don't inject players that have been explicitly uninjected
                 if (!uninjectedChannels.contains(channel)) {
-                    Bukkit.getScheduler().runTaskLater(Atlas.getInstance(), () -> injectPlayer(e.getPlayer()), 1L); //We delay it on the main thread since servers do occasionally lag.
+                    Atlas.getInstance().getService().execute(() -> injectPlayer(e.getPlayer()));
                 }
             }
 
@@ -189,35 +188,31 @@ public abstract class TinyProtocol1_8 implements AbstractTinyProtocol {
 
     @SuppressWarnings("unchecked")
     private void registerChannelHandler() {
-        new BukkitRunnable() {
-            public void run() {
-                Object mcServer = getMinecraftServer.get(Bukkit.getServer());
-                Object serverConnection = getServerConnection.get(mcServer);
-                boolean looking = true;
+        Object mcServer = getMinecraftServer.get(Bukkit.getServer());
+        Object serverConnection = getServerConnection.get(mcServer);
+        boolean looking = true;
 
-                // We need to synchronize against this list
-                networkManagers = (List<Object>) getNetworkMarkers.invoke(null, serverConnection);
-                createServerChannelHandler();
+        // We need to synchronize against this list
+        networkManagers = (List<Object>) getNetworkMarkers.invoke(null, serverConnection);
+        createServerChannelHandler();
 
-                // Find the correct list, or implicitly throw an exception
-                for (int i = 0; looking; i++) {
-                    List<Object> list = Reflection.getField(serverConnection.getClass(), List.class, i).get(serverConnection);
+        // Find the correct list, or implicitly throw an exception
+        for (int i = 0; looking; i++) {
+            List<Object> list = Reflection.getField(serverConnection.getClass(), List.class, i).get(serverConnection);
 
-                    for (Object item : list) {
-                        //if (!ChannelFuture.class.isInstance(item))
-                        //	break;
+            for (Object item : list) {
+                //if (!ChannelFuture.class.isInstance(item))
+                //	break;
 
-                        // Channel future that contains the server connection
-                        Channel serverChannel = ((ChannelFuture) item).channel();
+                // Channel future that contains the server connection
+                Channel serverChannel = ((ChannelFuture) item).channel();
 
-                        serverChannels.add(serverChannel);
-                        serverChannel.pipeline().addFirst(serverChannelHandler);
-                        System.out.println("Server channel handler injected (" + serverChannel + ")");
-                        looking = false;
-                    }
-                }
+                serverChannels.add(serverChannel);
+                serverChannel.pipeline().addFirst(serverChannelHandler);
+                System.out.println("Server channel handler injected (" + serverChannel + ")");
+                looking = false;
             }
-        }.runTaskLaterAsynchronously(Atlas.getInstance(), 20);
+        }
     }
 
     private void unregisterChannelHandler() {
@@ -262,8 +257,8 @@ public abstract class TinyProtocol1_8 implements AbstractTinyProtocol {
      * <p>
      * Use {@link Channel#remoteAddress()} to get the remote address of the client.
      *
-     * @param sender  - the player that sent the packet, NULL for early login/status packets.
-     * @param packet  - the packet being received.
+     * @param sender - the player that sent the packet, NULL for early login/status packets.
+     * @param packet - the packet being received.
      * @return The packet to recieve instead, or NULL to cancel.
      */
     public Object onPacketInAsync(Player sender, Object packet) {
@@ -337,7 +332,9 @@ public abstract class TinyProtocol1_8 implements AbstractTinyProtocol {
      * @param player - the player to inject.
      */
     public void injectPlayer(Player player) {
-        injectChannelInternal(getChannel(player)).player = player;
+        synchronized (this) {
+            injectChannelInternal(getChannel(player)).player = player;
+        }
     }
 
     /**
@@ -435,7 +432,7 @@ public abstract class TinyProtocol1_8 implements AbstractTinyProtocol {
     }
 
     /**
-     * Determine if the given player has been injected by TinyProtocol.
+     * Determine if the given player has been injected by TinyProtocol1_8.
      *
      * @param player - the player.
      * @return TRUE if it is, FALSE otherwise.
@@ -445,7 +442,7 @@ public abstract class TinyProtocol1_8 implements AbstractTinyProtocol {
     }
 
     /**
-     * Determine if the given channel has been injected by TinyProtocol.
+     * Determine if the given channel has been injected by TinyProtocol1_8.
      *
      * @param channel - the channel.
      * @return TRUE if it is, FALSE otherwise.
