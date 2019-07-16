@@ -9,6 +9,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.*;
 import java.util.concurrent.*;
+import java.util.stream.Stream;
 
 @Getter
 public class EventManager {
@@ -56,21 +57,21 @@ public class EventManager {
         });
     }
 
-
-    public boolean callEvent(AtlasEvent event) {
+    public void callEvent(AtlasEvent event) {
         if(!paused) {
-            Atlas.getInstance().getService().execute(() -> {
-                for (ListenerMethod lm : listenerMethods) {
-                    if(lm.getMethod().getParameterTypes().length != 1 || !lm.getMethod().getParameterTypes()[0].getName().equals(event.getClass().getName())) continue;
+            for (ListenerMethod lm : listenerMethods) {
+                if(lm.getMethod().getParameterTypes().length != 1 || !lm.getMethod().getParameterTypes()[0].getName().equals(event.getClass().getName())) continue;
 
-                    try {
-                        lm.getMethod().invoke(lm.getListener(), event);
-                    } catch (IllegalAccessException | InvocationTargetException e) {
-                        e.printStackTrace();
-                    }
+                try {
+                    lm.getMethod().invoke(lm.getListener(), event);
+                } catch (IllegalAccessException | InvocationTargetException e) {
+                    e.printStackTrace();
                 }
-            });
+            }
         }
-        return true;
+    }
+
+    public void callEventAsync(AtlasEvent event) {
+        Atlas.getInstance().getService().execute(() -> callEvent(event));
     }
 }

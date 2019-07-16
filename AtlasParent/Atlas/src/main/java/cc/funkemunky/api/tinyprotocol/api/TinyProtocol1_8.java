@@ -332,7 +332,9 @@ public abstract class TinyProtocol1_8 implements AbstractTinyProtocol {
      * @param player - the player to inject.
      */
     public void injectPlayer(Player player) {
-        injectChannelInternal(getChannel(player)).player = player;
+        synchronized (this) {
+            injectChannelInternal(getChannel(player)).player = player;
+        }
     }
 
     /**
