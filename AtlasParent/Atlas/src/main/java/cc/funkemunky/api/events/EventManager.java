@@ -13,7 +13,7 @@ import java.util.stream.Stream;
 
 @Getter
 public class EventManager {
-    private final SortedSet<ListenerMethod> listenerMethods = new TreeSet<>(Comparator.comparing(method -> method.getListenerPriority().getPriority(), Comparator.reverseOrder()));
+    private final SortedSet<ListenerMethod> listenerMethods = new ConcurrentSkipListSet<>(Comparator.comparing(method -> method.getListenerPriority().getPriority(), Comparator.reverseOrder()));
     private boolean paused = false;
 
     public void registerListener(Method method, AtlasListener listener, Plugin plugin) throws ListenParamaterException {
