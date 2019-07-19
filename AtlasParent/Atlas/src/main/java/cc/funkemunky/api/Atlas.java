@@ -4,6 +4,7 @@ import cc.funkemunky.api.bungee.BungeeManager;
 import cc.funkemunky.api.commands.FunkeCommandManager;
 import cc.funkemunky.api.commands.ancmd.CommandManager;
 import cc.funkemunky.api.commands.impl.AtlasCommand;
+import cc.funkemunky.api.config.Config;
 import cc.funkemunky.api.database.DatabaseManager;
 import cc.funkemunky.api.events.AtlasListener;
 import cc.funkemunky.api.events.EventManager;
@@ -50,6 +51,7 @@ public class Atlas extends JavaPlugin {
     private Updater updater;
     private BaseProfiler profile;
     private Metrics metrics;
+    private Config atlasConfig;
     private Carbon carbon;
     private TinyProtocolHandler tinyProtocolHandler;
     private int currentThread = 0;
@@ -80,7 +82,7 @@ public class Atlas extends JavaPlugin {
         consoleSender = Bukkit.getConsoleSender();
 
         MiscUtils.printToConsole(Color.Red + "Loading Atlas...");
-        saveDefaultConfig();
+        atlasConfig = new Config(this, "config.yml");
 
         MiscUtils.printToConsole(Color.Gray + "Firing up the thread turbines...");
         service = Executors.newFixedThreadPool(2);
@@ -168,6 +170,10 @@ public class Atlas extends JavaPlugin {
 
 
         MiscUtils.printToConsole(Color.Red + "Completed shutdown process.");
+    }
+
+    public Config getAtlasConfig() {
+        return atlasConfig;
     }
 
     private void initCarbon() {
@@ -280,14 +286,26 @@ public class Atlas extends JavaPlugin {
                         try {
                             field.setAccessible(true);
                             MiscUtils.printToConsole("&eFound " + field.getName() + " ConfigSetting (default=" + field.get(obj) + ").");
-                            if(plugin.getConfig().get(path) == null) {
-                                MiscUtils.printToConsole("&eValue not found in configuration! Setting default into config...");
-                                plugin.getConfig().set(path, field.get(obj));
-                                plugin.saveConfig();
-                            } else {
-                                field.set(obj, plugin.getConfig().get(path));
+                            if(plugin instanceof Atlas) {
+                                if(getAtlasConfig().get(path) == null) {
+                                    MiscUtils.printToConsole("&eValue not found in configuration! Setting default into atlasConfig...");
+                                    plugin.getConfig().set(path, field.get(obj));
+                                    plugin.saveConfig();
+                                } else {
+                                    field.set(obj, getAtlasConfig().get(path));
 
-                                MiscUtils.printToConsole("&eValue found in configuration! Set value to &a" + plugin.getConfig().get(path));
+                                    MiscUtils.printToConsole("&eValue found in configuration! Set value to &a" + plugin.getConfig().get(path));
+                                }
+                            } else {
+                                if(plugin.getConfig().get(path) == null) {
+                                    MiscUtils.printToConsole("&eValue not found in configuration! Setting default into atlasConfig...");
+                                    plugin.getConfig().set(path, field.get(obj));
+                                    plugin.saveConfig();
+                                } else {
+                                    field.set(obj, plugin.getConfig().get(path));
+
+                                    MiscUtils.printToConsole("&eValue found in configuration! Set value to &a" + plugin.getConfig().get(path));
+                                }
                             }
                         } catch (Exception e) {
                             e.printStackTrace();

@@ -80,12 +80,12 @@ public class Metrics {
         }
         this.plugin = plugin;
 
-        // Get the config file
+        // Get the atlasConfig file
         File bStatsFolder = new File(plugin.getDataFolder().getParentFile(), "bStats");
         File configFile = new File(bStatsFolder, "config.yml");
         YamlConfiguration config = YamlConfiguration.loadConfiguration(configFile);
 
-        // Check if the config file exists
+        // Check if the atlasConfig file exists
         if (!config.isSet("serverUuid")) {
 
             // Add default values

@@ -1,21 +1,21 @@
 package cc.funkemunky.api.bungee;
 
 import cc.funkemunky.api.Atlas;
+import cc.funkemunky.api.bungee.objects.BungeePlayer;
 import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.messaging.PluginMessageListener;
 
 import java.io.*;
-import java.util.Comparator;
-import java.util.SortedSet;
-import java.util.TreeSet;
+import java.util.*;
 
 @Getter
 public class BungeeManager implements PluginMessageListener {
     private String channelOut = "atlasdata:out", channelIn = "atlasdata:in";
     private SortedSet<BungeeObject> objects = new TreeSet<>(Comparator.comparing(BungeeObject::getTimeStamp, Comparator.reverseOrder()));
     private BungeeAPI bungeeAPI;
+    private Map<UUID, BungeePlayer> bungeePlayers = new HashMap<>();
 
     public BungeeManager() {
         Bukkit.getMessenger().registerOutgoingPluginChannel(Atlas.getInstance(), channelOut);
@@ -46,14 +46,25 @@ public class BungeeManager implements PluginMessageListener {
 
             String type = objectStream.readUTF();
 
-            if(type.equals("object")) {
-                Object object;
-                if((object = objectStream.readObject()) instanceof BungeeObject) {
-                    BungeeObject bObject = (BungeeObject) object;
+           switch(type) {
+               case "object": {
+                   Object object;
+                   if((object = objectStream.readObject()) instanceof BungeeObject) {
+                       BungeeObject bObject = (BungeeObject) object;
 
-                    objects.add(bObject);
-                }
-            }
+                       objects.add(bObject);
+                   }
+                   break;
+               }
+               case "playerUpdate": {
+                   BungeePlayer bPlayer = BungeePlayer.fromJson(objectStream.readUTF());
+
+                   if(bPlayer != null) {
+                       bungeePlayers.put(bPlayer.uuid, bPlayer);
+                   }
+                   break;
+               }
+           }
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }

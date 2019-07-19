@@ -38,7 +38,7 @@ public class ConfigUtils {
         return header + dump;
     }
 
-    private static String dump(YamlConfiguration config, Object data) {
+    private static String dump(YamlConfiguration atlasConfig, Object data) {
         List<Object> list = new ArrayList(1);
         list.add(data);
         return dumpAll(list.iterator());
@@ -71,18 +71,18 @@ public class ConfigUtils {
         }
     }
 
-    private static YamlConfigurationOptions options(FileConfiguration config) {
+    private static YamlConfigurationOptions options(FileConfiguration atlasConfig) {
         val method = ReflectionsUtil.getMethod(YamlConfiguration.class, "options");
-        return (YamlConfigurationOptions) ReflectionsUtil.getMethodValue(method, config);
+        return (YamlConfigurationOptions) ReflectionsUtil.getMethodValue(method, atlasConfig);
     }
 
-    protected String buildHeader(YamlConfiguration config) {
-        String header = this.options(config).header();
-        if (this.options(config).copyHeader()) {
-            Configuration def = config.getDefaults();
+    protected String buildHeader(YamlConfiguration atlasConfig) {
+        String header = this.options(atlasConfig).header();
+        if (this.options(atlasConfig).copyHeader()) {
+            Configuration def = atlasConfig.getDefaults();
             if (def != null && def instanceof FileConfiguration) {
                 FileConfiguration filedefaults = (FileConfiguration)def;
-                String defaultsHeader = buildHeader(config);
+                String defaultsHeader = buildHeader(atlasConfig);
                 if (defaultsHeader != null && defaultsHeader.length() > 0) {
                     return defaultsHeader;
                 }
