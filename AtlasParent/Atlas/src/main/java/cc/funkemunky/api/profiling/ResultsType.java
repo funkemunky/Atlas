@@ -1,5 +1,5 @@
 package cc.funkemunky.api.profiling;
 
 public enum ResultsType {
-    SAMPLES, TOTAL;
+    SAMPLES, TOTAL, AVERAGE;
 }

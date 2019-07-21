@@ -1,11 +1,12 @@
 package cc.funkemunky.api.utils.blockbox.boxes;
 
-import cc.funkemunky.api.utils.BlockUtils;
-import cc.funkemunky.api.utils.BoundingBox;
-import cc.funkemunky.api.utils.MathUtils;
-import cc.funkemunky.api.utils.ReflectionsUtil;
+import cc.funkemunky.api.Atlas;
+import cc.funkemunky.api.tinyprotocol.packet.types.WrappedEnumParticle;
+import cc.funkemunky.api.utils.*;
 import cc.funkemunky.api.utils.blockbox.BlockBox;
+import lombok.val;
 import net.minecraft.server.v1_8_R3.*;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -21,55 +22,52 @@ import java.util.Objects;
 public class BlockBox1_8_R3 implements BlockBox {
     @Override
     public List<BoundingBox> getCollidingBoxes(World world, BoundingBox box) {
-        BoundingBox collisionBox = box;
         List<AxisAlignedBB> aabbs = new ArrayList<>();
         List<BoundingBox> boxes = new ArrayList<>();
 
-        int minX = MathUtils.floor(box.minX);
-        int maxX = MathUtils.floor(box.maxX + 1);
-        int minY = MathUtils.floor(box.minY);
-        int maxY = MathUtils.floor(box.maxY + 1);
-        int minZ = MathUtils.floor(box.minZ);
-        int maxZ = MathUtils.floor(box.maxZ + 1);
+        double minX = box.minX;
+        double maxX = box.maxX;
+        double minY = box.minY;
+        double maxY = box.maxY;
+        double minZ = box.minZ;
+        double maxZ = box.maxZ;
 
-
-        for (int x = minX; x < maxX; x++) {
-            for (int z = minZ; z < maxZ; z++) {
-                for (int y = minY - 1; y < maxY; y++) {
+        for (double x = minX; x < maxX; x++) {
+            for (double z = minZ; z < maxZ; z++) {
+                for (double y = minY; y < maxY; y++) {
                     Location loc = new Location(world, x, y, z);
 
                     org.bukkit.block.Block block = BlockUtils.getBlock(loc);
-                    if (block != null && !block.getType().equals(Material.AIR)) {
-                        if (BlockUtils.collisionBoundingBoxes.containsKey(block.getType())) {
-                            aabbs.add((AxisAlignedBB) BlockUtils.collisionBoundingBoxes.get(block.getType()).add(block.getLocation().toVector()).toAxisAlignedBB());
+
+                    if(block == null || block.getType().equals(Material.AIR)) continue;
+
+                    if (BlockUtils.collisionBoundingBoxes.containsKey(block.getType())) {
+                        aabbs.add((AxisAlignedBB) BlockUtils.collisionBoundingBoxes.get(block.getType()).add(block.getLocation().toVector()).toAxisAlignedBB());
+                    } else {
+                        net.minecraft.server.v1_8_R3.BlockPosition pos = new BlockPosition(x, y, z);
+                        net.minecraft.server.v1_8_R3.World nmsWorld = ((CraftWorld) world).getHandle();
+                        net.minecraft.server.v1_8_R3.IBlockData nmsiBlockData = ((CraftWorld) world).getHandle().getType(pos);
+                        net.minecraft.server.v1_8_R3.Block nmsBlock = nmsiBlockData.getBlock();
+                        List<AxisAlignedBB> preBoxes = new ArrayList<>();
+
+                        nmsBlock.updateShape(nmsWorld, pos);
+                        nmsBlock.a(nmsWorld, pos, nmsiBlockData, (AxisAlignedBB) box.toAxisAlignedBB(), preBoxes, null);
+
+                        if (preBoxes.size() > 0) {
+                            aabbs.addAll(preBoxes);
                         } else {
-                            final int aX = x, aY = y, aZ = z;
-                            net.minecraft.server.v1_8_R3.BlockPosition pos = new BlockPosition(aX, aY, aZ);
-                            net.minecraft.server.v1_8_R3.World nmsWorld = ((CraftWorld) world).getHandle();
-                            net.minecraft.server.v1_8_R3.IBlockData nmsiBlockData = ((CraftWorld) world).getHandle().getType(pos);
-                            net.minecraft.server.v1_8_R3.Block nmsBlock = nmsiBlockData.getBlock();
-                            List<AxisAlignedBB> preBoxes = new ArrayList<>();
-
-                            nmsBlock.updateShape(nmsWorld, pos);
-                            nmsBlock.a(nmsWorld, pos, nmsiBlockData, (AxisAlignedBB) box.toAxisAlignedBB(), preBoxes, null);
-
-                            if (preBoxes.size() > 0) {
-                                aabbs.addAll(preBoxes);
-                            } else {
-                                boxes.add(new BoundingBox((float) nmsBlock.B(), (float) nmsBlock.D(), (float) nmsBlock.F(), (float) nmsBlock.C(), (float) nmsBlock.E(), (float) nmsBlock.G()).add(block.getLocation().toVector()));
-                            }
+                            boxes.add(new BoundingBox((float) nmsBlock.B(), (float) nmsBlock.D(), (float) nmsBlock.F(), (float) nmsBlock.C(), (float) nmsBlock.E(), (float) nmsBlock.G()).add(block.getLocation().toVector()));
                         }
-                        /*
-                        else {
-                            BoundingBox blockBox = new BoundingBox((float) nmsBlock.B(), (float) nmsBlock.D(), (float) nmsBlock.F(), (float) nmsBlock.C(), (float) nmsBlock.E(), (float) nmsBlock.G());
-                        }*/
-
                     }
                 }
             }
         }
 
-        aabbs.stream().filter(Objects::nonNull).forEach(aabb -> boxes.add(ReflectionsUtil.toBoundingBox(aabb)));
+        for (AxisAlignedBB aabb : aabbs) {
+            if(aabb == null) continue;
+
+            boxes.add(new BoundingBox((float)aabb.a, (float)aabb.b, (float)aabb.c, (float)aabb.d, (float)aabb.e, (float)aabb.f));
+        }
         return boxes;
     }
 
@@ -84,7 +82,7 @@ public class BlockBox1_8_R3 implements BlockBox {
 
         net.minecraft.server.v1_8_R3.World world = ((CraftWorld) loc.getWorld()).getHandle();
 
-        return !world.isClientSide && world.isLoaded(new BlockPosition(loc.getBlockX(), 0, loc.getBlockZ())) && world.getChunkAtWorldCoords(new BlockPosition(loc.getBlockX(), 0, loc.getBlockZ())).o();
+        return !world.isClientSide && world.isLoaded(new BlockPosition(loc.getBlockX(), 0, loc.getBlockZ()));
     }
 
     @Override

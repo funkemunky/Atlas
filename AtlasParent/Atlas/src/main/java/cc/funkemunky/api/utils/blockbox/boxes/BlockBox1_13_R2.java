@@ -25,24 +25,23 @@ public class BlockBox1_13_R2 implements BlockBox {
         List<AxisAlignedBB> aabbs = new ArrayList<>();
         List<BoundingBox> boxes = new ArrayList<>();
 
-        int minX = MathUtils.floor(box.minX);
-        int maxX = MathUtils.floor(box.maxX + 1);
-        int minY = MathUtils.floor(box.minY);
-        int maxY = MathUtils.floor(box.maxY + 1);
-        int minZ = MathUtils.floor(box.minZ);
-        int maxZ = MathUtils.floor(box.maxZ + 1);
+        double minX = box.minX;
+        double maxX = box.maxX;
+        double minY = box.minY;
+        double maxY = box.maxY;
+        double minZ = box.minZ;
+        double maxZ = box.maxZ;
 
 
-        for (int x = minX; x < maxX; x++) {
-            for (int z = minZ; z < maxZ; z++) {
-                for (int y = minY; y < maxY; y++) {
+        for (double x = minX; x < maxX; x++) {
+            for (double z = minZ; z < maxZ; z++) {
+                for (double y = minY; y < maxY; y++) {
                     org.bukkit.block.Block block = BlockUtils.getBlock(new Location(world, x, y, z));
                     if (!block.getType().equals(Material.AIR)) {
                         if (BlockUtils.collisionBoundingBoxes.containsKey(block.getType())) {
                             aabbs.add((AxisAlignedBB) BlockUtils.collisionBoundingBoxes.get(block.getType()).add(block.getLocation().toVector()).toAxisAlignedBB());
                         } else {
-                            final int aX = x, aY = y, aZ = z;
-                            net.minecraft.server.v1_13_R2.BlockPosition pos = new net.minecraft.server.v1_13_R2.BlockPosition(aX, aY, aZ);
+                            net.minecraft.server.v1_13_R2.BlockPosition pos = new net.minecraft.server.v1_13_R2.BlockPosition(x, y, z);
                             net.minecraft.server.v1_13_R2.World nmsWorld = ((org.bukkit.craftbukkit.v1_13_R2.CraftWorld) world).getHandle();
                             net.minecraft.server.v1_13_R2.IBlockData nmsiBlockData = ((org.bukkit.craftbukkit.v1_13_R2.CraftWorld) world).getHandle().getType(pos);
                             net.minecraft.server.v1_13_R2.Block nmsBlock = nmsiBlockData.getBlock();
@@ -82,7 +81,11 @@ public class BlockBox1_13_R2 implements BlockBox {
             }
         }
 
-        aabbs.stream().filter(Objects::nonNull).forEach(aabb -> boxes.add(ReflectionsUtil.toBoundingBox(aabb)));
+        for (AxisAlignedBB aabb : aabbs) {
+            if(aabb == null) continue;
+
+            boxes.add(new BoundingBox((float)aabb.minX, (float)aabb.minY, (float)aabb.minZ, (float)aabb.maxX, (float)aabb.maxY, (float)aabb.maxZ));
+        }
         return boxes;
     }
 

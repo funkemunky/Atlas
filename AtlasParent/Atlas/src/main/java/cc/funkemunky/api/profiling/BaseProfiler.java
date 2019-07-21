@@ -1,6 +1,8 @@
 package cc.funkemunky.api.profiling;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -10,6 +12,7 @@ public class BaseProfiler implements Profiler {
     public Map<String, Long> stddev = new HashMap<>();
     public Map<String, Long> total = new HashMap<>();
     public Map<String, Long> samples = new HashMap<>();
+    public Map<String, List<Long>> samplesTotal = new HashMap<>();
     public long lastSample = 0;
     public int totalCalls = 0;
 
@@ -45,7 +48,7 @@ public class BaseProfiler implements Profiler {
 
     @Override
     public Map<String, Double> results(ResultsType type) {
-        if(type.equals(ResultsType.TOTAL)) {
+        /*if(type.equals(ResultsType.TOTAL)) {
             return total.keySet().parallelStream().collect(Collectors.toMap(key -> key, key -> {
                 long totalMS = total.get(key);
                 int totalCalls = calls.get(key);
@@ -53,7 +56,29 @@ public class BaseProfiler implements Profiler {
             }));
         } else {
             return samples.keySet().parallelStream().collect(Collectors.toMap(key -> key, key -> samples.get(key) / 1000000D));
+        }*/
+        Map<String, Double> toReturn = new HashMap<>();
+        switch(type) {
+            case TOTAL: {
+                for (String key : total.keySet()) {
+                    toReturn.put(key, total.get(key) / (double) calls.get(key));
+                }
+                break;
+            }
+            case AVERAGE: {
+                for (String key : samplesTotal.keySet()) {
+                    toReturn.put(key, samplesTotal.get(key).stream().mapToLong(val -> val).average().orElse(0));
+                }
+                break;
+            }
+            case SAMPLES: {
+                for (String key : samples.keySet()) {
+                    toReturn.put(key, (double)samples.get(key));
+                }
+                break;
+            }
         }
+        return toReturn;
     }
 
     @Override
@@ -67,6 +92,11 @@ public class BaseProfiler implements Profiler {
         samples.put(name, time);
         stddev.put(name, Math.abs(sample - time));
 
+        List<Long> samplesTotal = this.samplesTotal.getOrDefault(name, new ArrayList<>());
+
+        samplesTotal.add(time);
+        this.samplesTotal.put(name, samplesTotal);
+
         total.put(name, lastTotal + time);
         lastSample = System.currentTimeMillis();
     }
@@ -78,8 +108,12 @@ public class BaseProfiler implements Profiler {
         long lastTotal = total.getOrDefault(name, time);
         long sample = samples.getOrDefault(name, time);
         samples.put(name, time);
-
         stddev.put(name, Math.abs(sample - time));
+
+        List<Long> samplesTotal = this.samplesTotal.getOrDefault(name, new ArrayList<>());
+
+        samplesTotal.add(time);
+        this.samplesTotal.put(name, samplesTotal);
 
         total.put(name, lastTotal + time);
         lastSample = System.currentTimeMillis();

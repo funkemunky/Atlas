@@ -100,9 +100,9 @@ public class BoundingBox {
         int maxZ = MathUtils.floor(this.maxZ + 1);
 
 
-        for (int x = minX; x < maxX; x++) {
-            for (int z = minZ; z < maxZ; z++) {
-                for (int y = minY - 1; y < maxY; y++) {
+        for (double x = minX; x < maxX; x++) {
+            for (double z = minZ; z < maxZ; z++) {
+                for (double y = minY; y < maxY; y++) {
                     Location loc = new Location(player.getWorld(), x, y, z);
 
                     if (Atlas.getInstance().getBlockBoxManager().getBlockBox().isChunkLoaded(loc)) {

@@ -6,7 +6,7 @@
 
     <parent>
         <groupId>cc.funkemunky.utils</groupId>
-        <version>1.3.8</version>
+        <version>1.4</version>
         <artifactId>atlas-parent</artifactId>
     </parent>
 
@@ -175,12 +175,6 @@
             <groupId>org.github.spigot</groupId>
             <artifactId>1.13</artifactId>
             <version>1.13</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.github.paperspigot</groupId>
-            <artifactId>1.13.2</artifactId>
-            <version>1.13.2</version>
             <scope>provided</scope>
         </dependency>
         <dependency>

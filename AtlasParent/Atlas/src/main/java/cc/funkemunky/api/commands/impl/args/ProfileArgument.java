@@ -3,10 +3,12 @@ package cc.funkemunky.api.commands.impl.args;
 import cc.funkemunky.api.Atlas;
 import cc.funkemunky.api.commands.FunkeArgument;
 import cc.funkemunky.api.commands.FunkeCommand;
+import cc.funkemunky.api.profiling.ResultsType;
 import cc.funkemunky.api.utils.Color;
 import cc.funkemunky.api.utils.MathUtils;
 import cc.funkemunky.api.utils.MiscUtils;
 import cc.funkemunky.api.utils.Pastebin;
+import lombok.val;
 import org.apache.commons.lang.time.DateFormatUtils;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -27,39 +29,43 @@ public class ProfileArgument extends FunkeArgument {
     @Override
     public void onArgument(CommandSender sender, Command cmd, String[] args) {
         if(args.length > 1) {
-            if(args[1].equalsIgnoreCase("reset")) {
-                Atlas.getInstance().getProfile().reset();
-            } else {
-                makePaste(sender);
+            switch(args[1].toLowerCase()) {
+                case "reset": {
+                    Atlas.getInstance().getProfile().reset();
+                    break;
+                }
+                case "average":
+                case "avg": {
+                    makePaste(sender, ResultsType.AVERAGE);
+                    break;
+                }
+                case "samples":
+                case "sample": {
+                    makePaste(sender, ResultsType.SAMPLES);
+                    break;
+                }
+                default: {
+                    makePaste(sender, ResultsType.TOTAL);
+                    break;
+                }
             }
         } else {
-           makePaste(sender);
+           makePaste(sender, ResultsType.TOTAL);
         }
     }
 
-    private void makePaste(CommandSender sender) {
+    private void makePaste(CommandSender sender, ResultsType type) {
         List<String> body = new ArrayList<>();
         body.add(MiscUtils.lineNoStrike());
         float totalPCT = 0;
-        long totalTime = MathUtils.elapsed(Atlas.getInstance().getProfileStart());
-        for (String string : Atlas.getInstance().getProfile().total.keySet()) {
-            body.add(string);
-            double stringTotal = TimeUnit.NANOSECONDS.toMillis(Atlas.getInstance().getProfile().total.get(string));
-            int calls = Atlas.getInstance().getProfile().calls.get(string);
-            double pct = stringTotal / totalTime;
-            body.add("Latency: " + stringTotal / calls + "ms");
-            body.add("Calls: " + calls);
-            body.add("STD: " + Atlas.getInstance().getProfile().stddev.get(string));
-            body.add("PCT Usage: " + MathUtils.round(pct, 8));
-            body.add("PCT Lag:" + stringTotal / calls);
-            totalPCT += (pct);
-        }
-        body.add("Total PCT: " + MathUtils.round(totalPCT, 4) + "%");
-        body.add("Total Time: " + totalTime + "ms");
-        body.add("Total Calls: " + Atlas.getInstance().getProfile().totalCalls);
-        body.add("PCT Lag: " + totalTime / Atlas.getInstance().getProfile().totalCalls);
-        body.add(MiscUtils.lineNoStrike());
+        val results = Atlas.getInstance().getProfile().results(type);
 
+        for (String key : results.keySet()) {
+            //Converting nanoseconds to millis to be more readable.
+            double amount = results.get(key) / 1000000D;
+
+            body.add(key + ": " + amount + "ms");
+        }
         StringBuilder builder = new StringBuilder();
         for (String aBody : body) {
             builder.append(aBody).append(";");
