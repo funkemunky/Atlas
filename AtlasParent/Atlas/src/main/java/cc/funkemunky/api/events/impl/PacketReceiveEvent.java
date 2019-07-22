@@ -7,12 +7,10 @@ import lombok.Setter;
 import org.bukkit.entity.Player;
 
 @Getter
-public class PacketReceiveEvent extends AtlasEvent implements Cancellable {
+public class PacketReceiveEvent extends AtlasEvent {
     private Player player;
     @Setter
     private Object packet;
-    @Setter
-    private boolean cancelled;
     private String type;
     private long timeStamp;
 

@@ -3,70 +3,33 @@ package cc.funkemunky.api.tinyprotocol.api;
 import cc.funkemunky.api.Atlas;
 import cc.funkemunky.api.events.impl.PacketReceiveEvent;
 import cc.funkemunky.api.events.impl.PacketSendEvent;
+import cc.funkemunky.api.tinyprotocol.reflection.Reflection;
+import cc.funkemunky.api.utils.ReflectionsUtil;
 import lombok.Getter;
+import lombok.val;
 import org.bukkit.entity.Player;
 
+import java.lang.reflect.InvocationTargetException;
+
 public class TinyProtocolHandler {
-    @Getter
-    private static AbstractTinyProtocol instance;
 
     public static boolean enabled = true;
+    private static Class<?> customConnection;
 
     public TinyProtocolHandler() {
-        TinyProtocolHandler self = this;
-        // 1.8+ and 1.7 NMS have different class paths for their libraries used. This is why we have to separate the two.
-        // These feed the packets asynchronously, before Minecraft processes it, into our own methods to process and be used as an API.
-        instance = ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.V1_8) ? new TinyProtocol1_7(Atlas.getInstance()) {
-            @Override
-            public Object onPacketOutAsync(Player receiver, Object packet) {
-                if(enabled) {
-                    return self.onPacketOutAsync(receiver, packet);
-                } else {
-                    return packet;
-                }
-            }
-
-            @Override
-            public Object onPacketInAsync(Player sender, Object packet) {
-                if(enabled) {
-                    return self.onPacketInAsync(sender, packet);
-                } else {
-                    return packet;
-                }
-            }
-        } : new TinyProtocol1_8(Atlas.getInstance()) {
-            @Override
-            public Object onPacketOutAsync(Player receiver, Object packet) {
-                if(enabled) {
-                    return self.onPacketOutAsync(receiver, packet);
-                } else {
-                    return packet;
-                }
-            }
-
-            @Override
-            public Object onPacketInAsync(Player sender, Object packet) {
-                if(enabled) {
-                    return self.onPacketInAsync(sender, packet);
-                } else {
-                    return packet;
-                }
-            }
-        };
+        customConnection = Reflection.getClass("cc.funkemunky.api.tinyprotocol.api.impl." + ProtocolVersion.getGameVersion().getServerVersion() + ".PlayerConnection");
     }
 
     // Purely for making the code cleaner
     public static void sendPacket(Player player, Object packet) {
-        instance.sendPacket(player, packet);
-    }
+        Object playerConnection = getPlayerConnection(player);
 
-    public static int getProtocolVersion(Player player) {
-        return instance.getProtocolVersion(player);
+        Reflection.getMethod(customConnection, "sendPacket", ReflectionsUtil.packet, boolean.class).invoke(playerConnection, packet, false);
     }
 
     private boolean didPosition = false;
 
-    public Object onPacketOutAsync(Player sender, Object packet) {
+    public void onPacketOutAsync(Player sender, Object packet) {
         String name = packet.getClass().getName();
         int index = name.lastIndexOf(".");
         String packetName = name.substring(index + 1);
@@ -76,11 +39,9 @@ public class TinyProtocolHandler {
         //EventManager.callEvent(new cc.funkemunky.api.event.custom.PacketSendEvent(sender, packet, packetName));
 
         Atlas.getInstance().getEventManager().callEvent(event);
-
-        return !event.isCancelled() ? event.getPacket() : null;
     }
 
-    public Object onPacketInAsync(Player sender, Object packet) {
+    public void onPacketInAsync(Player sender, Object packet) {
         String name = packet.getClass().getName();
         int index = name.lastIndexOf(".");
         String packetName = name.substring(index + 1).replace("PacketPlayInUseItem", "PacketPlayInBlockPlace")
@@ -93,8 +54,26 @@ public class TinyProtocolHandler {
         //EventManager.callEvent(new cc.funkemunky.api.event.custom.PacketReceiveEvent(sender, packet, packetName));
 
         Atlas.getInstance().getEventManager().callEvent(event);
+    }
 
-        return !event.isCancelled() ? event.getPacket() : null;
+    public void injectPlayer(Player player) {
+        // cc.funkemunky.api.tinyprotocol.api.impl.v1_7_R4.PlayerConnection
+        Object entityPlayer = ReflectionsUtil.getEntityPlayer(player);
+        val playerConnectionField = Reflection.getField(ReflectionsUtil.EntityPlayer, ReflectionsUtil.playerConnection, 0);
+        val playerConnection = playerConnectionField.get(entityPlayer);
+        val networkManager = Reflection.getField(ReflectionsUtil.playerConnection, ReflectionsUtil.networkManager, 0).get(playerConnection);
+
+        try {
+            playerConnectionField.set(entityPlayer, customConnection.getConstructor(ReflectionsUtil.minecraftServer, ReflectionsUtil.networkManager, ReflectionsUtil.EntityPlayer).newInstance(ReflectionsUtil.getMinecraftServer(), networkManager, entityPlayer));
+        } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private static Object getPlayerConnection(Player player) {
+        Object entityPlayer = ReflectionsUtil.getEntityPlayer(player);
+        val playerConnectionField = Reflection.getField(ReflectionsUtil.EntityPlayer, ReflectionsUtil.playerConnection, 0);
+        return playerConnectionField.get(entityPlayer);
     }
 }
 

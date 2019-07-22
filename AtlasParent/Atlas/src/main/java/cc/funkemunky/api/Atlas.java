@@ -27,6 +27,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.craftbukkit.libs.jline.internal.Nullable;
+import org.bukkit.entity.Player;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -145,7 +146,7 @@ public class Atlas extends JavaPlugin {
 
         bungeeManager = new BungeeManager();
 
-        //Bukkit.getOnlinePlayers().forEach(player -> channelInjector.addChannel(player));
+        for (Player player : Bukkit.getOnlinePlayers()) tinyProtocolHandler.injectPlayer(player);
 
         MiscUtils.printToConsole(Color.Green + "Successfully loaded Atlas and its utilities!");
         done = true;
@@ -155,8 +156,6 @@ public class Atlas extends JavaPlugin {
         MiscUtils.printToConsole(Color.Gray + "Unloading all Atlas hooks...");
         HandlerList.unregisterAll(this);
         Bukkit.getScheduler().cancelTasks(this);
-
-        //Bukkit.getOnlinePlayers().forEach(player -> channelInjector.removeChannel(player));
 
         eventManager.clearAllRegistered();
         getCommandManager().unregisterCommands();
