@@ -170,7 +170,7 @@ public abstract class TinyProtocol1_8 implements AbstractTinyProtocol {
 
                 // Don't inject players that have been explicitly uninjected
                 if (!uninjectedChannels.contains(channel)) {
-                    Atlas.getInstance().getService().execute(() -> injectPlayer(e.getPlayer()));
+                    injectPlayer(e.getPlayer());
                 }
             }
 

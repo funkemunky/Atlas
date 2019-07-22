@@ -58,7 +58,7 @@ public class EventManager {
     }
 
     public void callEvent(AtlasEvent event) {
-        if(!paused) {
+        if(!paused && event != null) {
             Atlas.getInstance().getProfile().start("event:" + event.getClass().getSimpleName());
             for (ListenerMethod lm : listenerMethods) {
                 if(lm.getMethod().getParameterTypes().length != 1 || !lm.getMethod().getParameterTypes()[0].getName().equals(event.getClass().getName())) continue;
