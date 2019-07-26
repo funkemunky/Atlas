@@ -27,12 +27,17 @@ public class ReflectionsUtil {
     public static Class<?> blockPosition = null;
     private static String version = Bukkit.getServer().getClass().getPackage().getName().replace(".", ",").split(",")[3];
     public static Class<?> EntityPlayer = getNMSClass("EntityPlayer");
-    private static Class<?> Entity = getNMSClass("Entity");
+    public static Class<?> Entity = getNMSClass("Entity");
     public static Class<?> CraftPlayer = getCBClass("entity.CraftPlayer");
-    private static Class<?> CraftEntity = getCBClass("entity.CraftEntity");
-    private static Class<?> CraftWorld = getCBClass("CraftWorld");
-    private static Class<?> World = getNMSClass("World");
-    private static Class<?> worldServer = getNMSClass("WorldServer");
+    public static Class<?> CraftEntity = getCBClass("entity.CraftEntity");
+    public static Class<?> CraftWorld = getCBClass("CraftWorld");
+    private static Class<?> craftServer = getCBClass("CraftServer");
+    public static Class<?> World = getNMSClass("World");
+    public static Class<?> worldServer = getNMSClass("WorldServer");
+    public static Class<?> playerConnection = getNMSClass("PlayerConnection");
+    public static Class<?> networkManager = getNMSClass("NetworkManager");
+    public static Class<?> minecraftServer = getNMSClass("MinecraftServer");
+    public static Class<?> packet = getNMSClass("Packet");
     public static Class<?> iBlockData = null;
     public static Class<?> iBlockAccess = null;
     private static Class<?> vanillaBlock = getNMSClass("Block");
@@ -85,7 +90,7 @@ public class ReflectionsUtil {
     }
 
     public static Object getMinecraftServer() {
-        return getMethodValue(getMethod(getCBClass("MinecraftServer"), "getServer"), Bukkit.getServer());
+        return getMethodValue(getMethod(craftServer, "getServer"), Bukkit.getServer());
     }
 
     private static Vector getBoxMax(Object box) {

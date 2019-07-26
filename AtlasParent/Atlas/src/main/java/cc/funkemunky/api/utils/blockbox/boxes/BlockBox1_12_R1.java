@@ -2,8 +2,6 @@ package cc.funkemunky.api.utils.blockbox.boxes;
 
 import cc.funkemunky.api.utils.BlockUtils;
 import cc.funkemunky.api.utils.BoundingBox;
-import cc.funkemunky.api.utils.MathUtils;
-import cc.funkemunky.api.utils.ReflectionsUtil;
 import cc.funkemunky.api.utils.blockbox.BlockBox;
 import lombok.val;
 import net.minecraft.server.v1_12_R1.*;
@@ -17,7 +15,6 @@ import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 public class BlockBox1_12_R1 implements BlockBox {
     @Override

@@ -5,7 +5,6 @@ import cc.funkemunky.api.commands.FunkeArgument;
 import cc.funkemunky.api.commands.FunkeCommand;
 import cc.funkemunky.api.profiling.ResultsType;
 import cc.funkemunky.api.utils.Color;
-import cc.funkemunky.api.utils.MathUtils;
 import cc.funkemunky.api.utils.MiscUtils;
 import cc.funkemunky.api.utils.Pastebin;
 import lombok.val;
@@ -17,7 +16,6 @@ import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.TimeZone;
-import java.util.concurrent.TimeUnit;
 
 public class ProfileArgument extends FunkeArgument {
     public ProfileArgument(FunkeCommand parent, String name, String display, String description, String... permission) {

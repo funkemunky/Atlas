@@ -1,12 +1,9 @@
 package cc.funkemunky.api.utils.blockbox.boxes;
 
-import cc.funkemunky.api.Atlas;
-import cc.funkemunky.api.tinyprotocol.packet.types.WrappedEnumParticle;
-import cc.funkemunky.api.utils.*;
+import cc.funkemunky.api.utils.BlockUtils;
+import cc.funkemunky.api.utils.BoundingBox;
 import cc.funkemunky.api.utils.blockbox.BlockBox;
-import lombok.val;
 import net.minecraft.server.v1_8_R3.*;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -17,7 +14,6 @@ import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 public class BlockBox1_8_R3 implements BlockBox {
     @Override

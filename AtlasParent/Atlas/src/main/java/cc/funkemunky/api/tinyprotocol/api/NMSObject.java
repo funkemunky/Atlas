@@ -153,6 +153,7 @@ public abstract class NMSObject {
         public static final String GAMEPROFILE = (Reflection.VERSION.startsWith("v1_7") ? "net.minecraft.util." : "") + "com.mojang.authlib.GameProfile";
         public static final String PROPERTYMAP = (Reflection.VERSION.startsWith("v1_7") ? "net.minecraft.util." : "") + "com.mojang.authlib.PropertyMap";
         public static final String VEC3D = Reflection.NMS_PREFIX + ".Vec3D";
+        public static final String PLAYERINFODATA = Reflection.NMS_PREFIX + Server.PLAYER_INFO + ".PlayerInfoData";
     }
 
     public static class Client {
@@ -207,5 +208,6 @@ public abstract class NMSObject {
         public static final String ABILITIES = SERVER + "Abilities";
         public static final String OPEN_WINDOW = SERVER + "OpenWindow";
         public static final String HELD_ITEM = SERVER + "HeldItemSlot";
+        public static final String PLAYER_INFO = SERVER + "PlayerInfo";
     }
 }

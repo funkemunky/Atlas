@@ -27,13 +27,16 @@ import org.bukkit.Bukkit;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.craftbukkit.libs.jline.internal.Nullable;
+import org.bukkit.entity.Player;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.Comparator;
+import java.util.UUID;
 import java.util.concurrent.*;
 
 @Getter
@@ -91,10 +94,6 @@ public class Atlas extends JavaPlugin {
         eventManager = new EventManager();
         carbon = new Carbon();
 
-        MiscUtils.printToConsole(Color.Gray + "Starting scanner...");
-
-        initializeScanner(getClass(), this, true, true);
-
         pluginLoaderHandler = new PluginLoaderHandler();
         tinyProtocolHandler =  new TinyProtocolHandler();
         databaseManager = new DatabaseManager();
@@ -115,6 +114,10 @@ public class Atlas extends JavaPlugin {
 
         runTasks();
         initCarbon();
+
+        MiscUtils.printToConsole(Color.Gray + "Starting scanner...");
+
+        initializeScanner(getClass(), this, true, true);
 
         funkeCommandManager.addCommand(this, new AtlasCommand());
 
@@ -145,7 +148,7 @@ public class Atlas extends JavaPlugin {
 
         bungeeManager = new BungeeManager();
 
-        //Bukkit.getOnlinePlayers().forEach(player -> channelInjector.addChannel(player));
+        Bukkit.getOnlinePlayers().forEach(player -> TinyProtocolHandler.getInstance().addChannel(player));
 
         MiscUtils.printToConsole(Color.Green + "Successfully loaded Atlas and its utilities!");
         done = true;
@@ -156,7 +159,7 @@ public class Atlas extends JavaPlugin {
         HandlerList.unregisterAll(this);
         Bukkit.getScheduler().cancelTasks(this);
 
-        //Bukkit.getOnlinePlayers().forEach(player -> channelInjector.removeChannel(player));
+        Bukkit.getOnlinePlayers().forEach(player -> TinyProtocolHandler.getInstance().removeChannel(player));
 
         eventManager.clearAllRegistered();
         getCommandManager().unregisterCommands();

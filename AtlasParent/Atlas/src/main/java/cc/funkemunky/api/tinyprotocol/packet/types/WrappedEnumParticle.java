@@ -1,6 +1,6 @@
 package cc.funkemunky.api.tinyprotocol.packet.types;
 
-import cc.funkemunky.api.utils.ReflectionsUtil;
+import cc.funkemunky.api.tinyprotocol.api.packets.reflections.Reflections;
 import lombok.Getter;
 
 import java.util.Arrays;
@@ -73,6 +73,6 @@ public enum WrappedEnumParticle {
     }
 
     public Object toNMS() {
-        return ReflectionsUtil.getEnum(ReflectionsUtil.getNMSClass("EnumParticle"), getByName(name).toString());
+        return Reflections.getNMSClass("EnumParticle").getEnum(getByName(name).name());
     }
 }
