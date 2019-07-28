@@ -12,8 +12,13 @@ import cc.funkemunky.api.tinyprotocol.api.packets.reflections.Reflections;
 import cc.funkemunky.api.tinyprotocol.reflection.FieldAccessor;
 import cc.funkemunky.api.tinyprotocol.reflection.Reflection;
 import cc.funkemunky.api.utils.ReflectionsUtil;
+import lombok.val;
+import net.minecraft.util.com.google.common.collect.MapMaker;
 import net.minecraft.util.com.mojang.authlib.GameProfile;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+
+import java.util.Map;
 
 public class ChannelHandler1_7 extends ChannelHandlerAbstract {
 
@@ -22,6 +27,7 @@ public class ChannelHandler1_7 extends ChannelHandlerAbstract {
     private static final FieldAccessor<GameProfile> getGameProfile = Reflection.getField(PACKET_LOGIN_IN_START, GameProfile.class, 0);
     private static final FieldAccessor<Integer> protocolId = Reflection.getField(PACKET_SET_PROTOCOL, int.class, 0);
     private static final FieldAccessor<Enum> protocolType = Reflection.getField(PACKET_SET_PROTOCOL, Enum.class, 0);
+    protected static Map<Player, Integer> protocolLookup = new MapMaker().weakKeys().makeMap();
 
     @Override public void addChannel(Player player) {
         net.minecraft.util.io.netty.channel.Channel channel = getChannel(player);
@@ -62,14 +68,17 @@ public class ChannelHandler1_7 extends ChannelHandlerAbstract {
         }
 
         @Override public void channelRead(net.minecraft.util.io.netty.channel.ChannelHandlerContext ctx, Object msg) throws Exception {
+            if (PACKET_SET_PROTOCOL.isInstance(msg)) {
+                String protocol = protocolType.get(msg).name();
+                if (protocol.equalsIgnoreCase("LOGIN")) {
+                    val id = protocolId.get(msg);
+                    Bukkit.broadcastMessage(player.getName() + ": " + id);
+                    protocolLookup.put(player, id);
+                }
+                Bukkit.broadcastMessage("shit");
+            }
             Object packet = channelHandlerAbstract.run(this.player, msg);
             if (packet != null) {
-                if (PACKET_SET_PROTOCOL.isInstance(msg)) {
-                    String protocol = protocolType.get(msg).name();
-                    if (protocol.equalsIgnoreCase("LOGIN")) {
-                        protocolLookup.put(player, protocolId.get(msg));
-                    }
-                }
                 super.channelRead(ctx, packet);
             }
         }

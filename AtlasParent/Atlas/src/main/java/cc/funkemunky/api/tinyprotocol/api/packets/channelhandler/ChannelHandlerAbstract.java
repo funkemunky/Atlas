@@ -31,8 +31,6 @@ public abstract class ChannelHandlerAbstract {
     final String handlerKey;
     final String playerKey;
 
-    protected static Map<Player, Integer> protocolLookup = new WeakHashMap<>();
-
     ChannelHandlerAbstract() {
         this.addChannelHandlerExecutor = Executors.newSingleThreadExecutor();
         this.removeChannelHandlerExecutor = Executors.newSingleThreadExecutor();

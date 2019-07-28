@@ -1,9 +1,13 @@
 package cc.funkemunky.api.profiling;
 
+import cc.funkemunky.api.Atlas;
+import org.bukkit.scheduler.BukkitRunnable;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 public class BaseProfiler implements Profiler {
     public Map<String, Long> timings = new HashMap<>();
@@ -11,9 +15,28 @@ public class BaseProfiler implements Profiler {
     public Map<String, Long> stddev = new HashMap<>();
     public Map<String, Long> total = new HashMap<>();
     public Map<String, Long> samples = new HashMap<>();
+    public Map<String, Long> averageSamples = new HashMap<>();
+    public Map<String, List<Long>> samplesPerTick = new HashMap<>();
     public Map<String, List<Long>> samplesTotal = new HashMap<>();
     public long lastSample = 0;
     public int totalCalls = 0;
+
+    public BaseProfiler() {
+        Atlas.getInstance().getSchedular().scheduleAtFixedRate(new Runnable() {
+            @Override
+            public void run() {
+                for (String name : samplesPerTick.keySet()) {
+
+                    long avg = new ArrayList<>(samplesPerTick.getOrDefault(name, new ArrayList<>())).stream()
+                            .mapToLong(val -> val)
+                            .sum();
+
+                    averageSamples.put(name, avg);
+                    samplesPerTick.put(name, new ArrayList<>());
+                }
+            }
+        }, 50L, 50L, TimeUnit.MILLISECONDS);
+    }
 
     @Override
     public void start() {
@@ -76,6 +99,12 @@ public class BaseProfiler implements Profiler {
                 }
                 break;
             }
+            case TICK: {
+                for(String key : averageSamples.keySet()) {
+                    toReturn.put(key, (double)averageSamples.get(key));
+                }
+                break;
+            }
         }
         return toReturn;
     }
@@ -89,6 +118,11 @@ public class BaseProfiler implements Profiler {
         long sample = samples.getOrDefault(name, time);
 
         samples.put(name, time);
+        List<Long> sList = this.samplesPerTick.getOrDefault(name, new ArrayList<>());
+
+        sList.add(time);
+
+        samplesPerTick.put(name, sList);
         stddev.put(name, Math.abs(sample - time));
 
         List<Long> samplesTotal = this.samplesTotal.getOrDefault(name, new ArrayList<>());
@@ -107,6 +141,12 @@ public class BaseProfiler implements Profiler {
         long lastTotal = total.getOrDefault(name, time);
         long sample = samples.getOrDefault(name, time);
         samples.put(name, time);
+        List<Long> sList = this.samplesPerTick.getOrDefault(name, new ArrayList<>());
+
+        sList.add(time);
+
+        samplesPerTick.put(name, sList);
+
         stddev.put(name, Math.abs(sample - time));
 
         List<Long> samplesTotal = this.samplesTotal.getOrDefault(name, new ArrayList<>());

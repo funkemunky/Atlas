@@ -12,8 +12,12 @@ import cc.funkemunky.api.tinyprotocol.api.packets.reflections.Reflections;
 import cc.funkemunky.api.tinyprotocol.reflection.FieldAccessor;
 import cc.funkemunky.api.tinyprotocol.reflection.Reflection;
 import cc.funkemunky.api.utils.ReflectionsUtil;
+import com.google.common.collect.MapMaker;
 import com.mojang.authlib.GameProfile;
 import org.bukkit.entity.Player;
+
+import java.util.Map;
+import java.util.WeakHashMap;
 
 public class ChannelHandler1_8 extends ChannelHandlerAbstract {
 
@@ -22,6 +26,7 @@ public class ChannelHandler1_8 extends ChannelHandlerAbstract {
     private static final FieldAccessor<GameProfile> getGameProfile = Reflection.getField(PACKET_LOGIN_IN_START, GameProfile.class, 0);
     private static final FieldAccessor<Integer> protocolId = Reflection.getField(PACKET_SET_PROTOCOL, int.class, 0);
     private static final FieldAccessor<Enum> protocolType = Reflection.getField(PACKET_SET_PROTOCOL, Enum.class, 0);
+    protected static Map<Player, Integer> protocolLookup = new MapMaker().weakKeys().makeMap();
 
     @Override public void addChannel(Player player) {
         io.netty.channel.Channel channel = getChannel(player);

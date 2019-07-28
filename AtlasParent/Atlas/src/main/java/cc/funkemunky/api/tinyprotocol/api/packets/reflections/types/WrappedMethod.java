@@ -21,7 +21,7 @@ public class WrappedMethod {
     private final Method method;
     private final Set<Class> parameters;
 
-    WrappedMethod(WrappedClass parent, Method method) {
+    public WrappedMethod(WrappedClass parent, Method method) {
         this.parent = parent;
         this.method = method;
         this.parameters = Sets.newHashSet(method.getParameterTypes());

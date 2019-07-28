@@ -15,6 +15,7 @@ import cc.funkemunky.api.tinyprotocol.api.packets.reflections.Reflections;
 import lombok.Getter;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
@@ -35,7 +36,7 @@ public class ChannelInjector implements Listener {
         this.channel.removeChannel(player);
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.LOWEST)
     public void onJoin(PlayerJoinEvent event) {
         addChannel(event.getPlayer());
     }

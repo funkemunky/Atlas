@@ -19,7 +19,7 @@ public class WrappedField {
     private final Field field;
     private final Class<?> type;
 
-    WrappedField(WrappedClass parent, Field field) {
+    public WrappedField(WrappedClass parent, Field field) {
         this.parent = parent;
         this.field = field;
         this.type = field.getType();

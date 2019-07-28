@@ -37,6 +37,10 @@ public class ProfileArgument extends FunkeArgument {
                     makePaste(sender, ResultsType.AVERAGE);
                     break;
                 }
+                case "tick": {
+                    makePaste(sender, ResultsType.TICK);
+                    break;
+                }
                 case "samples":
                 case "sample": {
                     makePaste(sender, ResultsType.SAMPLES);

@@ -1,9 +1,12 @@
 package cc.funkemunky.api.profiling;
 
+import cc.funkemunky.api.Atlas;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 public class ToggleableProfiler implements Profiler {
     public Map<String, Long> timings = new HashMap<>();
@@ -11,6 +14,8 @@ public class ToggleableProfiler implements Profiler {
     public Map<String, Long> stddev = new HashMap<>();
     public Map<String, Long> total = new HashMap<>();
     public Map<String, Long> samples = new HashMap<>();
+    public Map<String, Long> averageSamples = new HashMap<>();
+    public Map<String, List<Long>> samplesPerTick = new HashMap<>();
     public Map<String, List<Long>> samplesTotal = new HashMap<>();
     public long lastSample = 0;
     public int totalCalls = 0;
@@ -18,6 +23,20 @@ public class ToggleableProfiler implements Profiler {
 
     public ToggleableProfiler() {
         enabled = false;
+        Atlas.getInstance().getSchedular().scheduleAtFixedRate(new Runnable() {
+            @Override
+            public void run() {
+                for (String name : samplesPerTick.keySet()) {
+
+                    long avg = new ArrayList<>(samplesPerTick.getOrDefault(name, new ArrayList<>())).stream()
+                            .mapToLong(val -> val)
+                            .sum();
+
+                    averageSamples.put(name, avg);
+                    samplesPerTick.put(name, new ArrayList<>());
+                }
+            }
+        }, 50L, 50L, TimeUnit.MILLISECONDS);
     }
 
     @Override
@@ -44,6 +63,15 @@ public class ToggleableProfiler implements Profiler {
 
     @Override
     public Map<String, Double> results(ResultsType type) {
+        /*if(type.equals(ResultsType.TOTAL)) {
+            return total.keySet().parallelStream().collect(Collectors.toMap(key -> key, key -> {
+                long totalMS = total.get(key);
+                int totalCalls = calls.get(key);
+                return totalMS / totalCalls / 1000000D;
+            }));
+        } else {
+            return samples.keySet().parallelStream().collect(Collectors.toMap(key -> key, key -> samples.get(key) / 1000000D));
+        }*/
         Map<String, Double> toReturn = new HashMap<>();
         switch(type) {
             case TOTAL: {
@@ -64,6 +92,12 @@ public class ToggleableProfiler implements Profiler {
                 }
                 break;
             }
+            case TICK: {
+                for(String key : averageSamples.keySet()) {
+                    toReturn.put(key, (double)averageSamples.get(key));
+                }
+                break;
+            }
         }
         return toReturn;
     }
@@ -80,44 +114,50 @@ public class ToggleableProfiler implements Profiler {
 
     @Override
     public void stop(String name) {
-        if (enabled) {
-            long extense = System.nanoTime();
-            long start = timings.get(name);
-            long time = (System.nanoTime() - start) - (System.nanoTime() - extense);
-            long lastTotal = total.getOrDefault(name, time);
-            long sample = samples.getOrDefault(name, time);
+        long extense = System.nanoTime();
+        long start = timings.get(name);
+        long time = (System.nanoTime() - start) - (System.nanoTime() - extense);
+        long lastTotal = total.getOrDefault(name, time);
+        long sample = samples.getOrDefault(name, time);
 
-            samples.put(name, time);
-            stddev.put(name, Math.abs(sample - time));
+        samples.put(name, time);
+        List<Long> sList = this.samplesPerTick.getOrDefault(name, new ArrayList<>());
 
-            List<Long> samplesTotal = this.samplesTotal.getOrDefault(name, new ArrayList<>());
+        sList.add(time);
 
-            samplesTotal.add(time);
-            this.samplesTotal.put(name, samplesTotal);
+        samplesPerTick.put(name, sList);
+        stddev.put(name, Math.abs(sample - time));
 
-            total.put(name, lastTotal + time);
-            lastSample = System.currentTimeMillis();
-        }
+        List<Long> samplesTotal = this.samplesTotal.getOrDefault(name, new ArrayList<>());
+
+        samplesTotal.add(time);
+        this.samplesTotal.put(name, samplesTotal);
+
+        total.put(name, lastTotal + time);
+        lastSample = System.currentTimeMillis();
     }
 
     @Override
     public void stop(String name, long extense) {
-        if (enabled) {
-            long start = timings.get(name);
-            long time = (System.nanoTime() - start) - (System.nanoTime() - extense);
-            long lastTotal = total.getOrDefault(name, time);
-            long sample = samples.getOrDefault(name, time);
+        long start = timings.get(name);
+        long time = (System.nanoTime() - start) - (System.nanoTime() - extense);
+        long lastTotal = total.getOrDefault(name, time);
+        long sample = samples.getOrDefault(name, time);
+        samples.put(name, time);
+        List<Long> sList = this.samplesPerTick.getOrDefault(name, new ArrayList<>());
 
-            samples.put(name, time);
-            stddev.put(name, Math.abs(sample - time));
+        sList.add(time);
 
-            List<Long> samplesTotal = this.samplesTotal.getOrDefault(name, new ArrayList<>());
+        samplesPerTick.put(name, sList);
 
-            samplesTotal.add(time);
-            this.samplesTotal.put(name, samplesTotal);
+        stddev.put(name, Math.abs(sample - time));
 
-            total.put(name, lastTotal + time);
-            lastSample = System.currentTimeMillis();
-        }
+        List<Long> samplesTotal = this.samplesTotal.getOrDefault(name, new ArrayList<>());
+
+        samplesTotal.add(time);
+        this.samplesTotal.put(name, samplesTotal);
+
+        total.put(name, lastTotal + time);
+        lastSample = System.currentTimeMillis();
     }
 }

@@ -90,6 +90,14 @@ public class MathUtils {
         return result;
     }
 
+    public static float normalizeAngle(float yaw) {
+        return yaw % 360;
+    }
+
+    public static double normalizeAngle(double yaw) {
+        return yaw % 360;
+    }
+
     //Euclid's algorithim
     public static long lcm(long a, long b)
     {
