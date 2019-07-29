@@ -1,12 +1,13 @@
 package cc.funkemunky.api.utils.blockbox.boxes;
 
-import cc.funkemunky.api.utils.BlockUtils;
-import cc.funkemunky.api.utils.BoundingBox;
+import cc.funkemunky.api.Atlas;
+import cc.funkemunky.api.utils.*;
+import cc.funkemunky.api.utils.MathHelper;
 import cc.funkemunky.api.utils.blockbox.BlockBox;
 import net.minecraft.server.v1_8_R3.*;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.World;
 import org.bukkit.craftbukkit.v1_8_R3.CraftWorld;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.entity.LivingEntity;
@@ -14,57 +15,62 @@ import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+import java.util.concurrent.FutureTask;
+import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
 public class BlockBox1_8_R3 implements BlockBox {
     @Override
-    public List<BoundingBox> getCollidingBoxes(World world, BoundingBox box) {
+    public List<BoundingBox> getCollidingBoxes(org.bukkit.World world, BoundingBox box) {
         List<AxisAlignedBB> aabbs = new ArrayList<>();
-        List<BoundingBox> boxes = new ArrayList<>();
 
-        double minX = box.minX;
-        double maxX = box.maxX;
-        double minY = box.minY;
-        double maxY = box.maxY;
-        double minZ = box.minZ;
-        double maxZ = box.maxZ;
+        int minX = MathUtils.floor(box.minX);
+        int maxX = MathUtils.floor(box.maxX + 1);
+        int minY = MathUtils.floor(box.minY);
+        int maxY = MathUtils.floor(box.maxY + 1);
+        int minZ = MathUtils.floor(box.minZ);
+        int maxZ = MathUtils.floor(box.maxZ + 1);
 
-        for (double x = minX; x < maxX; x++) {
-            for (double z = minZ; z < maxZ; z++) {
-                for (double y = minY; y < maxY; y++) {
+
+        for (int x = minX; x < maxX; x++) {
+            for (int z = minZ; z < maxZ; z++) {
+                for (int y = minY - 1; y < maxY; y++) {
                     Location loc = new Location(world, x, y, z);
 
-                    org.bukkit.block.Block block = BlockUtils.getBlock(loc);
+                    if (isChunkLoaded(loc)) {
+                        org.bukkit.block.Block block = BlockUtils.getBlock(loc);
+                        if (!block.getType().equals(Material.AIR)) {
+                            if (BlockUtils.collisionBoundingBoxes.containsKey(block.getType())) {
+                                aabbs.add((AxisAlignedBB) BlockUtils.collisionBoundingBoxes.get(block.getType()).add(block.getLocation().toVector()).toAxisAlignedBB());
+                            } else {
+                                BlockPosition pos = new BlockPosition(x, y, z);
+                                World nmsWorld = ((CraftWorld) world).getHandle();
+                                IBlockData nmsiBlockData = ((CraftWorld) world).getHandle().getType(pos);
+                                Block nmsBlock = nmsiBlockData.getBlock();
+                                List<AxisAlignedBB> preBoxes = new ArrayList<>();
 
-                    if(block == null || block.getType().equals(Material.AIR)) continue;
+                                nmsBlock.updateShape(nmsWorld, pos);
+                                nmsBlock.a(nmsWorld, pos, nmsiBlockData, (AxisAlignedBB) box.toAxisAlignedBB(), preBoxes, null);
 
-                    if (BlockUtils.collisionBoundingBoxes.containsKey(block.getType())) {
-                        aabbs.add((AxisAlignedBB) BlockUtils.collisionBoundingBoxes.get(block.getType()).add(block.getLocation().toVector()).toAxisAlignedBB());
-                    } else {
-                        net.minecraft.server.v1_8_R3.BlockPosition pos = new BlockPosition(x, y, z);
-                        net.minecraft.server.v1_8_R3.World nmsWorld = ((CraftWorld) world).getHandle();
-                        net.minecraft.server.v1_8_R3.IBlockData nmsiBlockData = ((CraftWorld) world).getHandle().getType(pos);
-                        net.minecraft.server.v1_8_R3.Block nmsBlock = nmsiBlockData.getBlock();
-                        List<AxisAlignedBB> preBoxes = new ArrayList<>();
+                                if (preBoxes.size() > 0) {
+                                    aabbs.addAll(preBoxes);
+                                } else {
+                                    aabbs.add(new AxisAlignedBB(nmsBlock.B(), nmsBlock.D(), nmsBlock.F(), nmsBlock.C(), nmsBlock.E(), nmsBlock.G()).grow(block.getLocation().getX(), block.getLocation().getY(), block.getLocation().getZ()));
+                                }
+                            }
+                        /*
+                        else {
+                            BoundingBox blockBox = new BoundingBox((float) nmsBlock.B(), (float) nmsBlock.D(), (float) nmsBlock.F(), (float) nmsBlock.C(), (float) nmsBlock.E(), (float) nmsBlock.G());
+                        }*/
 
-                        nmsBlock.updateShape(nmsWorld, pos);
-                        nmsBlock.a(nmsWorld, pos, nmsiBlockData, (AxisAlignedBB) box.toAxisAlignedBB(), preBoxes, null);
-
-                        if (preBoxes.size() > 0) {
-                            aabbs.addAll(preBoxes);
-                        } else {
-                            boxes.add(new BoundingBox((float) nmsBlock.B(), (float) nmsBlock.D(), (float) nmsBlock.F(), (float) nmsBlock.C(), (float) nmsBlock.E(), (float) nmsBlock.G()).add(block.getLocation().toVector()));
                         }
                     }
                 }
             }
         }
 
-        for (AxisAlignedBB aabb : aabbs) {
-            if(aabb == null) continue;
-
-            boxes.add(new BoundingBox((float)aabb.a, (float)aabb.b, (float)aabb.c, (float)aabb.d, (float)aabb.e, (float)aabb.f));
-        }
-        return boxes;
+        return aabbs.parallelStream().filter(Objects::nonNull).map(aabb -> new BoundingBox((float)aabb.a,(float)aabb.b,(float)aabb.c,(float)aabb.d,(float)aabb.e,(float)aabb.f)).filter(bb -> bb.collides(box)).collect(Collectors.toList());
     }
 
 

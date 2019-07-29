@@ -2,6 +2,7 @@ package cc.funkemunky.api.utils.blockbox.boxes;
 
 import cc.funkemunky.api.utils.BlockUtils;
 import cc.funkemunky.api.utils.BoundingBox;
+import cc.funkemunky.api.utils.MathUtils;
 import cc.funkemunky.api.utils.blockbox.BlockBox;
 import net.minecraft.server.v1_7_R4.*;
 import org.bukkit.Location;
@@ -14,6 +15,8 @@ import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 public class BlockBox1_7_R4 implements BlockBox {
 
@@ -22,17 +25,17 @@ public class BlockBox1_7_R4 implements BlockBox {
         List<AxisAlignedBB> aabbs = new ArrayList<>();
         List<BoundingBox> boxes = new ArrayList<>();
 
-        double minX = box.minX;
-        double maxX = box.maxX;
-        double minY = box.minY;
-        double maxY = box.maxY;
-        double minZ = box.minZ;
-        double maxZ = box.maxZ;
+        int minX = MathUtils.floor(box.minX);
+        int maxX = MathUtils.floor(box.maxX + 1);
+        int minY = MathUtils.floor(box.minY);
+        int maxY = MathUtils.floor(box.maxY + 1);
+        int minZ = MathUtils.floor(box.minZ);
+        int maxZ = MathUtils.floor(box.maxZ + 1);
 
 
-        for (double x = minX; x < maxX; x++) {
-            for (double z = minZ; z < maxZ; z++) {
-                for (double y = minY; y < maxY; y++) {
+        for (int x = minX; x < maxX; x++) {
+            for (int z = minZ; z < maxZ; z++) {
+                for (int y = minY - 1; y < maxY; y++) {
                     org.bukkit.block.Block block = BlockUtils.getBlock(new Location(world, x, y, z));
                     if (block != null && !block.getType().equals(Material.AIR)) {
                         if (BlockUtils.collisionBoundingBoxes.containsKey(block.getType())) {
@@ -43,13 +46,13 @@ public class BlockBox1_7_R4 implements BlockBox {
                             net.minecraft.server.v1_7_R4.Block nmsBlock = ((CraftWorld) world).getHandle().getType((int)x, (int)y, (int)z);
                             List<AxisAlignedBB> preBoxes = new ArrayList<>();
 
-                            nmsBlock.updateShape(nmsWorld, (int)x, (int)y, (int)z);
-                            nmsBlock.a(nmsWorld, (int)x, (int)y, (int)z, (AxisAlignedBB) box.toAxisAlignedBB(), preBoxes, null);
+                            nmsBlock.updateShape(nmsWorld, x, y, z);
+                            nmsBlock.a(nmsWorld, x, y, z, (AxisAlignedBB) box.toAxisAlignedBB(), preBoxes, null);
 
                             if (preBoxes.size() > 0) {
                                 aabbs.addAll(preBoxes);
                             } else {
-                                boxes.add(new BoundingBox((float) nmsBlock.x(), (float) nmsBlock.z(), (float) nmsBlock.B(), (float) nmsBlock.y(), (float) nmsBlock.A(), (float) nmsBlock.C()).add(block.getLocation().toVector()));
+                                aabbs.add(AxisAlignedBB.a(nmsBlock.x(), nmsBlock.z(), nmsBlock.B(), nmsBlock.y(), nmsBlock.A(), nmsBlock.C()).grow(block.getLocation().getX(), block.getLocation().getY(), block.getLocation().getZ()));
                             }
                         }
                         /*
@@ -62,12 +65,7 @@ public class BlockBox1_7_R4 implements BlockBox {
             }
         }
 
-        for (AxisAlignedBB aabb : aabbs) {
-            if(aabb == null) continue;
-
-            boxes.add(new BoundingBox((float)aabb.a, (float)aabb.b, (float)aabb.c, (float)aabb.d, (float)aabb.e, (float)aabb.f));
-        }
-        return boxes;
+        return aabbs.parallelStream().filter(Objects::nonNull).map(aabb -> new BoundingBox((float)aabb.a,(float)aabb.b,(float)aabb.c,(float)aabb.d,(float)aabb.e,(float)aabb.f)).filter(bb -> bb.collides(box)).collect(Collectors.toList());
     }
 
     @Override
