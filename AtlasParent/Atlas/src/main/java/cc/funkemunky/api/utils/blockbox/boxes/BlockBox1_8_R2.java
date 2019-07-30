@@ -35,9 +35,8 @@ public class BlockBox1_8_R2 implements BlockBox {
                 for (int y = minY - 1; y < maxY; y++) {
                     Location loc = new Location(world, x, y, z);
 
-                    if (isChunkLoaded(loc)) {
-                        org.bukkit.block.Block block = BlockUtils.getBlock(loc);
-                        if (!block.getType().equals(Material.AIR)) {
+                     org.bukkit.block.Block block = BlockUtils.getBlock(loc);
+                        if (block != null && !block.getType().equals(Material.AIR)) {
                             if (BlockUtils.collisionBoundingBoxes.containsKey(block.getType())) {
                                 aabbs.add((AxisAlignedBB) BlockUtils.collisionBoundingBoxes.get(block.getType()).add(block.getLocation().toVector()).toAxisAlignedBB());
                             } else {
@@ -62,7 +61,6 @@ public class BlockBox1_8_R2 implements BlockBox {
                         }*/
 
                         }
-                    }
                 }
             }
         }

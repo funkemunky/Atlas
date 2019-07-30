@@ -39,7 +39,7 @@
               <goal>shade</goal>
             </goals>
             <configuration>
-              <minimizeJar>true</minimizeJar>
+              <minimizeJar>false</minimizeJar>
             </configuration>
           </execution>
         </executions>
@@ -76,12 +76,6 @@
     </repository>
   </repositories>
   <dependencies>
-    <dependency>
-      <groupId>org.github.lombok</groupId>
-      <artifactId>lombok</artifactId>
-      <version>1.18.0</version>
-      <scope>provided</scope>
-    </dependency>
     <dependency>
       <groupId>org.github.paperspigot</groupId>
       <artifactId>1.8.8</artifactId>
@@ -170,6 +164,12 @@
       <groupId>org.github.spigot</groupId>
       <artifactId>1.14</artifactId>
       <version>1.14</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.github.lombok</groupId>
+      <artifactId>lombok</artifactId>
+      <version>1.18.0</version>
       <scope>provided</scope>
     </dependency>
   </dependencies>

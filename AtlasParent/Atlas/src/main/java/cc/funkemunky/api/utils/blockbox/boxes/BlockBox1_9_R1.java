@@ -36,33 +36,31 @@ public class BlockBox1_9_R1 implements BlockBox {
                 for (int y = minY - 1; y < maxY; y++) {
                     Location loc = new Location(world, x, y, z);
 
-                    if (isChunkLoaded(loc)) {
-                        org.bukkit.block.Block block = BlockUtils.getBlock(loc);
-                        if (!block.getType().equals(Material.AIR)) {
-                            if (BlockUtils.collisionBoundingBoxes.containsKey(block.getType())) {
-                                aabbs.add((AxisAlignedBB) BlockUtils.collisionBoundingBoxes.get(block.getType()).add(block.getLocation().toVector()).toAxisAlignedBB());
+                    org.bukkit.block.Block block = BlockUtils.getBlock(loc);
+                    if (block != null && !block.getType().equals(Material.AIR)) {
+                        if (BlockUtils.collisionBoundingBoxes.containsKey(block.getType())) {
+                            aabbs.add((AxisAlignedBB) BlockUtils.collisionBoundingBoxes.get(block.getType()).add(block.getLocation().toVector()).toAxisAlignedBB());
+                        } else {
+                            BlockPosition pos = new BlockPosition(x, y, z);
+                            World nmsWorld = ((CraftWorld) world).getHandle();
+                            IBlockData nmsiBlockData = ((CraftWorld) world).getHandle().getType(pos);
+                            Block nmsBlock = nmsiBlockData.getBlock();
+                            List<AxisAlignedBB> preBoxes = new ArrayList<>();
+
+                            nmsBlock.updateState(nmsiBlockData, nmsWorld, pos);
+                            nmsBlock.a(nmsiBlockData, nmsWorld, pos, (AxisAlignedBB) box.toAxisAlignedBB(), preBoxes, null);
+
+                            if (preBoxes.size() > 0) {
+                                aabbs.addAll(preBoxes);
                             } else {
-                                BlockPosition pos = new BlockPosition(x, y, z);
-                                World nmsWorld = ((CraftWorld) world).getHandle();
-                                IBlockData nmsiBlockData = ((CraftWorld) world).getHandle().getType(pos);
-                                Block nmsBlock = nmsiBlockData.getBlock();
-                                List<AxisAlignedBB> preBoxes = new ArrayList<>();
-
-                                nmsBlock.updateState(nmsiBlockData, nmsWorld, pos);
-                                nmsBlock.a(nmsiBlockData, nmsWorld, pos, (AxisAlignedBB) box.toAxisAlignedBB(), preBoxes, null);
-
-                                if (preBoxes.size() > 0) {
-                                    aabbs.addAll(preBoxes);
-                                } else {
-                                    aabbs.add(nmsBlock.a(nmsiBlockData, nmsWorld, pos));
-                                }
+                                aabbs.add(nmsBlock.a(nmsiBlockData, nmsWorld, pos));
                             }
+                        }
                         /*
                         else {
                             BoundingBox blockBox = new BoundingBox((float) nmsBlock.B(), (float) nmsBlock.D(), (float) nmsBlock.F(), (float) nmsBlock.C(), (float) nmsBlock.E(), (float) nmsBlock.G());
                         }*/
 
-                        }
                     }
                 }
             }

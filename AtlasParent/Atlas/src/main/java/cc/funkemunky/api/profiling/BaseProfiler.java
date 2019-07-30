@@ -18,7 +18,7 @@ public class BaseProfiler implements Profiler {
     public Map<String, Long> averageSamples = new HashMap<>();
     public Map<String, List<Long>> samplesPerTick = new HashMap<>();
     public Map<String, List<Long>> samplesTotal = new HashMap<>();
-    public long lastSample = 0;
+    public long lastSample = 0, lastReset;
     public int totalCalls = 0;
 
     public BaseProfiler() {
@@ -53,6 +53,7 @@ public class BaseProfiler implements Profiler {
 
     @Override
     public void stop() {
+        if(System.currentTimeMillis() - lastReset < 100L) return;
         long extense = System.nanoTime();
         StackTraceElement stack = Thread.currentThread().getStackTrace()[2];
         stop(stack.getMethodName(), extense);
@@ -60,6 +61,7 @@ public class BaseProfiler implements Profiler {
 
     @Override
     public void reset() {
+        lastReset = System.currentTimeMillis();
         lastSample = totalCalls = 0;
         timings.clear();
         calls.clear();
@@ -111,6 +113,7 @@ public class BaseProfiler implements Profiler {
 
     @Override
     public void stop(String name) {
+        if(System.currentTimeMillis() - lastReset < 100L) return;
         long extense = System.nanoTime();
         long start = timings.get(name);
         long time = (System.nanoTime() - start) - (System.nanoTime() - extense);
@@ -136,6 +139,7 @@ public class BaseProfiler implements Profiler {
 
     @Override
     public void stop(String name, long extense) {
+        if(System.currentTimeMillis() - lastReset < 100L) return;
         long start = timings.get(name);
         long time = (System.nanoTime() - start) - (System.nanoTime() - extense);
         long lastTotal = total.getOrDefault(name, time);

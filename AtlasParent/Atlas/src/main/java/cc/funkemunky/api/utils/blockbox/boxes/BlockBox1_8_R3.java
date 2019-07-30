@@ -23,6 +23,7 @@ import java.util.stream.Collectors;
 public class BlockBox1_8_R3 implements BlockBox {
     @Override
     public List<BoundingBox> getCollidingBoxes(org.bukkit.World world, BoundingBox box) {
+        Atlas.getInstance().getProfile().start("boxes");
         List<AxisAlignedBB> aabbs = new ArrayList<>();
 
         int minX = MathUtils.floor(box.minX);
@@ -38,39 +39,39 @@ public class BlockBox1_8_R3 implements BlockBox {
                 for (int y = minY - 1; y < maxY; y++) {
                     Location loc = new Location(world, x, y, z);
 
-                    if (isChunkLoaded(loc)) {
-                        org.bukkit.block.Block block = BlockUtils.getBlock(loc);
-                        if (!block.getType().equals(Material.AIR)) {
-                            if (BlockUtils.collisionBoundingBoxes.containsKey(block.getType())) {
-                                aabbs.add((AxisAlignedBB) BlockUtils.collisionBoundingBoxes.get(block.getType()).add(block.getLocation().toVector()).toAxisAlignedBB());
+                    org.bukkit.block.Block block = BlockUtils.getBlock(loc);
+                    if (block != null && !block.getType().equals(Material.AIR)) {
+                        if (BlockUtils.collisionBoundingBoxes.containsKey(block.getType())) {
+                            aabbs.add((AxisAlignedBB) BlockUtils.collisionBoundingBoxes.get(block.getType()).add(block.getLocation().toVector()).toAxisAlignedBB());
+                        } else {
+                            BlockPosition pos = new BlockPosition(x, y, z);
+                            World nmsWorld = ((CraftWorld) world).getHandle();
+                            IBlockData nmsiBlockData = ((CraftWorld) world).getHandle().getType(pos);
+                            Block nmsBlock = nmsiBlockData.getBlock();
+                            List<AxisAlignedBB> preBoxes = new ArrayList<>();
+
+                            nmsBlock.updateShape(nmsWorld, pos);
+                            nmsBlock.a(nmsWorld, pos, nmsiBlockData, (AxisAlignedBB) box.toAxisAlignedBB(), preBoxes, null);
+
+                            if (preBoxes.size() > 0) {
+                                aabbs.addAll(preBoxes);
                             } else {
-                                BlockPosition pos = new BlockPosition(x, y, z);
-                                World nmsWorld = ((CraftWorld) world).getHandle();
-                                IBlockData nmsiBlockData = ((CraftWorld) world).getHandle().getType(pos);
-                                Block nmsBlock = nmsiBlockData.getBlock();
-                                List<AxisAlignedBB> preBoxes = new ArrayList<>();
-
-                                nmsBlock.updateShape(nmsWorld, pos);
-                                nmsBlock.a(nmsWorld, pos, nmsiBlockData, (AxisAlignedBB) box.toAxisAlignedBB(), preBoxes, null);
-
-                                if (preBoxes.size() > 0) {
-                                    aabbs.addAll(preBoxes);
-                                } else {
-                                    aabbs.add(new AxisAlignedBB(nmsBlock.B(), nmsBlock.D(), nmsBlock.F(), nmsBlock.C(), nmsBlock.E(), nmsBlock.G()).grow(block.getLocation().getX(), block.getLocation().getY(), block.getLocation().getZ()));
-                                }
+                                aabbs.add(new AxisAlignedBB(nmsBlock.B(), nmsBlock.D(), nmsBlock.F(), nmsBlock.C(), nmsBlock.E(), nmsBlock.G()).grow(block.getLocation().getX(), block.getLocation().getY(), block.getLocation().getZ()));
                             }
+                        }
                         /*
                         else {
                             BoundingBox blockBox = new BoundingBox((float) nmsBlock.B(), (float) nmsBlock.D(), (float) nmsBlock.F(), (float) nmsBlock.C(), (float) nmsBlock.E(), (float) nmsBlock.G());
                         }*/
 
-                        }
                     }
                 }
             }
         }
 
-        return aabbs.parallelStream().filter(Objects::nonNull).map(aabb -> new BoundingBox((float)aabb.a,(float)aabb.b,(float)aabb.c,(float)aabb.d,(float)aabb.e,(float)aabb.f)).filter(bb -> bb.collides(box)).collect(Collectors.toList());
+        List<BoundingBox> collected = aabbs.parallelStream().filter(Objects::nonNull).map(aabb -> new BoundingBox((float)aabb.a,(float)aabb.b,(float)aabb.c,(float)aabb.d,(float)aabb.e,(float)aabb.f)).filter(bb -> bb.collides(box)).collect(Collectors.toList());
+        Atlas.getInstance().getProfile().stop("boxes");
+        return collected;
     }
 
 

@@ -23,8 +23,13 @@
 hs_err_pid*
 
 # intellij files
-**/.idea/**
+AtlasParent/.idea/**
 *.iml
 *.ist
 *.py
 *.lst
+*.properties
+
+# Maven
+AtlasParent/Atlas/target/**
+AtlasParent/AtlasBungee/target/**

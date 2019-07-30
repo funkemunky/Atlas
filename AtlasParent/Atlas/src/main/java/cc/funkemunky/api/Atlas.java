@@ -34,6 +34,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.io.IOException;
+import java.lang.reflect.Modifier;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.UUID;
@@ -295,7 +296,7 @@ public class Atlas extends JavaPlugin {
                                     plugin.getConfig().set(path, field.get(obj));
                                     plugin.saveConfig();
                                 } else {
-                                    field.set(obj, getAtlasConfig().get(path));
+                                    field.set(Modifier.isStatic(field.getModifiers()) ? null : obj, getAtlasConfig().get(path));
 
                                     MiscUtils.printToConsole("&eValue found in configuration! Set value to &a" + plugin.getConfig().get(path));
                                 }
@@ -305,7 +306,7 @@ public class Atlas extends JavaPlugin {
                                     plugin.getConfig().set(path, field.get(obj));
                                     plugin.saveConfig();
                                 } else {
-                                    field.set(obj, plugin.getConfig().get(path));
+                                    field.set(Modifier.isStatic(field.getModifiers()) ? null : obj, plugin.getConfig().get(path));
 
                                     MiscUtils.printToConsole("&eValue found in configuration! Set value to &a" + plugin.getConfig().get(path));
                                 }
