@@ -210,5 +210,6 @@ public abstract class NMSObject {
         public static final String OPEN_WINDOW = SERVER + "OpenWindow";
         public static final String HELD_ITEM = SERVER + "HeldItemSlot";
         public static final String PLAYER_INFO = SERVER + "PlayerInfo";
+        public static final String TAB_COMPLETE = SERVER + "TabComplete";
     }
 }
