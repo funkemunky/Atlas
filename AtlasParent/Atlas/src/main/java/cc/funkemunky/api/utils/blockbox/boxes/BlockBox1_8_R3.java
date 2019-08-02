@@ -1,11 +1,8 @@
 package cc.funkemunky.api.utils.blockbox.boxes;
 
-import cc.funkemunky.api.Atlas;
 import cc.funkemunky.api.utils.*;
-import cc.funkemunky.api.utils.MathHelper;
 import cc.funkemunky.api.utils.blockbox.BlockBox;
 import net.minecraft.server.v1_8_R3.*;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.craftbukkit.v1_8_R3.CraftWorld;
@@ -14,10 +11,10 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
-import java.util.concurrent.FutureTask;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.stream.Collectors;
 
 public class BlockBox1_8_R3 implements BlockBox {
@@ -42,7 +39,7 @@ public class BlockBox1_8_R3 implements BlockBox {
             }
         }
 
-        List<BoundingBox> boxes = new ArrayList<>();
+        List<BoundingBox> boxes = new CopyOnWriteArrayList<>();
 
         locs.parallelStream().forEach(loc -> {
             org.bukkit.block.Block block = BlockUtils.getBlock(loc);
@@ -81,7 +78,7 @@ public class BlockBox1_8_R3 implements BlockBox {
             }
         });
 
-        return boxes.stream().filter(Objects::nonNull).collect(Collectors.toList());
+        return boxes;
     }
 
 

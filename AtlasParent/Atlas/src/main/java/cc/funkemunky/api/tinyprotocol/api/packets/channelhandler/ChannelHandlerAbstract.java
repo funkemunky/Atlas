@@ -75,6 +75,4 @@ public abstract class ChannelHandlerAbstract {
     public abstract void removeChannel(Player player);
 
     public abstract void sendPacket(Player player, Object packet);
-
-    public abstract int getProtocolVersion(Player player);
 }

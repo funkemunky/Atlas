@@ -14,6 +14,7 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -40,7 +41,7 @@ public class BlockBox1_10_R1 implements BlockBox {
             }
         }
 
-        List<BoundingBox> boxes = new ArrayList<>();
+        List<BoundingBox> boxes = Collections.synchronizedList(new ArrayList<>());
 
         locs.parallelStream().forEach(loc -> {
             org.bukkit.block.Block block = BlockUtils.getBlock(loc);
@@ -79,7 +80,7 @@ public class BlockBox1_10_R1 implements BlockBox {
             }
         });
 
-        return boxes.stream().filter(Objects::nonNull).collect(Collectors.toList());
+        return boxes;
     }
 
 

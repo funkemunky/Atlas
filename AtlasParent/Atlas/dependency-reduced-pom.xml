@@ -3,7 +3,7 @@
   <parent>
     <artifactId>atlas-parent</artifactId>
     <groupId>cc.funkemunky.utils</groupId>
-    <version>1.4.5</version>
+    <version>1.4.6</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
   <groupId>cc.funkemunky.plugins</groupId>
@@ -72,7 +72,7 @@
   <repositories>
     <repository>
       <id>funkemunky-releases</id>
-      <url>http://funkemunky.cc:8080/nexus/content/repositories/releases/</url>
+      <url>http://nexus.funkemunky.cc/content/repositories/releases/</url>
     </repository>
   </repositories>
   <dependencies>

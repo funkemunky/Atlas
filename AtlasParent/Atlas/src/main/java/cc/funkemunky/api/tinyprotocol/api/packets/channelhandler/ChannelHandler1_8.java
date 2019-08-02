@@ -21,13 +21,6 @@ import java.util.WeakHashMap;
 
 public class ChannelHandler1_8 extends ChannelHandlerAbstract {
 
-    private static final Class<?> PACKET_SET_PROTOCOL = Reflection.getMinecraftClass("PacketHandshakingInSetProtocol");
-    private static final Class<?> PACKET_LOGIN_IN_START = Reflection.getMinecraftClass("PacketLoginInStart");
-    private static final FieldAccessor<GameProfile> getGameProfile = Reflection.getField(PACKET_LOGIN_IN_START, GameProfile.class, 0);
-    private static final FieldAccessor<Integer> protocolId = Reflection.getField(PACKET_SET_PROTOCOL, int.class, 0);
-    private static final FieldAccessor<Enum> protocolType = Reflection.getField(PACKET_SET_PROTOCOL, Enum.class, 0);
-    protected static Map<Player, Integer> protocolLookup = new MapMaker().weakKeys().makeMap();
-
     @Override public void addChannel(Player player) {
         io.netty.channel.Channel channel = getChannel(player);
         this.addChannelHandlerExecutor.execute(() -> {
@@ -73,19 +66,8 @@ public class ChannelHandler1_8 extends ChannelHandlerAbstract {
             Object packet = channelHandlerAbstract.run(this.player, msg);
             if (packet != null) {
                 super.channelRead(ctx, packet);
-                if (PACKET_SET_PROTOCOL.isInstance(msg)) {
-                    String protocol = protocolType.get(msg).name();
-                    if (protocol.equalsIgnoreCase("LOGIN")) {
-                        protocolLookup.put(player, protocolId.get(msg));
-                    }
-                }
-
             }
         }
-    }
-
-    public int getProtocolVersion(Player player) {
-        return protocolLookup.getOrDefault(player, -1);
     }
 
     public void sendPacket(Player player, Object packet) {
