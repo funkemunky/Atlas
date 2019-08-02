@@ -5,7 +5,9 @@ import cc.funkemunky.api.utils.BoundingBox;
 import cc.funkemunky.api.utils.MathUtils;
 import cc.funkemunky.api.utils.ReflectionsUtil;
 import cc.funkemunky.api.utils.blockbox.BlockBox;
+import lombok.val;
 import net.minecraft.server.v1_12_R1.*;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.craftbukkit.v1_12_R1.CraftWorld;
@@ -14,6 +16,7 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -40,7 +43,7 @@ public class BlockBox1_12_R1 implements BlockBox {
             }
         }
 
-        List<BoundingBox> boxes = new ArrayList<>();
+        List<BoundingBox> boxes = Collections.synchronizedList(new ArrayList<>());
 
         locs.parallelStream().forEach(loc -> {
             org.bukkit.block.Block block = BlockUtils.getBlock(loc);
@@ -80,10 +83,14 @@ public class BlockBox1_12_R1 implements BlockBox {
                         }
                     }
                 } else {
-                    BoundingBox bb = ReflectionsUtil.toBoundingBox(nmsBlock.a(nmsiBlockData, nmsWorld, pos)).add(x, y, z, x, y, z);
+                    AxisAlignedBB aabb = nmsiBlockData.d(nmsWorld, pos);
 
-                    if(bb.collides(box)) {
-                        boxes.add(bb);
+                    if(aabb != null) {
+                        BoundingBox bb = ReflectionsUtil.toBoundingBox(aabb).add(x, y, z, x, y, z);
+
+                        if(bb.collides(box)) {
+                            boxes.add(bb);
+                        }
                     }
                 }
                         /*
@@ -94,7 +101,7 @@ public class BlockBox1_12_R1 implements BlockBox {
             }
         });
 
-        return boxes.stream().filter(Objects::nonNull).collect(Collectors.toList());
+        return boxes;
     }
 
     @Override

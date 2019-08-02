@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="Atlas">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/../API/out/artifacts/Atlas_jar/Atlas.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

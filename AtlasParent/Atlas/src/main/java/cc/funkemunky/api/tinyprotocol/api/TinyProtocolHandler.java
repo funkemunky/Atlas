@@ -29,7 +29,7 @@ public class TinyProtocolHandler {
     }
 
     public static int getProtocolVersion(Player player) {
-        return instance.getChannel().getProtocolVersion(player);
+        return -1;
     }
 
     private boolean didPosition = false;

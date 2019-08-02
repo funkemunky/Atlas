@@ -1,0 +1,796 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="1209f12a-aa83-44aa-9f92-38497ed8d8ce" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/src/main/java/cc/funkemunky/api/settings/MongoSettings.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/cc/funkemunky/api/settings/MySQLSettings.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/cc/funkemunky/api/tinyprotocol/api/packets/ChannelInjector.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/cc/funkemunky/api/tinyprotocol/api/packets/channelhandler/ChannelHandler1_7.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/cc/funkemunky/api/tinyprotocol/api/packets/channelhandler/ChannelHandler1_8.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/cc/funkemunky/api/tinyprotocol/api/packets/channelhandler/ChannelHandlerAbstract.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/cc/funkemunky/api/tinyprotocol/api/packets/reflections/Reflections.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/cc/funkemunky/api/tinyprotocol/api/packets/reflections/types/WrappedClass.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/cc/funkemunky/api/tinyprotocol/api/packets/reflections/types/WrappedConstructor.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/cc/funkemunky/api/tinyprotocol/api/packets/reflections/types/WrappedField.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/cc/funkemunky/api/tinyprotocol/api/packets/reflections/types/WrappedMethod.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dependency-reduced-pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/dependency-reduced-pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cc/funkemunky/api/Atlas.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cc/funkemunky/api/Atlas.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cc/funkemunky/api/database/Database.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cc/funkemunky/api/database/DatabaseManager.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cc/funkemunky/api/database/DatabaseType.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cc/funkemunky/api/database/bungee/BungeeDatabase.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cc/funkemunky/api/database/flatfile/FlatfileDatabase.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cc/funkemunky/api/database/mongo/MongoDatabase.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cc/funkemunky/api/database/sql/MySQLDatabase.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cc/funkemunky/api/mongo/Mongo.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cc/funkemunky/api/tinyprotocol/api/AbstractTinyProtocol.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cc/funkemunky/api/tinyprotocol/api/AbstractTinyProtocol.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cc/funkemunky/api/tinyprotocol/api/NMSObject.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cc/funkemunky/api/tinyprotocol/api/NMSObject.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cc/funkemunky/api/tinyprotocol/api/Packet.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cc/funkemunky/api/tinyprotocol/api/Packet.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cc/funkemunky/api/tinyprotocol/api/TinyProtocol1_7.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cc/funkemunky/api/tinyprotocol/api/TinyProtocol1_7.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cc/funkemunky/api/tinyprotocol/api/TinyProtocol1_8.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cc/funkemunky/api/tinyprotocol/api/TinyProtocol1_8.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cc/funkemunky/api/tinyprotocol/api/TinyProtocolHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cc/funkemunky/api/tinyprotocol/api/TinyProtocolHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cc/funkemunky/api/tinyprotocol/packet/in/WrappedInUseEntityPacket.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cc/funkemunky/api/tinyprotocol/packet/in/WrappedInUseEntityPacket.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cc/funkemunky/api/utils/BlockUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cc/funkemunky/api/utils/BlockUtils.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cc/funkemunky/api/utils/blockbox/boxes/BlockBox1_12_R1.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cc/funkemunky/api/utils/blockbox/boxes/BlockBox1_12_R1.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/objectweb/asmutil/ClassVisitor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/objectweb/asmutil/ClassVisitor.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/objectweb/asmutil/Frame.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/objectweb/asmutil/Frame.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/objectweb/asmutil/commons/AdviceAdapter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/objectweb/asmutil/commons/AdviceAdapter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/objectweb/asmutil/commons/AnalyzerAdapter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/objectweb/asmutil/commons/AnalyzerAdapter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/objectweb/asmutil/util/CheckClassAdapter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/objectweb/asmutil/util/CheckClassAdapter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/objectweb/asmutil/util/Printer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/objectweb/asmutil/util/Printer.java" afterDir="false" />
+    </list>
+    <ignored path="$PROJECT_DIR$/target/" />
+    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileEditorManager">
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/main/java/cc/funkemunky/api/Atlas.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="340">
+              <caret line="20" column="35" selection-start-line="20" selection-start-column="35" selection-end-line="20" selection-end-column="35" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/cc/funkemunky/api/settings/MongoSettings.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="391">
+              <caret line="23" column="47" lean-forward="true" selection-start-line="7" selection-start-column="4" selection-end-line="23" selection-end-column="47" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/cc/funkemunky/api/settings/MySQLSettings.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="102">
+              <caret line="6" column="28" selection-start-line="6" selection-start-column="28" selection-end-line="6" selection-end-column="28" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/pom.xml">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="374">
+              <caret line="95" column="21" selection-start-line="95" selection-start-column="21" selection-end-line="95" selection-end-column="21" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/cc/funkemunky/api/utils/blockbox/boxes/BlockBox1_12_R1.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="314">
+              <caret line="119" column="251" selection-start-line="119" selection-start-column="251" selection-end-line="119" selection-end-column="251" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/cc/funkemunky/api/utils/BlockUtils.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="255">
+              <caret line="29" column="89" selection-start-line="29" selection-start-column="89" selection-end-line="29" selection-end-column="89" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/cc/funkemunky/api/tinyprotocol/api/packets/channelhandler/ChannelHandlerAbstract.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="952">
+              <caret line="78" column="66" selection-start-line="78" selection-start-column="66" selection-end-line="78" selection-end-column="66" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/cc/funkemunky/api/tinyprotocol/api/TinyProtocolHandler.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-85">
+              <caret line="10" selection-start-line="10" selection-end-line="10" selection-end-column="11" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="jar://$MAVEN_REPOSITORY$/org/github/spigot/1.12.1/1.12.1/1.12.1-1.12.1.jar!/net/minecraft/server/v1_12_R1/World.class">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="299">
+              <caret line="281" column="19" selection-start-line="281" selection-start-column="19" selection-end-line="281" selection-end-column="19" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/cc/funkemunky/api/tinyprotocol/api/packets/ChannelInjector.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="102">
+              <caret line="23" column="2" selection-start-line="23" selection-start-column="2" selection-end-line="23" selection-end-column="2" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Enum" />
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="FindInProjectRecents">
+    <findStrings>
+      <find>PacketPla</find>
+      <find>is not av</find>
+      <find>map.put</find>
+      <find>saveToString</find>
+      <find>options()</find>
+      <find>SYSTEM_UTF</find>
+      <find>buildHeader</find>
+      <find>dump(</find>
+      <find>dump</find>
+      <find>completer =</find>
+      <find>org.objectweb.asm.</find>
+      <find>clear</find>
+      <find>register(String</find>
+      <find>clearcommands</find>
+      <find>register(</find>
+      <find>unregister</find>
+      <find>player.getPlayer()</find>
+      <find>Autoeye</find>
+      <find>CLIENT + &quot;</find>
+      <find>SERVER + &quot;</find>
+      <find>getPlayerHandle</find>
+      <find>getProte</find>
+      <find>net.minecraft.util.</find>
+      <find>private static final String packet</find>
+      <find>String packet</find>
+      <find>PluginDisableEvent</find>
+      <find>sendPacket</find>
+      <find>&quot;mongo&quot;</find>
+      <find>TinyProtocol</find>
+      <find>&quot;database.mongo&quot;</find>
+    </findStrings>
+    <replaceStrings>
+      <replace />
+      <replace>org.objectweb.asmutil.</replace>
+      <replace>player</replace>
+      <replace>Atlas</replace>
+      <replace>&quot;PacketPlayIn</replace>
+      <replace>&quot;PacketPlayOut</replace>
+      <replace>&quot;database.mongo&quot;</replace>
+      <replace>&quot;database.mysql&quot;</replace>
+    </replaceStrings>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+  </component>
+  <component name="IdeDocumentHistory">
+    <option name="CHANGED_PATHS">
+      <list>
+        <option value="$PROJECT_DIR$/src/main/java/cc/funkemunky/api/commands/ancmd/Command.java" />
+        <option value="$PROJECT_DIR$/src/main/java/cc/funkemunky/api/commands/ancmd/ColorScheme.java" />
+        <option value="$PROJECT_DIR$/src/main/java/cc/funkemunky/api/commands/ancmd/SpigotCompleter.java" />
+        <option value="$PROJECT_DIR$/src/main/java/cc/funkemunky/api/bungee/BungeeManager.java" />
+        <option value="$PROJECT_DIR$/src/main/java/cc/funkemunky/api/events/EventManager.java" />
+        <option value="$PROJECT_DIR$/src/main/java/cc/funkemunky/api/commands/FunkeCommand.java" />
+        <option value="$PROJECT_DIR$/src/main/java/cc/funkemunky/api/utils/FunkeFile.java" />
+        <option value="$PROJECT_DIR$/src/main/java/cc/funkemunky/api/utils/ConfigUtils.java" />
+        <option value="$PROJECT_DIR$/src/main/java/cc/funkemunky/api/commands/ancmd/SpigotCommand.java" />
+        <option value="$PROJECT_DIR$/src/main/java/org/objectweb/asm/ClassReader.java" />
+        <option value="$PROJECT_DIR$/src/main/java/org/objectweb/asm/signature/SignatureReader.java" />
+        <option value="$PROJECT_DIR$/src/main/java/org/objectweb/asm/Type.java" />
+        <option value="$PROJECT_DIR$/src/main/java/org/objectweb/asm/tree/analysis/Analyzer.java" />
+        <option value="$PROJECT_DIR$/src/main/java/cc/funkemunky/api/utils/ClassScanner.java" />
+        <option value="$PROJECT_DIR$/src/main/java/org/objectweb/asmutil/MethodWriter.java" />
+        <option value="$PROJECT_DIR$/src/main/java/cc/funkemunky/api/utils/blockbox/boxes/BlockBox1_13_R2.java" />
+        <option value="$PROJECT_DIR$/src/main/java/cc/funkemunky/api/commands/ancmd/CommandManager.java" />
+        <option value="$PROJECT_DIR$/src/main/java/cc/funkemunky/api/tinyprotocol/api/Packet.java" />
+        <option value="$PROJECT_DIR$/src/main/java/cc/funkemunky/api/packets/packets/wrappers/PacketPlayInFlying.java" />
+        <option value="$PROJECT_DIR$/src/main/java/cc/funkemunky/api/packets/wrappers/PacketPlayInFlying.java" />
+        <option value="$PROJECT_DIR$/src/main/java/cc/funkemunky/api/packets/reflections/wrappers/WrappedAxisAlignedBB.java" />
+        <option value="$PROJECT_DIR$/src/main/java/cc/funkemunky/api/packets/reflections/Reflections.java" />
+        <option value="$PROJECT_DIR$/src/main/java/cc/funkemunky/api/packets/ChannelInjector.java" />
+        <option value="$PROJECT_DIR$/src/main/java/cc/funkemunky/api/packets/channelhandler/ChannelHandler1_7.java" />
+        <option value="$PROJECT_DIR$/src/main/java/cc/funkemunky/api/packets/channelhandler/ChannelHandler1_8.java" />
+        <option value="$PROJECT_DIR$/src/main/java/cc/funkemunky/api/packets/ProtocolVersion.java" />
+        <option value="$PROJECT_DIR$/src/main/java/cc/funkemunky/api/tinyprotocol/packet/NMSObject.java" />
+        <option value="$PROJECT_DIR$/src/main/java/cc/funkemunky/api/packets/packet/in/WrappedInHeldItemSlotPacket.java" />
+        <option value="$PROJECT_DIR$/src/main/java/cc/funkemunky/api/tinyprotocol/api/NMSObject.java" />
+        <option value="$PROJECT_DIR$/src/main/java/cc/funkemunky/api/packets/packet/NMSObject.java" />
+        <option value="$PROJECT_DIR$/src/main/java/cc/funkemunky/api/packets/packet/in/WrappedIn13KeepAlive.java" />
+        <option value="$PROJECT_DIR$/src/main/java/cc/funkemunky/api/packets/Packet.java" />
+        <option value="$PROJECT_DIR$/src/main/java/cc/funkemunky/api/tinyprotocol/packet/in/WrappedInVelocityPacket.java" />
+        <option value="$PROJECT_DIR$/src/main/java/cc/funkemunky/api/packets/channelhandler/ChannelHandlerAbstract.java" />
+        <option value="$PROJECT_DIR$/src/main/java/cc/funkemunky/api/tinyprotocol/api/WrappedMethod.java" />
+        <option value="$PROJECT_DIR$/src/main/java/cc/funkemunky/api/tinyprotocol/api/packets/reflections/types/WrappedMethod.java" />
+        <option value="$PROJECT_DIR$/src/main/java/cc/funkemunky/api/tinyprotocol/api/TinyProtocolHandler.java" />
+        <option value="$PROJECT_DIR$/src/main/java/cc/funkemunky/api/tinyprotocol/api/TinyProtocol1_8.java" />
+        <option value="$PROJECT_DIR$/src/main/java/cc/funkemunky/api/tinyprotocol/api/TinyProtocol1_7.java" />
+        <option value="$PROJECT_DIR$/src/main/java/cc/funkemunky/api/tinyprotocol/api/AbstractTinyProtocol.java" />
+        <option value="$PROJECT_DIR$/src/main/java/cc/funkemunky/api/tinyprotocol/api/packets/channelhandler/ChannelHandlerAbstract.java" />
+        <option value="$PROJECT_DIR$/src/main/java/cc/funkemunky/api/tinyprotocol/api/packets/channelhandler/ChannelHandler1_7.java" />
+        <option value="$PROJECT_DIR$/src/main/java/cc/funkemunky/api/tinyprotocol/api/packets/channelhandler/ChannelHandler1_8.java" />
+        <option value="$PROJECT_DIR$/src/main/java/cc/funkemunky/api/utils/blockbox/boxes/BlockBox1_12_R1.java" />
+        <option value="$PROJECT_DIR$/src/main/java/cc/funkemunky/api/utils/BlockUtils.java" />
+        <option value="$PROJECT_DIR$/src/main/java/cc/funkemunky/api/tinyprotocol/api/packets/ChannelInjector.java" />
+        <option value="$PROJECT_DIR$/pom.xml" />
+        <option value="$PROJECT_DIR$/src/main/java/cc/funkemunky/api/settings/DatabaseSettings.java" />
+        <option value="$PROJECT_DIR$/src/main/java/cc/funkemunky/api/settings/MongoSettings.java" />
+        <option value="$PROJECT_DIR$/src/main/java/cc/funkemunky/api/settings/MySQLSettings.java" />
+        <option value="$PROJECT_DIR$/src/main/java/cc/funkemunky/api/Atlas.java" />
+      </list>
+    </option>
+  </component>
+  <component name="MavenImportPreferences">
+    <option name="generalSettings">
+      <MavenGeneralSettings>
+        <option name="workOffline" value="true" />
+      </MavenGeneralSettings>
+    </option>
+    <option name="importingSettings">
+      <MavenImportingSettings>
+        <option name="importAutomatically" value="true" />
+      </MavenImportingSettings>
+    </option>
+  </component>
+  <component name="MavenProjectNavigator">
+    <treeState>
+      <expand>
+        <path>
+          <item name="" type="16c1761:MavenProjectsStructure$RootNode" />
+          <item name="Atlas" type="9519ce18:MavenProjectsStructure$ProjectNode" />
+        </path>
+      </expand>
+      <select />
+    </treeState>
+  </component>
+  <component name="ProjectFrameBounds" extendedState="6">
+    <option name="x" value="1" />
+    <option name="width" value="1929" />
+    <option name="height" value="1047" />
+  </component>
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectView">
+    <navigator proportions="" version="1">
+      <foldersAlwaysOnTop value="true" />
+    </navigator>
+    <panes>
+      <pane id="ProjectPane" />
+      <pane id="PackagesPane" />
+      <pane id="Scope" />
+    </panes>
+  </component>
+  <component name="PropertiesComponent">
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="aspect.path.notification.shown" value="true" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1560339865128" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../../AutoEye" />
+    <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
+    <property name="nodejs_npm_path_reset_for_default_project" value="true" />
+    <property name="nodejs_package_manager_path" value="npm" />
+    <property name="project.structure.last.edited" value="Artifacts" />
+    <property name="project.structure.proportion" value="0.17578125" />
+    <property name="project.structure.side.proportion" value="0.2" />
+    <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
+  </component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\suckm\Documents\GitHub\Atlas\Atlas\src\main\java" />
+    </key>
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\suckm\Documents\GitHub\Atlas\Atlas\src\main\java\cc\funkemunky\api\tinyprotocol\api" />
+      <recent name="C:\Users\suckm\Documents\GitHub\Atlas\Atlas\src\main\java\cc\funkemunky\api\packets" />
+      <recent name="C:\Users\suckm\Documents\GitHub\Atlas\Atlas\src\main\java\cc\funkemunky\api" />
+      <recent name="C:\Users\suckm\Documents\GitHub\Atlas\Atlas\src\main\java\cc\funkemunky\api\commands\framework" />
+      <recent name="C:\Users\suckm\Documents\GitHub\Atlas\Atlas\src\main\java\cc\funkemunky\api\tinyprotocol\packet" />
+    </key>
+  </component>
+  <component name="RunDashboard">
+    <option name="ruleStates">
+      <list>
+        <RuleState>
+          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
+        </RuleState>
+        <RuleState>
+          <option name="name" value="StatusDashboardGroupingRule" />
+        </RuleState>
+      </list>
+    </option>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="1209f12a-aa83-44aa-9f92-38497ed8d8ce" name="Default Changelist" comment="" />
+      <created>1555792275379</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1555792275379</updated>
+      <workItem from="1555792277683" duration="78000" />
+      <workItem from="1555962248851" duration="1141000" />
+      <workItem from="1556023478694" duration="2011000" />
+      <workItem from="1556044770659" duration="1863000" />
+      <workItem from="1556133789298" duration="2235000" />
+      <workItem from="1556277625124" duration="485000" />
+      <workItem from="1556467389743" duration="1735000" />
+      <workItem from="1556622564775" duration="1867000" />
+      <workItem from="1556733813824" duration="34000" />
+      <workItem from="1557080183910" duration="50000" />
+      <workItem from="1557080280948" duration="11000" />
+      <workItem from="1557231376256" duration="3312000" />
+      <workItem from="1557402730448" duration="1976000" />
+      <workItem from="1557611776316" duration="659000" />
+      <workItem from="1557683511278" duration="1221000" />
+      <workItem from="1557777563552" duration="1319000" />
+      <workItem from="1557878497675" duration="3289000" />
+      <workItem from="1558803396941" duration="2177000" />
+      <workItem from="1558805733164" duration="163000" />
+      <workItem from="1558805925020" duration="2026000" />
+      <workItem from="1558882027619" duration="5282000" />
+      <workItem from="1559657886259" duration="3683000" />
+      <workItem from="1559684025122" duration="387000" />
+      <workItem from="1559685107600" duration="46000" />
+      <workItem from="1559768526392" duration="49000" />
+      <workItem from="1559926263458" duration="1224000" />
+      <workItem from="1560019621629" duration="479000" />
+      <workItem from="1560261563456" duration="5908000" />
+      <workItem from="1560336974196" duration="2703000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TimeTrackingManager">
+    <option name="totallyTimeSpent" value="47413000" />
+  </component>
+  <component name="ToolWindowManager">
+    <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
+    <layout>
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.33742005" />
+      <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
+      <window_info id="Image Layers" order="2" />
+      <window_info id="Designer" order="3" />
+      <window_info id="UI Designer" order="4" />
+      <window_info id="Capture Tool" order="5" />
+      <window_info id="Favorites" order="6" side_tool="true" />
+      <window_info anchor="bottom" id="Message" order="0" />
+      <window_info anchor="bottom" id="Find" order="1" weight="0.3288889" />
+      <window_info anchor="bottom" id="Run" order="2" visible="true" weight="0.33152762" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
+      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
+      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
+      <window_info anchor="bottom" id="TODO" order="6" />
+      <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Version Control" order="8" />
+      <window_info anchor="bottom" id="Database Changes" order="9" />
+      <window_info anchor="bottom" id="Terminal" order="10" />
+      <window_info anchor="bottom" id="Event Log" order="11" side_tool="true" />
+      <window_info anchor="bottom" id="Messages" order="12" weight="0.32932165" />
+      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
+      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
+      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
+      <window_info anchor="right" id="Palette" order="3" />
+      <window_info anchor="right" id="Theme Preview" order="4" />
+      <window_info anchor="right" id="Maven" order="5" weight="0.3304904" />
+      <window_info anchor="right" id="Capture Analysis" order="6" />
+      <window_info anchor="right" id="Palette&#9;" order="7" />
+      <window_info anchor="right" id="Database" order="8" />
+    </layout>
+    <layout-to-restore>
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.33386666" />
+      <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
+      <window_info id="Image Layers" order="2" />
+      <window_info id="Designer" order="3" />
+      <window_info id="UI Designer" order="4" />
+      <window_info id="Capture Tool" order="5" />
+      <window_info id="Favorites" order="6" side_tool="true" />
+      <window_info anchor="bottom" id="Message" order="0" />
+      <window_info anchor="bottom" id="Find" order="1" weight="0.3288889" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.33222222" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
+      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
+      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
+      <window_info anchor="bottom" id="TODO" order="6" />
+      <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Version Control" order="8" />
+      <window_info anchor="bottom" id="Database Changes" order="9" />
+      <window_info anchor="bottom" id="Terminal" order="10" />
+      <window_info anchor="bottom" id="Event Log" order="11" side_tool="true" />
+      <window_info anchor="bottom" id="Messages" order="12" weight="0.32932165" />
+      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
+      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
+      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
+      <window_info anchor="right" id="Palette" order="3" />
+      <window_info anchor="right" id="Theme Preview" order="4" />
+      <window_info anchor="right" id="Maven" order="5" visible="true" weight="0.33066666" />
+      <window_info anchor="right" id="Capture Analysis" order="6" />
+      <window_info anchor="right" id="Palette&#9;" order="7" />
+      <window_info anchor="right" id="Database" order="8" />
+    </layout-to-restore>
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="1" />
+  </component>
+  <component name="antWorkspaceConfiguration">
+    <option name="IS_AUTOSCROLL_TO_SOURCE" value="false" />
+    <option name="FILTER_TARGETS" value="false" />
+  </component>
+  <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/src/main/java/cc/funkemunky/api/packets/packet/out/WrappedOutAbilitiesPacket.java" />
+    <entry file="file://$PROJECT_DIR$/src/main/java/cc/funkemunky/api/packets/packet/NMSObject.java" />
+    <entry file="file://$PROJECT_DIR$/src/main/java/cc/funkemunky/api/packets/packet/in/WrappedIn13KeepAlive.java" />
+    <entry file="file://$PROJECT_DIR$/src/main/java/cc/funkemunky/api/packets/packet/in/WrappedInAbilitiesPacket.java" />
+    <entry file="file://$PROJECT_DIR$/src/main/java/cc/funkemunky/api/tinyprotocol/packet/in/WrappedInAbilitiesPacket.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="29">
+          <caret line="9" column="13" selection-start-line="9" selection-start-column="13" selection-end-line="9" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/cc/funkemunky/api/tinyprotocol/packet/in/WrappedInBlockDigPacket.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="323">
+          <caret line="25" selection-start-line="25" selection-end-line="25" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/cc/funkemunky/api/tinyprotocol/packet/in/WrappedInWindowClickPacket.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="85">
+          <caret line="10" column="13" selection-start-line="10" selection-start-column="13" selection-end-line="10" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/cc/funkemunky/api/tinyprotocol/packet/in/WrappedInUseEntityPacket.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="85">
+          <caret line="14" column="13" selection-start-line="14" selection-start-column="13" selection-end-line="14" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/cc/funkemunky/api/tinyprotocol/packet/in/WrappedInTransactionPacket.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="85">
+          <caret line="9" column="13" selection-start-line="9" selection-start-column="13" selection-end-line="9" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/cc/funkemunky/api/tinyprotocol/packet/in/WrappedInVelocityPacket.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="119">
+          <caret line="13" column="51" selection-start-line="13" selection-start-column="45" selection-end-line="13" selection-end-column="51" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/cc/funkemunky/api/packets/Packet.java" />
+    <entry file="file://$PROJECT_DIR$/src/main/java/cc/funkemunky/api/packets/channelhandler/ChannelHandlerAbstract.java" />
+    <entry file="file://$PROJECT_DIR$/src/main/java/cc/funkemunky/api/packets/ChannelInjector.java" />
+    <entry file="file://$PROJECT_DIR$/src/main/java/cc/funkemunky/api/packets/reflections/Reflections.java" />
+    <entry file="file://$PROJECT_DIR$/src/main/java/cc/funkemunky/api/tinyprotocol/api/ChannelHandlerAbstract.java" />
+    <entry file="file://$PROJECT_DIR$/src/main/java/cc/funkemunky/api/tinyprotocol/api/ChannelHandler1_8.java" />
+    <entry file="file://$PROJECT_DIR$/src/main/java/cc/funkemunky/api/tinyprotocol/api/Reflections.java" />
+    <entry file="file://$PROJECT_DIR$/src/main/java/cc/funkemunky/api/tinyprotocol/api/ChannelInjector.java" />
+    <entry file="file://$PROJECT_DIR$/src/main/java/cc/funkemunky/api/tinyprotocol/api/WrappedConstructor.java" />
+    <entry file="file://$PROJECT_DIR$/src/main/java/cc/funkemunky/api/tinyprotocol/api/WrappedClass.java" />
+    <entry file="file://$PROJECT_DIR$/src/main/java/cc/funkemunky/api/tinyprotocol/api/WrappedField.java" />
+    <entry file="file://$PROJECT_DIR$/src/main/java/cc/funkemunky/api/tinyprotocol/api/ChannelHandler1_7.java" />
+    <entry file="file://$PROJECT_DIR$/src/main/java/cc/funkemunky/api/tinyprotocol/api/WrappedMethod.java" />
+    <entry file="file://$PROJECT_DIR$/src/main/java/cc/funkemunky/api/tinyprotocol/api/packets/reflections/Reflections.java">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/cc/funkemunky/api/tinyprotocol/api/packets/reflections/types/WrappedConstructor.java">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/cc/funkemunky/api/tinyprotocol/api/packets/reflections/types/WrappedClass.java">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/cc/funkemunky/api/tinyprotocol/api/packets/reflections/types/WrappedField.java">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/cc/funkemunky/api/tinyprotocol/api/packets/reflections/types/WrappedMethod.java">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/cc/funkemunky/api/tinyprotocol/api/TinyProtocol1_7.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="187">
+          <caret line="32" column="11" selection-start-line="32" selection-start-column="11" selection-end-line="32" selection-end-column="11" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/cc/funkemunky/api/tinyprotocol/api/ProtocolVersion.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="136">
+          <caret line="12" column="12" selection-start-line="12" selection-start-column="12" selection-end-line="12" selection-end-column="12" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/cc/funkemunky/api/tinyprotocol/api/NMSObject.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="357">
+          <caret line="42" selection-start-line="42" selection-end-line="42" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/cc/funkemunky/api/tinyprotocol/api/Packet.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="34">
+          <caret line="125" column="60" selection-start-line="125" selection-start-column="54" selection-end-line="125" selection-end-column="60" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/cc/funkemunky/api/tinyprotocol/api/AbstractTinyProtocol.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="102">
+          <caret line="8" column="11" selection-start-line="8" selection-start-column="11" selection-end-line="8" selection-end-column="11" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/resources/plugin.yml">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/dependency-reduced-pom.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-204" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/cc/funkemunky/api/event/system/EventManager.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="85">
+          <caret line="13" column="13" selection-start-line="13" selection-start-column="13" selection-end-line="13" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/cc/funkemunky/api/tinyprotocol/api/packets/channelhandler/ChannelHandler1_7.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="901">
+          <caret line="62" column="4" selection-start-line="62" selection-start-column="4" selection-end-line="64" selection-end-column="5" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/cc/funkemunky/api/tinyprotocol/api/TinyProtocol1_8.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="4352">
+          <caret line="281" column="8" selection-start-line="281" selection-start-column="8" selection-end-line="281" selection-end-column="47" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/cc/funkemunky/api/tinyprotocol/api/packets/channelhandler/ChannelHandler1_8.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="952">
+          <caret line="67" column="5" selection-start-line="67" selection-start-column="5" selection-end-line="67" selection-end-column="5" />
+          <folding>
+            <element signature="e#2759#2760#0" expanded="true" />
+            <element signature="e#2826#2827#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$MAVEN_REPOSITORY$/org/github/spigot/1.12.1/1.12.1/1.12.1-1.12.1.jar!/net/minecraft/server/v1_12_R1/Chunk.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="15795">
+          <caret line="1214" column="19" selection-start-line="1214" selection-start-column="19" selection-end-line="1214" selection-end-column="19" />
+          <folding>
+            <element signature="e#42516#42517#0" expanded="true" />
+            <element signature="e#42545#42546#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$MAVEN_REPOSITORY$/org/github/spigot/1.12.1/1.12.1/1.12.1-1.12.1.jar!/net/minecraft/server/v1_12_R1/World.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="299">
+          <caret line="281" column="19" selection-start-line="281" selection-start-column="19" selection-end-line="281" selection-end-column="19" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/cc/funkemunky/api/utils/blockbox/boxes/BlockBox1_12_R1.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="314">
+          <caret line="119" column="251" selection-start-line="119" selection-start-column="251" selection-end-line="119" selection-end-column="251" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/cc/funkemunky/api/utils/BlockUtils.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="255">
+          <caret line="29" column="89" selection-start-line="29" selection-start-column="89" selection-end-line="29" selection-end-column="89" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/cc/funkemunky/api/tinyprotocol/api/TinyProtocolHandler.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-85">
+          <caret line="10" selection-start-line="10" selection-end-line="10" selection-end-column="11" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/cc/funkemunky/api/tinyprotocol/api/packets/ChannelInjector.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="102">
+          <caret line="23" column="2" selection-start-line="23" selection-start-column="2" selection-end-line="23" selection-end-column="2" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/cc/funkemunky/api/tinyprotocol/api/packets/channelhandler/ChannelHandlerAbstract.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="952">
+          <caret line="78" column="66" selection-start-line="78" selection-start-column="66" selection-end-line="78" selection-end-column="66" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/cc/funkemunky/api/mongo/Mongo.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="62">
+          <caret line="17" column="13" selection-start-line="17" selection-start-column="13" selection-end-line="17" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pom.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="374">
+          <caret line="95" column="21" selection-start-line="95" selection-start-column="21" selection-end-line="95" selection-end-column="21" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/cc/funkemunky/api/settings/MongoSettings.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="391">
+          <caret line="23" column="47" lean-forward="true" selection-start-line="7" selection-start-column="4" selection-end-line="23" selection-end-column="47" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/cc/funkemunky/api/settings/MySQLSettings.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="102">
+          <caret line="6" column="28" selection-start-line="6" selection-start-column="28" selection-end-line="6" selection-end-column="28" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/cc/funkemunky/api/Atlas.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="340">
+          <caret line="20" column="35" selection-start-line="20" selection-start-column="35" selection-end-line="20" selection-end-column="35" />
+        </state>
+      </provider>
+    </entry>
+  </component>
+  <component name="masterDetails">
+    <states>
+      <state key="ArtifactsStructureConfigurable.UI">
+        <settings>
+          <artifact-editor />
+          <last-edited>Atlas:jar</last-edited>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+                <option value="0.5" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="FacetStructureConfigurable.UI">
+        <settings>
+          <last-edited>No facets are configured</last-edited>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="GlobalLibrariesConfigurable.UI">
+        <settings>
+          <last-edited>easymde</last-edited>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="JdkListConfigurable.UI">
+        <settings>
+          <last-edited>1.8</last-edited>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="ModuleStructureConfigurable.UI">
+        <settings>
+          <last-edited>Atlas</last-edited>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="ProjectJDKs.UI">
+        <settings>
+          <last-edited>1.8</last-edited>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="ProjectLibrariesConfigurable.UI">
+        <settings>
+          <last-edited>Maven: one.util:streamex:0.6.8</last-edited>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+    </states>
+  </component>
+  <component name="mavenExecuteGoalHistory">
+    <option value="$PROJECT_DIR$" />
+    <option value="-T 2C clean install" />
+    <option value="-T 2C install" />
+    <option value="-T 1C clean install" />
+  </component>
+</project>
