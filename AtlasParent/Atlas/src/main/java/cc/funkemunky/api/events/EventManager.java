@@ -2,19 +2,18 @@ package cc.funkemunky.api.events;
 
 import cc.funkemunky.api.Atlas;
 import cc.funkemunky.api.events.exceptions.ListenParamaterException;
+import javafx.collections.transformation.SortedList;
 import lombok.Getter;
 import org.bukkit.plugin.Plugin;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.SortedSet;
+import java.util.*;
 import java.util.concurrent.ConcurrentSkipListSet;
 
 @Getter
 public class EventManager {
-    private final SortedSet<ListenerMethod> listenerMethods = new ConcurrentSkipListSet<>(Comparator.comparing(method -> method.getListenerPriority().getPriority(), Comparator.reverseOrder()));
+    private final List<ListenerMethod> listenerMethods = new ArrayList<>();
     private boolean paused = false;
 
     public void registerListener(Method method, AtlasListener listener, Plugin plugin) throws ListenParamaterException {
@@ -28,6 +27,7 @@ public class EventManager {
                 }
 
                 listenerMethods.add(lm);
+                listenerMethods.sort(Comparator.comparing(mth -> mth.getListenerPriority().getPriority(), Comparator.reverseOrder()));
             } else {
                 throw new ListenParamaterException("Method " + method.getDeclaringClass().getName() + "#" + method.getName() + "'s paramater: " + method.getParameterTypes()[0].getName() + " is not an instanceof " + AtlasEvent.class.getSimpleName() + "!");
             }

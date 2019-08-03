@@ -11,48 +11,55 @@ import java.util.List;
 
 public class SpigotCommand extends org.bukkit.command.Command {
 
-    private final Plugin owningPlugin;
+    private Plugin owningPlugin;
     protected SpigotCompleter completer;
     private CommandExecutor executor;
+    private boolean notAno = false;
 
-    /**
-     * A slimmed down PluginCommand
-     *
-     * @param name
-     * @param owner
-     */
-    protected SpigotCommand(String label, CommandExecutor executor, Plugin owner) {
+
+    public SpigotCommand(String label, CommandExecutor executor, Plugin owner) {
         super(label);
         this.executor = executor;
         this.owningPlugin = owner;
         this.usageMessage = "";
     }
 
+    public SpigotCommand(String label, CommandExecutor executor, Plugin owner, boolean notAno) {
+        super(label);
+        this.executor = executor;
+        this.owningPlugin = owner;
+        this.usageMessage = "";
+        this.notAno = notAno;
+    }
+
     @Override
     public boolean execute(CommandSender sender, String commandLabel, String[] args) {
-        boolean success = false;
-
         if (!owningPlugin.isEnabled()) {
             return false;
         }
+        if(notAno) {
+            return executor.onCommand(sender, this, commandLabel, args);
+        } else {
+            boolean success = false;
 
-        if (!testPermission(sender)) {
-            return true;
-        }
-
-        try {
-            success = executor.onCommand(sender, this, commandLabel, args);
-        } catch (Throwable ex) {
-            throw new CommandException("Unhandled exception executing ancmd '" + commandLabel + "' in plugin " + owningPlugin.getDescription().getFullName(), ex);
-        }
-
-        if (!success && usageMessage.length() > 0) {
-            for (String line : usageMessage.replace("<ancmd>", commandLabel).split("\n")) {
-                sender.sendMessage(line);
+            if (!testPermission(sender)) {
+                return true;
             }
-        }
 
-        return success;
+            try {
+                success = executor.onCommand(sender, this, commandLabel, args);
+            } catch (Throwable ex) {
+                throw new CommandException("Unhandled exception executing ancmd '" + commandLabel + "' in plugin " + owningPlugin.getDescription().getFullName(), ex);
+            }
+
+            if (!success && usageMessage.length() > 0) {
+                for (String line : usageMessage.replace("<ancmd>", commandLabel).split("\n")) {
+                    sender.sendMessage(line);
+                }
+            }
+
+            return success;
+        }
     }
 
     @Override

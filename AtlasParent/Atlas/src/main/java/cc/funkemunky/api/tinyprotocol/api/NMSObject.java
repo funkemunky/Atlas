@@ -76,6 +76,28 @@ public abstract class NMSObject {
         return null;
     }
 
+    public static Object construct(String packet, Object arg) {
+        try {
+            Class<?> c = constructors.get(packet);
+            if (c == null) {
+                c = Reflection.getMinecraftClass(packet);
+                constructors.put(packet, c);
+            }
+            Object p = c.newInstance();
+            Field[] fields = c.getDeclaredFields();
+
+            if(arg != null) {
+                fields[0].setAccessible(true);
+                fields[0].set(p, arg);
+            }
+            return p;
+        } catch (Exception e) {
+            System.out.println("The plugin cannot work as protocol incompatibilities were detected... Disabling...");
+            e.printStackTrace();
+        }
+        return null;
+    }
+
     public static Object construct(Object p, String packet, Object... args) {
         try {
             Class<?> c = constructors.get(packet);
@@ -130,6 +152,14 @@ public abstract class NMSObject {
 
     public void setPacket(String packet, Object... args) {
         this.object = construct(packet, args);
+    }
+
+    public void setPacketArg(String packet, Object arg) {
+        this.object = construct(packet, arg);
+    }
+
+    public void setPacket(String packet, Object arg) {
+        setPacketArg(packet, arg);
     }
 
     public <T> T fetch(FieldAccessor<T> field) {

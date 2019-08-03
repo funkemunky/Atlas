@@ -9,7 +9,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.server.PluginDisableEvent;
 
-@Init
+//@Init
 public class PluginShutdownListeners implements Listener {
 
     @EventHandler(priority = EventPriority.HIGHEST)

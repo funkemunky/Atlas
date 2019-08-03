@@ -26,6 +26,7 @@ import java.util.stream.IntStream;
 public class CommandManager implements CommandExecutor {
     private Map<String, CommandRegister> commands = new ConcurrentHashMap<>();
     private Plugin plugin;
+    @Getter
     private SimpleCommandMap map;
     private List<SpigotCommand> registered = new ArrayList<>();
 

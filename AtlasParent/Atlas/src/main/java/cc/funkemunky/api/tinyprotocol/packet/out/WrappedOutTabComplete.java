@@ -35,7 +35,7 @@ public class WrappedOutTabComplete extends NMSObject {
 
     //For everything below 1.13. There will be 1.13+ support for this soon.
     public WrappedOutTabComplete(String[] result) {
-        setPacket(packet, result);
+        setPacketArg(packet, result);
     }
 
     @Override

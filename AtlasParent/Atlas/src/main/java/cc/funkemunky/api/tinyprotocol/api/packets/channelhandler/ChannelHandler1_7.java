@@ -8,6 +8,7 @@
  */
 package cc.funkemunky.api.tinyprotocol.api.packets.channelhandler;
 
+import cc.funkemunky.api.Atlas;
 import cc.funkemunky.api.tinyprotocol.api.packets.reflections.Reflections;
 import cc.funkemunky.api.tinyprotocol.reflection.FieldAccessor;
 import cc.funkemunky.api.tinyprotocol.reflection.Reflection;
@@ -53,14 +54,14 @@ public class ChannelHandler1_7 extends ChannelHandlerAbstract {
         }
 
         @Override public void write(net.minecraft.util.io.netty.channel.ChannelHandlerContext ctx, Object msg, net.minecraft.util.io.netty.channel.ChannelPromise promise) throws Exception {
-            Object packet = channelHandlerAbstract.run(this.player, msg);
+            Object packet = Atlas.getInstance().getTinyProtocolHandler().onPacketInAsync(player, msg);
             if (packet != null) {
                 super.write(ctx, packet, promise);
             }
         }
 
         @Override public void channelRead(net.minecraft.util.io.netty.channel.ChannelHandlerContext ctx, Object msg) throws Exception {
-            Object packet = channelHandlerAbstract.run(this.player, msg);
+            Object packet = Atlas.getInstance().getTinyProtocolHandler().onPacketOutAsync(player, msg);
             if (packet != null) {
                 super.channelRead(ctx, packet);
             }

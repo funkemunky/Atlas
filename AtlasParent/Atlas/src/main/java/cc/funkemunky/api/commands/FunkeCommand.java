@@ -45,7 +45,27 @@ public abstract class FunkeCommand
         this.addArguments();
     }
 
-    public FunkeCommand(JavaPlugin plugin, String name, String display, String permission, String description, boolean helpPage) {
+    public FunkeCommand(JavaPlugin plugin, String name, String display, String description, String permission, boolean registerLater) {
+        this.name = name;
+        this.display = display;
+        this.permission = permission;
+        this.description = description;
+
+        commandMessages = new CommandMessages("No permission.", "Invalid arguments. Please check the help page for more information.", "You must be a player to use this feature", "Only console can use this feature.", Color.Gray, Color.Yellow, Color.Gold, Color.Red, Color.White, Color.Green);
+
+        this.arguments = new ArrayList<>();
+        instance = this;
+        helpPage = true;
+
+        if(!registerLater) {
+            plugin.getCommand(name).setExecutor(this);
+            plugin.getCommand(name).setTabCompleter(this);
+        }
+
+        this.addArguments();
+    }
+
+    public FunkeCommand(JavaPlugin plugin, String name, String display, String permission, String description, boolean helpPage, boolean registerLater) {
         this.name = name;
         this.display = display;
         this.permission = permission;
@@ -57,8 +77,10 @@ public abstract class FunkeCommand
 
         this.arguments = new ArrayList<>();
         instance = this;
-        plugin.getCommand(name).setExecutor(this);
-        plugin.getCommand(name).setTabCompleter(this);
+        if(!registerLater) {
+            plugin.getCommand(name).setExecutor(this);
+            plugin.getCommand(name).setTabCompleter(this);
+        }
 
         this.addArguments();
     }
