@@ -8,6 +8,7 @@
  */
 package cc.funkemunky.api.tinyprotocol.api.packets;
 
+import cc.funkemunky.api.tinyprotocol.api.ProtocolVersion;
 import cc.funkemunky.api.tinyprotocol.api.packets.channelhandler.ChannelHandler1_7;
 import cc.funkemunky.api.tinyprotocol.api.packets.channelhandler.ChannelHandler1_8;
 import cc.funkemunky.api.tinyprotocol.api.packets.channelhandler.ChannelHandlerAbstract;
@@ -25,7 +26,7 @@ public class ChannelInjector implements Listener {
     private ChannelHandlerAbstract channel;
 
     public ChannelInjector() {
-        this.channel = Reflections.classExists("io.netty.channel.Channel") ? new ChannelHandler1_8() : new ChannelHandler1_7();
+        this.channel = ProtocolVersion.getGameVersion().isOrAbove(ProtocolVersion.V1_8) ? new ChannelHandler1_8() : new ChannelHandler1_7();
     }
 
     public void addChannel(Player player) {
