@@ -10,10 +10,11 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.*;
 import java.util.concurrent.ConcurrentSkipListSet;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 @Getter
 public class EventManager {
-    private final List<ListenerMethod> listenerMethods = new ArrayList<>();
+    private final List<ListenerMethod> listenerMethods = new CopyOnWriteArrayList<>();
     private boolean paused = false;
 
     public void registerListener(Method method, AtlasListener listener, Plugin plugin) throws ListenParamaterException {
@@ -41,7 +42,9 @@ public class EventManager {
     }
 
     public void unregisterAll(Plugin plugin) {
-        listenerMethods.stream().filter(lm -> lm.getPlugin().equals(plugin)).forEach(listenerMethods::remove);
+        listenerMethods.stream()
+                .filter(lm -> lm.getPlugin().equals(plugin))
+                .forEach(listenerMethods::remove);
     }
 
     public void unregisterListener(AtlasListener listener) {
