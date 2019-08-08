@@ -10,16 +10,8 @@ package cc.funkemunky.api.tinyprotocol.api.packets.channelhandler;
 
 import cc.funkemunky.api.Atlas;
 import cc.funkemunky.api.tinyprotocol.api.packets.reflections.Reflections;
-import cc.funkemunky.api.tinyprotocol.reflection.FieldAccessor;
-import cc.funkemunky.api.tinyprotocol.reflection.Reflection;
 import cc.funkemunky.api.utils.ReflectionsUtil;
-import lombok.val;
-import net.minecraft.util.com.google.common.collect.MapMaker;
-import net.minecraft.util.com.mojang.authlib.GameProfile;
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
-
-import java.util.Map;
 
 public class ChannelHandler1_7 extends ChannelHandlerAbstract {
     @Override public void addChannel(Player player) {

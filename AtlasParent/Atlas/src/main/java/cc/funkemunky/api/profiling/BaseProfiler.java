@@ -1,7 +1,6 @@
 package cc.funkemunky.api.profiling;
 
 import cc.funkemunky.api.Atlas;
-import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.ArrayList;
 import java.util.HashMap;

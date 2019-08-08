@@ -10,15 +10,8 @@ package cc.funkemunky.api.tinyprotocol.api.packets.channelhandler;
 
 import cc.funkemunky.api.Atlas;
 import cc.funkemunky.api.tinyprotocol.api.packets.reflections.Reflections;
-import cc.funkemunky.api.tinyprotocol.reflection.FieldAccessor;
-import cc.funkemunky.api.tinyprotocol.reflection.Reflection;
 import cc.funkemunky.api.utils.ReflectionsUtil;
-import com.google.common.collect.MapMaker;
-import com.mojang.authlib.GameProfile;
 import org.bukkit.entity.Player;
-
-import java.util.Map;
-import java.util.WeakHashMap;
 
 public class ChannelHandler1_8 extends ChannelHandlerAbstract {
 

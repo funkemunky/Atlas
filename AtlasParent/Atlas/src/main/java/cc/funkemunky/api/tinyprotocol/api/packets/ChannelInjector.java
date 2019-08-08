@@ -12,7 +12,6 @@ import cc.funkemunky.api.tinyprotocol.api.ProtocolVersion;
 import cc.funkemunky.api.tinyprotocol.api.packets.channelhandler.ChannelHandler1_7;
 import cc.funkemunky.api.tinyprotocol.api.packets.channelhandler.ChannelHandler1_8;
 import cc.funkemunky.api.tinyprotocol.api.packets.channelhandler.ChannelHandlerAbstract;
-import cc.funkemunky.api.tinyprotocol.api.packets.reflections.Reflections;
 import lombok.Getter;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;

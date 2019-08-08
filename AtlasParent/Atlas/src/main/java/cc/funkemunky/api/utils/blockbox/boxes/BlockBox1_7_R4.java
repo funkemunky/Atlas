@@ -7,7 +7,6 @@ import cc.funkemunky.api.utils.blockbox.BlockBox;
 import net.minecraft.server.v1_7_R4.*;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.World;
 import org.bukkit.craftbukkit.v1_7_R4.CraftWorld;
 import org.bukkit.craftbukkit.v1_7_R4.entity.CraftPlayer;
 import org.bukkit.entity.LivingEntity;
@@ -16,8 +15,6 @@ import org.bukkit.entity.Player;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Objects;
-import java.util.stream.Collectors;
 
 public class BlockBox1_7_R4 implements BlockBox {
 
