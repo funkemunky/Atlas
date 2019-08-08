@@ -1,5 +1,10 @@
 package cc.funkemunky.api.utils.blockbox.boxes;
 
+import cc.funkemunky.api.Atlas;
+import cc.funkemunky.api.tinyprotocol.api.ProtocolVersion;
+import cc.funkemunky.api.tinyprotocol.reflection.FieldAccessor;
+import cc.funkemunky.api.tinyprotocol.reflection.MethodInvoker;
+import cc.funkemunky.api.tinyprotocol.reflection.Reflection;
 import cc.funkemunky.api.utils.BlockUtils;
 import cc.funkemunky.api.utils.BoundingBox;
 import cc.funkemunky.api.utils.MathUtils;
@@ -21,6 +26,9 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 public class BlockBox1_13_R2 implements BlockBox {
+
+    private static MethodInvoker getShape = Reflection.getMethod(Reflection.getMinecraftClass("IBlockData"), Reflection.getMinecraftClass("VoxelShape"), 0, Reflection.getClass("IBlockAccess"), Reflection.getClass("BlockPosition"));
+    private static MethodInvoker getBoundingBox = Reflection.getMethod(Reflection.getMinecraftClass("VoxelShape"), Reflection.getMinecraftClass("AxisAlignedBB"), 0);
 
     @Override
     public List<BoundingBox> getCollidingBoxes(org.bukkit.World world, BoundingBox box) {
@@ -81,7 +89,7 @@ public class BlockBox1_13_R2 implements BlockBox {
                         }
                     }
                 } else {
-                    AxisAlignedBB aabb = nmsiBlockData.g(nmsWorld, pos).a();
+                    AxisAlignedBB aabb = (AxisAlignedBB) getBoundingBox.invoke(getShape.invoke(nmsiBlockData, nmsWorld, pos));
 
                     if(aabb != null) {
                         BoundingBox bb = ReflectionsUtil.toBoundingBox(aabb).add(x, y, z, x, y, z);

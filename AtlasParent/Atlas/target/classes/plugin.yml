@@ -1,6 +1,6 @@
 name: Atlas
 main: cc.funkemunky.api.Atlas
-version: 1.4.8
+version: 1.5
 author: funkemunky
 commands:
   atlas:

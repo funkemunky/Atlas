@@ -12,7 +12,7 @@ public class TinyProtocolHandler {
     @Getter
     private static ChannelInjector instance;
 
-    public static boolean enabled = true;
+    public boolean paused = false;
 
     public TinyProtocolHandler() {
         // 1.8+ and 1.7 NMS have different class paths for their libraries used. This is why we have to separate the two.
@@ -35,34 +35,37 @@ public class TinyProtocolHandler {
     private boolean didPosition = false;
 
     public Object onPacketOutAsync(Player sender, Object packet) {
-        String name = packet.getClass().getName();
-        int index = name.lastIndexOf(".");
-        String packetName = name.substring(index + 1);
+        if(!paused) {
+            String name = packet.getClass().getName();
+            int index = name.lastIndexOf(".");
+            String packetName = name.substring(index + 1);
 
-        PacketSendEvent event = new PacketSendEvent(sender, packet, packetName);
+            PacketSendEvent event = new PacketSendEvent(sender, packet, packetName);
 
-        //EventManager.callEvent(new cc.funkemunky.api.event.custom.PacketSendEvent(sender, packet, packetName));
+            //EventManager.callEvent(new cc.funkemunky.api.event.custom.PacketSendEvent(sender, packet, packetName));
 
-        Atlas.getInstance().getEventManager().callEvent(event);
-
-        return !event.isCancelled() ? event.getPacket() : null;
+            Atlas.getInstance().getEventManager().callEvent(event);
+            return !event.isCancelled() ? event.getPacket() : null;
+        } else return packet;
     }
 
     public Object onPacketInAsync(Player sender, Object packet) {
-        String name = packet.getClass().getName();
-        int index = name.lastIndexOf(".");
-        String packetName = name.substring(index + 1).replace("PacketPlayInUseItem", "PacketPlayInBlockPlace")
-                .replace(Packet.Client.LEGACY_LOOK, Packet.Client.LOOK)
-                .replace(Packet.Client.LEGACY_POSITION, Packet.Client.POSITION)
-                .replace(Packet.Client.LEGACY_POSITION_LOOK, Packet.Client.POSITION_LOOK);
+        if(!paused) {
+            String name = packet.getClass().getName();
+            int index = name.lastIndexOf(".");
+            String packetName = name.substring(index + 1).replace("PacketPlayInUseItem", "PacketPlayInBlockPlace")
+                    .replace(Packet.Client.LEGACY_LOOK, Packet.Client.LOOK)
+                    .replace(Packet.Client.LEGACY_POSITION, Packet.Client.POSITION)
+                    .replace(Packet.Client.LEGACY_POSITION_LOOK, Packet.Client.POSITION_LOOK);
 
-        PacketReceiveEvent event = new PacketReceiveEvent(sender, packet, packetName);
+            PacketReceiveEvent event = new PacketReceiveEvent(sender, packet, packetName);
 
-        //EventManager.callEvent(new cc.funkemunky.api.event.custom.PacketReceiveEvent(sender, packet, packetName));
+            //EventManager.callEvent(new cc.funkemunky.api.event.custom.PacketReceiveEvent(sender, packet, packetName));
 
-        Atlas.getInstance().getEventManager().callEvent(event);
+            Atlas.getInstance().getEventManager().callEvent(event);
 
-        return !event.isCancelled() ? event.getPacket() : null;
+            return !event.isCancelled() ? event.getPacket() : null;
+        } return packet;
     }
 }
 

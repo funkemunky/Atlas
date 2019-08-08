@@ -15,7 +15,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 @Getter
 public class EventManager {
     private final List<ListenerMethod> listenerMethods = new CopyOnWriteArrayList<>();
-    private boolean paused = false;
+    public boolean paused = false;
 
     public void registerListener(Method method, AtlasListener listener, Plugin plugin) throws ListenParamaterException {
         if(method.getParameterTypes().length == 1) {

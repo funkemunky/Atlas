@@ -7,6 +7,7 @@ package cc.funkemunky.api.tinyprotocol.api;
 import cc.funkemunky.api.tinyprotocol.reflection.Reflection;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import org.bukkit.Bukkit;
 
 @Getter
 @AllArgsConstructor
@@ -36,6 +37,8 @@ public enum ProtocolVersion {
     private static ProtocolVersion gameVersion = fetchGameVersion();
     private int version;
     private String serverVersion;
+    @Getter
+    private static boolean paperSpigot = Bukkit.getServer().getBukkitVersion().toLowerCase().contains("paper");
 
     private static ProtocolVersion fetchGameVersion() {
         for (ProtocolVersion version : values()) {
@@ -51,6 +54,8 @@ public enum ProtocolVersion {
         }
         return UNKNOWN;
     }
+
+
 
     public boolean isBelow(ProtocolVersion version) {
         return this.getVersion() < version.getVersion();

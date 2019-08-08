@@ -1,9 +1,8 @@
 package cc.funkemunky.api.commands.impl.args;
 
+import cc.funkemunky.api.Atlas;
 import cc.funkemunky.api.commands.FunkeArgument;
 import cc.funkemunky.api.commands.FunkeCommand;
-import cc.funkemunky.api.event.system.EventManager;
-import cc.funkemunky.api.tinyprotocol.api.TinyProtocolHandler;
 import cc.funkemunky.api.utils.Color;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -21,13 +20,13 @@ public class ToggleArgument extends FunkeArgument {
             switch(args[1].toLowerCase()) {
                 case "event":
                 case "events": {
-                    EventManager.enabled = !EventManager.enabled;
-                    sender.sendMessage(Color.translate("&7The Atlas AtlasEvent System has been toggled " + (EventManager.enabled ? "&aon" : "&coff") + "&7."));
+                    Atlas.getInstance().getEventManager().paused = !Atlas.getInstance().getEventManager().paused;
+                    sender.sendMessage(Color.translate("&7The Atlas AtlasEvent System has been " + (Atlas.getInstance().getEventManager().paused ? "&cpaused" : "&aunpaused") + "&7."));
                     break;
                 }
                 case "packets": {
-                    TinyProtocolHandler.enabled = !TinyProtocolHandler.enabled;
-                    sender.sendMessage(Color.translate("&7The Atlas Packet System has been toggled " + (EventManager.enabled ? "&aon" : "&coff") + "&7."));
+                    Atlas.getInstance().getTinyProtocolHandler().paused = !Atlas.getInstance().getTinyProtocolHandler().paused;
+                    sender.sendMessage(Color.translate("&7The Atlas Packet System has been " + (Atlas.getInstance().getTinyProtocolHandler().paused ? "&cpaused" : "&aunpaused") + "&7."));
                     break;
                 }
                 default: {
@@ -35,6 +34,6 @@ public class ToggleArgument extends FunkeArgument {
                     break;
                 }
             }
-        }
+        } else sender.sendMessage(getParent().getCommandMessages().getErrorColor() + getParent().getCommandMessages().getInvalidArguments());
     }
 }
