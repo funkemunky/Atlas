@@ -113,18 +113,15 @@ public class MathUtils {
     }
 
     public static float getDelta(float one, float two) {
-        float absOne = Math.abs(one), absTwo = Math.abs(two);
-        return Math.max(absOne, absTwo) - Math.min(absOne, absTwo);
+        return Math.abs(one - two);
     }
 
     public static double getDelta(double one, double two) {
-        double absOne = Math.abs(one), absTwo = Math.abs(two);
-        return Math.max(absOne, absTwo) - Math.min(absOne, absTwo);
+        return Math.abs(one - two);
     }
 
     public static long getDelta(long one, long two) {
-        long absOne = Math.abs(one), absTwo = Math.abs(two);
-        return Math.max(absOne, absTwo) - Math.min(absOne, absTwo);
+        return Math.abs(one - two);
     }
 
     public static long elapsed(long time) {

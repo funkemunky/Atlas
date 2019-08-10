@@ -54,7 +54,7 @@ public class BlockBox1_14_R1 implements BlockBox {
 
                 VoxelShape shape = nmsiBlockData.getCollisionShape(nmsWorld, pos);
 
-                if (!shape.toString().equals("EMPTY")) {
+                if (!shape.toString().contains("EMPTY")) {
                     for (AxisAlignedBB aabb : shape.d()) {
                         BoundingBox bb = new BoundingBox((float) aabb.minX, (float) aabb.minY, (float) aabb.minZ, (float) aabb.maxX, (float) aabb.maxY, (float) aabb.maxZ);
 
@@ -78,12 +78,15 @@ public class BlockBox1_14_R1 implements BlockBox {
                         }
                     }
                 } else {
-                    AxisAlignedBB aabb = nmsiBlockData.getCollisionShape(nmsWorld, pos).getBoundingBox();
-                    if(aabb != null) {
-                        BoundingBox bb = ReflectionsUtil.toBoundingBox(aabb).add(x, y, z, x, y, z);
+                    VoxelShape shape2 = nmsiBlockData.getShape(nmsWorld, pos);
+                    if(!shape.toString().contains("EMPTY")) {
+                        AxisAlignedBB aabb = nmsiBlockData.getShape(nmsWorld, pos).getBoundingBox();
+                        if(aabb != null) {
+                            BoundingBox bb = ReflectionsUtil.toBoundingBox(aabb).add(x, y, z, x, y, z);
 
-                        if (bb.collides(box)) {
-                            boxes.add(bb);
+                            if (bb.collides(box)) {
+                                boxes.add(bb);
+                            }
                         }
                     }
                 }
