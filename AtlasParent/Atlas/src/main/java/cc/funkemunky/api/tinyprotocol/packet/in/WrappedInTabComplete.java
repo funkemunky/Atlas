@@ -4,6 +4,7 @@ import cc.funkemunky.api.tinyprotocol.api.NMSObject;
 import cc.funkemunky.api.tinyprotocol.api.ProtocolVersion;
 import cc.funkemunky.api.tinyprotocol.packet.types.BaseBlockPosition;
 import cc.funkemunky.api.tinyprotocol.reflection.FieldAccessor;
+import cc.funkemunky.api.utils.ReflectionsUtil;
 import lombok.Getter;
 import org.bukkit.entity.Player;
 
@@ -17,8 +18,7 @@ public class WrappedInTabComplete extends NMSObject {
     }
 
     private static FieldAccessor<String> messageAccessor = fetchField(packet, String.class, 0);
-    private static FieldAccessor<Boolean> hasToolTipAccessor = fetchField(packet, boolean.class, 0);
-    private static FieldAccessor<Object> baseBlockPosition = fetchField(packet, Object.class, 0);
+    private static FieldAccessor<Boolean> hasToolTipAccessor;
 
     private String message;
     private BaseBlockPosition blockPosition; //1.8 and up only.
@@ -29,11 +29,8 @@ public class WrappedInTabComplete extends NMSObject {
         message = fetch(messageAccessor);
 
         if(ProtocolVersion.getGameVersion().isAbove(ProtocolVersion.V1_8_9)) {
+            hasToolTipAccessor = fetchField(packet, boolean.class, 0);
             hasToolTip = fetch(hasToolTipAccessor);
-        }
-
-        if(ProtocolVersion.getGameVersion().isAbove(ProtocolVersion.V1_7_10)) {
-            blockPosition = new BaseBlockPosition(fetch(baseBlockPosition));
         }
     }
 }

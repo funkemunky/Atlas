@@ -19,6 +19,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.FutureTask;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -308,15 +309,33 @@ public class CommandManager implements CommandExecutor {
 
         if (map.getCommand(cmdLabel) == null) {
             SpigotCommand cmd = new SpigotCommand(cmdLabel, this, plugin);
-            Arrays.stream(annotation.tabCompletions()).forEach(string -> cmd.completer.addCompleter(string, method, clazz));
+            Arrays.stream(annotation.tabCompletions()).forEach(string -> {
+                String[] split = string.split("::");
+                cmd.completer.addCompleter(split[0], split[1]);
+            });
             map.register(plugin.getName(), cmd);
 
             registered.add(cmd);
+
+            if(label.contains(".")) {
+                String[] args = label.split(".");
+
+                if(args.length > 1) {
+                    StringBuilder completeLabel = new StringBuilder();
+                    for(int i = 0 ; i < args.length - 1 ; i++) {
+                        completeLabel.append(args[i]).append(".");
+                    }
+
+                    completeLabel.deleteCharAt(completeLabel.length() - 1);
+
+                    cmd.completer.addCompleter(completeLabel.toString(), args[label.length() - 1]);
+                }
+            }
         }
-        if (!command.description().equalsIgnoreCase("") && cmdLabel == label) {
+        if (!command.description().equalsIgnoreCase("") && Objects.equals(cmdLabel, label)) {
             map.getCommand(cmdLabel).setDescription(command.description());
         }
-        if (!command.usage().equalsIgnoreCase("") && cmdLabel == label) {
+        if (!command.usage().equalsIgnoreCase("") && Objects.equals(cmdLabel, label)) {
             map.getCommand(cmdLabel).setUsage(command.usage());
         }
     }
@@ -324,5 +343,20 @@ public class CommandManager implements CommandExecutor {
     @Deprecated
     public void registerCommand(Plugin plugin, Command command, String label, Method method, Object clazz) {
         registerCommand(command, label, method, clazz);
+    }
+
+    public void addCompletionsForCommand(String command, String...completions) {
+        if(commands.containsKey(command)) {
+            CommandRegister reg = commands.get(command);
+
+            String[] split = command.split(".");
+            String label = split[0];
+
+            SpigotCommand cmd = (SpigotCommand) map.getCommand(label);
+
+            for (String completion : completions) {
+                cmd.completer.addCompleter(command, completion);
+            }
+        }
     }
 }

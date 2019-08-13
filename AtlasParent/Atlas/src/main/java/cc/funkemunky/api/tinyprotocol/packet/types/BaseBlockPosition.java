@@ -8,9 +8,9 @@ public class BaseBlockPosition extends NMSObject {
     private static FieldAccessor<Integer> fieldX = fetchField(Type.BASEBLOCKPOSITION, int.class, 0);
     private static FieldAccessor<Integer> fieldY = fetchField(Type.BASEBLOCKPOSITION, int.class, 1);
     private static FieldAccessor<Integer> fieldZ = fetchField(Type.BASEBLOCKPOSITION, int.class, 2);
-    private final int a;
-    private final int c;
-    private final int d;
+    private int a;
+    private int c;
+    private int d;
 
     public BaseBlockPosition(Object obj) {
         setObject(obj);

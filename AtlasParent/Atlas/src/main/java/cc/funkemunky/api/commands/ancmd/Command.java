@@ -13,7 +13,7 @@ public @interface Command {
     boolean playerOnly() default false;
     boolean consoleOnly() default false;
     String[] permission() default {};
-    String[] tabCompletions() default {};
+    String[] tabCompletions() default {}; //Format label::result
     String description() default "";
     String usage() default "";
     String noPermissionMessage() default "&cNo permission.";

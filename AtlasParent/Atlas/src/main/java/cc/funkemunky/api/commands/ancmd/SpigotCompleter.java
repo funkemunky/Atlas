@@ -7,18 +7,19 @@ import org.bukkit.entity.Player;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.AbstractMap;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.Map.Entry;
 
 public class SpigotCompleter implements TabCompleter {
 
-    private Map<String, Entry<Method, Object>> completers = new HashMap<String, Entry<Method, Object>>();
+    private Map<String, List<String>> completers = new HashMap<>();
 
-    public void addCompleter(String label, Method m, Object obj) {
-        completers.put(label, new AbstractMap.SimpleEntry<Method, Object>(m, obj));
+    public void addCompleter(String label, String completer) {
+        List<String> completers = this.completers.getOrDefault(label, new ArrayList<>());
+
+        completers.add(completer);
+
+        this.completers.put(label, completers);
     }
 
     @SuppressWarnings("unchecked")
@@ -34,13 +35,7 @@ public class SpigotCompleter implements TabCompleter {
             }
             String cmdLabel = buffer.toString();
             if (completers.containsKey(cmdLabel)) {
-                Entry<Method, Object> entry = completers.get(cmdLabel);
-                try {
-                    return (List<String>) entry.getKey().invoke(entry.getValue(),
-                            new CommandAdapter(sender, command, sender instanceof Player ? (Player) sender : null, label, null, args));
-                } catch (IllegalArgumentException | IllegalAccessException | InvocationTargetException e) {
-                    e.printStackTrace();
-                }
+                return completers.get(cmdLabel);
             }
         }
         return null;
