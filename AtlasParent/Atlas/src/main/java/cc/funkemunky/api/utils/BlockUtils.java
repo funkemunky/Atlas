@@ -351,6 +351,7 @@ public class BlockUtils {
         collisionBoundingBoxes.put(Material.PUMPKIN, new BoundingBox((float) 0.0, (float) 0.0, (float) 0.0, (float) 1.0, (float) 1.0, (float) 1.0));
         collisionBoundingBoxes.put(Material.CARROT, new BoundingBox((float) 0.0, (float) 0.0, (float) 0.0, (float) 1.0, (float) 0.25, (float) 1.0));
         collisionBoundingBoxes.put(Material.TNT, new BoundingBox((float) 0.0, (float) 0.0, (float) 0.0, (float) 1.0, (float) 1.0, (float) 1.0));
+        collisionBoundingBoxes.put(Material.SOUL_SAND, new BoundingBox(0f, 0f,0f, 1f, 0.875f, 1f));
         collisionBoundingBoxes.put(Material.SAND, new BoundingBox((float) 0.0, (float) 0.0, (float) 0.0, (float) 1.0, (float) 1.0, (float) 1.0));
         collisionBoundingBoxes.put(Material.WOOD_PLATE, new BoundingBox((float) 0.0, (float) 0.0, (float) 0.0, (float) 1.0, (float) 1.0, (float) 1.0));
         collisionBoundingBoxes.put(Material.SIGN_POST, new BoundingBox((float) 0.25, (float) 0.0, (float) 0.25, (float) 0.75, (float) 1.0, (float) 0.75));

@@ -168,5 +168,6 @@ public abstract class Packet {
         public static final String CLOSE_WINDOW = SERVER + "CloseWindow";
         public static final String HELD_ITEM = SERVER + "HeldItemSlot";
         public static final String TAB_COMPLETE = SERVER + "TabComplete";
+        public static final String RESPAWN = SERVER + "Respawn";
     }
 }

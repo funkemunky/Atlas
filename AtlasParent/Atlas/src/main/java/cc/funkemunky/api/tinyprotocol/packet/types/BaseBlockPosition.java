@@ -1,6 +1,8 @@
 package cc.funkemunky.api.tinyprotocol.packet.types;
 
 import cc.funkemunky.api.tinyprotocol.api.NMSObject;
+import cc.funkemunky.api.tinyprotocol.api.packets.reflections.Reflections;
+import cc.funkemunky.api.tinyprotocol.api.packets.reflections.types.WrappedClass;
 import cc.funkemunky.api.tinyprotocol.reflection.FieldAccessor;
 
 public class BaseBlockPosition extends NMSObject {
@@ -8,6 +10,8 @@ public class BaseBlockPosition extends NMSObject {
     private static FieldAccessor<Integer> fieldX = fetchField(Type.BASEBLOCKPOSITION, int.class, 0);
     private static FieldAccessor<Integer> fieldY = fetchField(Type.BASEBLOCKPOSITION, int.class, 1);
     private static FieldAccessor<Integer> fieldZ = fetchField(Type.BASEBLOCKPOSITION, int.class, 2);
+    private static WrappedClass baseBlockPositionClass = Reflections.getNMSClass("BaseBlockPosition");
+    private static WrappedClass blockPositionClass = Reflections.getNMSClass("BlocKPosition");
     private int a;
     private int c;
     private int d;
@@ -90,5 +94,13 @@ public class BaseBlockPosition extends NMSObject {
 
     public double i(BaseBlockPosition var1) {
         return this.c((double) var1.getX(), (double) var1.getY(), (double) var1.getZ());
+    }
+
+    public Object getAsBaseBlockPosition() {
+        return baseBlockPositionClass.getConstructor(int.class, int.class, int.class).newInstance(getX(), getY(), getZ());
+    }
+
+    public Object getAsBlockPosition() {
+        return blockPositionClass.getConstructor(int.class, int.class, int.class).newInstance(getX(), getY(), getZ());
     }
 }

@@ -223,14 +223,14 @@ public class CommandManager implements CommandExecutor {
 
                     String hoverText = Color.translate((argument.permission().length > 0 ? scheme.getTitle() + "Permissions: " + scheme.getValue() + " " + Arrays.toString(argument.permission()) : scheme.getTitle() + "Permission: " + scheme.getValue() + "none")
                             + "\n" + scheme.getTitle() +  "Aliases: " + scheme.getValue() + aliasesFormatted.toString());
-                    message.addText(scheme.getBody()+ "/" + command.getLabel().toLowerCase() + scheme.getValue() + " " + argument.display() + scheme.getBody() + " to " + argument.description()).addHoverText(hoverText);
+                    message.addText(scheme.getBody()+ "/" + command.getLabel().toLowerCase() + scheme.getValue() + " " + (argument.display().length() > 0 ? argument.display() : argument.name()) + scheme.getBody() + " to " + argument.description()).addHoverText(hoverText);
                     message.sendToPlayer((Player) sender);
                 }
             } else {
                 sender.sendMessage(scheme.getBody()+ "/" + scheme.getValue() + command.getLabel().toLowerCase() + scheme.getBody() + " to " + command.getAnnotation().description());
                 for (int i = (page - 1) * 6; i < Math.min(arguments.size(), page * 6); i++) {
                     Command argument = arguments.get(i);
-                    sender.sendMessage(scheme.getBody()+ "/" + command.getLabel().toLowerCase() + scheme.getValue() + " " + argument.display() + scheme.getBody() + " to " + argument.description());
+                    sender.sendMessage(scheme.getBody()+ "/" + command.getLabel().toLowerCase() + scheme.getValue() + " " + (argument.display().length() > 0 ? argument.display() : argument.name()) + scheme.getBody() + " to " + argument.description());
                 }
             }
             sender.sendMessage(MiscUtils.line(Color.Dark_Gray));

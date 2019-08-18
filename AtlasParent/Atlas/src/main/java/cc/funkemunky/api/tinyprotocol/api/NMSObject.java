@@ -241,5 +241,6 @@ public abstract class NMSObject {
         public static final String HELD_ITEM = SERVER + "HeldItemSlot";
         public static final String PLAYER_INFO = SERVER + "PlayerInfo";
         public static final String TAB_COMPLETE = SERVER + "TabComplete";
+        public static final String RESPAWN = SERVER + "Respawn";
     }
 }

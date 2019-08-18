@@ -12,7 +12,10 @@ import lombok.Getter;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 @Getter
 public class WrappedClass {
@@ -57,19 +60,17 @@ public class WrappedClass {
         return new WrappedConstructor(this, this.parent.getConstructors()[index]);
     }
 
-    private WrappedField getFieldByType(Class<?> type) {
-        WrappedField tempField = null;
+    public WrappedField getFieldByType(Class<?> type, int index) {
         for (Field field : this.parent.getDeclaredFields()) {
-            if (field.getType().equals(type)) {
-                tempField = new WrappedField(this, field);
-                break;
+            if (field.getType().equals(type) && index-- <= 0) {
+                return new WrappedField(this, field);
             }
         }
-        return tempField;
+        throw new NullPointerException("Could not find field with type " + type.getSimpleName() + " at index " + index);
     }
 
     public WrappedField getFirstFieldByType(Class<?> type) {
-        return this.getFieldByType(type);
+        return this.getFieldByType(type, 0);
     }
 
     public WrappedMethod getMethod(String name, Class... parameters) {
@@ -104,6 +105,24 @@ public class WrappedClass {
             }
         }
         return null;
+    }
+
+    public WrappedMethod getDeclaredMethodByType(Class<?> type, int index) {
+        for (Method method : this.parent.getDeclaredMethods()) {
+            if(method.getReturnType().equals(type) && index-- <= 0) {
+                return new WrappedMethod(this, method);
+            }
+        }
+        throw new NullPointerException("Could not find method with return type " + type.getSimpleName() + " at index " + index);
+    }
+
+    public WrappedMethod getMethodByType(Class<?> type, int index) {
+        for (Method method : this.parent.getMethods()) {
+            if(method.getReturnType().equals(type) && index-- <= 0) {
+                return new WrappedMethod(this, method);
+            }
+        }
+        throw new NullPointerException("Could not find method with return type " + type.getSimpleName() + " at index " + index);
     }
 
     public Enum getEnum(String name) {
