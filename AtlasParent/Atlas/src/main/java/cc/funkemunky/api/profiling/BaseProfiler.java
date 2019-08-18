@@ -1,6 +1,7 @@
 package cc.funkemunky.api.profiling;
 
 import cc.funkemunky.api.Atlas;
+import cc.funkemunky.api.utils.EvictingList;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -16,23 +17,20 @@ public class BaseProfiler implements Profiler {
     public Map<String, Long> samples = new HashMap<>();
     public Map<String, Long> averageSamples = new HashMap<>();
     public Map<String, List<Long>> samplesPerTick = new HashMap<>();
-    public Map<String, List<Long>> samplesTotal = new HashMap<>();
+    public Map<String, EvictingList<Long>> samplesTotal = new HashMap<>();
     public long lastSample = 0, lastReset;
     public int totalCalls = 0;
 
     public BaseProfiler() {
-        Atlas.getInstance().getSchedular().scheduleAtFixedRate(new Runnable() {
-            @Override
-            public void run() {
-                for (String name : samplesPerTick.keySet()) {
+        Atlas.getInstance().getSchedular().scheduleAtFixedRate(() -> {
+            for (String name : samplesPerTick.keySet()) {
 
-                    long avg = new ArrayList<>(samplesPerTick.getOrDefault(name, new ArrayList<>())).stream()
-                            .mapToLong(val -> val)
-                            .sum();
+                long avg = new ArrayList<>(samplesPerTick.getOrDefault(name, new ArrayList<>())).stream()
+                        .mapToLong(val -> val)
+                        .sum();
 
-                    averageSamples.put(name, avg);
-                    samplesPerTick.put(name, new ArrayList<>());
-                }
+                averageSamples.put(name, avg);
+                samplesPerTick.put(name, new ArrayList<>());
             }
         }, 50L, 50L, TimeUnit.MILLISECONDS);
     }
@@ -127,7 +125,7 @@ public class BaseProfiler implements Profiler {
         samplesPerTick.put(name, sList);
         stddev.put(name, Math.abs(sample - time));
 
-        List<Long> samplesTotal = this.samplesTotal.getOrDefault(name, new ArrayList<>());
+        EvictingList<Long> samplesTotal = this.samplesTotal.getOrDefault(name, new EvictingList<>(100));
 
         samplesTotal.add(time);
         this.samplesTotal.put(name, samplesTotal);
@@ -149,10 +147,9 @@ public class BaseProfiler implements Profiler {
         sList.add(time);
 
         samplesPerTick.put(name, sList);
-
         stddev.put(name, Math.abs(sample - time));
 
-        List<Long> samplesTotal = this.samplesTotal.getOrDefault(name, new ArrayList<>());
+        EvictingList<Long> samplesTotal = this.samplesTotal.getOrDefault(name, new EvictingList<>(100));
 
         samplesTotal.add(time);
         this.samplesTotal.put(name, samplesTotal);
