@@ -11,7 +11,7 @@ public class BaseBlockPosition extends NMSObject {
     private static FieldAccessor<Integer> fieldY = fetchField(Type.BASEBLOCKPOSITION, int.class, 1);
     private static FieldAccessor<Integer> fieldZ = fetchField(Type.BASEBLOCKPOSITION, int.class, 2);
     private static WrappedClass baseBlockPositionClass = Reflections.getNMSClass("BaseBlockPosition");
-    private static WrappedClass blockPositionClass = Reflections.getNMSClass("BlocKPosition");
+    private static WrappedClass blockPositionClass = Reflections.getNMSClass("BlockPosition");
     private int a;
     private int c;
     private int d;
