@@ -1,7 +1,7 @@
 package cc.funkemunky.api.profiling;
 
 import cc.funkemunky.api.Atlas;
-import cc.funkemunky.api.utils.EvictingList;
+import cc.funkemunky.api.utils.objects.evicting.EvictingList;
 
 import java.util.ArrayList;
 import java.util.HashMap;
