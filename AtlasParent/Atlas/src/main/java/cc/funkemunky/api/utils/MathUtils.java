@@ -27,6 +27,15 @@ public class MathUtils {
     public static boolean approxEquals(double accuracy, double... equals) {
         return MathUtils.getDelta(Arrays.stream(equals).sum() / equals.length, equals[0]) < accuracy;
     }
+
+    public static boolean approxEquals(double accuracy, int... equals) {
+        return MathUtils.getDelta(Arrays.stream(equals).sum() / (double)equals.length, equals[0]) < accuracy;
+    }
+
+    public static boolean approxEquals(double accuracy, long... equals) {
+        return MathUtils.getDelta(Arrays.stream(equals).sum() / (double)equals.length, equals[0]) < accuracy;
+    }
+
     public static double getDistanceToBox(Vector vec, BoundingBox box) {
         return vec.distance(getCenterOfBox(box));
     }

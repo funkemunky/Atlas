@@ -1,6 +1,7 @@
 package cc.funkemunky.api.profiling;
 
 import cc.funkemunky.api.Atlas;
+import cc.funkemunky.api.utils.objects.evicting.ConcurrentEvictingList;
 import cc.funkemunky.api.utils.objects.evicting.EvictingList;
 
 import java.util.ArrayList;
@@ -17,7 +18,7 @@ public class ToggleableProfiler implements Profiler {
     public Map<String, Long> samples = new HashMap<>();
     public Map<String, Long> averageSamples = new HashMap<>();
     public Map<String, List<Long>> samplesPerTick = new HashMap<>();
-    public Map<String, EvictingList<Long>> samplesTotal = new HashMap<>();
+    public Map<String, ConcurrentEvictingList<Long>> samplesTotal = new HashMap<>();
     public long lastSample = 0;
     public int totalCalls = 0;
     public boolean enabled;
@@ -129,7 +130,7 @@ public class ToggleableProfiler implements Profiler {
         samplesPerTick.put(name, sList);
         stddev.put(name, Math.abs(sample - time));
 
-        EvictingList<Long> samplesTotal = this.samplesTotal.getOrDefault(name, new EvictingList<>(100));
+        ConcurrentEvictingList<Long> samplesTotal = this.samplesTotal.getOrDefault(name, new ConcurrentEvictingList<>(100));
 
         samplesTotal.add(time);
         this.samplesTotal.put(name, samplesTotal);
@@ -152,7 +153,7 @@ public class ToggleableProfiler implements Profiler {
         samplesPerTick.put(name, sList);
         stddev.put(name, Math.abs(sample - time));
 
-        EvictingList<Long> samplesTotal = this.samplesTotal.getOrDefault(name, new EvictingList<>(100));
+        ConcurrentEvictingList<Long> samplesTotal = this.samplesTotal.getOrDefault(name, new ConcurrentEvictingList<>(100));
 
         samplesTotal.add(time);
         this.samplesTotal.put(name, samplesTotal);

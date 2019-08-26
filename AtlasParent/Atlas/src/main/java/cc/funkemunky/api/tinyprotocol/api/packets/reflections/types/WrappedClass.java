@@ -9,6 +9,7 @@
 package cc.funkemunky.api.tinyprotocol.api.packets.reflections.types;
 
 import lombok.Getter;
+import lombok.val;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -50,10 +51,8 @@ public class WrappedClass {
     }
 
     public WrappedConstructor getConstructor() {
-        if(Arrays.stream(this.parent.getConstructors()).anyMatch(cons -> cons.getParameterCount() == 0)) {
-            return new WrappedConstructor(this);
-        }
-        return null;
+        val optional = Arrays.stream(this.parent.getConstructors()).filter(cons -> cons.getParameterCount() == 0).findFirst();
+        return optional.map(constructor -> new WrappedConstructor(this, constructor)).orElse(null);
     }
 
     public WrappedConstructor getConstructorAtIndex(int index) {
