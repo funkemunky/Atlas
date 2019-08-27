@@ -24,16 +24,16 @@ public class MathUtils {
         return playerMoved(from.toVector(), to.toVector());
     }
 
-    public static boolean approxEquals(double accuracy, double... equals) {
-        return MathUtils.getDelta(Arrays.stream(equals).sum() / equals.length, equals[0]) < accuracy;
+    public static boolean approxEquals(double accuracy, double equalTo, double... equals) {
+        return MathUtils.getDelta(Arrays.stream(equals).sum() / equals.length, equalTo) < accuracy;
     }
 
-    public static boolean approxEquals(double accuracy, int... equals) {
-        return MathUtils.getDelta(Arrays.stream(equals).sum() / (double)equals.length, equals[0]) < accuracy;
+    public static boolean approxEquals(double accuracy, int equalTo, int... equals) {
+        return MathUtils.getDelta(Arrays.stream(equals).sum() / equals.length, equalTo) < accuracy;
     }
 
-    public static boolean approxEquals(double accuracy, long... equals) {
-        return MathUtils.getDelta(Arrays.stream(equals).sum() / (double)equals.length, equals[0]) < accuracy;
+    public static boolean approxEquals(double accuracy, long equalTo, long... equals) {
+        return MathUtils.getDelta(Arrays.stream(equals).sum() / equals.length, equalTo) < accuracy;
     }
 
     public static double getDistanceToBox(Vector vec, BoundingBox box) {
