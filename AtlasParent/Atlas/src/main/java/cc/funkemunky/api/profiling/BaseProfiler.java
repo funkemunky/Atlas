@@ -111,7 +111,7 @@ public class BaseProfiler implements Profiler {
 
     @Override
     public void stop(String name) {
-        if(System.currentTimeMillis() - lastReset < 100L) return;
+        if(System.currentTimeMillis() - lastReset < 100L || !timings.containsKey(name)) return;
         long extense = System.nanoTime();
         long start = timings.get(name);
         long time = (System.nanoTime() - start) - (System.nanoTime() - extense);
@@ -137,7 +137,7 @@ public class BaseProfiler implements Profiler {
 
     @Override
     public void stop(String name, long extense) {
-        if(System.currentTimeMillis() - lastReset < 100L) return;
+        if(System.currentTimeMillis() - lastReset < 100L || !timings.containsKey(name)) return;
         long start = timings.get(name);
         long time = (System.nanoTime() - start) - (System.nanoTime() - extense);
         long lastTotal = total.getOrDefault(name, time);

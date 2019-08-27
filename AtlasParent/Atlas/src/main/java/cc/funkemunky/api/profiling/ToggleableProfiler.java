@@ -116,6 +116,7 @@ public class ToggleableProfiler implements Profiler {
 
     @Override
     public void stop(String name) {
+        if(!timings.containsKey(name)) return;
         long extense = System.nanoTime();
         long start = timings.get(name);
         long time = (System.nanoTime() - start) - (System.nanoTime() - extense);
@@ -141,6 +142,7 @@ public class ToggleableProfiler implements Profiler {
 
     @Override
     public void stop(String name, long extense) {
+        if(!timings.containsKey(name)) return;
         long start = timings.get(name);
         long time = (System.nanoTime() - start) - (System.nanoTime() - extense);
         long lastTotal = total.getOrDefault(name, time);
