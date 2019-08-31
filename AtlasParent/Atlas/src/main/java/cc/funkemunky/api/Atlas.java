@@ -43,7 +43,6 @@ public class Atlas extends JavaPlugin {
     @Getter
     private static Atlas instance;
     private BlockBoxManager blockBoxManager;
-    private ExecutorService[] threadPool;
     private ScheduledExecutorService schedular;
     private ConsoleCommandSender consoleSender;
     private CommandManager commandManager;
@@ -217,9 +216,10 @@ public class Atlas extends JavaPlugin {
     }
 
     private void runTickEvent() {
-        TickEvent tickEvent = new TickEvent(currentTicks++);
-
-        Atlas.getInstance().getEventManager().callEvent(tickEvent);
+        service.execute(() -> {
+            TickEvent tickEvent = new TickEvent(currentTicks++);
+            Atlas.getInstance().getEventManager().callEvent(tickEvent);
+        });
     }
 
     public void initializeScanner(Class<?> mainClass, JavaPlugin plugin, CommandManager manager, boolean loadListeners, boolean loadCommands, @Nullable FutureTask<?>... otherThingsToLoad) {

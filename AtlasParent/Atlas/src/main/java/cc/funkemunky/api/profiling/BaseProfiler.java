@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.TimeUnit;
 
 public class BaseProfiler implements Profiler {
@@ -18,7 +19,7 @@ public class BaseProfiler implements Profiler {
     public Map<String, Long> samples = new HashMap<>();
     public Map<String, Long> averageSamples = new HashMap<>();
     public Map<String, List<Long>> samplesPerTick = new HashMap<>();
-    public Map<String, ConcurrentEvictingList<Long>> samplesTotal = new HashMap<>();
+    public Map<String, List<Long>> samplesTotal = new HashMap<>();
     public long lastSample = 0, lastReset;
     public int totalCalls = 0;
 
@@ -119,15 +120,20 @@ public class BaseProfiler implements Profiler {
         long sample = samples.getOrDefault(name, time);
 
         samples.put(name, time);
-        List<Long> sList = this.samplesPerTick.getOrDefault(name, new ArrayList<>());
+        List<Long> sList = this.samplesPerTick.getOrDefault(name, new CopyOnWriteArrayList<>());
 
-        sList.add(time);
+        if(sList.size() > 100) {
+            sList.clear();
+        } else sList.add(time);
 
         samplesPerTick.put(name, sList);
         stddev.put(name, Math.abs(sample - time));
 
-        ConcurrentEvictingList<Long> samplesTotal = this.samplesTotal.getOrDefault(name, new ConcurrentEvictingList<>(100));
+        List<Long> samplesTotal = this.samplesTotal.getOrDefault(name, new CopyOnWriteArrayList<>());
 
+        if(samplesTotal.size() > 1000) {
+            samplesTotal.remove(0);
+        }
         samplesTotal.add(time);
         this.samplesTotal.put(name, samplesTotal);
 
@@ -143,15 +149,20 @@ public class BaseProfiler implements Profiler {
         long lastTotal = total.getOrDefault(name, time);
         long sample = samples.getOrDefault(name, time);
         samples.put(name, time);
-        List<Long> sList = this.samplesPerTick.getOrDefault(name, new ArrayList<>());
+        List<Long> sList = this.samplesPerTick.getOrDefault(name, new CopyOnWriteArrayList<>());
 
-        sList.add(time);
+        if(sList.size() > 100) {
+            sList.clear();
+        } else sList.add(time);
 
         samplesPerTick.put(name, sList);
         stddev.put(name, Math.abs(sample - time));
 
-        ConcurrentEvictingList<Long> samplesTotal = this.samplesTotal.getOrDefault(name, new ConcurrentEvictingList<>(100));
+        List<Long> samplesTotal = this.samplesTotal.getOrDefault(name, new CopyOnWriteArrayList<>());
 
+        if(samplesTotal.size() > 1000) {
+            samplesTotal.remove(0);
+        }
         samplesTotal.add(time);
         this.samplesTotal.put(name, samplesTotal);
 
