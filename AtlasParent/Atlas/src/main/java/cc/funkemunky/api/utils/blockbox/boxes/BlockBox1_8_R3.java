@@ -14,6 +14,7 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -39,7 +40,7 @@ public class BlockBox1_8_R3 implements BlockBox {
             }
         }
 
-        List<BoundingBox> boxes = new CopyOnWriteArrayList<>();
+        List<BoundingBox> boxes = Collections.synchronizedList(new ArrayList<>());
 
         locs.parallelStream().forEach(loc -> {
             org.bukkit.block.Block block = BlockUtils.getBlock(loc);
