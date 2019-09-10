@@ -16,6 +16,7 @@ import java.util.Map;
 public class BlockUtils {
 
     public static Map<Material, BoundingBox> collisionBoundingBoxes;
+    public static Map<Integer, BlockBounds> blockBounds = new HashMap<>();
 
     public BlockUtils() {
         collisionBoundingBoxes = new HashMap<>();
@@ -438,7 +439,6 @@ public class BlockUtils {
             collisionBoundingBoxes.put(Material.getMaterial("WATER"), new BoundingBox(0, 0, 0, 0.9f, 0.9f, 0.9f));
             collisionBoundingBoxes.put(Material.getMaterial("STATIONARY_WATER"), new BoundingBox(0, 0, 0, 0.9f, 0.9f, 0.9f));
             collisionBoundingBoxes.put(Material.getMaterial("STATIONARY_LAVA"), new BoundingBox(0, 0, 0, 0.9f, 0.9f, 0.9f));
-
         }
     }
 }

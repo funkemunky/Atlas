@@ -225,6 +225,57 @@ public class BoundingBox {
         }
     }
 
+    public float calculateYOffset(BoundingBox other, float offsetY) {
+        if (other.maxX > this.minX && other.minX < this.maxX && other.maxZ > this.minZ && other.minZ < this.maxZ) {
+            if (offsetY > 0.0D && other.maxY <= this.minY) {
+                float d1 = this.minY - other.maxY;
+
+                if (d1 < offsetY) {
+                    offsetY = d1;
+                }
+            } else if (offsetY < 0.0D && other.minY >= this.maxY) {
+                float d0 = this.maxY - other.minY;
+
+                if (d0 > offsetY) {
+                    offsetY = d0;
+                }
+            }
+
+            return offsetY;
+        } else {
+            return offsetY;
+        }
+    }
+
+    public BoundingBox addCoord(float x, float y, float z) {
+        float d0 = this.minX;
+        float d1 = this.minY;
+        float d2 = this.minZ;
+        float d3 = this.maxX;
+        float d4 = this.maxY;
+        float d5 = this.maxZ;
+
+        if (x < 0.0D) {
+            d0 += x;
+        } else if (x > 0.0D) {
+            d3 += x;
+        }
+
+        if (y < 0.0D) {
+            d1 += y;
+        } else if (y > 0.0D) {
+            d4 += y;
+        }
+
+        if (z < 0.0D) {
+            d2 += z;
+        } else if (z > 0.0D) {
+            d5 += z;
+        }
+
+        return new BoundingBox(d0,d1,d2,d3,d4,d5);
+    }
+
     public Object toAxisAlignedBB() {
         return ReflectionsUtil.newAxisAlignedBB(minX, minY, minZ, maxX, maxY, maxZ);
     }

@@ -8,23 +8,24 @@
  */
 package cc.funkemunky.api.tinyprotocol.api.packets.reflections.types;
 
-import com.google.common.collect.Sets;
 import lombok.Getter;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.Set;
+import java.util.*;
 
 @Getter
 public class WrappedMethod {
     private final WrappedClass parent;
     private final Method method;
-    private final Set<Class> parameters;
+    private final String name;
+    private final List<Class<?>> parameters;
 
     public WrappedMethod(WrappedClass parent, Method method) {
         this.parent = parent;
         this.method = method;
-        this.parameters = Sets.newHashSet(method.getParameterTypes());
+        this.name = method.getName();
+        this.parameters = Arrays.asList(method.getParameterTypes());
     }
 
     public <T> T invoke(Object object, Object... args) {

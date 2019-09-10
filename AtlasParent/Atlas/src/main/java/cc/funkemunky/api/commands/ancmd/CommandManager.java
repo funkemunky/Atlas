@@ -95,6 +95,15 @@ public class CommandManager implements CommandExecutor {
         commands.clear();
     }
 
+    public void unregisterCommand(String name) {
+        registered.stream()
+                .filter(cmd -> cmd.getName().equalsIgnoreCase(name) || cmd.getLabel().equalsIgnoreCase(name))
+                .forEach(cmd -> {
+                    MiscUtils.printToConsole(Color.Yellow + "Unregistered " + cmd.getLabel());
+                    unregisterBukkitCommand(cmd);
+                });
+    }
+
     private Object getPrivateField(Object object, String field)throws SecurityException,
             NoSuchFieldException, IllegalArgumentException, IllegalAccessException {
         Class<?> clazz = object.getClass();
