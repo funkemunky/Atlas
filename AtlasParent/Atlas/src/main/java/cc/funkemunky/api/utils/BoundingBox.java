@@ -225,16 +225,48 @@ public class BoundingBox {
         }
     }
 
-    public float calculateYOffset(BoundingBox other, float offsetY) {
+    /**
+     * if instance and the argument bounding boxes overlap in the Y and Z dimensions, calculate the offset between them
+     * in the X dimension.  return var2 if the bounding boxes do not overlap or if var2 is closer to 0 then the
+     * calculated offset.  Otherwise return the calculated offset.
+     */
+    public double calculateXOffset(BoundingBox other, double offsetX) {
+        if (other.maxY > this.minY && other.minY < this.maxY && other.maxZ > this.minZ && other.minZ < this.maxZ) {
+            if (offsetX > 0.0D && other.maxX <= this.minX) {
+                double d1 = this.minX - other.maxX;
+
+                if (d1 < offsetX) {
+                    offsetX = d1;
+                }
+            } else if (offsetX < 0.0D && other.minX >= this.maxX) {
+                double d0 = this.maxX - other.minX;
+
+                if (d0 > offsetX) {
+                    offsetX = d0;
+                }
+            }
+
+            return offsetX;
+        } else {
+            return offsetX;
+        }
+    }
+
+    /**
+     * if instance and the argument bounding boxes overlap in the X and Z dimensions, calculate the offset between them
+     * in the Y dimension.  return var2 if the bounding boxes do not overlap or if var2 is closer to 0 then the
+     * calculated offset.  Otherwise return the calculated offset.
+     */
+    public double calculateYOffset(BoundingBox other, double offsetY) {
         if (other.maxX > this.minX && other.minX < this.maxX && other.maxZ > this.minZ && other.minZ < this.maxZ) {
             if (offsetY > 0.0D && other.maxY <= this.minY) {
-                float d1 = this.minY - other.maxY;
+                double d1 = this.minY - other.maxY;
 
                 if (d1 < offsetY) {
                     offsetY = d1;
                 }
             } else if (offsetY < 0.0D && other.minY >= this.maxY) {
-                float d0 = this.maxY - other.minY;
+                double d0 = this.maxY - other.minY;
 
                 if (d0 > offsetY) {
                     offsetY = d0;
@@ -244,6 +276,33 @@ public class BoundingBox {
             return offsetY;
         } else {
             return offsetY;
+        }
+    }
+
+    /**
+     * if instance and the argument bounding boxes overlap in the Y and X dimensions, calculate the offset between them
+     * in the Z dimension.  return var2 if the bounding boxes do not overlap or if var2 is closer to 0 then the
+     * calculated offset.  Otherwise return the calculated offset.
+     */
+    public double calculateZOffset(BoundingBox other, double offsetZ) {
+        if (other.maxX > this.minX && other.minX < this.maxX && other.maxY > this.minY && other.minY < this.maxY) {
+            if (offsetZ > 0.0D && other.maxZ <= this.minZ) {
+                double d1 = this.minZ - other.maxZ;
+
+                if (d1 < offsetZ) {
+                    offsetZ = d1;
+                }
+            } else if (offsetZ < 0.0D && other.minZ >= this.maxZ) {
+                double d0 = this.maxZ - other.minZ;
+
+                if (d0 > offsetZ) {
+                    offsetZ = d0;
+                }
+            }
+
+            return offsetZ;
+        } else {
+            return offsetZ;
         }
     }
 
