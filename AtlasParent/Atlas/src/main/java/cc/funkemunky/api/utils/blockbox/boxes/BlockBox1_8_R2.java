@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+@Deprecated
 public class BlockBox1_8_R2 implements BlockBox {
    @Override
     public List<BoundingBox> getCollidingBoxes(org.bukkit.World world, BoundingBox box) {
