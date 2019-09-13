@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+@Deprecated
 public class BlockBox1_7_R4 implements BlockBox {
 
     @Override
@@ -85,7 +86,6 @@ public class BlockBox1_7_R4 implements BlockBox {
 
     @Override
     public boolean isChunkLoaded(Location loc) {
-
         net.minecraft.server.v1_7_R4.World world = ((org.bukkit.craftbukkit.v1_7_R4.CraftWorld) loc.getWorld()).getHandle();
 
         return !world.isStatic && world.isLoaded(loc.getBlockX(), 0, loc.getBlockZ()) && world.getChunkAtWorldCoords(loc.getBlockX(), loc.getBlockZ()).d;

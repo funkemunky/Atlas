@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+@Deprecated
 public class BlockBox1_14_R1 implements BlockBox {
 
     @Override

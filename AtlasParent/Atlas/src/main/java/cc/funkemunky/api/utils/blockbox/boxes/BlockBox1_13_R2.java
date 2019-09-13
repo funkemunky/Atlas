@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+@Deprecated
 public class BlockBox1_13_R2 implements BlockBox {
 
     private static MethodInvoker getShape = Reflection.getMethod(Reflection.getMinecraftClass("IBlockData"), Reflection.getMinecraftClass("VoxelShape"), 0, Reflection.getClass("IBlockAccess"), Reflection.getClass("BlockPosition"));
