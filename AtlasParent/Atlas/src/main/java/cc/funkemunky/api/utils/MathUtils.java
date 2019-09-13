@@ -107,6 +107,10 @@ public class MathUtils {
         return yaw % 360;
     }
 
+    public static float getAngleDelta(float one, float two) {
+        return getDelta(normalizeAngle(one), normalizeAngle(two));
+    }
+
     //Euclid's algorithim
     public static long lcm(long a, long b)
     {

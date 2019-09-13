@@ -8,6 +8,7 @@ import cc.funkemunky.api.tinyprotocol.api.packets.reflections.types.WrappedField
 import cc.funkemunky.api.tinyprotocol.api.packets.reflections.types.WrappedMethod;
 import cc.funkemunky.api.tinyprotocol.packet.types.WrappedEnumAnimation;
 import cc.funkemunky.api.utils.BoundingBox;
+import cc.funkemunky.api.utils.ReflectionsUtil;
 import org.bukkit.Axis;
 import org.bukkit.World;
 import org.bukkit.block.Block;
@@ -120,7 +121,7 @@ public class MinecraftReflection {
             getCubesFromVoxelShape = voxelShape.getMethodByType(List.class, 0);
         }
         try {
-            enumAnimationStack = itemStack.getMethodByType(enumAnimation.getClass(), 0);
+            enumAnimationStack = itemStack.getMethodByType(enumAnimation.getParent(), 0);
         } catch(Exception e) {
             e.printStackTrace();
         }

@@ -4,25 +4,27 @@ import cc.funkemunky.api.tinyprotocol.api.packets.reflections.Reflections;
 import cc.funkemunky.api.tinyprotocol.api.packets.reflections.types.WrappedClass;
 import cc.funkemunky.api.tinyprotocol.api.packets.reflections.types.WrappedField;
 import cc.funkemunky.api.tinyprotocol.api.packets.reflections.types.WrappedMethod;
+import cc.funkemunky.api.tinyprotocol.reflection.MethodInvoker;
+import cc.funkemunky.api.tinyprotocol.reflection.Reflection;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.inventory.ItemStack;
 
 public class CraftReflection {
-    public static WrappedClass craftHumanEntity = Reflections.getCBClass("CraftHumanEntity");
-    public static WrappedClass craftItemStack = Reflections.getCBClass("CraftItemStack");
-    public static WrappedClass craftBlock = Reflections.getCBClass("CraftBlock");
-    public static WrappedClass craftWorld = Reflections.getCBClass("CraftWorld");
+    public static Class<?> craftHumanEntity = Reflection.getCraftBukkitClass("entity.CraftHumanEntity");
+    public static Class<?> craftItemStack = Reflection.getCraftBukkitClass("inventory.CraftItemStack");
+    public static Class<?> craftBlock = Reflection.getCraftBukkitClass("block.CraftBlock");
+    public static Class<?> craftWorld = Reflection.getCraftBukkitClass("CraftWorld");
 
     //Vanilla Instances
-    public static WrappedField itemStackInstance = craftItemStack.getFieldByName("handle");
-    public static WrappedMethod humanEntityInstance = craftHumanEntity.getMethod("getHandle");
-    public static WrappedMethod blockInstance = craftBlock.getMethod("getNMSBlock");
-    public static WrappedMethod worldInstance = craftWorld.getMethod("getHandle");
+    public static MethodInvoker itemStackInstance = Reflection.getMethod(craftItemStack, "asNMSCopy", ItemStack.class);
+    public static MethodInvoker humanEntityInstance = Reflection.getMethod(craftHumanEntity, "getHandle");
+    public static MethodInvoker blockInstance = Reflection.getMethod(craftBlock, "getNMSBlock");
+    public static MethodInvoker worldInstance = Reflection.getMethod(craftWorld, "getHandle");
 
     public static Object getVanillaItemStack(ItemStack stack) {
-        return itemStackInstance.get(stack);
+        return itemStackInstance.invoke(null, stack);
     }
 
     public static Object getEntityHuman(HumanEntity entity) {
