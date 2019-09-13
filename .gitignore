@@ -33,3 +33,5 @@ AtlasParent/.idea/**
 # Maven
 AtlasParent/Atlas/target/**
 AtlasParent/AtlasBungee/target/**
+AtlasParent/AtlasBungee/target/**
+*.properties
