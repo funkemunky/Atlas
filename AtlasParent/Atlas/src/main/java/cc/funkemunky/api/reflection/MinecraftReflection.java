@@ -33,7 +33,6 @@ public class MinecraftReflection {
 
     //BoundingBoxes
     public static WrappedMethod getCubes;
-    public static WrappedConstructor aabbConstructor = axisAlignedBB.getConstructor(double.class, double.class, double.class, double.class, double.class, double.class, double.class);
     public static WrappedField aBB = axisAlignedBB.getFieldByName("a");
     public static WrappedField bBB = axisAlignedBB.getFieldByName("b");
     public static WrappedField cBB = axisAlignedBB.getFieldByName("c");
@@ -41,14 +40,8 @@ public class MinecraftReflection {
     public static WrappedField eBB = axisAlignedBB.getFieldByName("e");
     public static WrappedField fBB = axisAlignedBB.getFieldByName("f");
 
-    //EntityHuman methods and fields
-    public static WrappedField humanPlayerInv = entityHuman.getFirstFieldByType(playerInventory.getParent());
-
-    //PlayerInventory methods
-    public static WrappedMethod itemInHand = playerInventory.getMethod("getItemInHand");
-
     //ItemStack methods and fields
-    public static WrappedMethod enumAnimationStack = itemStack.getMethodByType(entityHuman.getClass(), 0);
+    public static WrappedMethod enumAnimationStack;
 
     //1.13+ only
     public static WrappedClass voxelShape;
@@ -125,6 +118,11 @@ public class MinecraftReflection {
             getCubes = worldReader.getMethod("a", entity.getParent(), axisAlignedBB.getParent(), double.class, double.class, double.class);
             voxelShape = Reflections.getNMSClass("VoxelShape");
             getCubesFromVoxelShape = voxelShape.getMethodByType(List.class, 0);
+        }
+        try {
+            enumAnimationStack = itemStack.getMethodByType(enumAnimation.getClass(), 0);
+        } catch(Exception e) {
+            e.printStackTrace();
         }
     }
 }

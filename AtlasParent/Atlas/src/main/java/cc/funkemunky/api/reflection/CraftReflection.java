@@ -2,6 +2,7 @@ package cc.funkemunky.api.reflection;
 
 import cc.funkemunky.api.tinyprotocol.api.packets.reflections.Reflections;
 import cc.funkemunky.api.tinyprotocol.api.packets.reflections.types.WrappedClass;
+import cc.funkemunky.api.tinyprotocol.api.packets.reflections.types.WrappedField;
 import cc.funkemunky.api.tinyprotocol.api.packets.reflections.types.WrappedMethod;
 import org.bukkit.World;
 import org.bukkit.block.Block;
@@ -15,13 +16,13 @@ public class CraftReflection {
     public static WrappedClass craftWorld = Reflections.getCBClass("CraftWorld");
 
     //Vanilla Instances
-    public static WrappedMethod itemStackInstance = craftItemStack.getMethodByType(MinecraftReflection.itemStack.getParent(), 0);
-    public static WrappedMethod humanEntityInstance = craftHumanEntity.getMethodByType(MinecraftReflection.entityHuman.getParent(), 0);
-    public static WrappedMethod blockInstance = craftBlock.getMethodByType(MinecraftReflection.block.getParent(), 0);
-    public static WrappedMethod worldInstance = craftWorld.getMethodByType(MinecraftReflection.worldServer.getParent(), 0);
+    public static WrappedField itemStackInstance = craftItemStack.getFieldByName("handle");
+    public static WrappedMethod humanEntityInstance = craftHumanEntity.getMethod("getHandle");
+    public static WrappedMethod blockInstance = craftBlock.getMethod("getNMSBlock");
+    public static WrappedMethod worldInstance = craftWorld.getMethod("getHandle");
 
     public static Object getVanillaItemStack(ItemStack stack) {
-        return itemStackInstance.invoke(stack);
+        return itemStackInstance.get(stack);
     }
 
     public static Object getEntityHuman(HumanEntity entity) {

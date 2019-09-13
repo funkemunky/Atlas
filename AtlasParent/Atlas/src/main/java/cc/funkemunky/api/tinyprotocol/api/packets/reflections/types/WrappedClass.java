@@ -115,12 +115,13 @@ public class WrappedClass {
         throw new NullPointerException("Could not find method with return type " + type.getSimpleName() + " at index " + index);
     }
 
-    public WrappedMethod getMethodByType(Class<?> type, int index) {
+    public WrappedMethod getMethodByType(Class<?> type, int index) throws NullPointerException {
         for (Method method : this.parent.getMethods()) {
             if(method.getReturnType().equals(type) && index-- <= 0) {
                 return new WrappedMethod(this, method);
             }
         }
+        System.out.println("Shit didnt get: " + type.getName());
         throw new NullPointerException("Could not find method with return type " + type.getSimpleName() + " at index " + index);
     }
 
