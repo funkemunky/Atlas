@@ -4,6 +4,7 @@ import cc.funkemunky.api.tinyprotocol.api.NMSObject;
 import cc.funkemunky.api.tinyprotocol.api.ProtocolVersion;
 import cc.funkemunky.api.tinyprotocol.api.packets.reflections.Reflections;
 import cc.funkemunky.api.tinyprotocol.api.packets.reflections.types.WrappedClass;
+import cc.funkemunky.api.tinyprotocol.api.packets.reflections.types.WrappedConstructor;
 import cc.funkemunky.api.tinyprotocol.reflection.FieldAccessor;
 
 public class BaseBlockPosition extends NMSObject {
@@ -13,6 +14,8 @@ public class BaseBlockPosition extends NMSObject {
     private static FieldAccessor<Integer> fieldZ;
     private static WrappedClass baseBlockPositionClass;
     private static WrappedClass blockPositionClass;
+    private static WrappedConstructor blockPosConstructor;
+    private static WrappedConstructor baseBlockPosConstructor;
     private int a;
     private int c;
     private int d;
@@ -80,29 +83,29 @@ public class BaseBlockPosition extends NMSObject {
     }
 
     public double c(double var1, double var3, double var5) {
-        double var7 = (double) this.getX() - var1;
-        double var9 = (double) this.getY() - var3;
-        double var11 = (double) this.getZ() - var5;
+        double var7 = this.getX() - var1;
+        double var9 = this.getY() - var3;
+        double var11 = this.getZ() - var5;
         return var7 * var7 + var9 * var9 + var11 * var11;
     }
 
     public double d(double var1, double var3, double var5) {
-        double var7 = (double) this.getX() + 0.5D - var1;
-        double var9 = (double) this.getY() + 0.5D - var3;
-        double var11 = (double) this.getZ() + 0.5D - var5;
+        double var7 = this.getX() + 0.5D - var1;
+        double var9 = this.getY() + 0.5D - var3;
+        double var11 = this.getZ() + 0.5D - var5;
         return var7 * var7 + var9 * var9 + var11 * var11;
     }
 
     public double i(BaseBlockPosition var1) {
-        return this.c((double) var1.getX(), (double) var1.getY(), (double) var1.getZ());
+        return this.c(var1.getX(), var1.getY(), var1.getZ());
     }
 
     public Object getAsBaseBlockPosition() {
-        return baseBlockPositionClass.getConstructor(int.class, int.class, int.class).newInstance(getX(), getY(), getZ());
+        return baseBlockPosConstructor.newInstance(getX(), getY(), getZ());
     }
 
     public Object getAsBlockPosition() {
-        return blockPositionClass.getConstructor(int.class, int.class, int.class).newInstance(getX(), getY(), getZ());
+        return blockPosConstructor.newInstance(getX(), getY(), getZ());
     }
 
     static {
@@ -112,6 +115,8 @@ public class BaseBlockPosition extends NMSObject {
             fieldZ = fetchField(Type.BASEBLOCKPOSITION, int.class, 2);
             baseBlockPositionClass = Reflections.getNMSClass("BaseBlockPosition");
             blockPositionClass = Reflections.getNMSClass("BlockPosition");
+            blockPosConstructor = blockPositionClass.getConstructor(int.class, int.class, int.class);
+            baseBlockPosConstructor = baseBlockPositionClass.getConstructor(int.class, int.class, int.class);
         }
     }
 }

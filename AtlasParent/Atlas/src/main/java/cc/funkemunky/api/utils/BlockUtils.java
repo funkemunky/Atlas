@@ -268,7 +268,7 @@ public class BlockUtils {
     }
 
     public static boolean isClimbableBlock(Block block) {
-        return block.getType() == Material.LADDER || block.getType() == Material.VINE;
+        return block.getType().toString().contains("LADDER") || block.getType().toString().contains("VINE");
     }
 
     public static boolean isIce(Block block) {
@@ -292,7 +292,11 @@ public class BlockUtils {
     }
 
     public static boolean isChest(Block block) {
-        return block.getType().equals(Material.CHEST) || block.getType().equals(Material.TRAPPED_CHEST) || block.getType().equals(Material.ENDER_CHEST) || block.getType().toString().contains("SHULKER");
+        return block.getType().toString().contains("CHEST") || block.getType().toString().contains("SHULKER");
+    }
+
+    public static boolean isWall(Block block) {
+        return block.getType().toString().contains("WALL");
     }
 
     public static boolean isPiston(Block block) {
@@ -309,10 +313,6 @@ public class BlockUtils {
 
     public static boolean isSlab(Block block) {
         return block.getType().toString().contains("STEP") || block.getType().toString().contains("SLAB");
-    }
-
-    public static boolean isEdible(Material material) {
-        return material.equals(Material.COOKED_BEEF) || material.equals(Material.COOKED_CHICKEN) || material.getId() == 350 || material.getId() == 424 || material.getId() == 412 || material.equals(Material.ROTTEN_FLESH) || material.getId() == 391 || material.equals(Material.CARROT) || material.equals(Material.GOLDEN_APPLE) || material.equals(Material.GOLDEN_CARROT) || material.getId() == 320 || material.getId() == 363 || material.getId() == 365 || material.getId() == 349 || material.equals(Material.SPIDER_EYE) || material.equals(Material.getMaterial("BEETROOT_SOUP")) || material.getId() == 282 || material.getId() == 392 || material.equals(Material.BAKED_POTATO) || material.equals(Material.POISONOUS_POTATO) || material.equals(Material.PUMPKIN_PIE) || material.equals(Material.APPLE) || material.getId() == 423 || material.getId() == 411 || material.equals(Material.MELON) || material.equals(Material.getMaterial("CHORUS_FRUIT")) || material.equals(Material.COOKIE) || material.equals(Material.POTION);
     }
 
     public static boolean isTool(ItemStack stack) {

@@ -6,10 +6,13 @@ import cc.funkemunky.api.tinyprotocol.api.packets.reflections.types.WrappedClass
 import cc.funkemunky.api.tinyprotocol.api.packets.reflections.types.WrappedConstructor;
 import cc.funkemunky.api.tinyprotocol.api.packets.reflections.types.WrappedField;
 import cc.funkemunky.api.tinyprotocol.api.packets.reflections.types.WrappedMethod;
+import cc.funkemunky.api.tinyprotocol.packet.types.BaseBlockPosition;
 import cc.funkemunky.api.tinyprotocol.packet.types.WrappedEnumAnimation;
+import cc.funkemunky.api.utils.BlockUtils;
 import cc.funkemunky.api.utils.BoundingBox;
 import cc.funkemunky.api.utils.ReflectionsUtil;
 import org.bukkit.Axis;
+import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.entity.HumanEntity;
@@ -52,6 +55,8 @@ public class MinecraftReflection {
     //Blocks
     public static WrappedMethod addCBoxes;
     public static WrappedClass blockPos;
+    public static WrappedConstructor blockPosConstructor;
+    public static WrappedMethod getBlockData;
 
     public static WrappedEnumAnimation getArmAnimation(HumanEntity entity) {
         if(entity.getItemInHand() != null) {
@@ -67,11 +72,34 @@ public class MinecraftReflection {
     }
 
     public static List<BoundingBox> getBlockBox(Block block) {
-        Object vanillaBox = CraftReflection.getVanillaBlock(block);
+        Object vanillaBlock = CraftReflection.getVanillaBlock(block);
+        Object world = CraftReflection.getVanillaWorld(block.getWorld());
 
-        if(ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.V1_13)) {
-            addCBoxes.invoke();
+        //TODO Use increasedHeight if it doesnt get fence or wall boxes properly.
+        //boolean increasedHeight = BlockUtils.isFence(block) || BlockUtils.isWall(block);
+        //We do this so we can get the block inside
+        BoundingBox box = new BoundingBox(
+                block.getLocation().toVector(),
+                block.getLocation().clone()
+                        .add(1,1,1)
+                        .toVector());
+
+        List<Object> aabbs = new ArrayList<>();
+
+        if(ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.V1_8)) {
+            addCBoxes.invoke(vanillaBlock, world,
+                    block.getX(), block.getY(), block.getZ(),
+                    box.toAxisAlignedBB(), aabbs,
+                    null); //Entity is always null for these
+        } else if(ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.V1_13)) {
+            BaseBlockPosition blockPos = new BaseBlockPosition(block.getX(), block.getY(), block.getZ());
+            Object blockData = getBlockData.invoke(vanillaBlock);
+
+            addCBoxes.invoke(vanillaBlock, world, blockPos.getAsBlockPosition(), blockData,
+                    box.toAxisAlignedBB(), aabbs, null); //Entity is always null for these
         }
+
+        return aabbs.stream().map(MinecraftReflection::fromAABB).collect(Collectors.toList());
     }
 
     public static List<BoundingBox> getCollidingBoxes(World world, BoundingBox box) {
@@ -123,23 +151,29 @@ public class MinecraftReflection {
     static {
         if(ProtocolVersion.getGameVersion().isAbove(ProtocolVersion.V1_7_10)) {
             blockPos = Reflections.getNMSClass("BlockPosition");
+            blockPosConstructor = blockPos.getConstructor(int.class, int.class, int.class);
+            getBlockData = block.getMethod("getBlockData");
         }
         if(ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.V1_12)) {
-
             getCubes = world.getMethod("a", axisAlignedBB.getParent());
 
             if(ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.V1_8)) {
-                addCBoxes = block.getMethod("a", world.getParent(), int.class, int.class, int.class, axisAlignedBB.getParent(), List.class, entity.getParent());
+                //1.7.10 does not have the BlockPosition object yet.
+                addCBoxes = block.getMethod("a", world.getParent(), int.class, int.class, int.class,
+                        axisAlignedBB.getParent(), List.class, entity.getParent());
             } else {
-                addCBoxes = block.getMethod("a", world.getParent(), blockPos.getParent(), iBlockData.getParent(), axisAlignedBB.getParent(), List.class, entity.getParent());
+                addCBoxes = block.getMethod("a", world.getParent(), blockPos.getParent(), iBlockData.getParent(),
+                        axisAlignedBB.getParent(), List.class, entity.getParent());
             }
         } else if(ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.V1_13)) {
             getCubes = world.getMethod("a", entity.getParent(), axisAlignedBB.getParent(), boolean.class, List.class);
-            addCBoxes = block.getMethod("a", world.getParent(), blockPos.getParent(), iBlockData.getParent(), axisAlignedBB.getParent(), List.class, entity.getParent());
+            addCBoxes = block.getMethod("a", world.getParent(), blockPos.getParent(), iBlockData.getParent(),
+                    axisAlignedBB.getParent(), List.class, entity.getParent());
         } else {
             worldReader = Reflections.getNMSClass("IWorldReader");
             //1.13 and 1.13.1 returns just VoxelShape while 1.13.2+ returns a Stream<VoxelShape>
-            getCubes = worldReader.getMethod("a", entity.getParent(), axisAlignedBB.getParent(), double.class, double.class, double.class);
+            getCubes = worldReader.getMethod("a", entity.getParent(), axisAlignedBB.getParent(),
+                    double.class, double.class, double.class);
             voxelShape = Reflections.getNMSClass("VoxelShape");
             getCubesFromVoxelShape = voxelShape.getMethodByType(List.class, 0);
         }
