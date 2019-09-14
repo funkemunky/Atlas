@@ -49,6 +49,10 @@ public class MinecraftReflection {
     public static WrappedClass worldReader;
     public static WrappedMethod getCubesFromVoxelShape;
 
+    //Blocks
+    public static WrappedMethod addCBoxes;
+    public static WrappedClass blockPos;
+
     public static WrappedEnumAnimation getArmAnimation(HumanEntity entity) {
         if(entity.getItemInHand() != null) {
             return getItemAnimation(entity.getItemInHand());
@@ -62,6 +66,14 @@ public class MinecraftReflection {
         return WrappedEnumAnimation.fromNMS(enumAnimationStack.invoke(itemStack));
     }
 
+    public static List<BoundingBox> getBlockBox(Block block) {
+        Object vanillaBox = CraftReflection.getVanillaBlock(block);
+
+        if(ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.V1_13)) {
+            addCBoxes.invoke();
+        }
+    }
+
     public static List<BoundingBox> getCollidingBoxes(World world, BoundingBox box) {
         Object vWorld = CraftReflection.getVanillaWorld(world);
         List<BoundingBox> boxes = new ArrayList<>();
@@ -71,7 +83,7 @@ public class MinecraftReflection {
                     : getCubes.invoke(vWorld, box.toAxisAlignedBB(), false, null);
 
             boxes = aabbs.stream().map(MinecraftReflection::fromAABB).collect(Collectors.toList());
-        } else if(ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.V1_13)) {
+        } else {
             Object voxelShape = getCubes.invoke(vWorld, null, box.toAxisAlignedBB(), 0D, 0D, 0D);
 
             if(ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.V1_13_2)) {
@@ -109,10 +121,21 @@ public class MinecraftReflection {
     }
 
     static {
+        if(ProtocolVersion.getGameVersion().isAbove(ProtocolVersion.V1_7_10)) {
+            blockPos = Reflections.getNMSClass("BlockPosition");
+        }
         if(ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.V1_12)) {
+
             getCubes = world.getMethod("a", axisAlignedBB.getParent());
+
+            if(ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.V1_8)) {
+                addCBoxes = block.getMethod("a", world.getParent(), int.class, int.class, int.class, axisAlignedBB.getParent(), List.class, entity.getParent());
+            } else {
+                addCBoxes = block.getMethod("a", world.getParent(), blockPos.getParent(), iBlockData.getParent(), axisAlignedBB.getParent(), List.class, entity.getParent());
+            }
         } else if(ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.V1_13)) {
             getCubes = world.getMethod("a", entity.getParent(), axisAlignedBB.getParent(), boolean.class, List.class);
+            addCBoxes = block.getMethod("a", world.getParent(), blockPos.getParent(), iBlockData.getParent(), axisAlignedBB.getParent(), List.class, entity.getParent());
         } else {
             worldReader = Reflections.getNMSClass("IWorldReader");
             //1.13 and 1.13.1 returns just VoxelShape while 1.13.2+ returns a Stream<VoxelShape>
