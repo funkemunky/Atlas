@@ -8,7 +8,6 @@ import org.bukkit.entity.Player;
 
 import java.util.List;
 
-@Deprecated
 public interface BlockBox {
     List<BoundingBox> getCollidingBoxes(World world, BoundingBox box);
 

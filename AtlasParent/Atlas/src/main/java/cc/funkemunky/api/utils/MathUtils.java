@@ -68,6 +68,16 @@ public class MathUtils {
         return Math.sqrt(total);
     }
 
+    public static float hypot(float... value) {
+        float total = 0;
+
+        for (float val : value) {
+            total += (val * val);
+        }
+
+        return (float) Math.sqrt(total);
+    }
+
     public static boolean playerMoved(Vector from, Vector to) {
         return from.distance(to) > 0;
     }

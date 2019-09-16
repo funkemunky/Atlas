@@ -5,7 +5,6 @@ import cc.funkemunky.api.tinyprotocol.reflection.Reflection;
 import lombok.Getter;
 
 @Getter
-@Deprecated
 public class BlockBoxManager {
     private BlockBox blockBox;
 

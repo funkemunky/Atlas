@@ -15,9 +15,11 @@ import org.bukkit.Axis;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.block.Block;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.inventory.ItemStack;
 
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -71,7 +73,7 @@ public class MinecraftReflection {
         return WrappedEnumAnimation.fromNMS(enumAnimationStack.invoke(itemStack));
     }
 
-    public static List<BoundingBox> getBlockBox(Block block) {
+    public static List<BoundingBox> getBlockBox(@Nullable Entity entity, Block block) {
         Object vanillaBlock = CraftReflection.getVanillaBlock(block);
         Object world = CraftReflection.getVanillaWorld(block.getWorld());
 
@@ -90,25 +92,25 @@ public class MinecraftReflection {
             addCBoxes.invoke(vanillaBlock, world,
                     block.getX(), block.getY(), block.getZ(),
                     box.toAxisAlignedBB(), aabbs,
-                    null); //Entity is always null for these
+                    entity != null ? CraftReflection.getEntity(entity) : null); //Entity is always null for these
         } else if(ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.V1_13)) {
             BaseBlockPosition blockPos = new BaseBlockPosition(block.getX(), block.getY(), block.getZ());
             Object blockData = getBlockData.invoke(vanillaBlock);
 
             addCBoxes.invoke(vanillaBlock, world, blockPos.getAsBlockPosition(), blockData,
-                    box.toAxisAlignedBB(), aabbs, null); //Entity is always null for these
+                    box.toAxisAlignedBB(), aabbs, entity != null ? CraftReflection.getEntity(entity) : null); //Entity is always null for these
         }
 
         return aabbs.stream().map(MinecraftReflection::fromAABB).collect(Collectors.toList());
     }
 
-    public static List<BoundingBox> getCollidingBoxes(World world, BoundingBox box) {
+    public static List<BoundingBox> getCollidingBoxes(@Nullable Entity entity, World world, BoundingBox box) {
         Object vWorld = CraftReflection.getVanillaWorld(world);
         List<BoundingBox> boxes = new ArrayList<>();
         if(ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.V1_13)) {
             List<Object> aabbs = ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.V1_12)
-                    ? getCubes.invoke(vWorld, box.toAxisAlignedBB())
-                    : getCubes.invoke(vWorld, box.toAxisAlignedBB(), false, null);
+                    ? getCubes.invoke(vWorld, entity != null ? CraftReflection.getEntity(entity) : null, box.toAxisAlignedBB())
+                    : getCubes.invoke(vWorld, box.toAxisAlignedBB(), false, entity != null ? CraftReflection.getEntity(entity) : null);
 
             boxes = aabbs.stream().map(MinecraftReflection::fromAABB).collect(Collectors.toList());
         } else {
@@ -155,7 +157,7 @@ public class MinecraftReflection {
             getBlockData = block.getMethod("getBlockData");
         }
         if(ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.V1_12)) {
-            getCubes = world.getMethod("a", axisAlignedBB.getParent());
+            getCubes = world.getMethod("getCubes", entity.getParent(), axisAlignedBB.getParent());
 
             if(ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.V1_8)) {
                 //1.7.10 does not have the BlockPosition object yet.

@@ -18,7 +18,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-@Deprecated
 public class BlockBox1_8_R3 implements BlockBox {
 
     @Override
