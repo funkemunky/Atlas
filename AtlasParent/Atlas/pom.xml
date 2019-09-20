@@ -86,7 +86,7 @@
         <dependency>
             <groupId>cc.funkemunky.utils</groupId>
             <artifactId>ProjectCarbon</artifactId>
-            <version>1.1.4</version>
+            <version>1.2</version>
             <scope>compile</scope>
         </dependency>
         <dependency>

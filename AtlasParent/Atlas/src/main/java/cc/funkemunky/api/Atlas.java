@@ -177,7 +177,7 @@ public class Atlas extends JavaPlugin {
         carbon = new Carbon();
 
         if(MongoSettings.enabled) {
-            carbon.initMongo(MongoSettings.ip, MongoSettings.port, MongoSettings.database, MongoSettings.username, MongoSettings.password);
+            carbon.initMongo(MongoSettings.database, MongoSettings.ip, MongoSettings.port, MongoSettings.username, MongoSettings.password);
         }
     }
 
