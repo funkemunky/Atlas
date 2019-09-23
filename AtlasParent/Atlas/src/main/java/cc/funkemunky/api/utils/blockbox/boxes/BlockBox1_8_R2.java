@@ -39,8 +39,11 @@ public class BlockBox1_8_R2 implements BlockBox {
 
         List<BoundingBox> boxes = Collections.synchronizedList(new ArrayList<>());
 
-        locs.parallelStream().forEach(loc -> {
-            org.bukkit.block.Block block = BlockUtils.getBlock(loc);
+        boolean chunkLoaded = isChunkLoaded(box.getMinimum().toLocation(world));
+
+        if(chunkLoaded) {
+            locs.parallelStream().forEach(loc -> {
+                org.bukkit.block.Block block = loc.getBlock();
             if (block != null && !block.getType().equals(Material.AIR)) {
                 int x = block.getX(), y = block.getY(), z = block.getZ();
 
@@ -66,7 +69,8 @@ public class BlockBox1_8_R2 implements BlockBox {
                         }*/
 
             }
-        });
+            });
+        }
 
         return boxes;
     }
