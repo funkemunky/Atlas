@@ -1,9 +1,12 @@
 package cc.funkemunky.api.bungee;
 
 import cc.funkemunky.api.Atlas;
+import cc.funkemunky.api.bungee.events.BungeeReceiveEvent;
 import cc.funkemunky.api.bungee.objects.BungeePlayer;
+import com.google.common.io.ByteArrayDataOutput;
 import lombok.Getter;
 import org.bukkit.Bukkit;
+import org.bukkit.craftbukkit.libs.org.ibex.nestedvm.util.Seekable;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.messaging.PluginMessageListener;
 
@@ -27,14 +30,27 @@ public class BungeeManager implements PluginMessageListener {
         Bukkit.getServer().sendPluginMessage(Atlas.getInstance(), channelOut, data);
     }
 
-    public void sendObject(Object object) throws IOException {
-        ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        ObjectOutputStream objectStream = new ObjectOutputStream(stream);
+    public void sendObjects(String server, Object... objects) throws IOException {
+        ByteArrayOutputStream output = new ByteArrayOutputStream();
+        DataOutputStream stream = new DataOutputStream(output);
 
-        objectStream.writeUTF("sendObject");
-        objectStream.writeObject(object);
+        stream.writeUTF("Forward");
+        stream.writeUTF(server);
+        stream.writeUTF(channelIn);
 
-        sendData(stream.toByteArray());
+        ByteArrayOutputStream objectOutput = new ByteArrayOutputStream();
+        ObjectOutputStream objectStream = new ObjectOutputStream(objectOutput);
+
+        objectStream.writeShort(objects.length);
+
+        for (Object object : objects) objectStream.writeObject(object);
+
+        byte[] array = objectOutput.toByteArray();
+
+        stream.writeShort(array.length);
+        stream.write(array);
+
+        sendData(output.toByteArray()); //This is where we finally send the data
     }
 
     @Override
@@ -42,29 +58,30 @@ public class BungeeManager implements PluginMessageListener {
         ByteArrayInputStream stream = new ByteArrayInputStream(bytes);
 
         try {
-            ObjectInputStream objectStream = new ObjectInputStream(stream);
+            DataInputStream input = new DataInputStream(stream);
 
-            String type = objectStream.readUTF();
+            String type = input.readUTF();
 
-           switch(type) {
-               case "object": {
-                   Object object;
-                   if((object = objectStream.readObject()) instanceof BungeeObject) {
-                       BungeeObject bObject = (BungeeObject) object;
+            switch(type) {
+                case "Forward": {
+                    String subChannel = input.readUTF();
+                    byte[] array = new byte[input.readShort()];
+                    input.readFully(array);
 
-                       objects.add(bObject);
-                   }
-                   break;
-               }
-               case "playerUpdate": {
-                   BungeePlayer bPlayer = BungeePlayer.fromJson(objectStream.readUTF());
+                    ObjectInputStream objectInput = new ObjectInputStream(new ByteArrayInputStream(array));
 
-                   if(bPlayer != null) {
-                       bungeePlayers.put(bPlayer.uuid, bPlayer);
-                   }
-                   break;
-               }
-           }
+                    Object[] objects = new Object[objectInput.readShort()];
+
+                    for (int i = 0; i < objects.length; i++) {
+                        objects[i] = objectInput.readObject();
+                    }
+
+                    Atlas.getInstance().getEventManager().callEvent(new BungeeReceiveEvent(objects, subChannel));
+                    break;
+                }
+            }
+
+
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }
