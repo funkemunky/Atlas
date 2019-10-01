@@ -115,11 +115,7 @@ public class Atlas extends JavaPlugin {
 
         funkeCommandManager.addCommand(this, new AtlasCommand());
 
-        if(ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.V1_13)) {
-            getServer().getMessenger().registerOutgoingPluginChannel(this, "Atlas_Request");
-            getServer().getMessenger().registerOutgoingPluginChannel(this, "Atlas_Outgoing");
-            getServer().getMessenger().registerOutgoingPluginChannel(this, "Atlas_Incoming");
-        }
+        bungeeManager = new BungeeManager();
 
         MiscUtils.printToConsole(Color.Gray + "Loading other managers and utilities...");
         boxes = new BoundingBoxes();
@@ -139,8 +135,6 @@ public class Atlas extends JavaPlugin {
                 MiscUtils.printToConsole(Color.Green + "Atlas v" + updater.getVersion() + " has been downloaded. Please restart/reload your server to import it.");
             }
         }
-
-        bungeeManager = new BungeeManager();
 
         Bukkit.getOnlinePlayers().forEach(player -> TinyProtocolHandler.getInstance().addChannel(player));
 

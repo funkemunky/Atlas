@@ -15,7 +15,7 @@ import java.util.*;
 
 @Getter
 public class BungeeManager implements PluginMessageListener {
-    private String channelOut = "atlasdata:out", channelIn = "atlasdata:in";
+    private String channelOut = "BungeeCord", channelIn = "BungeeCord";
     private SortedSet<BungeeObject> objects = new TreeSet<>(Comparator.comparing(BungeeObject::getTimeStamp, Comparator.reverseOrder()));
     private BungeeAPI bungeeAPI;
     private Map<UUID, BungeePlayer> bungeePlayers = new HashMap<>();
@@ -36,7 +36,7 @@ public class BungeeManager implements PluginMessageListener {
 
         stream.writeUTF("Forward");
         stream.writeUTF(server);
-        stream.writeUTF(channelIn);
+        stream.writeUTF("Forward");
 
         ByteArrayOutputStream objectOutput = new ByteArrayOutputStream();
         ObjectOutputStream objectStream = new ObjectOutputStream(objectOutput);
@@ -64,7 +64,6 @@ public class BungeeManager implements PluginMessageListener {
 
             switch(type) {
                 case "Forward": {
-                    String subChannel = input.readUTF();
                     byte[] array = new byte[input.readShort()];
                     input.readFully(array);
 
@@ -76,7 +75,7 @@ public class BungeeManager implements PluginMessageListener {
                         objects[i] = objectInput.readObject();
                     }
 
-                    Atlas.getInstance().getEventManager().callEvent(new BungeeReceiveEvent(objects, subChannel));
+                    Atlas.getInstance().getEventManager().callEvent(new BungeeReceiveEvent(objects, type));
                     break;
                 }
             }
