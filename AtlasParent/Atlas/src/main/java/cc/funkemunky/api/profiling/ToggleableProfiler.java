@@ -26,18 +26,15 @@ public class ToggleableProfiler implements Profiler {
 
     public ToggleableProfiler() {
         enabled = false;
-        Atlas.getInstance().getSchedular().scheduleAtFixedRate(new Runnable() {
-            @Override
-            public void run() {
-                for (String name : samplesPerTick.keySet()) {
+        Atlas.getInstance().getSchedular().scheduleAtFixedRate(() -> {
+            for (String name : samplesPerTick.keySet()) {
 
-                    long avg = new ArrayList<>(samplesPerTick.getOrDefault(name, new ArrayList<>())).stream()
-                            .mapToLong(val -> val)
-                            .sum();
+                long avg = new ArrayList<>(samplesPerTick.getOrDefault(name, new ArrayList<>())).stream()
+                        .mapToLong(val -> val)
+                        .sum();
 
-                    averageSamples.put(name, avg);
-                    samplesPerTick.put(name, new ArrayList<>());
-                }
+                averageSamples.put(name, avg);
+                samplesPerTick.put(name, new ArrayList<>());
             }
         }, 50L, 50L, TimeUnit.MILLISECONDS);
     }
