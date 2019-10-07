@@ -17,10 +17,7 @@ import org.bukkit.craftbukkit.v1_13_R2.entity.CraftPlayer;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Stream;
 
 public class BlockBox1_13_R2 implements BlockBox {
@@ -34,7 +31,7 @@ public class BlockBox1_13_R2 implements BlockBox {
 
         Stream<VoxelShape> voxelShapes = vWorld.a(null, (AxisAlignedBB)box.toAxisAlignedBB(), 0,0,0);
 
-        List<BoundingBox> boxes = new ArrayList<>();
+        Vector<BoundingBox> boxes = new Vector<>();
 
         voxelShapes.parallel().map(VoxelShape::d)
                 .forEach(list -> list.stream().map(MinecraftReflection::fromAABB).forEach(boxes::add));

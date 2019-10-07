@@ -20,6 +20,7 @@ import org.bukkit.entity.Player;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Vector;
 import java.util.stream.Stream;
 
 public class BlockBox1_13_R1 implements BlockBox {
@@ -33,9 +34,9 @@ public class BlockBox1_13_R1 implements BlockBox {
 
         VoxelShape voxelShapes = vWorld.a(null, (AxisAlignedBB)box.toAxisAlignedBB(), 0,0,0);
 
-        List<BoundingBox> boxes = new ArrayList<>();
+        Vector<BoundingBox> boxes = new Vector<>();
 
-        voxelShapes.d().stream().map(MinecraftReflection::fromAABB).forEach(boxes::add);
+        voxelShapes.d().parallelStream().map(MinecraftReflection::fromAABB).forEach(boxes::add);
 
         return boxes;
     }
