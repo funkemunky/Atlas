@@ -8,11 +8,7 @@ import cc.funkemunky.api.tinyprotocol.api.packets.reflections.types.WrappedField
 import cc.funkemunky.api.tinyprotocol.api.packets.reflections.types.WrappedMethod;
 import cc.funkemunky.api.tinyprotocol.packet.types.BaseBlockPosition;
 import cc.funkemunky.api.tinyprotocol.packet.types.WrappedEnumAnimation;
-import cc.funkemunky.api.utils.BlockUtils;
 import cc.funkemunky.api.utils.BoundingBox;
-import cc.funkemunky.api.utils.ReflectionsUtil;
-import org.bukkit.Axis;
-import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
@@ -22,7 +18,6 @@ import org.bukkit.inventory.ItemStack;
 import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 public class MinecraftReflection {
@@ -45,6 +40,8 @@ public class MinecraftReflection {
     public static WrappedField dBB = axisAlignedBB.getFieldByName("d");
     public static WrappedField eBB = axisAlignedBB.getFieldByName("e");
     public static WrappedField fBB = axisAlignedBB.getFieldByName("f");
+    public static WrappedConstructor aabbConstructor;
+    public static WrappedMethod idioticOldStaticConstructorAABB;
 
     //ItemStack methods and fields
     public static WrappedMethod enumAnimationStack;
@@ -150,11 +147,26 @@ public class MinecraftReflection {
         return new BoundingBox((float) a,(float) b,(float) c,(float) d,(float) e,(float) f);
     }
 
+    public static Object toAABB(BoundingBox box) {
+        if(ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.V1_8)) {
+            return idioticOldStaticConstructorAABB
+                    .invoke(null,
+                            (double)box.minX, (double)box.minY, (double)box.minZ,
+                            (double)box.maxX, (double)box.maxY, (double)box.maxZ);
+        } else return aabbConstructor
+                .newInstance((double)box.minX, (double)box.minY, (double)box.minZ,
+                (double)box.maxX, (double)box.maxY, (double)box.maxZ);
+    }
+
     static {
         if(ProtocolVersion.getGameVersion().isAbove(ProtocolVersion.V1_7_10)) {
             blockPos = Reflections.getNMSClass("BlockPosition");
             blockPosConstructor = blockPos.getConstructor(int.class, int.class, int.class);
             getBlockData = block.getMethod("getBlockData");
+            aabbConstructor = axisAlignedBB
+                    .getConstructor(double.class, double.class, double.class, double.class, double.class, double.class);
+        } else {
+            idioticOldStaticConstructorAABB = axisAlignedBB.getMethodByType(axisAlignedBB.getParent(), 0);
         }
         if(ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.V1_12)) {
             getCubes = world.getMethod("getCubes", entity.getParent(), axisAlignedBB.getParent());

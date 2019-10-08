@@ -1,6 +1,7 @@
 package cc.funkemunky.api.utils;
 
 import cc.funkemunky.api.Atlas;
+import cc.funkemunky.api.reflection.MinecraftReflection;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -336,7 +337,7 @@ public class BoundingBox {
     }
 
     public Object toAxisAlignedBB() {
-        return ReflectionsUtil.newAxisAlignedBB(minX, minY, minZ, maxX, maxY, maxZ);
+        return MinecraftReflection.toAABB(this);
     }
 
     public String toString() {

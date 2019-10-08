@@ -1,5 +1,6 @@
 package cc.funkemunky.api.utils.blockbox.boxes;
 
+import cc.funkemunky.api.reflection.MinecraftReflection;
 import cc.funkemunky.api.utils.BlockUtils;
 import cc.funkemunky.api.utils.BoundingBox;
 import cc.funkemunky.api.utils.MathUtils;
@@ -17,6 +18,8 @@ import org.bukkit.entity.Player;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Vector;
+import java.util.stream.Collectors;
 
 public class BlockBox1_11_R1 implements BlockBox {
 
@@ -29,6 +32,8 @@ public class BlockBox1_11_R1 implements BlockBox {
         int minZ = MathUtils.floor(box.minZ);
         int maxZ = MathUtils.floor(box.maxZ + 1);
 
+        if(!isChunkLoaded(box.getMinimum().toLocation(world))) return Collections.emptyList();
+
         List<Location> locs = new ArrayList<>();
 
         for (int x = minX; x < maxX; x++) {
@@ -40,65 +45,19 @@ public class BlockBox1_11_R1 implements BlockBox {
             }
         }
 
-        List<BoundingBox> boxes = Collections.synchronizedList(new ArrayList<>());
+        WorldServer vanillaWorld = ((CraftWorld)world).getHandle();
+        AxisAlignedBB aabb = (AxisAlignedBB) box.toAxisAlignedBB();
 
-        boolean chunkLoaded = isChunkLoaded(box.getMinimum().toLocation(world));
+        Vector<AxisAlignedBB> vector = new Vector<>();
 
-        if(chunkLoaded) {
-            locs.parallelStream().forEach(loc -> {
-                org.bukkit.block.Block block = loc.getBlock();
-            if (block != null && !block.getType().equals(Material.AIR)) {
-                int x = block.getX(), y = block.getY(), z = block.getZ();
+        locs.parallelStream().forEach(loc -> {
+            BlockPosition pos = new BlockPosition(loc.getBlockX(), loc.getBlockY(), loc.getBlockZ());
+            IBlockData blockData = vanillaWorld.c(pos);
+            Block block = blockData.getBlock();
+            block.a(blockData, vanillaWorld, pos, aabb, vector, null, true);
+        });
 
-                BlockPosition pos = new BlockPosition(x, y, z);
-                World nmsWorld = ((CraftWorld) world).getHandle();
-                IBlockData nmsiBlockData = ((CraftWorld) world).getHandle().getType(pos);
-                Block nmsBlock = nmsiBlockData.getBlock();
-                List<AxisAlignedBB> preBoxes = new ArrayList<>();
-
-                nmsBlock.updateState(nmsiBlockData, nmsWorld, pos);
-                nmsBlock.a(nmsiBlockData, nmsWorld, pos, (AxisAlignedBB) box.toAxisAlignedBB(), preBoxes, null, true);
-
-                if (preBoxes.size() > 0) {
-                    for (AxisAlignedBB aabb : preBoxes) {
-                        BoundingBox bb = new BoundingBox((float)aabb.a,(float)aabb.b,(float)aabb.c,(float)aabb.d,(float)aabb.e,(float)aabb.f);
-
-                        if(bb.collides(box)) {
-                            boxes.add(bb);
-                        }
-                    }
-
-                    if (nmsBlock instanceof BlockShulkerBox) {
-                        TileEntity tileentity = nmsWorld.getTileEntity(pos);
-                        BlockShulkerBox shulker = (BlockShulkerBox) nmsBlock;
-
-                        if (tileentity instanceof TileEntityShulkerBox) {
-                            TileEntityShulkerBox entity = (TileEntityShulkerBox) tileentity;
-                            //Bukkit.broadcastMessage("entity");
-                            boxes.add(ReflectionsUtil.toBoundingBox(entity.a(nmsiBlockData)));
-
-                            if (entity.p().toString().contains("OPEN") || entity.p().toString().contains("CLOSING")) {
-                                boxes.add(new BoundingBox(block.getX(), block.getY(), block.getZ(), block.getX() + 1, block.getY() + 1.5f, block.getZ() + 1));
-                            }
-                        }
-                    }
-                } else {
-                    BoundingBox bb = ReflectionsUtil.toBoundingBox(nmsBlock.a(nmsiBlockData, nmsWorld, pos)).add(x, y, z, x, y, z);
-
-                    if(bb.collides(box)) {
-                        boxes.add(bb);
-                    }
-                }
-                        /*
-                        else {
-                            BoundingBox blockBox = new BoundingBox((float) nmsBlock.B(), (float) nmsBlock.D(), (float) nmsBlock.F(), (float) nmsBlock.C(), (float) nmsBlock.E(), (float) nmsBlock.G());
-                        }*/
-
-            }
-            });
-        }
-
-        return boxes;
+        return vector.parallelStream().map(MinecraftReflection::fromAABB).collect(Collectors.toList());
     }
 
     @Override

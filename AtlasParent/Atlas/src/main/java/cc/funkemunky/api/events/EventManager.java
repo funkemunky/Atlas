@@ -11,6 +11,7 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.stream.Collectors;
 
 @Getter
 public class EventManager {
@@ -24,11 +25,11 @@ public class EventManager {
                 ListenerMethod lm = new ListenerMethod(plugin, method, listener, listen.priority());
 
                 if(!listen.priority().equals(ListenerPriority.NONE)) {
-                    lm.setListenerPriority(listen.priority());
+                    lm.listenerPriority = listen.priority();
                 }
 
                 listenerMethods.add(lm);
-                listenerMethods.sort(Comparator.comparing(mth -> mth.getListenerPriority().getPriority(), Comparator.reverseOrder()));
+                listenerMethods.sort(Comparator.comparing(mth -> mth.listenerPriority.getPriority(), Comparator.reverseOrder()));
             } else {
                 throw new ListenParamaterException("Method " + method.getDeclaringClass().getName() + "#" + method.getName() + "'s paramater: " + method.getParameterTypes()[0].getName() + " is not an instanceof " + AtlasEvent.class.getSimpleName() + "!");
             }
@@ -43,12 +44,12 @@ public class EventManager {
 
     public void unregisterAll(Plugin plugin) {
         listenerMethods.stream()
-                .filter(lm -> lm.getPlugin().equals(plugin))
+                .filter(lm -> lm.plugin.equals(plugin))
                 .forEach(listenerMethods::remove);
     }
 
     public void unregisterListener(AtlasListener listener) {
-        listenerMethods.stream().filter(lm -> lm.getListener().equals(listener)).forEach(listenerMethods::remove);
+        listenerMethods.stream().filter(lm -> lm.listener.equals(listener)).forEach(listenerMethods::remove);
     }
 
     public void registerListeners(AtlasListener listener, Plugin plugin) {
@@ -64,13 +65,20 @@ public class EventManager {
     public void callEvent(AtlasEvent event) {
         if(!paused && event != null) {
             Atlas.getInstance().getProfile().start("event:" + event.getClass().getSimpleName());
-            for (ListenerMethod lm : listenerMethods) {
-                if(lm.getMethod().getParameterTypes().length != 1 || !lm.getMethod().getParameterTypes()[0].getName().equals(event.getClass().getName())) continue;
 
-                try {
-                    lm.getMethod().invoke(lm.getListener(), event);
-                } catch (IllegalAccessException | InvocationTargetException e) {
-                    e.printStackTrace();
+            List<ListenerMethod> methods = listenerMethods.parallelStream()
+                    .filter(lm -> lm.method.getParameters().get(0).equals(event.getClass()))
+                    .sequential()
+                    .sorted(Comparator.comparing(lm -> lm.listenerPriority.getPriority(), Comparator.reverseOrder()))
+                    .collect(Collectors.toList());
+
+
+            if(event instanceof Cancellable) {
+                Cancellable cancellable = (Cancellable) event;
+                for (ListenerMethod lm : methods) {
+                    if(!cancellable.isCancelled() || !lm.ignoreCancelled) {
+                        lm.method.invoke(lm.listener, cancellable);
+                    }
                 }
             }
             Atlas.getInstance().getProfile().stop("event:" + event.getClass().getSimpleName());
