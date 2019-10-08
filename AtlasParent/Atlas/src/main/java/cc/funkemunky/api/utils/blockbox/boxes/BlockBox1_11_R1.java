@@ -46,7 +46,7 @@ public class BlockBox1_11_R1 implements BlockBox {
         }
 
         WorldServer vanillaWorld = ((CraftWorld)world).getHandle();
-        AxisAlignedBB aabb = (AxisAlignedBB) box.toAxisAlignedBB();
+        AxisAlignedBB aabb = MinecraftReflection.toAABB(box);
 
         Vector<AxisAlignedBB> vector = new Vector<>();
 

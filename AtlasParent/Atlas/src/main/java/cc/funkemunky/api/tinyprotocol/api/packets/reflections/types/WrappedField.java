@@ -46,4 +46,8 @@ public class WrappedField {
             e.printStackTrace();
         }
     }
+
+    public int getModifiers() {
+        return this.field.getModifiers();
+    }
 }

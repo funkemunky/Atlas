@@ -36,4 +36,8 @@ public class WrappedMethod {
         }
         return null;
     }
+
+    public int getModifiers() {
+        return this.method.getModifiers();
+    }
 }

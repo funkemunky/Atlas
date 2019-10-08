@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Getter
 public class WrappedClass {
@@ -123,6 +124,18 @@ public class WrappedClass {
         }
         System.out.println("Shit didnt get: " + type.getName());
         throw new NullPointerException("Could not find method with return type " + type.getSimpleName() + " at index " + index);
+    }
+
+    public List<WrappedMethod> getMethods() {
+        return Arrays.stream(parent.getMethods())
+                .map(method -> new WrappedMethod(this, method))
+                .collect(Collectors.toList());
+    }
+
+    public List<WrappedField> getFields() {
+        return Arrays.stream(parent.getFields())
+                .map(field -> new WrappedField(this, field))
+                .collect(Collectors.toList());
     }
 
     public Enum getEnum(String name) {

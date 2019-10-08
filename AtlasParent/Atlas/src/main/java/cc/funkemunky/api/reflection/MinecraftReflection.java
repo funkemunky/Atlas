@@ -147,7 +147,7 @@ public class MinecraftReflection {
         return new BoundingBox((float) a,(float) b,(float) c,(float) d,(float) e,(float) f);
     }
 
-    public static Object toAABB(BoundingBox box) {
+    public static <T> T toAABB(BoundingBox box) {
         if(ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.V1_8)) {
             return idioticOldStaticConstructorAABB
                     .invoke(null,
