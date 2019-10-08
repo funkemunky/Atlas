@@ -13,6 +13,7 @@ import lombok.val;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -123,19 +124,51 @@ public class WrappedClass {
             }
         }
         System.out.println("Shit didnt get: " + type.getName());
-        throw new NullPointerException("Could not find method with return type " + type.getSimpleName() + " at index " + index);
+        throw new NullPointerException("Could not find method with return type " + type.getSimpleName()
+                + " at index " + index);
     }
 
+    //We have a separate method instead of just calling WrappedClass#getMethods(boolean, boolean)
+    //for performance reasons.
     public List<WrappedMethod> getMethods() {
         return Arrays.stream(parent.getMethods())
                 .map(method -> new WrappedMethod(this, method))
                 .collect(Collectors.toList());
     }
 
+    public List<WrappedMethod> getMethods(boolean noStatic, boolean noFinal) {
+        return Arrays.stream(parent.getMethods())
+                .filter(method ->
+                        (!noFinal || !Modifier.isFinal(method.getModifiers())
+                                && (!noStatic || !Modifier.isStatic(method.getModifiers()))))
+                .map(method -> new WrappedMethod(this, method))
+                .collect(Collectors.toList());
+
+    }
+
+    public List<WrappedMethod> getMethods(boolean noStatic) {
+        return getMethods(noStatic, false);
+    }
+
+    //We have a separate method instead of just calling WrappedClass#getFields(boolean, boolean)
+    // or performance reasons.
     public List<WrappedField> getFields() {
         return Arrays.stream(parent.getFields())
                 .map(field -> new WrappedField(this, field))
                 .collect(Collectors.toList());
+    }
+
+    public List<WrappedField> getFields(boolean noStatic, boolean noFinal) {
+        return Arrays.stream(parent.getFields())
+                .filter(field ->
+                        (!noFinal || !Modifier.isFinal(field.getModifiers())
+                                && (!noStatic || !Modifier.isStatic(field.getModifiers()))))
+                .map(field -> new WrappedField(this, field))
+                .collect(Collectors.toList());
+    }
+
+    public List<WrappedField> getFields(boolean noStatic) {
+        return getFields(noStatic, false);
     }
 
     public Enum getEnum(String name) {
