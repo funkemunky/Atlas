@@ -4,7 +4,6 @@ import cc.funkemunky.api.bungee.BungeeManager;
 import cc.funkemunky.api.commands.FunkeCommandManager;
 import cc.funkemunky.api.commands.ancmd.CommandManager;
 import cc.funkemunky.api.commands.impl.AtlasCommand;
-import cc.funkemunky.api.config.Config;
 import cc.funkemunky.api.events.AtlasListener;
 import cc.funkemunky.api.events.EventManager;
 import cc.funkemunky.api.events.impl.TickEvent;
@@ -12,7 +11,6 @@ import cc.funkemunky.api.handlers.PluginLoaderHandler;
 import cc.funkemunky.api.metrics.Metrics;
 import cc.funkemunky.api.profiling.BaseProfiler;
 import cc.funkemunky.api.settings.MongoSettings;
-import cc.funkemunky.api.tinyprotocol.api.ProtocolVersion;
 import cc.funkemunky.api.tinyprotocol.api.TinyProtocolHandler;
 import cc.funkemunky.api.updater.Updater;
 import cc.funkemunky.api.utils.*;
@@ -50,7 +48,6 @@ public class Atlas extends JavaPlugin {
     private Updater updater;
     private BaseProfiler profile;
     private Metrics metrics;
-    private Config atlasConfig;
     private Carbon carbon;
     private TinyProtocolHandler tinyProtocolHandler;
     private int currentThread = 0;
@@ -77,10 +74,10 @@ public class Atlas extends JavaPlugin {
 
     public void onEnable() {
         instance = this;
+        saveDefaultConfig();
         consoleSender = Bukkit.getConsoleSender();
 
         MiscUtils.printToConsole(Color.Red + "Loading Atlas...");
-        atlasConfig = new Config(this, "config.yml");
 
         MiscUtils.printToConsole(Color.Gray + "Firing up the thread turbines...");
         service = Executors.newFixedThreadPool(2);
@@ -161,10 +158,6 @@ public class Atlas extends JavaPlugin {
 
 
         MiscUtils.printToConsole(Color.Red + "Completed shutdown process.");
-    }
-
-    public Config getAtlasConfig() {
-        return atlasConfig;
     }
 
     private void initCarbon() {
@@ -275,12 +268,12 @@ public class Atlas extends JavaPlugin {
                             field.setAccessible(true);
                             MiscUtils.printToConsole("&eFound " + field.getName() + " ConfigSetting (default=" + field.get(obj) + ").");
                             if(plugin instanceof Atlas) {
-                                if(getAtlasConfig().get(path) == null) {
+                                if(getConfig().get(path) == null) {
                                     MiscUtils.printToConsole("&eValue not found in configuration! Setting default into atlasConfig...");
                                     plugin.getConfig().set(path, field.get(obj));
                                     plugin.saveConfig();
                                 } else {
-                                    field.set(Modifier.isStatic(field.getModifiers()) ? null : obj, getAtlasConfig().get(path));
+                                    field.set(Modifier.isStatic(field.getModifiers()) ? null : obj, getConfig().get(path));
 
                                     MiscUtils.printToConsole("&eValue found in configuration! Set value to &a" + plugin.getConfig().get(path));
                                 }

@@ -186,7 +186,7 @@ public class MathUtils {
             format = String.valueOf(format) + "#";
         }
         DecimalFormat twoDForm = new DecimalFormat(format);
-        return Double.valueOf(twoDForm.format(d).replaceAll(",", "."));
+        return Double.parseDouble(twoDForm.format(d).replaceAll(",", "."));
     }
 
     public static float trimFloat(int degree, float d) {
@@ -195,7 +195,7 @@ public class MathUtils {
             format = String.valueOf(format) + "#";
         }
         DecimalFormat twoDForm = new DecimalFormat(format);
-        return Float.valueOf(twoDForm.format(d).replaceAll(",", "."));
+        return Float.parseFloat(twoDForm.format(d).replaceAll(",", "."));
     }
 
     public static double getYawDifference(Location one, Location two) {
@@ -224,6 +224,30 @@ public class MathUtils {
         BigDecimal bd = new BigDecimal(value);
         bd = bd.setScale(0, RoundingMode.UP);
         return bd.doubleValue();
+    }
+
+    public static float round(float value, int places) {
+        if (places < 0) {
+            throw new IllegalArgumentException();
+        }
+        BigDecimal bd = new BigDecimal(value);
+        bd = bd.setScale(places, RoundingMode.HALF_UP);
+        return bd.floatValue();
+    }
+
+    public static float round(float value, int places, RoundingMode mode) {
+        if (places < 0) {
+            throw new IllegalArgumentException();
+        }
+        BigDecimal bd = new BigDecimal(value);
+        bd = bd.setScale(places, mode);
+        return bd.floatValue();
+    }
+
+    public static float round(float value) {
+        BigDecimal bd = new BigDecimal(value);
+        bd = bd.setScale(0, RoundingMode.UP);
+        return bd.floatValue();
     }
 
     public static int floor(double var0) {
