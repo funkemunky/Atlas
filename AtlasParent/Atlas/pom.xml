@@ -6,7 +6,7 @@
 
     <parent>
         <groupId>cc.funkemunky.utils</groupId>
-        <version>1.5.5</version>
+        <version>1.6</version>
         <artifactId>atlas-parent</artifactId>
     </parent>
 
@@ -86,7 +86,7 @@
         <dependency>
             <groupId>cc.funkemunky.utils</groupId>
             <artifactId>ProjectCarbon</artifactId>
-            <version>1.2</version>
+            <version>1.2.1</version>
             <scope>compile</scope>
         </dependency>
         <dependency>

@@ -1,13 +1,13 @@
 package cc.funkemunky.bungee;
 
-import cc.funkemunky.bungee.listeners.MessageListener;
+import cc.funkemunky.bungee.listeners.JoinListener;
 import net.md_5.bungee.BungeeCord;
 import net.md_5.bungee.api.plugin.Plugin;
 
 public class AtlasBungee extends Plugin {
 
     public static AtlasBungee INSTANCE;
-    public String outChannel = "atlasdata:in";
+    public String outChannel = "atlasIn";
 
     public void onEnable() {
         INSTANCE = this;
@@ -15,7 +15,7 @@ public class AtlasBungee extends Plugin {
     }
 
     private void registerListeners() {
-        BungeeCord.getInstance().getPluginManager().registerListener(this, new MessageListener());
+        BungeeCord.getInstance().getPluginManager().registerListener(this, new JoinListener());
     }
 
 

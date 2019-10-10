@@ -9,11 +9,25 @@
 package cc.funkemunky.api.tinyprotocol.api.packets.channelhandler;
 
 import cc.funkemunky.api.Atlas;
+import cc.funkemunky.api.tinyprotocol.api.ProtocolVersion;
 import cc.funkemunky.api.tinyprotocol.api.packets.reflections.Reflections;
+import cc.funkemunky.api.tinyprotocol.reflection.FieldAccessor;
+import cc.funkemunky.api.tinyprotocol.reflection.Reflection;
 import cc.funkemunky.api.utils.ReflectionsUtil;
+import com.mojang.authlib.GameProfile;
+import io.netty.channel.Channel;
 import org.bukkit.entity.Player;
 
+import java.util.Map;
+import java.util.WeakHashMap;
+
 public class ChannelHandler1_8 extends ChannelHandlerAbstract {
+
+    static final FieldAccessor<GameProfile> getGameProfile = Reflection.getField(PACKET_LOGIN_IN_START, GameProfile.class, 0);
+    static final FieldAccessor<Integer> protocolId = Reflection.getField(PACKET_SET_PROTOCOL, int.class, 0);
+    static final FieldAccessor<Enum> protocolType = Reflection.getField(PACKET_SET_PROTOCOL, Enum.class, 0);
+    private Map<String, Channel> channelLookup = new WeakHashMap<>();
+    private Map<Channel, Integer> protocolLookup = new WeakHashMap<>();
 
     @Override public void addChannel(Player player) {
         io.netty.channel.Channel channel = getChannel(player);
@@ -36,11 +50,23 @@ public class ChannelHandler1_8 extends ChannelHandlerAbstract {
         });
     }
 
+    public ProtocolVersion getProtocolVersion(Player player) {
+        Channel channel = channelLookup.get(player.getName());
+
+        // Lookup channel again
+        if (channel == null) {
+
+            channelLookup.put(player.getName(), getChannel(player));
+        }
+
+        return ProtocolVersion.getVersion(protocolLookup.getOrDefault(channel, -1));
+    }
+
     private io.netty.channel.Channel getChannel(Player player) {
         return (io.netty.channel.Channel) Reflections.getNMSClass("NetworkManager").getFirstFieldByType(io.netty.channel.Channel.class).get(networkManagerField.get(playerConnectionField.get(ReflectionsUtil.getEntityPlayer(player))));
     }
 
-    private static class ChannelHandler extends io.netty.channel.ChannelDuplexHandler {
+    private class ChannelHandler extends io.netty.channel.ChannelDuplexHandler {
         private final Player player;
         private final ChannelHandlerAbstract channelHandlerAbstract;
 
@@ -57,6 +83,16 @@ public class ChannelHandler1_8 extends ChannelHandlerAbstract {
         }
 
         @Override public void channelRead(io.netty.channel.ChannelHandlerContext ctx, Object msg) throws Exception {
+            Channel channel = ctx.channel();
+            if (PACKET_LOGIN_IN_START.isInstance(msg)) {
+                GameProfile profile = getGameProfile.get(msg);
+                channelLookup.put(profile.getName(), channel);
+            } else if (PACKET_SET_PROTOCOL.isInstance(msg)) {
+                String protocol = protocolType.get(msg).name();
+                if (protocol.equalsIgnoreCase("LOGIN")) {
+                    protocolLookup.put(channel, protocolId.get(msg));
+                }
+            }
             Object packet = Atlas.getInstance().getTinyProtocolHandler().onPacketInAsync(player, msg);
             if (packet != null) {
                 super.channelRead(ctx, packet);

@@ -3,6 +3,7 @@ package cc.funkemunky.api.bungee;
 import cc.funkemunky.api.Atlas;
 import cc.funkemunky.api.bungee.events.BungeeReceiveEvent;
 import cc.funkemunky.api.bungee.objects.BungeePlayer;
+import cc.funkemunky.api.handlers.ForgeHandler;
 import com.google.common.io.ByteArrayDataOutput;
 import lombok.Getter;
 import org.bukkit.Bukkit;
@@ -16,13 +17,14 @@ import java.util.*;
 @Getter
 public class BungeeManager implements PluginMessageListener {
     private String channelOut = "BungeeCord", channelIn = "BungeeCord";
-    private SortedSet<BungeeObject> objects = new TreeSet<>(Comparator.comparing(BungeeObject::getTimeStamp, Comparator.reverseOrder()));
+    private String atlasIn = "atlasIn";
     private BungeeAPI bungeeAPI;
     private Map<UUID, BungeePlayer> bungeePlayers = new HashMap<>();
 
     public BungeeManager() {
         Bukkit.getMessenger().registerOutgoingPluginChannel(Atlas.getInstance(), channelOut);
         Bukkit.getMessenger().registerIncomingPluginChannel(Atlas.getInstance(), channelIn, this);
+        Bukkit.getMessenger().registerIncomingPluginChannel(Atlas.getInstance(), atlasIn, this);
         bungeeAPI = new BungeeAPI();
     }
 
@@ -54,35 +56,47 @@ public class BungeeManager implements PluginMessageListener {
     }
 
     @Override
-    public void onPluginMessageReceived(String s, Player player, byte[] bytes) {
+    public void onPluginMessageReceived(String channel, Player player, byte[] bytes) {
         ByteArrayInputStream stream = new ByteArrayInputStream(bytes);
+        if(channel.equals("Bungee")) {
+            try {
+                DataInputStream input = new DataInputStream(stream);
 
-        try {
-            DataInputStream input = new DataInputStream(stream);
+                String type = input.readUTF();
 
-            String type = input.readUTF();
+                switch(type) {
+                    case "Forward": {
+                        byte[] array = new byte[input.readShort()];
+                        input.readFully(array);
 
-            switch(type) {
-                case "Forward": {
-                    byte[] array = new byte[input.readShort()];
-                    input.readFully(array);
+                        ObjectInputStream objectInput = new ObjectInputStream(new ByteArrayInputStream(array));
 
-                    ObjectInputStream objectInput = new ObjectInputStream(new ByteArrayInputStream(array));
+                        Object[] objects = new Object[objectInput.readShort()];
 
-                    Object[] objects = new Object[objectInput.readShort()];
+                        for (int i = 0; i < objects.length; i++) {
+                            objects[i] = objectInput.readObject();
+                        }
 
-                    for (int i = 0; i < objects.length; i++) {
-                        objects[i] = objectInput.readObject();
+                        Atlas.getInstance().getEventManager().callEvent(new BungeeReceiveEvent(objects, type));
+                        break;
                     }
-
-                    Atlas.getInstance().getEventManager().callEvent(new BungeeReceiveEvent(objects, type));
-                    break;
                 }
+
+
+            } catch (IOException | ClassNotFoundException e) {
+                e.printStackTrace();
             }
+        } else if(channel.equals("atlasIn")) {
+            try {
+                ObjectInputStream objectInput = new ObjectInputStream(stream);
 
+                if(objectInput.readUTF().equals("mods")) {
 
-        } catch (IOException | ClassNotFoundException e) {
-            e.printStackTrace();
+                    ForgeHandler.runBungeeModChecker(player, (Map<String, String>) objectInput.readObject());
+                }
+            } catch (IOException | ClassNotFoundException e) {
+                e.printStackTrace();
+            }
         }
     }
 

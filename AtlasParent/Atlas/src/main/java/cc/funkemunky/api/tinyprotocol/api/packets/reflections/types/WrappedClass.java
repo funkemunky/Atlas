@@ -52,6 +52,12 @@ public class WrappedClass {
         }
     }
 
+    public List<WrappedConstructor> getConstructors() {
+        return Arrays.stream(this.parent.getConstructors())
+                .map(construct -> new WrappedConstructor(this, construct))
+                .collect(Collectors.toList());
+    }
+
     public WrappedConstructor getConstructor() {
         val optional = Arrays.stream(this.parent.getConstructors()).filter(cons -> cons.getParameterCount() == 0).findFirst();
         return optional.map(constructor -> new WrappedConstructor(this, constructor)).orElse(null);

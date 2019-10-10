@@ -8,8 +8,11 @@
  */
 package cc.funkemunky.api.tinyprotocol.api.packets.channelhandler;
 
+import cc.funkemunky.api.tinyprotocol.api.ProtocolVersion;
 import cc.funkemunky.api.tinyprotocol.api.packets.reflections.Reflections;
 import cc.funkemunky.api.tinyprotocol.api.packets.reflections.types.WrappedField;
+import cc.funkemunky.api.tinyprotocol.reflection.FieldAccessor;
+import cc.funkemunky.api.tinyprotocol.reflection.Reflection;
 import org.bukkit.entity.Player;
 
 import java.util.concurrent.Executor;
@@ -18,6 +21,9 @@ import java.util.concurrent.Executors;
 public abstract class ChannelHandlerAbstract {
     static final WrappedField networkManagerField = Reflections.getNMSClass("PlayerConnection").getFieldByName("networkManager");
     static final WrappedField playerConnectionField = Reflections.getNMSClass("EntityPlayer").getFieldByName("playerConnection");
+    // Packets we have to intercept
+    static final Class<?> PACKET_SET_PROTOCOL = Reflection.getMinecraftClass("PacketHandshakingInSetProtocol");
+    static final Class<?> PACKET_LOGIN_IN_START = Reflection.getMinecraftClass("PacketLoginInStart");
     final Executor addChannelHandlerExecutor;
     final Executor removeChannelHandlerExecutor;
     final String handlerKey;
@@ -35,4 +41,6 @@ public abstract class ChannelHandlerAbstract {
     public abstract void removeChannel(Player player);
 
     public abstract void sendPacket(Player player, Object packet);
+
+    public abstract ProtocolVersion getProtocolVersion(Player player);
 }
