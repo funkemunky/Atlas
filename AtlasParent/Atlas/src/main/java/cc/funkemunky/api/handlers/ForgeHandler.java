@@ -6,8 +6,10 @@ import cc.funkemunky.api.utils.Init;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerLoginEvent;
 import org.bukkit.plugin.messaging.PluginMessageListener;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -26,7 +28,7 @@ public class ForgeHandler implements Listener, PluginMessageListener {
     private static boolean enabled = true;
 
     @ConfigSetting(path = "forge", name = "bungee")
-    private static boolean fromBungee = false;
+    public static boolean fromBungee = false;
 
     private static Map<Player, ModData> mods = new HashMap<>();
 
@@ -35,33 +37,53 @@ public class ForgeHandler implements Listener, PluginMessageListener {
     }
 
     @EventHandler
-    public void onLogin(PlayerLoginEvent event) {
-        if(enabled) {
-            event.getPlayer().sendPluginMessage(Atlas.getInstance(), "FML|HS", new byte[] {-2, 0});
-            event.getPlayer().sendPluginMessage(Atlas.getInstance(), "FML|HS", new byte[] {0, 2, 0, 0, 0, 0});
-            event.getPlayer().sendPluginMessage(Atlas.getInstance(), "FML|HS", new byte[] {2, 0, 0, 0, 0});
+    public void onJoin(PlayerJoinEvent event)
+    {
+        if(enabled && !fromBungee) {
+            Player player = event.getPlayer();
+
+            new BukkitRunnable()
+            {
+                @Override
+                public void run()
+                {
+                    sendFmlPacket(player, (byte) -2, (byte) 0);
+                    sendFmlPacket(player, (byte) 0, (byte) 2, (byte) 0, (byte) 0, (byte) 0, (byte) 0);
+                    sendFmlPacket(player, (byte) 2, (byte) 0, (byte) 0, (byte) 0, (byte) 0);
+                }
+            }.runTaskLater(Atlas.getInstance(), 20L);
         }
+    }
+
+    /**
+     * Sends a packet through the FML|HS channel
+     *
+     * @param player The player to send the packet to
+     * @param data The data to send with the packet
+     */
+    private static void sendFmlPacket(Player player, byte... data)
+    {
+        player.sendPluginMessage(Atlas.getInstance(), "FML|HS", data);
     }
 
     @Override
-    public void onPluginMessageReceived(String s, Player player, byte[] bytes) {
-        if(!enabled) return;
-        if (s.equals("FML|HS")) {
-            mods.put(player, getModData(bytes));
+    public void onPluginMessageReceived(String channel, Player player, byte[] data)
+    {
+        // ModList has ID 2
+        if (data[0] == 2)
+        {
+            ModData modData = getModData(data);
+            mods.put(player, modData);
         }
     }
 
-    public static void runBungeeModChecker(Player player, Map<String, String> modStrings) {
-        mods.put(player, new ModData(modStrings));
-    }
     /**
-     * Credit: https://github.com/Mas281/ForgeModBlocker/
      * Fetches a {@link ModData} object from the raw mods data
      *
      * @param data The input data
      * @return A ModData object
      */
-    private static ModData getModData(byte[] data)
+    private ModData getModData(byte[] data)
     {
         Map<String, String> mods = new HashMap<>();
 
@@ -88,5 +110,9 @@ public class ForgeHandler implements Listener, PluginMessageListener {
         }
 
         return new ModData(mods);
+    }
+
+    public static void runBungeeModChecker(Player player, Map<String, String> modStrings) {
+        mods.put(player, new ModData(modStrings));
     }
 }

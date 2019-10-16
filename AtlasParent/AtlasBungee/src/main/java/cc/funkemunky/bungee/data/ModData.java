@@ -1,4 +1,4 @@
-package cc.funkemunky.api.handlers;
+package cc.funkemunky.bungee.data;
 
 import java.util.Collections;
 import java.util.HashSet;

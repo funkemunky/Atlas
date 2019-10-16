@@ -86,13 +86,14 @@ public class BungeeManager implements PluginMessageListener {
             } catch (IOException | ClassNotFoundException e) {
                 e.printStackTrace();
             }
-        } else if(channel.equals("atlasIn")) {
+        } else if(ForgeHandler.fromBungee && channel.equals("atlasIn")) {
             try {
                 ObjectInputStream objectInput = new ObjectInputStream(stream);
 
                 if(objectInput.readUTF().equals("mods")) {
-
-                    ForgeHandler.runBungeeModChecker(player, (Map<String, String>) objectInput.readObject());
+                    Map<String, String> mods = (Map<String, String>) objectInput.readObject();
+                    mods.keySet().forEach(System.out::println);
+                    ForgeHandler.runBungeeModChecker(player, mods);
                 }
             } catch (IOException | ClassNotFoundException e) {
                 e.printStackTrace();
