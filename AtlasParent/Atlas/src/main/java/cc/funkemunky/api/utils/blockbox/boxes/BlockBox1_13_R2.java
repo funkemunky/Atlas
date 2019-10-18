@@ -22,8 +22,12 @@ import java.util.stream.Stream;
 
 public class BlockBox1_13_R2 implements BlockBox {
 
-    private static MethodInvoker getShape = Reflection.getMethod(Reflection.getMinecraftClass("IBlockData"), Reflection.getMinecraftClass("VoxelShape"), 0, Reflection.getClass("IBlockAccess"), Reflection.getClass("BlockPosition"));
-    private static MethodInvoker getBoundingBox = Reflection.getMethod(Reflection.getMinecraftClass("VoxelShape"), Reflection.getMinecraftClass("AxisAlignedBB"), 0);
+    private static MethodInvoker getShape = Reflection.getMethod(Reflection.getMinecraftClass("IBlockData"),
+            Reflection.getMinecraftClass("VoxelShape"), 0,
+            Reflection.getClass("IBlockAccess"),
+            Reflection.getClass("BlockPosition"));
+    private static MethodInvoker getBoundingBox = Reflection.getMethod(Reflection.getMinecraftClass("VoxelShape"),
+            Reflection.getMinecraftClass("AxisAlignedBB"), 0);
 
     @Override
     public List<BoundingBox> getCollidingBoxes(org.bukkit.World world, BoundingBox box) {
@@ -47,9 +51,14 @@ public class BlockBox1_13_R2 implements BlockBox {
 
     @Override
     public boolean isChunkLoaded(Location loc) {
-        net.minecraft.server.v1_13_R2.World world = ((org.bukkit.craftbukkit.v1_13_R2.CraftWorld) loc.getWorld()).getHandle();
+        net.minecraft.server.v1_13_R2.World world =
+                ((org.bukkit.craftbukkit.v1_13_R2.CraftWorld) loc.getWorld()).getHandle();
 
-        return !world.isClientSide && world.isLoaded(new net.minecraft.server.v1_13_R2.BlockPosition(loc.getBlockX(), 0, loc.getBlockZ())) && world.getChunkAtWorldCoords(new net.minecraft.server.v1_13_R2.BlockPosition(loc.getBlockX(), 0, loc.getBlockZ())).y();
+        return !world.isClientSide
+                && world.isLoaded(
+                        new net.minecraft.server.v1_13_R2.BlockPosition(loc.getBlockX(), 0, loc.getBlockZ()))
+                && world.getChunkAtWorldCoords(
+                        new net.minecraft.server.v1_13_R2.BlockPosition(loc.getBlockX(), 0, loc.getBlockZ())).y();
     }
 
     @Override
@@ -59,19 +68,22 @@ public class BlockBox1_13_R2 implements BlockBox {
 
     @Override
     public boolean isUsingItem(Player player) {
-        net.minecraft.server.v1_13_R2.EntityLiving entity = ((org.bukkit.craftbukkit.v1_13_R2.entity.CraftLivingEntity) player).getHandle();
+        net.minecraft.server.v1_13_R2.EntityLiving entity =
+                ((org.bukkit.craftbukkit.v1_13_R2.entity.CraftLivingEntity) player).getHandle();
         return entity.cW() != null && entity.cW().l() != net.minecraft.server.v1_13_R2.EnumAnimation.NONE;
     }
 
     @Override
     public float getMovementFactor(Player player) {
-        return (float) ((CraftPlayer) player).getHandle().getAttributeInstance(GenericAttributes.MOVEMENT_SPEED).getValue();
+        return (float) ((CraftPlayer) player).getHandle()
+                .getAttributeInstance(GenericAttributes.MOVEMENT_SPEED).getValue();
     }
 
     @Override
     public int getTrackerId(Player player) {
         EntityPlayer entityPlayer = ((CraftPlayer) player).getHandle();
-        EntityTrackerEntry entry = ((WorldServer) entityPlayer.getWorld()).tracker.trackedEntities.get(entityPlayer.getId());
+        EntityTrackerEntry entry = ((WorldServer) entityPlayer.getWorld()).tracker
+                .trackedEntities.get(entityPlayer.getId());
         return entry.b().getId();
     }
 

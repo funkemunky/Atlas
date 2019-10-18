@@ -30,8 +30,6 @@ public class BlockBox1_8_R1 implements BlockBox {
         int minZ = MathUtils.floor(box.minZ);
         int maxZ = MathUtils.floor(box.maxZ + 1);
 
-        if(!isChunkLoaded(box.getMinimum().toLocation(world))) return Collections.emptyList();
-
         List<Location> locs = new ArrayList<>();
 
         for (int x = minX; x < maxX; x++) {
@@ -43,18 +41,61 @@ public class BlockBox1_8_R1 implements BlockBox {
             }
         }
 
-        WorldServer vanillaWorld = ((CraftWorld)world).getHandle();
-        AxisAlignedBB aabb = MinecraftReflection.toAABB(box);
+        List<BoundingBox> boxes = Collections.synchronizedList(new ArrayList<>());
 
-        Vector<AxisAlignedBB> vector = new Vector<>();
+        boolean chunkLoaded = isChunkLoaded(box.getMinimum().toLocation(world));
 
-        locs.parallelStream().forEach(loc -> {
-            BlockPosition pos = new BlockPosition(loc.getBlockX(), loc.getBlockY(), loc.getBlockZ());
-            Block block = vanillaWorld.c(pos);
-            block.a(vanillaWorld, pos, block.getBlockData(), aabb, vector, null);
-        });
+        if(chunkLoaded) {
+            locs.parallelStream().forEach(loc -> {
+                org.bukkit.block.Block block = loc.getBlock();
+                if (block != null && !block.getType().equals(Material.AIR)) {
+                    int x = block.getX(), y = block.getY(), z = block.getZ();
 
-        return vector.parallelStream().map(MinecraftReflection::fromAABB).collect(Collectors.toList());
+                    BlockPosition pos = new BlockPosition(x, y, z);
+                    World nmsWorld = ((CraftWorld) world).getHandle();
+                    IBlockData nmsiBlockData = ((CraftWorld) world).getHandle().getType(pos);
+                    Block nmsBlock = nmsiBlockData.getBlock();
+                    List<AxisAlignedBB> preBoxes = new ArrayList<>();
+
+                    nmsBlock.updateShape(nmsWorld, pos);
+                    nmsBlock.a(nmsWorld,
+                            pos,
+                            nmsiBlockData,
+                            (AxisAlignedBB) box.toAxisAlignedBB(),
+                            preBoxes,
+                            null);
+
+                    if (preBoxes.size() > 0) {
+                        for (AxisAlignedBB aabb : preBoxes) {
+                            BoundingBox bb = new BoundingBox(
+                                    (float)aabb.a,
+                                    (float)aabb.b,
+                                    (float)aabb.c,
+                                    (float)aabb.d,
+                                    (float)aabb.e,
+                                    (float)aabb.f);
+
+                            if(bb.collides(box)) {
+                                boxes.add(bb);
+                            }
+                        }
+                    } else {
+                        BoundingBox bb = new BoundingBox(
+                                (float)nmsBlock.z(),
+                                (float)nmsBlock.B(),
+                                (float)nmsBlock.D(),
+                                (float)nmsBlock.A(),
+                                (float)nmsBlock.C(),
+                                (float)nmsBlock.E()).add(x, y, z, x, y, z);
+                        if(bb.collides(box)) {
+                            boxes.add(bb);
+                        }
+                    }
+                }
+            });
+        }
+
+        return boxes;
     }
 
     @Override
@@ -65,9 +106,14 @@ public class BlockBox1_8_R1 implements BlockBox {
     @Override
     public boolean isChunkLoaded(Location loc) {
 
-        net.minecraft.server.v1_8_R1.World world = ((org.bukkit.craftbukkit.v1_8_R1.CraftWorld) loc.getWorld()).getHandle();
+        net.minecraft.server.v1_8_R1.World world =
+                ((org.bukkit.craftbukkit.v1_8_R1.CraftWorld) loc.getWorld()).getHandle();
 
-        return !world.isStatic && world.isLoaded(new net.minecraft.server.v1_8_R1.BlockPosition(loc.getBlockX(), 0, loc.getBlockZ())) && world.getChunkAtWorldCoords(new net.minecraft.server.v1_8_R1.BlockPosition(loc.getBlockX(), 0, loc.getBlockZ())).o();
+        return !world.isStatic
+                && world.isLoaded(
+                        new net.minecraft.server.v1_8_R1.BlockPosition(loc.getBlockX(), 0, loc.getBlockZ()))
+                && world.getChunkAtWorldCoords(
+                        new net.minecraft.server.v1_8_R1.BlockPosition(loc.getBlockX(), 0, loc.getBlockZ())).o();
     }
 
     @Override
@@ -77,8 +123,10 @@ public class BlockBox1_8_R1 implements BlockBox {
 
     @Override
     public boolean isUsingItem(Player player) {
-        net.minecraft.server.v1_8_R1.EntityHuman entity = ((org.bukkit.craftbukkit.v1_8_R1.entity.CraftHumanEntity) player).getHandle();
-        return entity.bY() != null && entity.bY().getItem().e(entity.bY()) != net.minecraft.server.v1_8_R1.EnumAnimation.NONE;
+        net.minecraft.server.v1_8_R1.EntityHuman entity =
+                ((org.bukkit.craftbukkit.v1_8_R1.entity.CraftHumanEntity) player).getHandle();
+        return entity.bY() != null
+                && entity.bY().getItem().e(entity.bY()) != net.minecraft.server.v1_8_R1.EnumAnimation.NONE;
     }
 
     @Override
@@ -89,7 +137,8 @@ public class BlockBox1_8_R1 implements BlockBox {
     @Override
     public int getTrackerId(Player player) {
         EntityPlayer entityPlayer = ((CraftPlayer) player).getHandle();
-        EntityTrackerEntry entry = (EntityTrackerEntry) ((WorldServer) entityPlayer.getWorld()).tracker.trackedEntities.get(entityPlayer.getId());
+        EntityTrackerEntry entry = (EntityTrackerEntry) ((WorldServer) entityPlayer.getWorld()).tracker.
+                trackedEntities.get(entityPlayer.getId());
         return entry.tracker.getId();
     }
 
