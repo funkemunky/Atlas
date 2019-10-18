@@ -49,46 +49,46 @@ public class BlockBox1_8_R2 implements BlockBox {
             locs.parallelStream().forEach(loc -> {
                 org.bukkit.block.Block block = loc.getBlock();
                 if (block != null && !block.getType().equals(Material.AIR)) {
-                    int x = block.getX(), y = block.getY(), z = block.getZ();
-
-                    BlockPosition pos = new BlockPosition(x, y, z);
-                    World nmsWorld = ((CraftWorld) world).getHandle();
-                    IBlockData nmsiBlockData = ((CraftWorld) world).getHandle().getType(pos);
-                    Block nmsBlock = nmsiBlockData.getBlock();
-                    List<AxisAlignedBB> preBoxes = new ArrayList<>();
-
-                    nmsBlock.updateShape(nmsWorld, pos);
-                    nmsBlock.a(nmsWorld,
-                            pos,
-                            nmsiBlockData,
-                            (AxisAlignedBB) box.toAxisAlignedBB(),
-                            preBoxes,
-                            null);
-
-                    if (preBoxes.size() > 0) {
-                        for (AxisAlignedBB aabb : preBoxes) {
-                            boxes.add(new BoundingBox(
-                                    (float)aabb.a,
-                                    (float)aabb.b,
-                                    (float)aabb.c,
-                                    (float)aabb.d,
-                                    (float)aabb.e,
-                                    (float)aabb.f));
-                        }
+                    if(BlockUtils.collisionBoundingBoxes.containsKey(block.getType())) {
+                        BoundingBox box2 = BlockUtils.collisionBoundingBoxes.get(block.getType()).add(block.getLocation().toVector());
+                        boxes.add(box2);
                     } else {
-                        boxes.add(new BoundingBox(
-                                (float)nmsBlock.B(),
-                                (float)nmsBlock.D(),
-                                (float)nmsBlock.F(),
-                                (float)nmsBlock.C(),
-                                (float)nmsBlock.E(),
-                                (float)nmsBlock.G()).add(x, y, z, x, y, z));
-                    }
-                        /*
-                        else {
-                            BoundingBox blockBox = new BoundingBox((float) nmsBlock.B(), (float) nmsBlock.D(), (float) nmsBlock.F(), (float) nmsBlock.C(), (float) nmsBlock.E(), (float) nmsBlock.G());
-                        }*/
+                        int x = block.getX(), y = block.getY(), z = block.getZ();
 
+                        BlockPosition pos = new BlockPosition(x, y, z);
+                        World nmsWorld = ((CraftWorld) world).getHandle();
+                        IBlockData nmsiBlockData = ((CraftWorld) world).getHandle().getType(pos);
+                        Block nmsBlock = nmsiBlockData.getBlock();
+                        List<AxisAlignedBB> preBoxes = new ArrayList<>();
+
+                        nmsBlock.updateShape(nmsWorld, pos);
+                        nmsBlock.a(nmsWorld,
+                                pos,
+                                nmsiBlockData,
+                                (AxisAlignedBB) box.toAxisAlignedBB(),
+                                preBoxes,
+                                null);
+
+                        if (preBoxes.size() > 0) {
+                            for (AxisAlignedBB aabb : preBoxes) {
+                                boxes.add(new BoundingBox(
+                                        (float)aabb.a,
+                                        (float)aabb.b,
+                                        (float)aabb.c,
+                                        (float)aabb.d,
+                                        (float)aabb.e,
+                                        (float)aabb.f));
+                            }
+                        } else {
+                            boxes.add(new BoundingBox(
+                                    (float)nmsBlock.B(),
+                                    (float)nmsBlock.D(),
+                                    (float)nmsBlock.F(),
+                                    (float)nmsBlock.C(),
+                                    (float)nmsBlock.E(),
+                                    (float)nmsBlock.G()).add(x, y, z, x, y, z));
+                        }
+                    }
                 }
             });
         }

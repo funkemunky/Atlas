@@ -96,10 +96,6 @@ public class Atlas extends JavaPlugin {
         blockBoxManager = new BlockBoxManager();
         commandManager = new CommandManager(this);
         funkeCommandManager = new FunkeCommandManager();
-        new BlockUtils();
-        new ReflectionsUtil();
-        new Color();
-        new MiscUtils();
 
         updater = new Updater();
 

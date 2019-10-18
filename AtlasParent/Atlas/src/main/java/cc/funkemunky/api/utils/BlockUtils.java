@@ -15,14 +15,8 @@ import java.util.Map;
 
 public class BlockUtils {
 
-    public static Map<Material, BoundingBox> collisionBoundingBoxes;
+    public static Map<Material, BoundingBox> collisionBoundingBoxes = new HashMap<>();;
     public static Map<Integer, BlockBounds> blockBounds = new HashMap<>();
-
-    public BlockUtils() {
-        collisionBoundingBoxes = new HashMap<>();
-
-        setupCollisionBB();
-    }
 
     public static Block getBlock(Location location) {
         if (Atlas.getInstance().getBlockBoxManager().getBlockBox().isChunkLoaded(location)) {
@@ -344,7 +338,7 @@ public class BlockUtils {
         return point;
     }
 
-    private void setupCollisionBB() {
+    private static void setupCollisionBB() {
         if(ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.V1_13)) {
             collisionBoundingBoxes.put(Material.getMaterial("FIRE"), new BoundingBox((float) 0.0, (float) 0.0, (float) 0.0, (float) 1.0, (float) 1.0, (float) 1.0));
             collisionBoundingBoxes.put(Material.getMaterial("STONE_PLATE"), new BoundingBox((float) 0.0625, (float) 0.0, (float) 0.0625, (float) 0.9375, (float) 0.0625, (float) 0.9375));
@@ -440,6 +434,10 @@ public class BlockUtils {
             collisionBoundingBoxes.put(Material.getMaterial("STATIONARY_WATER"), new BoundingBox(0, 0, 0, 0.9f, 0.9f, 0.9f));
             collisionBoundingBoxes.put(Material.getMaterial("STATIONARY_LAVA"), new BoundingBox(0, 0, 0, 0.9f, 0.9f, 0.9f));
         }
+    }
+
+    static {
+        setupCollisionBB();
     }
 }
 

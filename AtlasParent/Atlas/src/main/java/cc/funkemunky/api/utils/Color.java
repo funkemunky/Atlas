@@ -26,11 +26,6 @@ public class Color {
     public static final String Purple = ChatColor.DARK_PURPLE.toString();
     public static final String Black = ChatColor.BLACK.toString();
     public static final String Underline = ChatColor.UNDERLINE.toString();
-    private static Color instance;
-
-    public Color() {
-        instance = this;
-    }
 
     public static String translate(String string) {
         return ChatColor.translateAlternateColorCodes('&', string);
@@ -44,7 +39,7 @@ public class Color {
         if (string.contains("&")) {
             return ChatColor.translateAlternateColorCodes('&', string);
         } else {
-            String color = (String) ReflectionsUtil.getFieldValue(ReflectionsUtil.getFieldByName(instance.getClass(), string), instance);
+            String color = (String) ReflectionsUtil.getFieldValue(ReflectionsUtil.getFieldByName(null, string), null);
 
             if (color == null) {
                 Bukkit.getLogger().log(Level.WARNING, "The color '" + string + "' does not exist.");

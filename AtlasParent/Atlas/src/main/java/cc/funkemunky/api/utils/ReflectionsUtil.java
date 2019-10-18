@@ -44,14 +44,6 @@ public class ReflectionsUtil {
     private static Method getCubes = getMethod(World, "a", getNMSClass("AxisAlignedBB"));
     private static Method getCubes1_12 = getMethod(World, "getCubes", getNMSClass("Entity"), getNMSClass("AxisAlignedBB"));
 
-    public ReflectionsUtil() {
-        if (ProtocolVersion.getGameVersion().isOrAbove(ProtocolVersion.V1_8)) {
-            iBlockData = getNMSClass("IBlockData");
-            blockPosition = getNMSClass("BlockPosition");
-            iBlockAccess = getNMSClass("IBlockAccess");
-        }
-    }
-
     public static Object getEntityPlayer(Player player) {
         return getMethodValue(getMethod(CraftPlayer, "getHandle"), player);
     }
@@ -578,5 +570,13 @@ public class ReflectionsUtil {
 
     public static Class<?> getNMSClass(String string) {
         return getClass("net.minecraft.server." + version + "." + string);
+    }
+
+    static {
+        if (ProtocolVersion.getGameVersion().isOrAbove(ProtocolVersion.V1_8)) {
+            iBlockData = getNMSClass("IBlockData");
+            blockPosition = getNMSClass("BlockPosition");
+            iBlockAccess = getNMSClass("IBlockAccess");
+        }
     }
 }

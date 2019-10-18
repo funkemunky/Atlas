@@ -49,40 +49,45 @@ public class BlockBox1_7_R4 implements BlockBox {
             locs.parallelStream().forEach(loc -> {
                 org.bukkit.block.Block block = loc.getBlock();
                 if (block != null && !block.getType().equals(Material.AIR)) {
-                    int x = block.getX(), y = block.getY(), z = block.getZ();
+                    if(BlockUtils.collisionBoundingBoxes.containsKey(block.getType())) {
+                        BoundingBox box2 = BlockUtils.collisionBoundingBoxes.get(block.getType()).add(block.getLocation().toVector());
+                        boxes.add(box2);
+                    } else {
+                        int x = block.getX(), y = block.getY(), z = block.getZ();
 
-                    net.minecraft.server.v1_7_R4.World nmsWorld = ((CraftWorld) world).getHandle();
-                    net.minecraft.server.v1_7_R4.Block nmsBlock = nmsWorld.getType(x, y, z);
-                    List<AxisAlignedBB> preBoxes = new ArrayList<>();
+                        net.minecraft.server.v1_7_R4.World nmsWorld = ((CraftWorld) world).getHandle();
+                        net.minecraft.server.v1_7_R4.Block nmsBlock = nmsWorld.getType(x, y, z);
+                        List<AxisAlignedBB> preBoxes = new ArrayList<>();
 
-                    nmsBlock.updateShape(nmsWorld, x, y, z);
-                    nmsBlock.a(nmsWorld, x, y, z, (AxisAlignedBB) box.toAxisAlignedBB(), preBoxes, null);
+                        nmsBlock.updateShape(nmsWorld, x, y, z);
+                        nmsBlock.a(nmsWorld, x, y, z, (AxisAlignedBB) box.toAxisAlignedBB(), preBoxes, null);
 
 
-                    if (preBoxes.size() > 0) {
-                        for (AxisAlignedBB aabb : preBoxes) {
+                        if (preBoxes.size() > 0) {
+                            for (AxisAlignedBB aabb : preBoxes) {
+                                BoundingBox bb = new BoundingBox(
+                                        (float)aabb.a,
+                                        (float)aabb.b,
+                                        (float)aabb.c,
+                                        (float)aabb.d,
+                                        (float)aabb.e,(
+                                        float)aabb.f);
+
+                                if(bb.collides(box)) {
+                                    boxes.add(bb);
+                                }
+                            }
+                        } else {
                             BoundingBox bb = new BoundingBox(
-                                    (float)aabb.a,
-                                    (float)aabb.b,
-                                    (float)aabb.c,
-                                    (float)aabb.d,
-                                    (float)aabb.e,(
-                                            float)aabb.f);
-
+                                    (float)nmsBlock.x(),
+                                    (float)nmsBlock.z(),
+                                    (float)nmsBlock.B(),
+                                    (float)nmsBlock.y(),
+                                    (float)nmsBlock.A(),
+                                    (float)nmsBlock.C()).add(x, y, z, x, y, z);
                             if(bb.collides(box)) {
                                 boxes.add(bb);
                             }
-                        }
-                    } else {
-                        BoundingBox bb = new BoundingBox(
-                                (float)nmsBlock.x(),
-                                (float)nmsBlock.z(),
-                                (float)nmsBlock.B(),
-                                (float)nmsBlock.y(),
-                                (float)nmsBlock.A(),
-                                (float)nmsBlock.C()).add(x, y, z, x, y, z);
-                        if(bb.collides(box)) {
-                            boxes.add(bb);
                         }
                     }
                 }

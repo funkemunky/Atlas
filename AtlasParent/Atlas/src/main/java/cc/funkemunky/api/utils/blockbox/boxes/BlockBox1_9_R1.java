@@ -50,42 +50,47 @@ public class BlockBox1_9_R1 implements BlockBox {
             locs.parallelStream().forEach(loc -> {
                 org.bukkit.block.Block block = loc.getBlock();
                 if (block != null && !block.getType().equals(Material.AIR)) {
-                    int x = block.getX(), y = block.getY(), z = block.getZ();
+                    if(BlockUtils.collisionBoundingBoxes.containsKey(block.getType())) {
+                        BoundingBox box2 = BlockUtils.collisionBoundingBoxes.get(block.getType()).add(block.getLocation().toVector());
+                        boxes.add(box2);
+                    } else {
+                        int x = block.getX(), y = block.getY(), z = block.getZ();
 
-                    BlockPosition pos = new BlockPosition(x, y, z);
-                    World nmsWorld = ((CraftWorld) world).getHandle();
-                    IBlockData nmsiBlockData = ((CraftWorld) world).getHandle().getType(pos);
-                    Block nmsBlock = nmsiBlockData.getBlock();
-                    List<AxisAlignedBB> preBoxes = new ArrayList<>();
+                        BlockPosition pos = new BlockPosition(x, y, z);
+                        World nmsWorld = ((CraftWorld) world).getHandle();
+                        IBlockData nmsiBlockData = ((CraftWorld) world).getHandle().getType(pos);
+                        Block nmsBlock = nmsiBlockData.getBlock();
+                        List<AxisAlignedBB> preBoxes = new ArrayList<>();
 
-                    nmsBlock.updateState(nmsiBlockData, nmsWorld, pos);
-                    nmsBlock.a(nmsiBlockData,
-                            nmsWorld,
-                            pos,
-                            (AxisAlignedBB) box.toAxisAlignedBB(),
-                            preBoxes,
-                            null);
+                        nmsBlock.updateState(nmsiBlockData, nmsWorld, pos);
+                        nmsBlock.a(nmsiBlockData,
+                                nmsWorld,
+                                pos,
+                                (AxisAlignedBB) box.toAxisAlignedBB(),
+                                preBoxes,
+                                null);
 
-                    if (preBoxes.size() > 0) {
-                        for (AxisAlignedBB aabb : preBoxes) {
-                            BoundingBox bb = new BoundingBox(
-                                    (float)aabb.a,
-                                    (float)aabb.b,
-                                    (float)aabb.c,
-                                    (float)aabb.d,
-                                    (float)aabb.e,
-                                    (float)aabb.f);
+                        if (preBoxes.size() > 0) {
+                            for (AxisAlignedBB aabb : preBoxes) {
+                                BoundingBox bb = new BoundingBox(
+                                        (float)aabb.a,
+                                        (float)aabb.b,
+                                        (float)aabb.c,
+                                        (float)aabb.d,
+                                        (float)aabb.e,
+                                        (float)aabb.f);
+
+                                if(bb.collides(box)) {
+                                    boxes.add(bb);
+                                }
+                            }
+                        } else {
+                            BoundingBox bb = ReflectionsUtil.toBoundingBox(nmsBlock.a(nmsiBlockData, nmsWorld, pos))
+                                    .add(x, y, z, x, y, z);
 
                             if(bb.collides(box)) {
                                 boxes.add(bb);
                             }
-                        }
-                    } else {
-                        BoundingBox bb = ReflectionsUtil.toBoundingBox(nmsBlock.a(nmsiBlockData, nmsWorld, pos))
-                                .add(x, y, z, x, y, z);
-
-                        if(bb.collides(box)) {
-                            boxes.add(bb);
                         }
                     }
                 }
