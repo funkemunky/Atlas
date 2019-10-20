@@ -42,6 +42,7 @@ public class MinecraftReflection {
     public static WrappedField fBB = axisAlignedBB.getFieldByName("f");
     public static WrappedConstructor aabbConstructor;
     public static WrappedMethod idioticOldStaticConstructorAABB;
+    public static WrappedField entityBoundingBox = entity.getFirstFieldByType(axisAlignedBB.getParent());
 
     //ItemStack methods and fields
     public static WrappedMethod enumAnimationStack;
@@ -99,6 +100,14 @@ public class MinecraftReflection {
         }
 
         return aabbs.stream().map(MinecraftReflection::fromAABB).collect(Collectors.toList());
+    }
+
+    //1.7 field is boundingBox
+    //1.8+ method is getBoundingBox.
+    public static BoundingBox getEntityBoundingBox(Entity entity) {
+        Object vanillaEntity = CraftReflection.getEntity(entity);
+
+        return fromAABB(entityBoundingBox.get(vanillaEntity));
     }
 
     public static List<BoundingBox> getCollidingBoxes(@Nullable Entity entity, World world, BoundingBox box) {
