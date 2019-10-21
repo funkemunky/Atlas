@@ -45,7 +45,7 @@ public class BlockBox1_9_R2 implements BlockBox {
 
         if(chunkLoaded) {
             locs.parallelStream().forEach(loc -> {
-                org.bukkit.block.Block block = loc.getBlock();
+                org.bukkit.block.Block block = BlockUtils.getBlock(loc);
                 if (block != null && !block.getType().equals(Material.AIR)) {
                     if(BlockUtils.collisionBoundingBoxes.containsKey(block.getType())) {
                         BoundingBox box2 = BlockUtils.collisionBoundingBoxes.get(block.getType()).add(block.getLocation().toVector());

@@ -19,7 +19,7 @@ public class BlockUtils {
     public static Map<Integer, BlockBounds> blockBounds = new HashMap<>();
 
     public static Block getBlock(Location location) {
-        if (Atlas.getInstance().getBlockBoxManager().getBlockBox().isChunkLoaded(location)) {
+        if (location.getChunk().isLoaded()) {
             return location.getBlock();
         } else {
             return null;
