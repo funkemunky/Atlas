@@ -2,8 +2,6 @@ package cc.funkemunky.bungee.utils;
 
 import net.md_5.bungee.api.ChatColor;
 
-import java.util.logging.Level;
-
 public class Color {
 
     public static final String Red = ChatColor.RED.toString();
