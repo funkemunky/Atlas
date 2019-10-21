@@ -1,6 +1,5 @@
 package cc.funkemunky.bungee.utils.asm;
 
-import com.sun.org.apache.xml.internal.security.Init;
 import org.objectweb.asmutil.ClassReader;
 import org.objectweb.asmutil.tree.AnnotationNode;
 import org.objectweb.asmutil.tree.ClassNode;

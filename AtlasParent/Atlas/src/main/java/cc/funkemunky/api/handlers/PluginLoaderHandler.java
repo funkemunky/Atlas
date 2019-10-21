@@ -43,34 +43,7 @@ public class PluginLoaderHandler implements Listener {
             val plClass = Class.forName(plugin.getDescription().getMain());
             if(plClass.isAnnotationPresent(AutoLoad.class)) {
                 MiscUtils.printToConsole("&cAutoload is commencing...");
-                List<FutureTask> tasks = new ArrayList<>();
-
-                MiscUtils.printToConsole("&7Looking for extra FutureTasks set in the main class...");
-                Arrays.stream(plClass.getDeclaredFields())
-                        .filter(field -> field.isAnnotationPresent(AutoLoad.class) && field.getType().equals(FutureTask.class))
-                        .forEachOrdered(field -> {
-                            try {
-                                val task = (FutureTask<?>) field.get(plugin);
-                                tasks.add(task);
-                            } catch(IllegalAccessException e) {
-                                e.printStackTrace();
-                            }
-                        });
-
-                Arrays.stream(plClass.getDeclaredMethods())
-                        .filter(method -> method.isAnnotationPresent(AutoLoad.class) && method.getReturnType().equals(FutureTask.class) && method.getParameters().length == 0)
-                        .forEachOrdered(method -> {
-                            try {
-                                val task = (FutureTask<?>) method.invoke(plugin);
-
-                                tasks.add(task);
-                            } catch(IllegalAccessException | InvocationTargetException e) {
-                                e.printStackTrace();
-                            }
-                        });
-
-                MiscUtils.printToConsole("&7Running scanner...");
-                Atlas.getInstance().initializeScanner(plClass, (JavaPlugin) plugin, true, true, (FutureTask[]) tasks.toArray());
+                Atlas.getInstance().initializeScanner((JavaPlugin) plugin, true, true);
             }
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
