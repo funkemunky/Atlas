@@ -1,8 +1,6 @@
 package cc.funkemunky.api.profiling;
 
 import cc.funkemunky.api.Atlas;
-import cc.funkemunky.api.utils.objects.evicting.ConcurrentEvictingList;
-import cc.funkemunky.api.utils.objects.evicting.EvictingList;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -27,12 +25,12 @@ public class BaseProfiler implements Profiler {
         Atlas.getInstance().getSchedular().scheduleAtFixedRate(() -> {
             for (String name : samplesPerTick.keySet()) {
 
-                long avg = new ArrayList<>(samplesPerTick.getOrDefault(name, new ArrayList<>())).stream()
+                long avg = new ArrayList<>(samplesPerTick.getOrDefault(name, new CopyOnWriteArrayList<>())).stream()
                         .mapToLong(val -> val)
                         .sum();
 
                 averageSamples.put(name, avg);
-                samplesPerTick.put(name, new ArrayList<>());
+                samplesPerTick.put(name, new CopyOnWriteArrayList<>());
             }
         }, 50L, 50L, TimeUnit.MILLISECONDS);
     }
@@ -71,15 +69,6 @@ public class BaseProfiler implements Profiler {
 
     @Override
     public Map<String, Double> results(ResultsType type) {
-        /*if(type.equals(ResultsType.TOTAL)) {
-            return total.keySet().parallelStream().collect(Collectors.toMap(key -> key, key -> {
-                long totalMS = total.get(key);
-                int totalCalls = calls.get(key);
-                return totalMS / totalCalls / 1000000D;
-            }));
-        } else {
-            return samples.keySet().parallelStream().collect(Collectors.toMap(key -> key, key -> samples.get(key) / 1000000D));
-        }*/
         Map<String, Double> toReturn = new HashMap<>();
         switch(type) {
             case TOTAL: {

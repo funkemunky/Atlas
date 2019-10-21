@@ -1,7 +1,6 @@
 package cc.funkemunky.api.utils.objects.filtered;
 
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.List;
 import java.util.concurrent.ConcurrentSkipListSet;
 import java.util.function.Predicate;

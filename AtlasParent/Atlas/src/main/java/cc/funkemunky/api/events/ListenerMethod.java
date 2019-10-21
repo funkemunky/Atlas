@@ -2,8 +2,6 @@ package cc.funkemunky.api.events;
 
 import cc.funkemunky.api.tinyprotocol.api.packets.reflections.types.WrappedClass;
 import cc.funkemunky.api.tinyprotocol.api.packets.reflections.types.WrappedMethod;
-import lombok.Getter;
-import lombok.Setter;
 import org.bukkit.plugin.Plugin;
 
 import java.lang.reflect.Method;

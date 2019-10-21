@@ -4,8 +4,6 @@ import cc.funkemunky.api.Atlas;
 import cc.funkemunky.api.events.impl.PacketReceiveEvent;
 import cc.funkemunky.api.events.impl.PacketSendEvent;
 import cc.funkemunky.api.tinyprotocol.api.packets.ChannelInjector;
-import cc.funkemunky.api.tinyprotocol.api.packets.channelhandler.ChannelHandler1_7;
-import cc.funkemunky.api.tinyprotocol.api.packets.channelhandler.ChannelHandlerAbstract;
 import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;

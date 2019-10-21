@@ -7,7 +7,6 @@ package cc.funkemunky.api.utils.objects.evicting;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.stream.Stream;
 

@@ -4,15 +4,15 @@ import cc.funkemunky.api.Atlas;
 import cc.funkemunky.api.bungee.events.BungeeReceiveEvent;
 import cc.funkemunky.api.bungee.objects.BungeePlayer;
 import cc.funkemunky.api.handlers.ForgeHandler;
-import com.google.common.io.ByteArrayDataOutput;
 import lombok.Getter;
 import org.bukkit.Bukkit;
-import org.bukkit.craftbukkit.libs.org.ibex.nestedvm.util.Seekable;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.messaging.PluginMessageListener;
 
 import java.io.*;
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
 
 @Getter
 public class BungeeManager implements PluginMessageListener {

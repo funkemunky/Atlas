@@ -1,7 +1,5 @@
 package cc.funkemunky.api.utils;
 
-import org.bukkit.block.Block;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;

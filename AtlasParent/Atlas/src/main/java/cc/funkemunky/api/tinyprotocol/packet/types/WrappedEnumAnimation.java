@@ -2,7 +2,6 @@ package cc.funkemunky.api.tinyprotocol.packet.types;
 
 import cc.funkemunky.api.tinyprotocol.api.packets.reflections.Reflections;
 import cc.funkemunky.api.tinyprotocol.api.packets.reflections.types.WrappedClass;
-import cc.funkemunky.api.tinyprotocol.reflection.FieldAccessor;
 
 public enum WrappedEnumAnimation {
     NONE,

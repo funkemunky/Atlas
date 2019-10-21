@@ -5,7 +5,6 @@ import cc.funkemunky.api.events.exceptions.ListenParamaterException;
 import lombok.Getter;
 import org.bukkit.plugin.Plugin;
 
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.Comparator;
