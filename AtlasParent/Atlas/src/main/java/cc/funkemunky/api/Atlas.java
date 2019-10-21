@@ -198,7 +198,7 @@ public class Atlas extends JavaPlugin {
         });
     }
 
-    public void initializeScanner(Class<?> mainClass, JavaPlugin plugin,
+    public void initializeScanner(Class<? extends JavaPlugin> mainClass, JavaPlugin plugin,
                                   boolean loadListeners,
                                   boolean loadCommands) {
         ClassScanner.scanFile(null, mainClass)
@@ -245,7 +245,7 @@ public class Atlas extends JavaPlugin {
                 });
     }
 
-    public void initializeScanner(Class<?> mainClass, JavaPlugin plugin) {
+    public void initializeScanner(Class<? extends JavaPlugin> mainClass, JavaPlugin plugin) {
         initializeScanner(mainClass, plugin, true, true);
     }
 

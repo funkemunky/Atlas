@@ -2,6 +2,7 @@ package cc.funkemunky.bungee.listeners;
 
 import cc.funkemunky.bungee.AtlasBungee;
 import cc.funkemunky.bungee.data.ModData;
+import cc.funkemunky.bungee.utils.asm.Init;
 import net.md_5.bungee.BungeeCord;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.event.PluginMessageEvent;
@@ -17,6 +18,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
+@Init
 public class JoinListener implements Listener {
 
     public JoinListener() {

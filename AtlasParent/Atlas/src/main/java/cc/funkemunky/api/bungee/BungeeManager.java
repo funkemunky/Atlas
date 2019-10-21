@@ -44,6 +44,7 @@ public class BungeeManager implements PluginMessageListener {
         boolean override  = server.toLowerCase().contains("override");
         if(override) {
             stream.writeUTF("sendObjects");
+            stream.writeUTF(server);
         } else {
             stream.writeUTF("Forward");
             stream.writeUTF(server);
@@ -98,11 +99,26 @@ public class BungeeManager implements PluginMessageListener {
             }
         } else if(ForgeHandler.fromBungee && channel.equals("atlasIn")) {
             try {
-                ObjectInputStream objectInput = new ObjectInputStream(stream);
+                ObjectInputStream input = new ObjectInputStream(stream);
 
-                if(objectInput.readUTF().equals("mods")) {
-                    Map<String, String> mods = (Map<String, String>) objectInput.readObject();
+                if(input.readUTF().equals("mods")) {
+                    Map<String, String> mods = (Map<String, String>) input.readObject();
                     ForgeHandler.runBungeeModChecker(player, mods);
+                } else if(input.readUTF().equals("sendObjects")) {
+                    String type = input.readUTF();
+
+                    byte[] array = new byte[input.readShort()];
+                    input.readFully(array);
+
+                    ObjectInputStream objectInput = new ObjectInputStream(new ByteArrayInputStream(array));
+
+                    Object[] objects = new Object[objectInput.readShort()];
+
+                    for (int i = 0; i < objects.length; i++) {
+                        objects[i] = objectInput.readObject();
+                    }
+
+                    Atlas.getInstance().getEventManager().callEvent(new BungeeReceiveEvent(objects, type));
                 }
             } catch (IOException | ClassNotFoundException e) {
                 e.printStackTrace();
