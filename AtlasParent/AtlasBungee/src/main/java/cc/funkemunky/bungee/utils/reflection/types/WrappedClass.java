@@ -12,7 +12,6 @@ import lombok.Getter;
 import lombok.val;
 
 import java.lang.annotation.Annotation;
-import java.lang.reflect.AnnotatedArrayType;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;

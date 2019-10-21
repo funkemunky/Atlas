@@ -9,7 +9,6 @@
 package cc.funkemunky.api.tinyprotocol.api.packets.reflections.types;
 
 import lombok.Getter;
-import org.objectweb.asmutil.optimizer.AnnotationConstantsCollector;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;

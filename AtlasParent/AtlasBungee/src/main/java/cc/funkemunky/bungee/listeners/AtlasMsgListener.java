@@ -1,15 +1,15 @@
 package cc.funkemunky.bungee.listeners;
 
 import cc.funkemunky.bungee.utils.asm.Init;
-import com.sun.corba.se.impl.ior.ObjectAdapterIdNumber;
 import net.md_5.bungee.BungeeCord;
 import net.md_5.bungee.api.config.ServerInfo;
 import net.md_5.bungee.api.event.PluginMessageEvent;
 import net.md_5.bungee.api.plugin.Listener;
 import net.md_5.bungee.event.EventHandler;
-import sun.plugin2.message.PluginMessage;
 
-import java.io.*;
+import java.io.ByteArrayInputStream;
+import java.io.DataInputStream;
+import java.io.IOException;
 import java.util.Optional;
 
 @Init
