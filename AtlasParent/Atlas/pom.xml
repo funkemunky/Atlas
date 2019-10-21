@@ -90,12 +90,6 @@
             <scope>compile</scope>
         </dependency>
         <dependency>
-            <groupId>one.util</groupId>
-            <artifactId>streamex</artifactId>
-            <version>0.6.8</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
             <groupId>org.github.paperspigot</groupId>
             <artifactId>1.8.8</artifactId>
             <version>1.8.8</version>

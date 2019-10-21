@@ -79,7 +79,7 @@ public class MethodNode extends MethodVisitor {
      * The runtime visible annotations of this method. This list is a list of
      * {@link org.objectweb.asmutil.tree.AnnotationNode} objects. May be <tt>null</tt>.
      * 
-     * @associates org.objectweb.asmutil.tree.AnnotationNode
+     * @associates org.objectweb.org.objectweb.asmutil.tree.AnnotationNode
      * @label visible
      */
     public List<org.objectweb.asmutil.tree.AnnotationNode> visibleAnnotations;
@@ -88,7 +88,7 @@ public class MethodNode extends MethodVisitor {
      * The runtime invisible annotations of this method. This list is a list of
      * {@link org.objectweb.asmutil.tree.AnnotationNode} objects. May be <tt>null</tt>.
      * 
-     * @associates org.objectweb.asmutil.tree.AnnotationNode
+     * @associates org.objectweb.org.objectweb.asmutil.tree.AnnotationNode
      * @label invisible
      */
     public List<org.objectweb.asmutil.tree.AnnotationNode> invisibleAnnotations;
@@ -97,7 +97,7 @@ public class MethodNode extends MethodVisitor {
      * The runtime visible type annotations of this method. This list is a list
      * of {@link org.objectweb.asmutil.tree.TypeAnnotationNode} objects. May be <tt>null</tt>.
      * 
-     * @associates org.objectweb.asmutil.tree.TypeAnnotationNode
+     * @associates org.objectweb.org.objectweb.asmutil.tree.TypeAnnotationNode
      * @label visible
      */
     public List<org.objectweb.asmutil.tree.TypeAnnotationNode> visibleTypeAnnotations;
@@ -106,7 +106,7 @@ public class MethodNode extends MethodVisitor {
      * The runtime invisible type annotations of this method. This list is a
      * list of {@link org.objectweb.asmutil.tree.TypeAnnotationNode} objects. May be <tt>null</tt>.
      * 
-     * @associates org.objectweb.asmutil.tree.TypeAnnotationNode
+     * @associates org.objectweb.org.objectweb.asmutil.tree.TypeAnnotationNode
      * @label invisible
      */
     public List<org.objectweb.asmutil.tree.TypeAnnotationNode> invisibleTypeAnnotations;
@@ -115,7 +115,7 @@ public class MethodNode extends MethodVisitor {
      * The non standard attributes of this method. This list is a list of
      * {@link Attribute} objects. May be <tt>null</tt>.
      * 
-     * @associates org.objectweb.asmutil.Attribute
+     * @associates org.objectweb.org.objectweb.asmutil.Attribute
      */
     public List<Attribute> attrs;
 
@@ -133,7 +133,7 @@ public class MethodNode extends MethodVisitor {
      * The runtime visible parameter annotations of this method. These lists are
      * lists of {@link org.objectweb.asmutil.tree.AnnotationNode} objects. May be <tt>null</tt>.
      * 
-     * @associates org.objectweb.asmutil.tree.AnnotationNode
+     * @associates org.objectweb.org.objectweb.asmutil.tree.AnnotationNode
      * @label invisible parameters
      */
     public List<org.objectweb.asmutil.tree.AnnotationNode>[] visibleParameterAnnotations;
@@ -142,7 +142,7 @@ public class MethodNode extends MethodVisitor {
      * The runtime invisible parameter annotations of this method. These lists
      * are lists of {@link org.objectweb.asmutil.tree.AnnotationNode} objects. May be <tt>null</tt>.
      * 
-     * @associates org.objectweb.asmutil.tree.AnnotationNode
+     * @associates org.objectweb.org.objectweb.asmutil.tree.AnnotationNode
      * @label visible parameters
      */
     public List<org.objectweb.asmutil.tree.AnnotationNode>[] invisibleParameterAnnotations;
@@ -151,7 +151,7 @@ public class MethodNode extends MethodVisitor {
      * The instructions of this method. This list is a list of
      * {@link AbstractInsnNode} objects.
      * 
-     * @associates org.objectweb.asmutil.tree.AbstractInsnNode
+     * @associates org.objectweb.org.objectweb.asmutil.tree.AbstractInsnNode
      * @label instructions
      */
     public org.objectweb.asmutil.tree.InsnList instructions;
@@ -160,7 +160,7 @@ public class MethodNode extends MethodVisitor {
      * The try catch blocks of this method. This list is a list of
      * {@link org.objectweb.asmutil.tree.TryCatchBlockNode} objects.
      * 
-     * @associates org.objectweb.asmutil.tree.TryCatchBlockNode
+     * @associates org.objectweb.org.objectweb.asmutil.tree.TryCatchBlockNode
      */
     public List<org.objectweb.asmutil.tree.TryCatchBlockNode> tryCatchBlocks;
 
@@ -178,7 +178,7 @@ public class MethodNode extends MethodVisitor {
      * The local variables of this method. This list is a list of
      * {@link org.objectweb.asmutil.tree.LocalVariableNode} objects. May be <tt>null</tt>
      * 
-     * @associates org.objectweb.asmutil.tree.LocalVariableNode
+     * @associates org.objectweb.org.objectweb.asmutil.tree.LocalVariableNode
      */
     public List<org.objectweb.asmutil.tree.LocalVariableNode> localVariables;
 
@@ -186,7 +186,7 @@ public class MethodNode extends MethodVisitor {
      * The visible local variable annotations of this method. This list is a
      * list of {@link LocalVariableAnnotationNode} objects. May be <tt>null</tt>
      * 
-     * @associates org.objectweb.asmutil.tree.LocalVariableAnnotationNode
+     * @associates org.objectweb.org.objectweb.asmutil.tree.LocalVariableAnnotationNode
      */
     public List<LocalVariableAnnotationNode> visibleLocalVariableAnnotations;
 
@@ -194,7 +194,7 @@ public class MethodNode extends MethodVisitor {
      * The invisible local variable annotations of this method. This list is a
      * list of {@link LocalVariableAnnotationNode} objects. May be <tt>null</tt>
      * 
-     * @associates org.objectweb.asmutil.tree.LocalVariableAnnotationNode
+     * @associates org.objectweb.org.objectweb.asmutil.tree.LocalVariableAnnotationNode
      */
     public List<LocalVariableAnnotationNode> invisibleLocalVariableAnnotations;
 

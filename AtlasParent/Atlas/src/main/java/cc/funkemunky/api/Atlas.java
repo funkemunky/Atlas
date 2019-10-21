@@ -12,6 +12,7 @@ import cc.funkemunky.api.metrics.Metrics;
 import cc.funkemunky.api.profiling.BaseProfiler;
 import cc.funkemunky.api.settings.MongoSettings;
 import cc.funkemunky.api.tinyprotocol.api.TinyProtocolHandler;
+import cc.funkemunky.api.tinyprotocol.api.packets.reflections.Reflections;
 import cc.funkemunky.api.updater.Updater;
 import cc.funkemunky.api.utils.*;
 import cc.funkemunky.api.utils.blockbox.BlockBoxManager;
@@ -19,7 +20,6 @@ import cc.funkemunky.api.utils.blockbox.impl.BoundingBoxes;
 import cc.funkemunky.carbon.Carbon;
 import lombok.Getter;
 import lombok.Setter;
-import one.util.streamex.StreamEx;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.ConsoleCommandSender;
@@ -120,12 +120,14 @@ public class Atlas extends JavaPlugin {
 
         MiscUtils.printToConsole(Color.Gray + "Checking for updates...");
         if(updater.needsToUpdate()) {
-            MiscUtils.printToConsole(Color.Yellow + "There is an update available. See more information with /atlas update.");
+            MiscUtils.printToConsole(Color.Yellow
+                    + "There is an update available. See more information with /atlas update.");
 
             if(autoDownload) {
                 MiscUtils.printToConsole(Color.Gray + "Downloading new version...");
                 updater.downloadNewVersion();
-                MiscUtils.printToConsole(Color.Green + "Atlas v" + updater.getVersion() + " has been downloaded. Please restart/reload your server to import it.");
+                MiscUtils.printToConsole(Color.Green + "Atlas v" + updater.getVersion()
+                        + " has been downloaded. Please restart/reload your server to import it.");
             }
         }
 
@@ -145,10 +147,11 @@ public class Atlas extends JavaPlugin {
         eventManager.clearAllRegistered();
         getCommandManager().unregisterCommands();
 
-        MiscUtils.printToConsole(Color.Gray + "Disabling all plugins that depend on Atlas to prevent any errors...");
-        Arrays.stream(Bukkit.getPluginManager().getPlugins()).filter(plugin -> plugin.getDescription().getDepend().contains("Atlas")).forEach(plugin -> {
-            MiscUtils.unloadPlugin(plugin.getName());
-        });
+        MiscUtils.printToConsole(Color.Gray
+                + "Disabling all plugins that depend on Atlas to prevent any errors...");
+        Arrays.stream(Bukkit.getPluginManager().getPlugins())
+                .filter(plugin -> plugin.getDescription().getDepend().contains("Atlas"))
+                .forEach(plugin -> MiscUtils.unloadPlugin(plugin.getName()));
         shutdownExecutor();
         schedular.shutdown();
 
@@ -160,31 +163,21 @@ public class Atlas extends JavaPlugin {
         carbon = new Carbon();
 
         if(MongoSettings.enabled) {
-            carbon.initMongo(MongoSettings.database, MongoSettings.ip, MongoSettings.port, MongoSettings.username, MongoSettings.password);
+            carbon.initMongo(MongoSettings.database,
+                    MongoSettings.ip,
+                    MongoSettings.port,
+                    MongoSettings.username,
+                    MongoSettings.password);
         }
     }
 
-    public <T extends Object> T executeTask(FutureTask<T> future) {
-        service.submit(future);
-        try {
-            return future.get();
-        } catch (Exception ex) {
-            ex.getCause().printStackTrace();
-        }
-        return null;
-    }
-
-    public void executeTask(Runnable runnable) {
-        service.execute(runnable);
-    }
-
-    public void shutdownExecutor() {
+    private void shutdownExecutor() {
         service.shutdown();
     }
 
     private void runTasks() {
-        //This allows us to use ticks for intervalTime comparisons to allow for more parallel calculations to actual Minecraft
-        //and it also has the added benefit of being lighter than using System.currentTimeMillis.
+        //This allows us to use ticks for intervalTime comparisons to allow for more parallel calculations to actual
+        //Minecraft and it also has the added benefit of being lighter than using System.currentTimeMillis.
         //WARNING: This may be a bit buggy with "legacy" versions of PaperSpigot since they broke the runnable.
         //If you are using PaperSpigot,
         if(!runAsync) {
@@ -205,110 +198,62 @@ public class Atlas extends JavaPlugin {
         });
     }
 
-    public void initializeScanner(Class<?> mainClass, JavaPlugin plugin, CommandManager manager, boolean loadListeners, boolean loadCommands, @Nullable FutureTask<?>... otherThingsToLoad) {
-        StreamEx.of(ClassScanner.scanFile(null, mainClass)).filter(c -> {
-            try {
-                Class clazz = Class.forName(c);
+    public void initializeScanner(Class<?> mainClass, JavaPlugin plugin,
+                                  boolean loadListeners,
+                                  boolean loadCommands) {
+        ClassScanner.scanFile(null, mainClass)
+                .stream()
+                .map(Reflections::getClass)
+                .sorted(Comparator.comparing(c ->
+                        c.getAnnotation(Init.class).priority().getPriority(), Comparator.reverseOrder()))
+                .forEach(c -> {
+                    Object obj = c.getParent().equals(mainClass) ? plugin : c.getConstructor().newInstance();
+                    Init annotation = (Init) c.getAnnotation(Init.class);
 
-                return clazz.isAnnotationPresent(Init.class);
-            } catch(Exception e) {
-                e.printStackTrace();
-            }
-            return false;
-        }).sorted(Comparator.comparingInt(c -> {
-            try {
-                Class clazz = Class.forName(c);
-
-                Init annotation = (Init) clazz.getAnnotation(Init.class);
-
-                return annotation.priority().getPriority();
-            } catch(Exception e) {
-                e.printStackTrace();
-            }
-            return 3;
-        })).forEachOrdered(c -> {
-            try {
-                Class clazz = Class.forName(c);
-
-                if(clazz.isAnnotationPresent(Init.class)) {
-                    Object obj = clazz.equals(mainClass) ? plugin : clazz.newInstance();
-                    Init annotation = (Init) clazz.getAnnotation(Init.class);
-
-                    if (loadListeners && obj instanceof Listener) {
-                        MiscUtils.printToConsole("&eFound " + clazz.getSimpleName() + " Bukkit listener. Registering...");
-                        plugin.getServer().getPluginManager().registerEvents((Listener) obj, plugin);
-                    }
-                    if(loadListeners && obj instanceof AtlasListener) {
-                        MiscUtils.printToConsole("&eFound " + clazz.getSimpleName() + " Atlas listener. Registering...");
-                        eventManager.registerListeners((AtlasListener) obj, plugin);
-                    }
-                    if(loadCommands && obj instanceof CommandExecutor && clazz.isAnnotationPresent(Commands.class)) {
-                        Commands commands = (Commands) clazz.getAnnotation(Commands.class);
-
-                        Arrays.stream(commands.commands()).forEach(label -> {
-                            if(label.length() > 0) {
-                                plugin.getCommand(label).setExecutor((CommandExecutor) obj);
-                                MiscUtils.printToConsole("&eRegistered ancmd " + label + " from Command Executor: " + clazz.getSimpleName());
-                            }
-                        });
-                    }
-
-                    if(loadCommands && annotation.commands()) manager.registerCommands(obj);
-
-                    if(otherThingsToLoad != null) Arrays.stream(otherThingsToLoad).forEachOrdered(FutureTask::run);
-
-                    Arrays.stream(clazz.getDeclaredFields()).filter(field -> field.isAnnotationPresent(ConfigSetting.class)).forEach(field -> {
-                        String name = field.getAnnotation(ConfigSetting.class).name();
-                        String path = field.getAnnotation(ConfigSetting.class).path() + "." + (name.length() > 0 ? name : field.getName());
-                        try {
-                            field.setAccessible(true);
-                            MiscUtils.printToConsole("&eFound " + field.getName() + " ConfigSetting (default=" + field.get(obj) + ").");
-                            if(plugin instanceof Atlas) {
-                                if(getConfig().get(path) == null) {
-                                    MiscUtils.printToConsole("&eValue not found in configuration! Setting default into atlasConfig...");
-                                    plugin.getConfig().set(path, field.get(obj));
-                                    plugin.saveConfig();
-                                } else {
-                                    field.set(Modifier.isStatic(field.getModifiers()) ? null : obj, getConfig().get(path));
-
-                                    MiscUtils.printToConsole("&eValue found in configuration! Set value to &a" + plugin.getConfig().get(path));
-                                }
-                            } else {
-                                if(plugin.getConfig().get(path) == null) {
-                                    MiscUtils.printToConsole("&eValue not found in configuration! Setting default into atlasConfig...");
-                                    plugin.getConfig().set(path, field.get(obj));
-                                    plugin.saveConfig();
-                                } else {
-                                    field.set(Modifier.isStatic(field.getModifiers()) ? null : obj, plugin.getConfig().get(path));
-
-                                    MiscUtils.printToConsole("&eValue found in configuration! Set value to &a" + plugin.getConfig().get(path));
-                                }
-                            }
-                        } catch (Exception e) {
-                            e.printStackTrace();
+                    if(loadListeners) {
+                        if(obj instanceof AtlasListener) {
+                            Atlas.getInstance().getEventManager().registerListeners((AtlasListener)obj, plugin);
+                            MiscUtils.printToConsole("&7Registered Atlas listener &e" + c.getParent().getSimpleName() + "&7.");
                         }
-                    });
+                        if(obj instanceof Listener) {
+                            Bukkit.getPluginManager().registerEvents((Listener)obj, plugin);
+                            MiscUtils.printToConsole("&7Registered Atlas listener &e" + c.getParent().getSimpleName() + "&7.");
+                        }
+                    }
 
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        });
+                    if(loadCommands && annotation.commands()) {
+                        MiscUtils.printToConsole("&7Registering commands in class &e" + c.getParent().getSimpleName() + "&7...");
+                        Atlas.getInstance().getCommandManager().registerCommands(obj);
+                    }
+
+                    c.getFields(field -> field.isAnnotationPresent(ConfigSetting.class))
+                            .forEach(field -> {
+                                ConfigSetting setting = field.getAnnotation(ConfigSetting.class);
+
+                                MiscUtils.printToConsole("&7Found ConfigSetting &e" + field.getField().getName()
+                                        + " &7(default=&f" + field.get(obj) + "&7.");
+
+                                if(plugin.getConfig().get(setting.path() + setting.name()) == null) {
+                                    MiscUtils.printToConsole("&7Value not set in config! Setting value...");
+                                    plugin.getConfig().set(setting.path() + setting.name(), field.get(obj));
+                                } else {
+                                    Object configObj = plugin.getConfig().get(setting.path() + setting.name());
+                                    MiscUtils.printToConsole("&7Set field to value &e" + configObj + "&7.");
+                                    field.set(obj, configObj);
+                                }
+                            });
+                });
     }
 
     public void initializeScanner(Class<?> mainClass, JavaPlugin plugin) {
-        initializeScanner(mainClass, plugin, getCommandManager(), true, true, null);
+        initializeScanner(mainClass, plugin, true, true);
     }
 
-    public void initializeScanner(Class<?> mainClass, JavaPlugin plugin, CommandManager manager) {
-        initializeScanner(mainClass, plugin, manager, true, true, null);
+    public void initializeScanner(JavaPlugin plugin) {
+        initializeScanner(plugin.getClass(), plugin);
     }
 
-    public void initializeScanner(Class<?> mainClass, JavaPlugin plugin, boolean loadListeners, boolean loadCommands) {
-        initializeScanner(mainClass, plugin, getCommandManager(), loadListeners, loadCommands, null);
-    }
-
-    public void initializeScanner(Class<?> mainClass, JavaPlugin plugin, boolean loadListeners, boolean loadCommands, @Nullable FutureTask<?>... otherThingsToLoad) {
-        initializeScanner(mainClass, plugin, getCommandManager(), loadListeners, loadCommands, otherThingsToLoad);
+    public void initializeScanner(JavaPlugin plugin, boolean loadListeners, boolean loadCommands) {
+        initializeScanner(plugin.getClass(), plugin, loadListeners, loadCommands);
     }
 }

@@ -9,7 +9,9 @@
 package cc.funkemunky.api.tinyprotocol.api.packets.reflections.types;
 
 import lombok.Getter;
+import org.objectweb.asmutil.optimizer.AnnotationConstantsCollector;
 
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 
@@ -45,6 +47,14 @@ public class WrappedField {
         } catch (IllegalAccessException | NoSuchFieldException e) {
             e.printStackTrace();
         }
+    }
+
+    public boolean isAnnotationPresent(Class<? extends Annotation> annClass) {
+        return field.isAnnotationPresent(annClass);
+    }
+
+    public <T> T getAnnotation(Class<? extends Annotation> annClass) {
+        return (T) field.getAnnotation(annClass);
     }
 
     public int getModifiers() {

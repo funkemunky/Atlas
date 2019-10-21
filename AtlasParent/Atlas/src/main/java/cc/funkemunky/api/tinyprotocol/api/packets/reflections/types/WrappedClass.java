@@ -11,11 +11,13 @@ package cc.funkemunky.api.tinyprotocol.api.packets.reflections.types;
 import lombok.Getter;
 import lombok.val;
 
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.Arrays;
 import java.util.List;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 @Getter
@@ -50,6 +52,20 @@ public class WrappedClass {
         }
     }
 
+    public List<WrappedField> getFields(Predicate<WrappedField>... parameters) {
+        return getFields()
+                .stream()
+                .filter(field -> Arrays.stream(parameters).allMatch(param -> param.test(field)))
+                .collect(Collectors.toList());
+    }
+
+    public List<WrappedMethod> getMethods(Predicate<WrappedMethod>... parameters) {
+        return getMethods()
+                .stream()
+                .filter(method -> Arrays.stream(parameters).allMatch(param -> param.test(method)))
+                .collect(Collectors.toList());
+    }
+
     public List<WrappedConstructor> getConstructors() {
         return Arrays.stream(this.parent.getConstructors())
                 .map(construct -> new WrappedConstructor(this, construct))
@@ -63,6 +79,14 @@ public class WrappedClass {
 
     public WrappedConstructor getConstructorAtIndex(int index) {
         return new WrappedConstructor(this, this.parent.getConstructors()[index]);
+    }
+
+    public boolean isAnnotationPresent(Class<? extends Annotation> annClass) {
+        return parent.isAnnotationPresent(annClass);
+    }
+
+    public <T> T getAnnotation(Class<T> annClass) {
+        return (T) parent.getDeclaredAnnotation(annClass);
     }
 
     public WrappedField getFieldByType(Class<?> type, int index) {

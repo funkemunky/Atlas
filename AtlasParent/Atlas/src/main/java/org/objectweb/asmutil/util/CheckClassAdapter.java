@@ -79,9 +79,9 @@ import java.util.*;
  * insnNumber locals : stack):
  * 
  * <pre>
- * org.objectweb.asmutil.tree.analysis.AnalyzerException: Error at instruction 71: Expected I, but found .
- *   at org.objectweb.asmutil.tree.analysis.Analyzer.analyze(Analyzer.java:289)
- *   at org.objectweb.asmutil.util.CheckClassAdapter.verify(CheckClassAdapter.java:135)
+ * org.objectweb.org.objectweb.asmutil.tree.analysis.AnalyzerException: Error at instruction 71: Expected I, but found .
+ *   at org.objectweb.org.objectweb.asmutil.tree.analysis.Analyzer.analyze(Analyzer.java:289)
+ *   at org.objectweb.org.objectweb.asmutil.util.CheckClassAdapter.verify(CheckClassAdapter.java:135)
  * ...
  * remove()V
  * 00000 LinkedBlockingQueue$Itr . . . . . . . .  :

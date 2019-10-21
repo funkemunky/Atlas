@@ -17,28 +17,38 @@ import java.util.UUID;
 @Getter
 public class BungeeManager implements PluginMessageListener {
     private String channelOut = "BungeeCord", channelIn = "BungeeCord";
-    private String atlasIn = "atlasIn";
+    private String atlasIn = "atlasIn", atlasOut = "atlasOut";
     private BungeeAPI bungeeAPI;
     private Map<UUID, BungeePlayer> bungeePlayers = new HashMap<>();
 
     public BungeeManager() {
         Bukkit.getMessenger().registerOutgoingPluginChannel(Atlas.getInstance(), channelOut);
+        Bukkit.getMessenger().registerOutgoingPluginChannel(Atlas.getInstance(), atlasOut);
         Bukkit.getMessenger().registerIncomingPluginChannel(Atlas.getInstance(), channelIn, this);
         Bukkit.getMessenger().registerIncomingPluginChannel(Atlas.getInstance(), atlasIn, this);
         bungeeAPI = new BungeeAPI();
     }
 
+    public void sendData(byte[] data, String out) {
+        Bukkit.getServer().sendPluginMessage(Atlas.getInstance(), out, data);
+    }
+
     public void sendData(byte[] data) {
-        Bukkit.getServer().sendPluginMessage(Atlas.getInstance(), channelOut, data);
+        sendData(data, channelOut);
     }
 
     public void sendObjects(String server, Object... objects) throws IOException {
         ByteArrayOutputStream output = new ByteArrayOutputStream();
         DataOutputStream stream = new DataOutputStream(output);
 
-        stream.writeUTF("Forward");
-        stream.writeUTF(server);
-        stream.writeUTF("Forward");
+        boolean override  = server.toLowerCase().contains("override");
+        if(override) {
+            stream.writeUTF("sendObjects");
+        } else {
+            stream.writeUTF("Forward");
+            stream.writeUTF(server);
+            stream.writeUTF("Forward");
+        }
 
         ByteArrayOutputStream objectOutput = new ByteArrayOutputStream();
         ObjectOutputStream objectStream = new ObjectOutputStream(objectOutput);
@@ -52,7 +62,7 @@ public class BungeeManager implements PluginMessageListener {
         stream.writeShort(array.length);
         stream.write(array);
 
-        sendData(output.toByteArray()); //This is where we finally send the data
+        sendData(output.toByteArray(), override ? atlasOut : channelOut); //This is where we finally send the data
     }
 
     @Override
@@ -99,62 +109,4 @@ public class BungeeManager implements PluginMessageListener {
             }
         }
     }
-
-    /*public void requestObject(RequestType type, String... args) {
-        ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        DataOutputStream dStream = new DataOutputStream(stream);
-
-        try {
-            dStream.writeUTF("request");
-            dStream.writeUTF(type.getTypeName());
-            Arrays.stream(args).forEachOrdered(arg -> {
-                try {
-                    dStream.writeUTF(arg);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            });
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        sendData(stream.toByteArray());
-    }
-
-    //Unfinished
-    public List<BungeeObject> getObject(String id) throws InterruptedException, ExecutionException, TimeoutException {
-        return getObjectWithCriteria(Criteria.EQUALS, id);
-    }
-
-    //Unfinished
-    public List<BungeeObject> getObjectWithCriteria(Criteria criteria, String toCompare) throws InterruptedException, ExecutionException, TimeoutException {
-        return getObjectWithCriteria(criteria, toCompare, 5000L);
-    }
-
-    //Unfinished
-    public List<BungeeObject> getObjectWithCriteria(Criteria criteria, String toCompare, long timeoutMillis) throws InterruptedException, ExecutionException, TimeoutException {
-        FutureTask<List<BungeeObject>> task = new FutureTask<>(() -> {
-            var object = objects.stream().filter(obj -> {
-                switch(criteria) {
-                    case EQUALS: return obj.getId().equals(toCompare);
-                    case EQUALS_IGNORE_CASE: return obj.getId().equalsIgnoreCase(toCompare);
-                    case CONTAINS: return obj.getId().contains(toCompare);
-                    case CONTAINS_IGNORE_CASE: return obj.getId().toLowerCase().contains(toCompare.toLowerCase());
-                    case STARTS_WITH: return obj.getId().startsWith(toCompare);
-                    case ENDS_WITH: return obj.getId().endsWith(toCompare);
-                    default: return false;
-                }
-            }).collect(Collectors.toList());
-
-            if(object.size() == 0) {
-                requestObject(RequestType.OBJECT, toCompare);
-            }
-
-            return object;
-        });
-
-        executor.submit(task);
-
-        return task.get(timeoutMillis, TimeUnit.MILLISECONDS);
-    }*/
 }

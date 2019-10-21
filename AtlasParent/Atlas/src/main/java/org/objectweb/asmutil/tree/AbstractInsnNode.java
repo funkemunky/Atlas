@@ -134,7 +134,7 @@ public abstract class AbstractInsnNode {
      * number nodes). This list is a list of {@link org.objectweb.asmutil.tree.TypeAnnotationNode} objects.
      * May be <tt>null</tt>.
      * 
-     * @associates org.objectweb.asmutil.tree.TypeAnnotationNode
+     * @associates org.objectweb.org.objectweb.asmutil.tree.TypeAnnotationNode
      * @label visible
      */
     public List<org.objectweb.asmutil.tree.TypeAnnotationNode> visibleTypeAnnotations;
@@ -145,7 +145,7 @@ public abstract class AbstractInsnNode {
      * number nodes). This list is a list of {@link org.objectweb.asmutil.tree.TypeAnnotationNode} objects.
      * May be <tt>null</tt>.
      * 
-     * @associates org.objectweb.asmutil.tree.TypeAnnotationNode
+     * @associates org.objectweb.org.objectweb.asmutil.tree.TypeAnnotationNode
      * @label invisible
      */
     public List<org.objectweb.asmutil.tree.TypeAnnotationNode> invisibleTypeAnnotations;

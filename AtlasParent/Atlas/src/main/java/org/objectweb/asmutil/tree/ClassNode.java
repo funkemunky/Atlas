@@ -113,7 +113,7 @@ public class ClassNode extends ClassVisitor {
      * The runtime visible annotations of this class. This list is a list of
      * {@link org.objectweb.asmutil.tree.AnnotationNode} objects. May be <tt>null</tt>.
      * 
-     * @associates org.objectweb.asmutil.tree.AnnotationNode
+     * @associates org.objectweb.org.objectweb.asmutil.tree.AnnotationNode
      * @label visible
      */
     public List<org.objectweb.asmutil.tree.AnnotationNode> visibleAnnotations;
@@ -122,7 +122,7 @@ public class ClassNode extends ClassVisitor {
      * The runtime invisible annotations of this class. This list is a list of
      * {@link org.objectweb.asmutil.tree.AnnotationNode} objects. May be <tt>null</tt>.
      * 
-     * @associates org.objectweb.asmutil.tree.AnnotationNode
+     * @associates org.objectweb.org.objectweb.asmutil.tree.AnnotationNode
      * @label invisible
      */
     public List<org.objectweb.asmutil.tree.AnnotationNode> invisibleAnnotations;
@@ -131,7 +131,7 @@ public class ClassNode extends ClassVisitor {
      * The runtime visible type annotations of this class. This list is a list
      * of {@link org.objectweb.asmutil.tree.TypeAnnotationNode} objects. May be <tt>null</tt>.
      * 
-     * @associates org.objectweb.asmutil.tree.TypeAnnotationNode
+     * @associates org.objectweb.org.objectweb.asmutil.tree.TypeAnnotationNode
      * @label visible
      */
     public List<org.objectweb.asmutil.tree.TypeAnnotationNode> visibleTypeAnnotations;
@@ -140,7 +140,7 @@ public class ClassNode extends ClassVisitor {
      * The runtime invisible type annotations of this class. This list is a list
      * of {@link org.objectweb.asmutil.tree.TypeAnnotationNode} objects. May be <tt>null</tt>.
      * 
-     * @associates org.objectweb.asmutil.tree.TypeAnnotationNode
+     * @associates org.objectweb.org.objectweb.asmutil.tree.TypeAnnotationNode
      * @label invisible
      */
     public List<org.objectweb.asmutil.tree.TypeAnnotationNode> invisibleTypeAnnotations;
@@ -149,7 +149,7 @@ public class ClassNode extends ClassVisitor {
      * The non standard attributes of this class. This list is a list of
      * {@link Attribute} objects. May be <tt>null</tt>.
      * 
-     * @associates org.objectweb.asmutil.Attribute
+     * @associates org.objectweb.org.objectweb.asmutil.Attribute
      */
     public List<Attribute> attrs;
 
@@ -157,7 +157,7 @@ public class ClassNode extends ClassVisitor {
      * Informations about the inner classes of this class. This list is a list
      * of {@link org.objectweb.asmutil.tree.InnerClassNode} objects.
      * 
-     * @associates org.objectweb.asmutil.tree.InnerClassNode
+     * @associates org.objectweb.org.objectweb.asmutil.tree.InnerClassNode
      */
     public List<org.objectweb.asmutil.tree.InnerClassNode> innerClasses;
 
@@ -165,7 +165,7 @@ public class ClassNode extends ClassVisitor {
      * The fields of this class. This list is a list of {@link org.objectweb.asmutil.tree.FieldNode}
      * objects.
      * 
-     * @associates org.objectweb.asmutil.tree.FieldNode
+     * @associates org.objectweb.org.objectweb.asmutil.tree.FieldNode
      */
     public List<org.objectweb.asmutil.tree.FieldNode> fields;
 
@@ -173,7 +173,7 @@ public class ClassNode extends ClassVisitor {
      * The methods of this class. This list is a list of {@link org.objectweb.asmutil.tree.MethodNode}
      * objects.
      * 
-     * @associates org.objectweb.asmutil.tree.MethodNode
+     * @associates org.objectweb.org.objectweb.asmutil.tree.MethodNode
      */
     public List<org.objectweb.asmutil.tree.MethodNode> methods;
 
