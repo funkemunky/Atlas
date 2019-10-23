@@ -4,6 +4,8 @@ import cc.funkemunky.api.bungee.BungeeManager;
 import cc.funkemunky.api.commands.FunkeCommandManager;
 import cc.funkemunky.api.commands.ancmd.CommandManager;
 import cc.funkemunky.api.commands.impl.AtlasCommand;
+import cc.funkemunky.api.config.system.Configuration;
+import cc.funkemunky.api.config.system.YamlConfiguration;
 import cc.funkemunky.api.events.AtlasListener;
 import cc.funkemunky.api.events.EventManager;
 import cc.funkemunky.api.events.impl.TickEvent;
@@ -27,6 +29,9 @@ import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import javax.annotation.Nullable;
+import java.io.File;
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.concurrent.ExecutorService;
@@ -59,6 +64,9 @@ public class Atlas extends JavaPlugin {
     private BungeeManager bungeeManager;
     private boolean done;
     private ExecutorService service;
+    private Configuration atlasConfig;
+    private YamlConfiguration yaml;
+    private File file;
 
     @ConfigSetting(path = "updater")
     private boolean autoDownload = false;
@@ -74,7 +82,9 @@ public class Atlas extends JavaPlugin {
 
     public void onEnable() {
         instance = this;
-        saveDefaultConfig();
+        yaml = new YamlConfiguration();
+        file = new File(getDataFolder(), "config.yml");
+        atlasConfig = yaml.saveDefaultConfig(this, "config.yml");
         consoleSender = Bukkit.getConsoleSender();
 
         MiscUtils.printToConsole(Color.Red + "Loading Atlas...");
@@ -82,7 +92,6 @@ public class Atlas extends JavaPlugin {
         MiscUtils.printToConsole(Color.Gray + "Firing up the thread turbines...");
         service = Executors.newFixedThreadPool(2);
         schedular = Executors.newSingleThreadScheduledExecutor();
-
         eventManager = new EventManager();
         carbon = new Carbon();
 
@@ -104,7 +113,11 @@ public class Atlas extends JavaPlugin {
 
         MiscUtils.printToConsole(Color.Gray + "Starting scanner...");
 
-        initializeScanner(getClass(), this, true, true);
+        initializeScanner(getClass(),
+                this,
+                true,
+                true,
+                atlasConfig);
 
         funkeCommandManager.addCommand(this, new AtlasCommand());
 
@@ -200,7 +213,7 @@ public class Atlas extends JavaPlugin {
 
     public void initializeScanner(Class<? extends JavaPlugin> mainClass, JavaPlugin plugin,
                                   boolean loadListeners,
-                                  boolean loadCommands) {
+                                  boolean loadCommands, @Nullable Configuration mainConfig) {
         ClassScanner.scanFile(null, mainClass)
                 .stream()
                 .map(Reflections::getClass)
@@ -208,7 +221,7 @@ public class Atlas extends JavaPlugin {
                         c.getAnnotation(Init.class).priority().getPriority(), Comparator.reverseOrder()))
                 .forEach(c -> {
                     Object obj = c.getParent().equals(mainClass) ? plugin : c.getConstructor().newInstance();
-                    Init annotation = (Init) c.getAnnotation(Init.class);
+                    Init annotation = c.getAnnotation(Init.class);
 
                     if(loadListeners) {
                         if(obj instanceof AtlasListener) {
@@ -225,28 +238,66 @@ public class Atlas extends JavaPlugin {
                         MiscUtils.printToConsole("&7Registering commands in class &e" + c.getParent().getSimpleName() + "&7...");
                         Atlas.getInstance().getCommandManager().registerCommands(obj);
                     }
+                    
+                    if(mainConfig != null) {
+                        c.getFields(field -> field.isAnnotationPresent(ConfigSetting.class))
+                                .forEach(field -> {
+                                    ConfigSetting setting = field.getAnnotation(ConfigSetting.class);
 
-                    c.getFields(field -> field.isAnnotationPresent(ConfigSetting.class))
-                            .forEach(field -> {
-                                ConfigSetting setting = field.getAnnotation(ConfigSetting.class);
+                                    MiscUtils.printToConsole("&7Found ConfigSetting &e" + field.getField().getName()
+                                            + " &7(default=&f" + field.get(obj) + "&7.");
 
-                                MiscUtils.printToConsole("&7Found ConfigSetting &e" + field.getField().getName()
-                                        + " &7(default=&f" + field.get(obj) + "&7.");
+                                    if(mainConfig.get(setting.path() + setting.name()) == null) {
+                                        MiscUtils.printToConsole("&7Value not set in config! Setting value...");
+                                        mainConfig.set(setting.path() + setting.name(), field.get(obj));
+                                    } else {
+                                        Object configObj = mainConfig.get(setting.path() + setting.name());
+                                        MiscUtils.printToConsole("&7Set field to value &e" + configObj + "&7.");
+                                        field.set(obj, configObj);
+                                    }
+                                });
+                    } else {
+                        c.getFields(field -> field.isAnnotationPresent(ConfigSetting.class))
+                                .forEach(field -> {
+                                    ConfigSetting setting = field.getAnnotation(ConfigSetting.class);
 
-                                if(plugin.getConfig().get(setting.path() + setting.name()) == null) {
-                                    MiscUtils.printToConsole("&7Value not set in config! Setting value...");
-                                    plugin.getConfig().set(setting.path() + setting.name(), field.get(obj));
-                                } else {
-                                    Object configObj = plugin.getConfig().get(setting.path() + setting.name());
-                                    MiscUtils.printToConsole("&7Set field to value &e" + configObj + "&7.");
-                                    field.set(obj, configObj);
-                                }
-                            });
+                                    MiscUtils.printToConsole("&7Found ConfigSetting &e" + field.getField().getName()
+                                            + " &7(default=&f" + field.get(obj) + "&7.");
+
+                                    if(plugin.getConfig().get(setting.path() + setting.name()) == null) {
+                                        MiscUtils.printToConsole("&7Value not set in config! Setting value...");
+                                        plugin.getConfig().set(setting.path() + setting.name(), field.get(obj));
+                                    } else {
+                                        Object configObj = plugin.getConfig().get(setting.path() + setting.name());
+                                        MiscUtils.printToConsole("&7Set field to value &e" + configObj + "&7.");
+                                        field.set(obj, configObj);
+                                    }
+                                });
+                    }
                 });
     }
 
+    public void saveConfig() {
+        try {
+            yaml.save(atlasConfig, file);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void reloadConfig() {
+        try {
+            if(!file.exists()) {
+                yaml.saveDefaultConfig(this, "config.yml");
+            }
+            yaml.load(file);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     public void initializeScanner(Class<? extends JavaPlugin> mainClass, JavaPlugin plugin) {
-        initializeScanner(mainClass, plugin, true, true);
+        initializeScanner(mainClass, plugin, true, true, null);
     }
 
     public void initializeScanner(JavaPlugin plugin) {
@@ -254,6 +305,6 @@ public class Atlas extends JavaPlugin {
     }
 
     public void initializeScanner(JavaPlugin plugin, boolean loadListeners, boolean loadCommands) {
-        initializeScanner(plugin.getClass(), plugin, loadListeners, loadCommands);
+        initializeScanner(plugin.getClass(), plugin, loadListeners, loadCommands, null);
     }
 }
