@@ -1,16 +1,6 @@
 package cc.funkemunky.api.config.system;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStreamWriter;
-import java.io.Reader;
-import java.io.Writer;
-import java.nio.charset.StandardCharsets;
-import java.util.LinkedHashMap;
-import java.util.Map;
+import cc.funkemunky.api.utils.MiscUtils;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -20,137 +10,128 @@ import org.yaml.snakeyaml.constructor.Constructor;
 import org.yaml.snakeyaml.nodes.Node;
 import org.yaml.snakeyaml.representer.Represent;
 import org.yaml.snakeyaml.representer.Representer;
-import sun.security.krb5.Config;
+
+import java.io.*;
+import java.nio.charset.StandardCharsets;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 @NoArgsConstructor(access = AccessLevel.PUBLIC)
-public class YamlConfiguration extends ConfigurationProvider
-{
+public class YamlConfiguration extends ConfigurationProvider {
 
-    private final ThreadLocal<Yaml> yaml = new ThreadLocal<Yaml>()
-    {
+    private final ThreadLocal<Yaml> yaml = new ThreadLocal<Yaml>() {
         @Override
-        protected Yaml initialValue()
-        {
-            Representer representer = new Representer()
-            {
+        protected Yaml initialValue() {
+            Representer representer = new Representer() {
                 {
-                    representers.put( Configuration.class, new Represent()
-                    {
+                    representers.put(Configuration.class, new Represent() {
                         @Override
-                        public Node representData(Object data)
-                        {
-                            return represent( ( (Configuration) data ).self );
+                        public Node representData(Object data) {
+                            return represent(((Configuration) data).self);
                         }
-                    } );
+                    });
                 }
             };
 
             DumperOptions options = new DumperOptions();
-            options.setDefaultFlowStyle( DumperOptions.FlowStyle.BLOCK );
+            options.setDefaultFlowStyle(DumperOptions.FlowStyle.BLOCK);
 
-            return new Yaml( new Constructor(), representer, options );
+            return new Yaml(new Constructor(), representer, options);
         }
     };
 
     @Override
-    public void save(Configuration config, File file) throws IOException
-    {
-        try ( Writer writer = new OutputStreamWriter( new FileOutputStream( file ), StandardCharsets.UTF_8) )
-        {
-            save( config, writer );
+    public void save(Configuration config, File file) throws IOException {
+        try (Writer writer = new OutputStreamWriter(new FileOutputStream(file), StandardCharsets.UTF_8)) {
+            save(config, writer);
         }
     }
 
     @Override
-    public void save(Configuration config, Writer writer)
-    {
-        yaml.get().dump( config.self, writer );
+    public void save(Configuration config, Writer writer) {
+        yaml.get().dump(config.self, writer);
     }
 
     @Override
-    public Configuration load(File file) throws IOException
-    {
-        return load( file, null );
+    public Configuration load(File file) throws IOException {
+        return load(file, null);
     }
 
     @Override
-    public Configuration load(File file, Configuration defaults) throws IOException
-    {
-        try ( FileInputStream is = new FileInputStream( file ) )
-        {
-            return load( is, defaults );
+    public Configuration load(File file, Configuration defaults) throws IOException {
+        try (FileInputStream is = new FileInputStream(file)) {
+            return load(is, defaults);
         }
     }
 
     @Override
-    public Configuration load(Reader reader)
-    {
-        return load( reader, null );
+    public Configuration load(Reader reader) {
+        return load(reader, null);
     }
 
     @Override
     @SuppressWarnings("unchecked")
-    public Configuration load(Reader reader, Configuration defaults)
-    {
-        Map<String, Object> map = yaml.get().loadAs( reader, LinkedHashMap.class );
-        if ( map == null )
-        {
+    public Configuration load(Reader reader, Configuration defaults) {
+        Map<String, Object> map = yaml.get().loadAs(reader, LinkedHashMap.class);
+        if (map == null) {
             map = new LinkedHashMap<>();
         }
-        return new Configuration( map, defaults );
+        return new Configuration(map, defaults);
     }
 
     @Override
-    public Configuration load(InputStream is)
-    {
-        return load( is, null );
+    public Configuration load(InputStream is) {
+        return load(is, null);
     }
 
     @Override
     @SuppressWarnings("unchecked")
-    public Configuration load(InputStream is, Configuration defaults)
-    {
-        Map<String, Object> map = yaml.get().loadAs( is, LinkedHashMap.class );
-        if ( map == null )
-        {
+    public Configuration load(InputStream is, Configuration defaults) {
+        Map<String, Object> map = yaml.get().loadAs(is, LinkedHashMap.class);
+        if (map == null) {
             map = new LinkedHashMap<>();
         }
-        return new Configuration( map, defaults );
+        return new Configuration(map, defaults);
     }
 
     @Override
-    public Configuration load(String string)
-    {
-        return load( string, null );
+    public Configuration load(String string) {
+        return load(string, null);
     }
 
     @Override
     @SuppressWarnings("unchecked")
-    public Configuration load(String string, Configuration defaults)
-    {
-        Map<String, Object> map = yaml.get().loadAs( string, LinkedHashMap.class );
-        if ( map == null )
-        {
+    public Configuration load(String string, Configuration defaults) {
+        Map<String, Object> map = yaml.get().loadAs(string, LinkedHashMap.class);
+        if (map == null) {
             map = new LinkedHashMap<>();
         }
-        return new Configuration( map, defaults );
+        return new Configuration(map, defaults);
     }
 
-    public Configuration saveDefaultConfig(JavaPlugin plugin, String resourceName) {
-        InputStream stream = plugin.getResource(resourceName);
+    public static Configuration saveDefaultConfig(JavaPlugin plugin, String resourceName) {
+        File directory = plugin.getDataFolder();
 
-        Configuration configuration = load(stream);
+        if (!directory.exists()) {
+            directory.mkdirs();
+        }
 
-        File file = new File(plugin.getDataFolder(), resourceName);
+        File file = new File(directory, resourceName);
 
-        if(!file.exists()) {
-            try {
-                save(configuration, file);
-            } catch (IOException e) {
-                e.printStackTrace();
+        try {
+            if (!file.exists()) {
+                file.createNewFile();
+                try (final InputStream is = plugin.getResource(resourceName);
+                     final OutputStream os = new FileOutputStream(file)) {
+
+                    MiscUtils.copy(is, os);
+                }
             }
+            return ConfigurationProvider.getProvider(YamlConfiguration.class).load(file);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
 
-        return configuration;
+        return null;
     }
 }

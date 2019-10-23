@@ -87,6 +87,7 @@ public class FunkeFile {
             bw.close();
             fw.close();
         } catch (Exception localException) {
+            localException.printStackTrace();
         }
     }
 

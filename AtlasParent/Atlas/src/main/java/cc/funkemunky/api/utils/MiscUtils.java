@@ -17,6 +17,9 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.util.Vector;
 
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.lang.reflect.Field;
 import java.util.*;
 
@@ -40,6 +43,22 @@ public class MiscUtils {
         return color + "-----------------------------------------------------";
     }
 
+    public static long copy(InputStream from, OutputStream to) throws IOException {
+        if(from == null || to == null) return 0;
+
+        byte[] buf = new byte[4096];
+        long total = 0L;
+
+        while(true) {
+            int r = from.read(buf);
+            if (r == -1) {
+                return total;
+            }
+
+            to.write(buf, 0, r);
+            total += r;
+        }
+    }
     public static String lineNoStrike() {
         return "-----------------------------------------------------";
     }

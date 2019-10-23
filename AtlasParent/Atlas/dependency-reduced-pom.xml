@@ -63,12 +63,31 @@
           <revisionOnScmFailure>unknownbuild</revisionOnScmFailure>
         </configuration>
       </plugin>
+      <plugin>
+        <artifactId>maven-shade-plugin</artifactId>
+        <executions>
+          <execution>
+            <phase>package</phase>
+            <goals>
+              <goal>shade</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <relocations>
+            <relocation>
+              <pattern>org.yaml.snakeyaml</pattern>
+              <shadedPattern>cc.funkemunky.api.utils.org.yaml.snakeyaml</shadedPattern>
+            </relocation>
+          </relocations>
+        </configuration>
+      </plugin>
     </plugins>
   </build>
   <repositories>
     <repository>
       <id>funkemunky-releases</id>
-      <url>http://funkemunky.cc:8080/nexus/content/repositories/releases/</url>
+      <url>http:/nexus.funkemunky.cc/content/repositories/releases/</url>
     </repository>
   </repositories>
   <dependencies>

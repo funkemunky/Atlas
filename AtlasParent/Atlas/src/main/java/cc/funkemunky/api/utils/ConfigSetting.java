@@ -10,4 +10,5 @@ import java.lang.annotation.Target;
 public @interface ConfigSetting {
     String path() default "";
     String name() default "";
+    String comment() default "";
 }

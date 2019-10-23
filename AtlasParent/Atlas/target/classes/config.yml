@@ -1,9 +1,9 @@
 updater:
-  # This will automatically download when an update comes out.
+# This will automatically download when an update comes out.
   autoDownload: false
-  # This will check for updates when the plugin is loaded.
+# This will check for updates when the plugin is loaded.
   checkForUpdates: true
-  # This will notify players with the atlas.admin permission when there is an update out.
+# This will notify players with the atlas.admin permission when there is an update out.
   notifyOnJoin: true
 # This will send information about your server to https://bstats.org.
 # Read here for information on what information is collected: http://bit.ly/AtlasPrivacy

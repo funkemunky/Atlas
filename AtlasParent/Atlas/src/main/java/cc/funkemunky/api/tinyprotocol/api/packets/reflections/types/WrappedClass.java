@@ -181,7 +181,7 @@ public class WrappedClass {
     //We have a separate method instead of just calling WrappedClass#getFields(boolean, boolean)
     // or performance reasons.
     public List<WrappedField> getFields() {
-        return Arrays.stream(parent.getFields())
+        return Arrays.stream(parent.getDeclaredFields())
                 .map(field -> new WrappedField(this, field))
                 .collect(Collectors.toList());
     }

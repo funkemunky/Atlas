@@ -19,7 +19,7 @@ public class Updater {
     private boolean importantUpdate = true;
 
     @ConfigSetting(path = "updater")
-    private boolean checkForUpdates = true;
+    private static boolean checkForUpdates = true;
 
     public Updater() {
         runUpdateCheck();

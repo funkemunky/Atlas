@@ -14,7 +14,7 @@ import org.bukkit.event.player.PlayerJoinEvent;
 public class UpdaterListener implements Listener {
 
     @ConfigSetting(path = "updater")
-    private boolean notifyOnJoin = true;
+    private static boolean notifyOnJoin = true;
     /*We set the event priority to lowest so it appears after (if no other plugin sets it to this)
     every other message a player is sent on join.*/
     @EventHandler(priority = EventPriority.LOWEST)
