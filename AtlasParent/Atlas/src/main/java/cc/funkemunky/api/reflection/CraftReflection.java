@@ -1,5 +1,7 @@
 package cc.funkemunky.api.reflection;
 
+import cc.funkemunky.api.tinyprotocol.api.packets.reflections.types.WrappedClass;
+import cc.funkemunky.api.tinyprotocol.api.packets.reflections.types.WrappedMethod;
 import cc.funkemunky.api.tinyprotocol.reflection.MethodInvoker;
 import cc.funkemunky.api.tinyprotocol.reflection.Reflection;
 import org.bukkit.World;
@@ -21,6 +23,7 @@ public class CraftReflection {
     public static MethodInvoker entityInstance = Reflection.getMethod(craftEntity, "getHandle");
     public static MethodInvoker blockInstance = Reflection.getMethod(craftBlock, "getNMSBlock");
     public static MethodInvoker worldInstance = Reflection.getMethod(craftWorld, "getHandle");
+    public static WrappedMethod bukkitEntity = MinecraftReflection.entity.getMethod("getBukkitEntity");
 
     public static Object getVanillaItemStack(ItemStack stack) {
         return itemStackInstance.invoke(null, stack);
@@ -40,5 +43,9 @@ public class CraftReflection {
 
     public static Object getVanillaWorld(World world) {
         return worldInstance.invoke(world);
+    }
+
+    public static Entity getBukkitEntity(Object vanillaEntity) {
+        return bukkitEntity.invoke(vanillaEntity);
     }
 }

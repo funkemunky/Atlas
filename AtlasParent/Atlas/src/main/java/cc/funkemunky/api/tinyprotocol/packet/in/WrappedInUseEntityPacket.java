@@ -1,5 +1,6 @@
 package cc.funkemunky.api.tinyprotocol.packet.in;
 
+import cc.funkemunky.api.Atlas;
 import cc.funkemunky.api.tinyprotocol.api.NMSObject;
 import cc.funkemunky.api.tinyprotocol.api.ProtocolVersion;
 import cc.funkemunky.api.tinyprotocol.reflection.FieldAccessor;
@@ -8,6 +9,7 @@ import lombok.Getter;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -32,7 +34,8 @@ public class WrappedInUseEntityPacket extends NMSObject {
         Enum fieldAct = Objects.nonNull(fetch(fieldAction)) ? fetch(fieldAction) : null;
         action = fieldAct == null ? EnumEntityUseAction.INTERACT_AT : EnumEntityUseAction.valueOf(fieldAct.name());
 
-        List<Entity> entities = ReflectionsUtil.getEntitiesInWorld(player.getWorld());
+        List<Entity> entities = Atlas.getInstance().getEntities()
+                .getOrDefault(player.getWorld().getUID(), new ArrayList<>());
 
         for (Entity ent : entities) {
             if(id == ent.getEntityId()) {

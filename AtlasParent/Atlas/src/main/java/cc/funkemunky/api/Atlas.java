@@ -13,9 +13,11 @@ import cc.funkemunky.api.events.impl.TickEvent;
 import cc.funkemunky.api.handlers.PluginLoaderHandler;
 import cc.funkemunky.api.metrics.Metrics;
 import cc.funkemunky.api.profiling.BaseProfiler;
+import cc.funkemunky.api.reflection.CraftReflection;
 import cc.funkemunky.api.settings.MongoSettings;
 import cc.funkemunky.api.tinyprotocol.api.TinyProtocolHandler;
 import cc.funkemunky.api.tinyprotocol.api.packets.reflections.Reflections;
+import cc.funkemunky.api.tinyprotocol.api.packets.reflections.types.WrappedField;
 import cc.funkemunky.api.updater.Updater;
 import cc.funkemunky.api.utils.*;
 import cc.funkemunky.api.utils.blockbox.BlockBoxManager;
@@ -25,7 +27,9 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.val;
 import org.bukkit.Bukkit;
+import org.bukkit.World;
 import org.bukkit.command.ConsoleCommandSender;
+import org.bukkit.entity.Entity;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -35,14 +39,9 @@ import org.yaml.snakeyaml.Yaml;
 import javax.annotation.Nullable;
 import java.io.File;
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
+import java.util.*;
+import java.util.concurrent.*;
+import java.util.stream.Collectors;
 
 @Getter
 @Setter
@@ -72,6 +71,7 @@ public class Atlas extends JavaPlugin {
     private Configuration atlasConfig;
     private File file;
     private Yaml yaml;
+    private Map<UUID, List<Entity>> entities = new ConcurrentHashMap<>();
 
     @ConfigSetting(path = "updater", name = "autoDownload")
     private static boolean autoDownload = false;
@@ -207,7 +207,24 @@ public class Atlas extends JavaPlugin {
         } else {
             getSchedular().scheduleAtFixedRate(this::runTickEvent, 50L, 50L, TimeUnit.MILLISECONDS);
         }
+
+        RunUtils.taskTimer(() -> {
+            for (World world : Bukkit.getWorlds()) {
+                Object vWorld = CraftReflection.getVanillaWorld(world);
+
+                List<Object> vEntities = Collections.synchronizedList(entityList.get(vWorld));
+
+                List<Entity> bukkitEntities = vEntities
+                        .parallelStream()
+                        .map(CraftReflection::getBukkitEntity)
+                        .collect(Collectors.toList());
+
+                entities.put(world.getUID(), bukkitEntities);
+            }
+        }, 40L, 2L);
     }
+
+    private static WrappedField entityList = Reflections.getNMSClass("World").getFieldByName("entityList");
 
     private void runTickEvent() {
         service.execute(() -> {
