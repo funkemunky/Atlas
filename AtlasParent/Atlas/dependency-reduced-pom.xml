@@ -86,8 +86,8 @@
   </build>
   <repositories>
     <repository>
-      <id>funkemunky-releases</id>
-      <url>http:/nexus.funkemunky.cc/content/repositories/releases/</url>
+      <id>funkemunky</id>
+      <url>http://nexus.funkemunky.cc/content/repositories/releases/</url>
     </repository>
   </repositories>
   <dependencies>

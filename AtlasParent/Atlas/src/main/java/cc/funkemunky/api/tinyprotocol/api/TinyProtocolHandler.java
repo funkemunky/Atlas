@@ -19,7 +19,7 @@ public class TinyProtocolHandler {
 
     public boolean paused = false;
 
-    private Map<Player, ProtocolVersion> versionCache = new WeakHashMap<>();
+    private static Map<Player, ProtocolVersion> versionCache = new WeakHashMap<>();
 
     public TinyProtocolHandler() {
         // 1.8+ and 1.7 NMS have different class paths for their libraries used. This is why we have to separate the two.
@@ -35,8 +35,8 @@ public class TinyProtocolHandler {
         instance.getChannel().sendPacket(player, packet);
     }
 
-    public ProtocolVersion getProtocolVersion(Player player) {
-        return versionCache.putIfAbsent(player, MinecraftReflection.getVersion(player));
+    public static ProtocolVersion getProtocolVersion(Player player) {
+        return instance.getChannel().getProtocolVersion(player);
     }
 
     private boolean didPosition = false;

@@ -18,7 +18,7 @@ public class CraftReflection {
     public static Class<?> craftItemStack = Reflection.getCraftBukkitClass("inventory.CraftItemStack");
     public static Class<?> craftBlock = Reflection.getCraftBukkitClass("block.CraftBlock");
     public static Class<?> craftWorld = Reflection.getCraftBukkitClass("CraftWorld");
-    public static WrappedClass craftplayer = Reflections.getCBClass("CraftPlayer");
+    public static WrappedClass craftplayer = Reflections.getCBClass("entity.CraftPlayer");
 
     //Vanilla Instances
     public static MethodInvoker itemStackInstance = Reflection.getMethod(craftItemStack,
