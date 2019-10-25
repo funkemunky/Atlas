@@ -3,16 +3,23 @@ package cc.funkemunky.api.tinyprotocol.api;
 import cc.funkemunky.api.Atlas;
 import cc.funkemunky.api.events.impl.PacketReceiveEvent;
 import cc.funkemunky.api.events.impl.PacketSendEvent;
+import cc.funkemunky.api.reflection.MinecraftReflection;
 import cc.funkemunky.api.tinyprotocol.api.packets.ChannelInjector;
 import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+
+import java.util.Map;
+import java.util.UUID;
+import java.util.WeakHashMap;
 
 public class TinyProtocolHandler {
     @Getter
     private static ChannelInjector instance;
 
     public boolean paused = false;
+
+    private Map<Player, ProtocolVersion> versionCache = new WeakHashMap<>();
 
     public TinyProtocolHandler() {
         // 1.8+ and 1.7 NMS have different class paths for their libraries used. This is why we have to separate the two.
@@ -28,8 +35,8 @@ public class TinyProtocolHandler {
         instance.getChannel().sendPacket(player, packet);
     }
 
-    public static ProtocolVersion getProtocolVersion(Player player) {
-        return instance.getChannel().getProtocolVersion(player);
+    public ProtocolVersion getProtocolVersion(Player player) {
+        return versionCache.putIfAbsent(player, MinecraftReflection.getVersion(player));
     }
 
     private boolean didPosition = false;
