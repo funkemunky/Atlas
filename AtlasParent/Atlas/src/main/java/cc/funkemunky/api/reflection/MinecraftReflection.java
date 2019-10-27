@@ -8,13 +8,11 @@ import cc.funkemunky.api.tinyprotocol.api.packets.reflections.types.WrappedField
 import cc.funkemunky.api.tinyprotocol.api.packets.reflections.types.WrappedMethod;
 import cc.funkemunky.api.tinyprotocol.packet.types.BaseBlockPosition;
 import cc.funkemunky.api.tinyprotocol.packet.types.WrappedEnumAnimation;
-import cc.funkemunky.api.tinyprotocol.reflection.Reflection;
 import cc.funkemunky.api.utils.BoundingBox;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.HumanEntity;
-import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import javax.annotation.Nullable;
@@ -33,13 +31,6 @@ public class MinecraftReflection {
     public static WrappedClass playerInventory = Reflections.getNMSClass("PlayerInventory");
     public static WrappedClass itemStack = Reflections.getNMSClass("ItemStack");
     public static WrappedClass enumAnimation = Reflections.getNMSClass("EnumAnimation");
-    public static WrappedClass networkManager = Reflections.getNMSClass("NetworkManager");
-    public static WrappedClass playerConnection = Reflections.getNMSClass("PlayerConnection");
-    public static WrappedClass entityPlayer = Reflections.getNMSClass("EntityPlayer");
-    public static WrappedClass enumProtocol;
-    public static WrappedClass channelClass;
-    public static WrappedClass attributeKeyClass;
-    public static WrappedClass attribute;
 
     //BoundingBoxes
     public static WrappedMethod getCubes;
@@ -66,18 +57,6 @@ public class MinecraftReflection {
     public static WrappedClass blockPos;
     public static WrappedConstructor blockPosConstructor;
     public static WrappedMethod getBlockData;
-
-    //Player Connection
-    public static WrappedField networkManagerPlayerField = playerConnection
-            .getFieldByType(networkManager.getParent(), 0);
-    public static WrappedField playerConnectionField = entityPlayer
-            .getFieldByType(playerConnection.getParent(), 0);
-    public static WrappedField networkChannelField;
-
-    //1.8 Protocol
-    public static WrappedField attributeProtocol;
-    public static WrappedMethod attrChannelMethod;
-    public static WrappedMethod enumProtocolIdMethod;
 
     public static WrappedEnumAnimation getArmAnimation(HumanEntity entity) {
         if(entity.getItemInHand() != null) {
@@ -117,8 +96,7 @@ public class MinecraftReflection {
             Object blockData = getBlockData.invoke(vanillaBlock);
 
             addCBoxes.invoke(vanillaBlock, world, blockPos.getAsBlockPosition(), blockData,
-                    box.toAxisAlignedBB(), aabbs, entity != null ? CraftReflection.getEntity(entity) : null);
-            //Entity is always null for these
+                    box.toAxisAlignedBB(), aabbs, entity != null ? CraftReflection.getEntity(entity) : null); //Entity is always null for these
         }
 
         return aabbs.stream().map(MinecraftReflection::fromAABB).collect(Collectors.toList());
@@ -137,11 +115,8 @@ public class MinecraftReflection {
         List<BoundingBox> boxes = new ArrayList<>();
         if(ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.V1_13)) {
             List<Object> aabbs = ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.V1_12)
-                    ? getCubes.invoke(vWorld, entity != null
-                    ? CraftReflection.getEntity(entity)
-                    : null, box.toAxisAlignedBB())
-                    : getCubes.invoke(vWorld, box.toAxisAlignedBB(), false, entity != null
-                    ? CraftReflection.getEntity(entity) : null);
+                    ? getCubes.invoke(vWorld, entity != null ? CraftReflection.getEntity(entity) : null, box.toAxisAlignedBB())
+                    : getCubes.invoke(vWorld, box.toAxisAlignedBB(), false, entity != null ? CraftReflection.getEntity(entity) : null);
 
             boxes = aabbs.stream().map(MinecraftReflection::fromAABB).collect(Collectors.toList());
         } else {
@@ -192,33 +167,6 @@ public class MinecraftReflection {
                 (double)box.maxX, (double)box.maxY, (double)box.maxZ);
     }
 
-    public static ProtocolVersion getVersion(Player player) {
-        Object vanillaPlayer = CraftReflection.getVanillaPlayer(player);
-
-        Object playerConn = getPlayerConnection(player);
-        Object network = networkManagerPlayerField.get(playerConn);
-
-        if(ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.V1_8)) {
-            int version = networkManager.getMethod("getVersion").invoke(network);
-
-            return ProtocolVersion.getVersion(version);
-        } else {
-            Object channel = networkChannelField.get(network);
-            Object attribute = attributeProtocol.get(network);
-            Object attr = attrChannelMethod.invoke(channel, attribute);
-            Object enumProtocol = MinecraftReflection.attribute.getMethod("get").invoke(attr);
-            int protocolId = enumProtocolIdMethod.invoke(enumProtocol);
-
-            return ProtocolVersion.getVersion(protocolId);
-        }
-    }
-
-    public static <T> T getPlayerConnection(Player player) {
-        Object vanillaPlayer = CraftReflection.getVanillaPlayer(player);
-
-        return playerConnectionField.get(vanillaPlayer);
-    }
-
     static {
         if(ProtocolVersion.getGameVersion().isAbove(ProtocolVersion.V1_7_10)) {
             blockPos = Reflections.getNMSClass("BlockPosition");
@@ -226,21 +174,9 @@ public class MinecraftReflection {
             getBlockData = block.getMethod("getBlockData");
             aabbConstructor = axisAlignedBB
                     .getConstructor(double.class, double.class, double.class, double.class, double.class, double.class);
-            channelClass = Reflections.getClass("io.netty.channel.Channel");
-            attributeKeyClass = Reflections.getClass("io.netty.util.AttributeKey");
-            attributeProtocol = networkManager.getFirstFieldByType(attributeKeyClass.getParent());
-            enumProtocol = Reflections.getNMSClass("EnumProtocol");
-            enumProtocolIdMethod = enumProtocol.getMethodByType(int.class, 0);
-            attribute = Reflections.getClass("io.netty.util.Attribute");
         } else {
-            channelClass = Reflections.getClass("net.minecraft.util.io.netty.channel.Channel");
-            attributeKeyClass = Reflections.getClass("net.minecraft.util.io.netty.util.AttributeKey");
             idioticOldStaticConstructorAABB = axisAlignedBB.getMethodByType(axisAlignedBB.getParent(), 0);
-            attribute = Reflections.getClass("net.minecraft.util.io.netty.util.Attribute");
         }
-
-        attrChannelMethod = channelClass.getMethod("attr", attributeKeyClass.getParent());
-        networkChannelField = networkManager.getFieldByType(channelClass.getParent(), 0);
         if(ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.V1_12)) {
             getCubes = world.getMethod("getCubes", entity.getParent(), axisAlignedBB.getParent());
 
@@ -253,8 +189,7 @@ public class MinecraftReflection {
                         axisAlignedBB.getParent(), List.class, entity.getParent());
             }
         } else if(ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.V1_13)) {
-            getCubes = world.getMethod("a", entity.getParent(), axisAlignedBB.getParent(),
-                    boolean.class, List.class);
+            getCubes = world.getMethod("a", entity.getParent(), axisAlignedBB.getParent(), boolean.class, List.class);
             addCBoxes = block.getMethod("a", world.getParent(), blockPos.getParent(), iBlockData.getParent(),
                     axisAlignedBB.getParent(), List.class, entity.getParent());
         } else {

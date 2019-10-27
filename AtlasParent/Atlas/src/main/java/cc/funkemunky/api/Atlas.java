@@ -25,6 +25,7 @@ import cc.funkemunky.api.utils.blockbox.impl.BoundingBoxes;
 import cc.funkemunky.carbon.Carbon;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.val;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.command.ConsoleCommandSender;
@@ -71,7 +72,6 @@ public class Atlas extends JavaPlugin {
     private File file;
     private Yaml yaml;
     private Map<UUID, List<Entity>> entities = new ConcurrentHashMap<>();
-    private boolean clientStatsEnabled;
 
     @ConfigSetting(path = "updater", name = "autoDownload")
     private static boolean autoDownload = false;
@@ -91,8 +91,6 @@ public class Atlas extends JavaPlugin {
         file = new File(getDataFolder(), "config.yml");
         atlasConfig = YamlConfiguration.saveDefaultConfig(this, "config.yml");
         consoleSender = Bukkit.getConsoleSender();
-
-        clientStatsEnabled = Bukkit.getPluginManager().isPluginEnabled("ClientStats");
 
         MiscUtils.printToConsole(Color.Red + "Loading Atlas...");
 

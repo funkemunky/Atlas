@@ -7,6 +7,7 @@ import cc.funkemunky.api.profiling.ResultsType;
 import cc.funkemunky.api.utils.Color;
 import cc.funkemunky.api.utils.MiscUtils;
 import cc.funkemunky.api.utils.Pastebin;
+import cc.funkemunky.api.utils.Tuple;
 import lombok.val;
 import org.apache.commons.lang.time.DateFormatUtils;
 import org.bukkit.command.Command;
@@ -64,9 +65,10 @@ public class ProfileArgument extends FunkeArgument {
 
         for (String key : results.keySet()) {
             //Converting nanoseconds to millis to be more readable.
-            double amount = results.get(key) / 1000000D;
+            Tuple<Integer, Double> result = results.get(key);
+            double amount = result.two / 1000000D;
 
-            body.add(key + ": " + amount + "ms");
+            body.add(key + ": " + amount + "ms (" + result.one + " calls)");
         }
         StringBuilder builder = new StringBuilder();
         for (String aBody : body) {
