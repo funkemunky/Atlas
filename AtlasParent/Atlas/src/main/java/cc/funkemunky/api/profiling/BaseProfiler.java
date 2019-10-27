@@ -75,7 +75,7 @@ public class BaseProfiler implements Profiler {
         switch(type) {
             case TOTAL: {
                 for (String key : total.keySet()) {
-                    toReturn.put(key, new Tuple<>(calls.get(key), total.get(key) * ((double) calls.get(key) / totalCalls)));
+                    toReturn.put(key, new Tuple<>(calls.get(key), total.get(key) * ((double) calls.get(key) / Atlas.getInstance().getCurrentTicks())));
                 }
                 break;
             }
