@@ -6,7 +6,7 @@
  *
  * last modified: 4/19/18 7:22 PM
  */
-package cc.funkemunky.api.tinyprotocol.api.packets.reflections.types;
+package cc.funkemunky.api.reflections.types;
 
 import lombok.Getter;
 import lombok.val;

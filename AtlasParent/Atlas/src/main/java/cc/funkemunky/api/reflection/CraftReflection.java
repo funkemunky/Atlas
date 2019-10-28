@@ -1,7 +1,6 @@
 package cc.funkemunky.api.reflection;
 
-import cc.funkemunky.api.tinyprotocol.api.packets.reflections.types.WrappedClass;
-import cc.funkemunky.api.tinyprotocol.api.packets.reflections.types.WrappedMethod;
+import cc.funkemunky.api.reflections.types.WrappedMethod;
 import cc.funkemunky.api.tinyprotocol.reflection.MethodInvoker;
 import cc.funkemunky.api.tinyprotocol.reflection.Reflection;
 import org.bukkit.World;

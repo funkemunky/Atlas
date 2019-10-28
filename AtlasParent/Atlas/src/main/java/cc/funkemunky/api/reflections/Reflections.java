@@ -6,9 +6,9 @@
  *
  * last modified: 4/19/18 7:22 PM
  */
-package cc.funkemunky.api.tinyprotocol.api.packets.reflections;
+package cc.funkemunky.api.reflections;
 
-import cc.funkemunky.api.tinyprotocol.api.packets.reflections.types.WrappedClass;
+import cc.funkemunky.api.reflections.types.WrappedClass;
 import lombok.Getter;
 import org.bukkit.Bukkit;
 

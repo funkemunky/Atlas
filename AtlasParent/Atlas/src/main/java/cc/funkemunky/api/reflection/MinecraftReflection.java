@@ -1,11 +1,11 @@
 package cc.funkemunky.api.reflection;
 
 import cc.funkemunky.api.tinyprotocol.api.ProtocolVersion;
-import cc.funkemunky.api.tinyprotocol.api.packets.reflections.Reflections;
-import cc.funkemunky.api.tinyprotocol.api.packets.reflections.types.WrappedClass;
-import cc.funkemunky.api.tinyprotocol.api.packets.reflections.types.WrappedConstructor;
-import cc.funkemunky.api.tinyprotocol.api.packets.reflections.types.WrappedField;
-import cc.funkemunky.api.tinyprotocol.api.packets.reflections.types.WrappedMethod;
+import cc.funkemunky.api.reflections.Reflections;
+import cc.funkemunky.api.reflections.types.WrappedClass;
+import cc.funkemunky.api.reflections.types.WrappedConstructor;
+import cc.funkemunky.api.reflections.types.WrappedField;
+import cc.funkemunky.api.reflections.types.WrappedMethod;
 import cc.funkemunky.api.tinyprotocol.packet.types.BaseBlockPosition;
 import cc.funkemunky.api.tinyprotocol.packet.types.WrappedEnumAnimation;
 import cc.funkemunky.api.utils.BoundingBox;
@@ -25,7 +25,7 @@ public class MinecraftReflection {
     public static WrappedClass axisAlignedBB = Reflections.getNMSClass("AxisAlignedBB");
     public static WrappedClass entityHuman = Reflections.getNMSClass("EntityHuman");
     public static WrappedClass block = Reflections.getNMSClass("Block");
-    public static WrappedClass iBlockData = Reflections.getNMSClass("IBlockData");
+    public static WrappedClass iBlockData;
     public static WrappedClass world = Reflections.getNMSClass("World");
     public static WrappedClass worldServer = Reflections.getNMSClass("WorldServer");
     public static WrappedClass playerInventory = Reflections.getNMSClass("PlayerInventory");
@@ -174,8 +174,10 @@ public class MinecraftReflection {
             getBlockData = block.getMethod("getBlockData");
             aabbConstructor = axisAlignedBB
                     .getConstructor(double.class, double.class, double.class, double.class, double.class, double.class);
+            iBlockData = Reflections.getNMSClass("IBlockData");
         } else {
-            idioticOldStaticConstructorAABB = axisAlignedBB.getMethodByType(axisAlignedBB.getParent(), 0);
+            idioticOldStaticConstructorAABB = axisAlignedBB.getMethod("a",
+                    double.class, double.class, double.class, double.class, double.class, double.class);
         }
         if(ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.V1_12)) {
             getCubes = world.getMethod("getCubes", entity.getParent(), axisAlignedBB.getParent());

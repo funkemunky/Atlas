@@ -16,8 +16,8 @@ import cc.funkemunky.api.profiling.BaseProfiler;
 import cc.funkemunky.api.reflection.CraftReflection;
 import cc.funkemunky.api.settings.MongoSettings;
 import cc.funkemunky.api.tinyprotocol.api.TinyProtocolHandler;
-import cc.funkemunky.api.tinyprotocol.api.packets.reflections.Reflections;
-import cc.funkemunky.api.tinyprotocol.api.packets.reflections.types.WrappedField;
+import cc.funkemunky.api.reflections.Reflections;
+import cc.funkemunky.api.reflections.types.WrappedField;
 import cc.funkemunky.api.updater.Updater;
 import cc.funkemunky.api.utils.*;
 import cc.funkemunky.api.utils.blockbox.BlockBoxManager;
@@ -25,7 +25,6 @@ import cc.funkemunky.api.utils.blockbox.impl.BoundingBoxes;
 import cc.funkemunky.carbon.Carbon;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.val;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.command.ConsoleCommandSender;
@@ -149,7 +148,7 @@ public class Atlas extends JavaPlugin {
             }
         }
 
-        Bukkit.getOnlinePlayers().forEach(player -> TinyProtocolHandler.getInstance().addChannel(player));
+        Bukkit.getOnlinePlayers().forEach(player -> TinyProtocolHandler.getInstance().injectPlayer(player));
 
         MiscUtils.printToConsole(Color.Green + "Successfully loaded Atlas and its utilities!");
         done = true;
@@ -159,8 +158,6 @@ public class Atlas extends JavaPlugin {
         MiscUtils.printToConsole(Color.Gray + "Unloading all Atlas hooks...");
         HandlerList.unregisterAll(this);
         Bukkit.getScheduler().cancelTasks(this);
-
-        Bukkit.getOnlinePlayers().forEach(player -> TinyProtocolHandler.getInstance().removeChannel(player));
 
         eventManager.clearAllRegistered();
         getCommandManager().unregisterCommands();
@@ -221,7 +218,7 @@ public class Atlas extends JavaPlugin {
 
                 entities.put(world.getUID(), bukkitEntities);
             }
-        }, 40L, 2L);
+        }, 2L, 2L);
     }
 
     private static WrappedField entityList = Reflections.getNMSClass("World").getFieldByName("entityList");
