@@ -439,20 +439,21 @@ public abstract class TinyProtocol1_8 implements AbstractTinyProtocol {
 		}
 
 		Integer protocol = protocolLookup.get(channel);
-		if (protocol == null) {
-			int protocolVersion = 47;
-			try {
-				Class<?> Via = Class.forName("us.myles.ViaVersion.api.Via");
-				Class<?> clazzViaAPI = Class.forName("us.myles.ViaVersion.api.ViaAPI");
-				Object ViaAPI = Via.getMethod("getAPI").invoke(null);
-				Method getPlayerVersion = clazzViaAPI.getMethod("getPlayerVersion", Object.class);
-				protocolVersion = (int) getPlayerVersion.invoke(ViaAPI, player);
-			} catch (Throwable e) {
-
-			}
+		int protocolVersion;
+		try {
+			Class<?> Via = Class.forName("us.myles.ViaVersion.api.Via");
+			Class<?> clazzViaAPI = Class.forName("us.myles.ViaVersion.api.ViaAPI");
+			Object ViaAPI = Via.getMethod("getAPI").invoke(null);
+			Method getPlayerVersion = clazzViaAPI.getMethod("getPlayerVersion", Object.class);
+			protocolVersion = (int) getPlayerVersion.invoke(ViaAPI, player);
 			protocolLookup.put(channel, protocolVersion);
 			return protocolVersion;
-		} else return protocol;
+		} catch (Throwable e) {
+
+		}
+		if (protocol != null) {
+			return protocol;
+		} else return -1;
 	}
 
 	/**

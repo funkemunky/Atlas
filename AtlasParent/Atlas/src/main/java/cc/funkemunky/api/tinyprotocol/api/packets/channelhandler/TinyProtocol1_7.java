@@ -19,6 +19,7 @@ import org.bukkit.event.server.PluginDisableEvent;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import java.lang.reflect.Method;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -393,17 +394,33 @@ public abstract class TinyProtocol1_7 implements AbstractTinyProtocol {
     }
 
     public int getProtocolVersion(Player player) {
-        Channel channel = channelLookup.get(player.getName());
+       Channel channel = channelLookup.get(player.getName());
 
-        // Lookup channel again
-        if (channel == null) {
-            Object connection = getConnection.get(getPlayerHandle.invoke(player));
-            Object manager = getManager.get(connection);
+		// Lookup channel again
+		if (channel == null) {
+			Object connection = getConnection.get(getPlayerHandle.invoke(player));
+			Object manager = getManager.get(connection);
 
-            channelLookup.put(player.getName(), channel = getChannel.get(manager));
-        }
+			channelLookup.put(player.getName(), channel = getChannel.get(manager));
+		}
 
-        return protocolLookup.get(channel);
+		Integer protocol = protocolLookup.get(channel);
+
+		int protocolVersion;
+		try {
+			Class<?> Via = Class.forName("us.myles.ViaVersion.api.Via");
+			Class<?> clazzViaAPI = Class.forName("us.myles.ViaVersion.api.ViaAPI");
+			Object ViaAPI = Via.getMethod("getAPI").invoke(null);
+			Method getPlayerVersion = clazzViaAPI.getMethod("getPlayerVersion", Object.class);
+			protocolVersion = (int) getPlayerVersion.invoke(ViaAPI, player);
+			protocolLookup.put(channel, protocolVersion);
+			return protocolVersion;
+		} catch (Throwable e) {
+
+		}
+		if (protocol != null) {
+			return protocol;
+		} else return -1;
     }
 
     /**
