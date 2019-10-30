@@ -12,6 +12,7 @@
 
     <groupId>cc.funkemunky.plugins</groupId>
     <artifactId>Atlas</artifactId>
+    <version>1.6.2</version>
 
     <scm>
         <connection>scm:svn:http://127.0.0.1/dummy</connection>
