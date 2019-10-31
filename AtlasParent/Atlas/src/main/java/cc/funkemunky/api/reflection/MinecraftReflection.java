@@ -1,11 +1,11 @@
 package cc.funkemunky.api.reflection;
 
-import cc.funkemunky.api.tinyprotocol.api.ProtocolVersion;
 import cc.funkemunky.api.reflections.Reflections;
 import cc.funkemunky.api.reflections.types.WrappedClass;
 import cc.funkemunky.api.reflections.types.WrappedConstructor;
 import cc.funkemunky.api.reflections.types.WrappedField;
 import cc.funkemunky.api.reflections.types.WrappedMethod;
+import cc.funkemunky.api.tinyprotocol.api.ProtocolVersion;
 import cc.funkemunky.api.tinyprotocol.packet.types.BaseBlockPosition;
 import cc.funkemunky.api.tinyprotocol.packet.types.WrappedEnumAnimation;
 import cc.funkemunky.api.utils.BoundingBox;
