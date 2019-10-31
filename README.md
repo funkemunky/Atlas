@@ -14,6 +14,9 @@ Atlas is an all-in-one and cohesive API for developers who want to improve their
 * The most accurate and light, public hitbox-grabbing system.
 * Numerous reflection methods and utilities, including grabbers for NMS.
 
+#### JavaDocs
+https://funkemunky.github.io/Atlas/
+
 ## Custom Event System
 
 #### Creating an event
