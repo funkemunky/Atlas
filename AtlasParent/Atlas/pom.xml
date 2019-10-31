@@ -104,7 +104,7 @@
     <repositories>
         <repository>
             <id>funkemunky-releases</id>
-            <url>http:/nexus.funkemunky.cc/content/repositories/releases/</url>
+            <url>http://nexus.funkemunky.cc/content/repositories/releases/</url>
         </repository>
     </repositories>
 
@@ -112,7 +112,7 @@
         <dependency>
             <groupId>cc.funkemunky.utils</groupId>
             <artifactId>ProjectCarbon</artifactId>
-            <version>1.2.1</version>
+            <version>1.2.2</version>
             <scope>compile</scope>
         </dependency>
         <dependency>

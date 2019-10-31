@@ -113,7 +113,7 @@ public class Atlas extends JavaPlugin {
         updater = new Updater();
 
         runTasks();
-        initCarbon();
+        Carbon.init();
 
         MiscUtils.printToConsole(Color.Gray + "Starting scanner...");
 
@@ -174,17 +174,6 @@ public class Atlas extends JavaPlugin {
         MiscUtils.printToConsole(Color.Red + "Completed shutdown process.");
     }
 
-    private void initCarbon() {
-        carbon = new Carbon();
-
-        if(MongoSettings.enabled) {
-            carbon.initMongo(MongoSettings.database,
-                    MongoSettings.ip,
-                    MongoSettings.port,
-                    MongoSettings.username,
-                    MongoSettings.password);
-        }
-    }
 
     private void shutdownExecutor() {
         service.shutdown();
