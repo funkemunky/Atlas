@@ -1,6 +1,6 @@
 package cc.funkemunky.api.tinyprotocol.packet;
 
-import cc.funkemunky.api.tinyprotocol.api.packets.reflections.types.WrappedField;
+import cc.funkemunky.api.reflections.types.WrappedField;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 

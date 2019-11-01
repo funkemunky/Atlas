@@ -1,6 +1,6 @@
 package cc.funkemunky.api.tinyprotocol.packet.types;
 
-import cc.funkemunky.api.tinyprotocol.api.packets.reflections.Reflections;
+import cc.funkemunky.api.reflections.Reflections;
 import net.minecraft.server.v1_8_R3.PacketPlayOutPosition;
 
 import java.util.EnumSet;

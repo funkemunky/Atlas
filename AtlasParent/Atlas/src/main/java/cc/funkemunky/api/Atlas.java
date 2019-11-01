@@ -14,10 +14,10 @@ import cc.funkemunky.api.handlers.PluginLoaderHandler;
 import cc.funkemunky.api.metrics.Metrics;
 import cc.funkemunky.api.profiling.BaseProfiler;
 import cc.funkemunky.api.reflection.CraftReflection;
+import cc.funkemunky.api.reflections.Reflections;
+import cc.funkemunky.api.reflections.types.WrappedField;
 import cc.funkemunky.api.settings.MongoSettings;
 import cc.funkemunky.api.tinyprotocol.api.TinyProtocolHandler;
-import cc.funkemunky.api.tinyprotocol.api.packets.reflections.Reflections;
-import cc.funkemunky.api.tinyprotocol.api.packets.reflections.types.WrappedField;
 import cc.funkemunky.api.updater.Updater;
 import cc.funkemunky.api.utils.*;
 import cc.funkemunky.api.utils.blockbox.BlockBoxManager;
@@ -71,7 +71,6 @@ public class Atlas extends JavaPlugin {
     private File file;
     private Yaml yaml;
     private Map<UUID, List<Entity>> entities = new ConcurrentHashMap<>();
-    private boolean clientStatsEnabled;
 
     @ConfigSetting(path = "updater", name = "autoDownload")
     private static boolean autoDownload = false;
@@ -91,8 +90,6 @@ public class Atlas extends JavaPlugin {
         file = new File(getDataFolder(), "config.yml");
         atlasConfig = YamlConfiguration.saveDefaultConfig(this, "config.yml");
         consoleSender = Bukkit.getConsoleSender();
-
-        clientStatsEnabled = Bukkit.getPluginManager().isPluginEnabled("ClientStats");
 
         MiscUtils.printToConsole(Color.Red + "Loading Atlas...");
 
@@ -116,7 +113,7 @@ public class Atlas extends JavaPlugin {
         updater = new Updater();
 
         runTasks();
-        initCarbon();
+        Carbon.init();
 
         MiscUtils.printToConsole(Color.Gray + "Starting scanner...");
 
@@ -151,7 +148,7 @@ public class Atlas extends JavaPlugin {
             }
         }
 
-        Bukkit.getOnlinePlayers().forEach(player -> TinyProtocolHandler.getInstance().addChannel(player));
+        Bukkit.getOnlinePlayers().forEach(player -> TinyProtocolHandler.getInstance().injectPlayer(player));
 
         MiscUtils.printToConsole(Color.Green + "Successfully loaded Atlas and its utilities!");
         done = true;
@@ -161,8 +158,6 @@ public class Atlas extends JavaPlugin {
         MiscUtils.printToConsole(Color.Gray + "Unloading all Atlas hooks...");
         HandlerList.unregisterAll(this);
         Bukkit.getScheduler().cancelTasks(this);
-
-        Bukkit.getOnlinePlayers().forEach(player -> TinyProtocolHandler.getInstance().removeChannel(player));
 
         eventManager.clearAllRegistered();
         getCommandManager().unregisterCommands();
@@ -179,17 +174,6 @@ public class Atlas extends JavaPlugin {
         MiscUtils.printToConsole(Color.Red + "Completed shutdown process.");
     }
 
-    private void initCarbon() {
-        carbon = new Carbon();
-
-        if(MongoSettings.enabled) {
-            carbon.initMongo(MongoSettings.database,
-                    MongoSettings.ip,
-                    MongoSettings.port,
-                    MongoSettings.username,
-                    MongoSettings.password);
-        }
-    }
 
     private void shutdownExecutor() {
         service.shutdown();
@@ -223,7 +207,7 @@ public class Atlas extends JavaPlugin {
 
                 entities.put(world.getUID(), bukkitEntities);
             }
-        }, 40L, 2L);
+        }, 2L, 2L);
     }
 
     private static WrappedField entityList = Reflections.getNMSClass("World").getFieldByName("entityList");

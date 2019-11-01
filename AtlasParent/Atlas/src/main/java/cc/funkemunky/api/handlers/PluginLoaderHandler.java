@@ -13,9 +13,8 @@ import org.bukkit.event.server.PluginEnableEvent;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.lang.reflect.InvocationTargetException;
-import java.util.*;
-import java.util.concurrent.FutureTask;
+import java.util.HashSet;
+import java.util.Set;
 
 @Init
 public class PluginLoaderHandler implements Listener {

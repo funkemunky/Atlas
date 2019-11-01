@@ -1,8 +1,8 @@
 package cc.funkemunky.bungee.utils.asm;
 
-import org.objectweb.asmutil.ClassReader;
-import org.objectweb.asmutil.tree.AnnotationNode;
-import org.objectweb.asmutil.tree.ClassNode;
+import jdk.internal.org.objectweb.asm.ClassReader;
+import jdk.internal.org.objectweb.asm.tree.AnnotationNode;
+import jdk.internal.org.objectweb.asm.tree.ClassNode;
 
 import java.io.File;
 import java.io.IOException;

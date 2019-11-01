@@ -5,7 +5,7 @@
     <parent>
         <artifactId>atlas-parent</artifactId>
         <groupId>cc.funkemunky.utils</groupId>
-        <version>1.6.1</version>
+        <version>1.6.2</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -27,6 +27,7 @@
                 <configuration>
                     <source>8</source>
                     <target>8</target>
+                    <compilerArgument>-XDignore.symbol.file</compilerArgument>
                 </configuration>
             </plugin>
             <plugin>
@@ -80,7 +81,7 @@
     <repositories>
         <repository>
             <id>funkemunky-releases</id>
-            <url>http://nexus.funkemunky.cc/content/repositories/releases/</url>
+            <url>http://funkemunky.cc:8080/nexus/content/repositories/releases/</url>
         </repository>
     </repositories>
 

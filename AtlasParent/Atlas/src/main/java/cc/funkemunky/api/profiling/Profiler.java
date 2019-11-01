@@ -1,5 +1,7 @@
 package cc.funkemunky.api.profiling;
 
+import cc.funkemunky.api.utils.Tuple;
+
 import java.util.Map;
 
 public interface Profiler {
@@ -15,5 +17,5 @@ public interface Profiler {
 
     void reset();
 
-    Map<String, Double> results(ResultsType type);
+    Map<String, Tuple<Integer, Double>> results(ResultsType type);
 }

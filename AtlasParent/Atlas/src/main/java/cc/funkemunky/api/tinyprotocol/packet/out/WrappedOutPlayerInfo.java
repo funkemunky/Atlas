@@ -1,9 +1,9 @@
 package cc.funkemunky.api.tinyprotocol.packet.out;
 
+import cc.funkemunky.api.reflections.Reflections;
+import cc.funkemunky.api.reflections.types.WrappedClass;
 import cc.funkemunky.api.tinyprotocol.api.NMSObject;
 import cc.funkemunky.api.tinyprotocol.api.ProtocolVersion;
-import cc.funkemunky.api.tinyprotocol.api.packets.reflections.Reflections;
-import cc.funkemunky.api.tinyprotocol.api.packets.reflections.types.WrappedClass;
 import cc.funkemunky.api.tinyprotocol.packet.types.WrappedEnumGameMode;
 import cc.funkemunky.api.tinyprotocol.packet.types.WrappedEnumPlayerInfoAction;
 import cc.funkemunky.api.tinyprotocol.packet.types.WrappedGameProfile;

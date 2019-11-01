@@ -3,11 +3,12 @@
   <parent>
     <artifactId>atlas-parent</artifactId>
     <groupId>cc.funkemunky.utils</groupId>
-    <version>1.6.1</version>
+    <version>1.6.2</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
   <groupId>cc.funkemunky.plugins</groupId>
   <artifactId>Atlas</artifactId>
+  <version>1.6.2</version>
   <scm>
     <connection>scm:svn:http://127.0.0.1/dummy</connection>
     <developerConnection>scm:svn:https://127.0.0.1/dummy</developerConnection>
@@ -24,6 +25,11 @@
       <plugin>
         <artifactId>maven-compiler-plugin</artifactId>
         <version>3.7.0</version>
+        <configuration>
+          <source>8</source>
+          <target>8</target>
+          <compilerArgument>-XDignore.symbol.file</compilerArgument>
+        </configuration>
       </plugin>
       <plugin>
         <artifactId>maven-shade-plugin</artifactId>
@@ -86,7 +92,7 @@
   </build>
   <repositories>
     <repository>
-      <id>funkemunky</id>
+      <id>funkemunky-releases</id>
       <url>http://nexus.funkemunky.cc/content/repositories/releases/</url>
     </repository>
   </repositories>
@@ -191,6 +197,12 @@
       <groupId>org.github.lombok</groupId>
       <artifactId>lombok</artifactId>
       <version>1.18.0</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>cc.funkemunky.utils</groupId>
+      <artifactId>java-rt</artifactId>
+      <version>8</version>
       <scope>provided</scope>
     </dependency>
   </dependencies>

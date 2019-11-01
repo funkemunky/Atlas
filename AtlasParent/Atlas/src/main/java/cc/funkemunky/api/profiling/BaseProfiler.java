@@ -1,6 +1,7 @@
 package cc.funkemunky.api.profiling;
 
 import cc.funkemunky.api.Atlas;
+import cc.funkemunky.api.utils.Tuple;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -67,31 +68,32 @@ public class BaseProfiler implements Profiler {
         samples.clear();
     }
 
+    //Returns Tuple<Total Calls, Result>
     @Override
-    public Map<String, Double> results(ResultsType type) {
-        Map<String, Double> toReturn = new HashMap<>();
+    public Map<String, Tuple<Integer, Double>> results(ResultsType type) {
+        Map<String, Tuple<Integer, Double>> toReturn = new HashMap<>();
         switch(type) {
             case TOTAL: {
                 for (String key : total.keySet()) {
-                    toReturn.put(key, total.get(key) / (double) calls.get(key));
+                    toReturn.put(key, new Tuple<>(calls.get(key), total.get(key) * ((double) calls.get(key) / totalCalls)));
                 }
                 break;
             }
             case AVERAGE: {
                 for (String key : samplesTotal.keySet()) {
-                    toReturn.put(key, samplesTotal.get(key).stream().mapToLong(val -> val).average().orElse(0));
+                    toReturn.put(key, new Tuple<>(calls.get(key), samplesTotal.get(key).stream().mapToLong(val -> val).average().orElse(0)));
                 }
                 break;
             }
             case SAMPLES: {
                 for (String key : samples.keySet()) {
-                    toReturn.put(key, (double)samples.get(key));
+                    toReturn.put(key, new Tuple<>(calls.get(key), (double)samples.get(key)));
                 }
                 break;
             }
             case TICK: {
                 for(String key : averageSamples.keySet()) {
-                    toReturn.put(key, (double)averageSamples.get(key));
+                    toReturn.put(key, new Tuple<>(calls.get(key), (double)averageSamples.get(key)));
                 }
                 break;
             }
