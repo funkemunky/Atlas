@@ -13,7 +13,9 @@ import cc.funkemunky.api.events.impl.TickEvent;
 import cc.funkemunky.api.handlers.PluginLoaderHandler;
 import cc.funkemunky.api.metrics.Metrics;
 import cc.funkemunky.api.profiling.BaseProfiler;
+import cc.funkemunky.api.reflection.BukkitReflection;
 import cc.funkemunky.api.reflection.CraftReflection;
+import cc.funkemunky.api.reflection.MinecraftReflection;
 import cc.funkemunky.api.reflections.Reflections;
 import cc.funkemunky.api.reflections.types.WrappedField;
 import cc.funkemunky.api.settings.MongoSettings;
@@ -26,7 +28,10 @@ import cc.funkemunky.carbon.Carbon;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Bukkit;
+import org.bukkit.Chunk;
+import org.bukkit.Location;
 import org.bukkit.World;
+import org.bukkit.block.Block;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Entity;
 import org.bukkit.event.HandlerList;
@@ -71,6 +76,7 @@ public class Atlas extends JavaPlugin {
     private File file;
     private Yaml yaml;
     private Map<UUID, List<Entity>> entities = new ConcurrentHashMap<>();
+    private Map<Location, Block> blocksMap = new ConcurrentHashMap<>();
 
     @ConfigSetting(path = "updater", name = "autoDownload")
     private static boolean autoDownload = false;
@@ -113,7 +119,7 @@ public class Atlas extends JavaPlugin {
         updater = new Updater();
 
         runTasks();
-        Carbon.init();
+        Carbon.init();https://www.dropbox.com/s/ne9tk4fktojtfl8/Screenshot%202019-11-01%2011.08.02.png?dl=0
 
         MiscUtils.printToConsole(Color.Gray + "Starting scanner...");
 
@@ -194,6 +200,11 @@ public class Atlas extends JavaPlugin {
             getSchedular().scheduleAtFixedRate(this::runTickEvent, 50L, 50L, TimeUnit.MILLISECONDS);
         }
 
+        //Setting up map
+        for (World world : Bukkit.getWorlds()) {
+            entities.put(world.getUID(), new ArrayList<>());
+        }
+
         RunUtils.taskTimer(() -> {
             for (World world : Bukkit.getWorlds()) {
                 Object vWorld = CraftReflection.getVanillaWorld(world);
@@ -208,6 +219,35 @@ public class Atlas extends JavaPlugin {
                 entities.put(world.getUID(), bukkitEntities);
             }
         }, 2L, 2L);
+
+        //This allows us to cache the blocks to improve the performance of getting blocks.
+        schedular.scheduleAtFixedRate(() -> {
+            profile.start("task::chunkLoader");
+            for(World world : Bukkit.getWorlds()) {
+                Object provider = MinecraftReflection.getChunkProvider(world);
+                List<Chunk> vChunks = MinecraftReflection.getVanillaChunks(provider)
+                        .parallelStream()
+                        .map(BukkitReflection::getChunkFromVanilla)
+                        .collect(Collectors.toList());
+
+                List<Block> blocksList = Collections.synchronizedList(new ArrayList<>());
+                vChunks.parallelStream().forEach(chunk -> {
+                    for(int y = 0 ; y < world.getMaxHeight() ; y++) {
+                        //The << is a reverse of what is needed to get chunk from loc.
+                        int x = chunk.getX() << 4, z = chunk.getZ() << 4;
+                        Block block = chunk.getBlock(x & 15, y, z & 15);
+
+                        blocksList.add(block);
+                    }
+                });
+
+                for (Block block : blocksList) {
+                    blocksMap.put(block.getLocation(), block);
+                }
+                blocksList.clear(); //Clearing to save the java gc from this monster.
+            }
+            profile.stop("task::chunkLoader");
+        }, 10L, 60L, TimeUnit.SECONDS);
     }
 
     private static WrappedField entityList = Reflections.getNMSClass("World").getFieldByName("entityList");
@@ -333,5 +373,24 @@ public class Atlas extends JavaPlugin {
 
     public void initializeScanner(JavaPlugin plugin, boolean loadListeners, boolean loadCommands) {
         initializeScanner(plugin.getClass(), plugin, loadListeners, loadCommands, null);
+    }
+
+    //Always wait to load chunks if you never want this to return as null. It may add delays tho when it is null.
+    //Max time is 5 seconds to load chunks.
+    public Block getBlock(Location location, boolean waitToLoadChunks) {
+        return blocksMap.computeIfAbsent(location, key -> {
+            if(waitToLoadChunks) {
+                FutureTask<Block> blockTask = new FutureTask<>(key::getBlock);
+
+                try {
+                    return blockTask.get(5000L, TimeUnit.SECONDS);
+                } catch(InterruptedException | ExecutionException | TimeoutException e) {
+                    e.printStackTrace();
+                }
+            } else {
+                RunUtils.task(() -> blocksMap.put(key, key.getBlock()));
+            }
+            return null;
+        });
     }
 }

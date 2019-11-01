@@ -6,13 +6,13 @@
 
     <parent>
         <groupId>cc.funkemunky.utils</groupId>
-        <version>1.6.2</version>
+        <version>1.6.3</version>
         <artifactId>atlas-parent</artifactId>
     </parent>
 
     <groupId>cc.funkemunky.plugins</groupId>
     <artifactId>Atlas</artifactId>
-    <version>1.6.2</version>
+    <version>1.6.3</version>
 
     <scm>
         <connection>scm:svn:http://127.0.0.1/dummy</connection>

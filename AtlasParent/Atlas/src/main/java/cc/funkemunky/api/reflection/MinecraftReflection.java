@@ -9,6 +9,7 @@ import cc.funkemunky.api.tinyprotocol.api.ProtocolVersion;
 import cc.funkemunky.api.tinyprotocol.packet.types.BaseBlockPosition;
 import cc.funkemunky.api.tinyprotocol.packet.types.WrappedEnumAnimation;
 import cc.funkemunky.api.utils.BoundingBox;
+import org.bukkit.Chunk;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
@@ -31,6 +32,7 @@ public class MinecraftReflection {
     public static WrappedClass playerInventory = Reflections.getNMSClass("PlayerInventory");
     public static WrappedClass itemStack = Reflections.getNMSClass("ItemStack");
     public static WrappedClass enumAnimation = Reflections.getNMSClass("EnumAnimation");
+    public static WrappedClass chunk = Reflections.getNMSClass("Chunk");
 
     //BoundingBoxes
     public static WrappedMethod getCubes;
@@ -57,6 +59,10 @@ public class MinecraftReflection {
     public static WrappedClass blockPos;
     public static WrappedConstructor blockPosConstructor;
     public static WrappedMethod getBlockData;
+    public static WrappedField chunkProvider = MinecraftReflection.world
+            .getFieldByType(Reflections.getNMSClass("IChunkProvider").getParent(), 0);
+    public static WrappedField chunksList = Reflections.getNMSClass("ChunkProviderServer")
+            .getFieldByName("chunks");
 
     public static WrappedEnumAnimation getArmAnimation(HumanEntity entity) {
         if(entity.getItemInHand() != null) {
@@ -165,6 +171,20 @@ public class MinecraftReflection {
         } else return aabbConstructor
                 .newInstance((double)box.minX, (double)box.minY, (double)box.minZ,
                 (double)box.maxX, (double)box.maxY, (double)box.maxZ);
+    }
+
+    //Either bukkit or vanilla world object can be used.
+    public static <T> T getChunkProvider(Object world) {
+        Object vanillaWorld;
+        if(world instanceof World) {
+            vanillaWorld = CraftReflection.getVanillaWorld((World)world);
+        } else vanillaWorld = world;
+
+        return chunkProvider.get(vanillaWorld);
+    }
+
+    public static <T> List<T> getVanillaChunks(Object provider) {
+        return chunksList.get(provider);
     }
 
     static {
