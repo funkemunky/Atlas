@@ -1,7 +1,6 @@
 package cc.funkemunky.api.utils.blockbox;
 
 import cc.funkemunky.api.utils.BoundingBox;
-import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.LivingEntity;

@@ -9,7 +9,6 @@ import cc.funkemunky.api.tinyprotocol.api.ProtocolVersion;
 import cc.funkemunky.api.tinyprotocol.packet.types.BaseBlockPosition;
 import cc.funkemunky.api.tinyprotocol.packet.types.WrappedEnumAnimation;
 import cc.funkemunky.api.utils.BoundingBox;
-import org.bukkit.Chunk;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
