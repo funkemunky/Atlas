@@ -12,7 +12,7 @@
 
     <groupId>cc.funkemunky.plugins</groupId>
     <artifactId>Atlas</artifactId>
-    <version>1.6.3.1</version>
+    <version>1.6.4</version>
 
     <scm>
         <connection>scm:svn:http://127.0.0.1/dummy</connection>
@@ -112,7 +112,7 @@
         <dependency>
             <groupId>cc.funkemunky.utils</groupId>
             <artifactId>ProjectCarbon</artifactId>
-            <version>1.2.2</version>
+            <version>1.2.4</version>
             <scope>compile</scope>
         </dependency>
         <dependency>

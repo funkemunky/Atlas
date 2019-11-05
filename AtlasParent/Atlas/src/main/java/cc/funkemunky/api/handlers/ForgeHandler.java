@@ -24,7 +24,7 @@ public class ForgeHandler implements Listener, PluginMessageListener {
     }
 
     @ConfigSetting(path = "forge", name = "enabled")
-    private static boolean enabled = true;
+    private static boolean enabled = false;
 
     @ConfigSetting(path = "forge", name = "bungee")
     public static boolean fromBungee = false;
