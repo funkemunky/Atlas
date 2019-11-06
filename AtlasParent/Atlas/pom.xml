@@ -45,6 +45,12 @@
                         </goals>
                         <configuration>
                             <minimizeJar>false</minimizeJar>
+                            <relocations>
+                                <relocation>
+                                    <pattern>org.yaml.snakeyaml</pattern>
+                                    <shadedPattern>cc.funkemunky.api.utils.org.yaml.snakeyaml</shadedPattern>
+                                </relocation>
+                            </relocations>
                         </configuration>
                     </execution>
                 </executions>
@@ -72,26 +78,6 @@
                     <revisionOnScmFailure>unknownbuild</revisionOnScmFailure>
                 </configuration>
             </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-shade-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>shade</goal>
-                        </goals>
-                    </execution>
-                </executions>
-                <configuration>
-                    <relocations>
-                        <relocation>
-                            <pattern>org.yaml.snakeyaml</pattern>
-                            <shadedPattern>cc.funkemunky.api.utils.org.yaml.snakeyaml</shadedPattern>
-                        </relocation>
-                    </relocations>
-                </configuration>
-            </plugin>
         </plugins>
         <resources>
             <resource>
@@ -111,9 +97,8 @@
     <dependencies>
         <dependency>
             <groupId>cc.funkemunky.utils</groupId>
-            <artifactId>ProjectCarbon</artifactId>
+            <artifactId>ProjectCarbon-Assembly</artifactId>
             <version>1.2.4</version>
-            <classifier>jar-with-dependencies</classifier>
             <scope>compile</scope>
         </dependency>
         <dependency>

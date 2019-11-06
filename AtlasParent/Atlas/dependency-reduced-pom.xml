@@ -42,6 +42,12 @@
             </goals>
             <configuration>
               <minimizeJar>false</minimizeJar>
+              <relocations>
+                <relocation>
+                  <pattern>org.yaml.snakeyaml</pattern>
+                  <shadedPattern>cc.funkemunky.api.utils.org.yaml.snakeyaml</shadedPattern>
+                </relocation>
+              </relocations>
             </configuration>
           </execution>
         </executions>
@@ -67,25 +73,6 @@
           <doCheck>false</doCheck>
           <doUpdate>false</doUpdate>
           <revisionOnScmFailure>unknownbuild</revisionOnScmFailure>
-        </configuration>
-      </plugin>
-      <plugin>
-        <artifactId>maven-shade-plugin</artifactId>
-        <executions>
-          <execution>
-            <phase>package</phase>
-            <goals>
-              <goal>shade</goal>
-            </goals>
-          </execution>
-        </executions>
-        <configuration>
-          <relocations>
-            <relocation>
-              <pattern>org.yaml.snakeyaml</pattern>
-              <shadedPattern>cc.funkemunky.api.utils.org.yaml.snakeyaml</shadedPattern>
-            </relocation>
-          </relocations>
         </configuration>
       </plugin>
     </plugins>
