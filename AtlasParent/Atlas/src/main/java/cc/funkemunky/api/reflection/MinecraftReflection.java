@@ -120,10 +120,13 @@ public class MinecraftReflection {
         List<BoundingBox> boxes = new ArrayList<>();
         if(ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.V1_13)) {
             List<Object> aabbs = ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.V1_12)
-                    ? getCubes.invoke(vWorld, entity != null ? CraftReflection.getEntity(entity) : null, box.toAxisAlignedBB())
+                    ? getCubes.invoke(vWorld, box.toAxisAlignedBB())
                     : getCubes.invoke(vWorld, box.toAxisAlignedBB(), false, entity != null ? CraftReflection.getEntity(entity) : null);
 
-            boxes = aabbs.stream().map(MinecraftReflection::fromAABB).collect(Collectors.toList());
+            boxes = aabbs
+                    .stream()
+                    .map(MinecraftReflection::fromAABB)
+                    .collect(Collectors.toList());
         } else {
             Object voxelShape = getCubes.invoke(vWorld, null, box.toAxisAlignedBB(), 0D, 0D, 0D);
 
@@ -199,7 +202,7 @@ public class MinecraftReflection {
                     double.class, double.class, double.class, double.class, double.class, double.class);
         }
         if(ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.V1_12)) {
-            getCubes = world.getMethod("getCubes", entity.getParent(), axisAlignedBB.getParent());
+            getCubes = world.getMethod("a", axisAlignedBB.getParent());
 
             if(ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.V1_8)) {
                 //1.7.10 does not have the BlockPosition object yet.

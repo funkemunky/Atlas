@@ -32,6 +32,15 @@ public class BoundingBox {
         this.maxY = (float) Math.max(min.getY(), max.getY());
         this.maxZ = (float) Math.max(min.getZ(), max.getZ());
     }
+    
+    public BoundingBox(BoundingBox one, BoundingBox two) {
+        this.minX = Math.min(one.minX, two.minX);
+        this.minY = Math.min(one.minY, two.minY);
+        this.minZ = Math.min(one.minZ, two.minZ);
+        this.maxX = Math.max(one.maxX, two.maxX);
+        this.maxY = Math.max(one.maxY, two.maxY);
+        this.maxZ = Math.max(one.maxZ, two.maxZ);
+    }
 
     public BoundingBox add(float x, float y, float z) {
         float newMinX = minX + x;

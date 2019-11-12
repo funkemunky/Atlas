@@ -1,6 +1,7 @@
 package cc.funkemunky.api.utils;
 
 import cc.funkemunky.api.Atlas;
+import cc.funkemunky.api.tinyprotocol.api.TinyProtocolHandler;
 import cc.funkemunky.api.tinyprotocol.packet.out.WrappedPacketPlayOutWorldParticle;
 import cc.funkemunky.api.tinyprotocol.packet.types.WrappedEnumParticle;
 import org.bukkit.Bukkit;
@@ -49,15 +50,12 @@ public class MiscUtils {
         byte[] buf = new byte[4096];
         long total = 0L;
 
-        while(true) {
-            int r = from.read(buf);
-            if (r == -1) {
-                return total;
-            }
-
+        int r ;
+        while((r = from.read(buf)) != -1) {
             to.write(buf, 0, r);
             total += r;
         }
+        return total;
     }
     public static String lineNoStrike() {
         return "-----------------------------------------------------";
@@ -68,7 +66,7 @@ public class MiscUtils {
             for (float y = box.minY; y < box.maxY + 0.2; y += 0.2f) {
                 for (float z = box.minZ; z < box.maxZ + 0.2; z += 0.2f) {
                     WrappedPacketPlayOutWorldParticle packet = new WrappedPacketPlayOutWorldParticle(WrappedEnumParticle.FLAME, true, x, y, z, 0f, 0f, 0f, 0f, 1, null);
-                    packet.sendPacket(player);
+                    TinyProtocolHandler.sendPacket(player, packet.getObject());
                 }
             }
         }
@@ -79,7 +77,7 @@ public class MiscUtils {
             for (float y = box.minY; y < box.maxY + 0.2; y += 0.2f) {
                 for (float z = box.minZ; z < box.maxZ + 0.2; z += 0.2f) {
                     WrappedPacketPlayOutWorldParticle packet = new WrappedPacketPlayOutWorldParticle(type, true, x, y, z, 0f, 0f, 0f, 0f, 1, null);
-                    packet.sendPacket(player);
+                    TinyProtocolHandler.sendPacket(player, packet.getObject());
                 }
             }
         }
@@ -90,7 +88,7 @@ public class MiscUtils {
             for (float y = box.minY; y < box.maxY + accuracy; y += accuracy) {
                 for (float z = box.minZ; z < box.maxZ + accuracy; z += accuracy) {
                     WrappedPacketPlayOutWorldParticle packet = new WrappedPacketPlayOutWorldParticle(type, true, x, y, z, 0f, 0f, 0f, 0f, 1, null);
-                    packet.sendPacket(player);
+                    TinyProtocolHandler.sendPacket(player, packet.getObject());
                 }
             }
         }

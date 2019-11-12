@@ -169,5 +169,6 @@ public abstract class Packet {
         public static final String HELD_ITEM = SERVER + "HeldItemSlot";
         public static final String TAB_COMPLETE = SERVER + "TabComplete";
         public static final String RESPAWN = SERVER + "Respawn";
+        public static final String WORLD_PARTICLE = SERVER + "WorldParticles";
     }
 }

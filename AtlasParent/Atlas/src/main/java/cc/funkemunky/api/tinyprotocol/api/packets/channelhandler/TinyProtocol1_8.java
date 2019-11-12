@@ -345,7 +345,7 @@ public abstract class TinyProtocol1_8 implements AbstractTinyProtocol {
 	 * @return A unique channel handler name.
 	 */
 	protected String getHandlerName() {
-		return "firefly-protocol-handler";
+		return "atlas-protocol-handler";
 	}
 
 	/**
