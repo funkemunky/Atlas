@@ -1,5 +1,6 @@
 package cc.funkemunky.api.config;
 
+import cc.funkemunky.api.utils.Color;
 import cc.funkemunky.api.utils.FunkeFile;
 import cc.funkemunky.carbon.utils.Pair;
 
@@ -19,10 +20,8 @@ public class MessageConfig {
     }
 
     public void save() {
-        messages.forEach((key, value) -> {
-            file.getLines().clear();
-            file.addLine(key + ": " + "\"" + value + "\"");
-        });
+        file.getLines().clear();
+        messages.forEach((key, value) -> file.addLine(key + ": " + "" + value + ""));
         file.write();
     }
 
@@ -34,16 +33,17 @@ public class MessageConfig {
     private void load() {
         messages.clear();
         file.getLines().stream().map(line -> {
-            String[] split = line.split(": ");
+            String[] split = line.split(": ", 2);
 
             return new Pair<>(split[0], split[1]);
         }).forEach(pair -> messages.put(pair.key, pair.value));
     }
 
     public String msg(String key, String def) {
-        return messages.computeIfAbsent(key, stringKey -> {
-            messages.put(key, def);
+        return Color.translate(messages.computeIfAbsent(key, stringKey -> {
+            messages.put(stringKey, def);
+            save();
             return def;
-        });
+        }));
     }
 }
