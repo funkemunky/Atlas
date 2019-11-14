@@ -5,6 +5,7 @@ import cc.funkemunky.api.utils.Color;
 import cc.funkemunky.api.utils.MathUtils;
 import cc.funkemunky.api.utils.MiscUtils;
 import cc.funkemunky.api.utils.messages.JsonMessage;
+import cc.funkemunky.api.utils.messages.modifiers.HoverModifier;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.command.Command;
@@ -164,8 +165,8 @@ public abstract class FunkeCommand
 
                         String hoverText = Color.translate((argument.getPermission() != null && argument.getPermission().length > 0 ? commandMessages.getTitleColor() + "Permissions: " + commandMessages.getValueColor() + " " + Arrays.toString(argument.getPermission()) : commandMessages.getTitleColor() + "Permission: " + commandMessages.getValueColor() + "none")
                                 + "\n" + commandMessages.getTitleColor() +  "Aliases: " + commandMessages.getValueColor() + aliasesFormatted);
-                        message.addText(commandMessages.getPrimaryColor()+ "/" + label.toLowerCase() + commandMessages.getValueColor() + " " + argument.getDisplay() + commandMessages.getPrimaryColor() + " to " + argument.getDescription()).addHoverText(hoverText);
-                        message.sendToPlayer((Player) sender);
+                        message.addMessage(commandMessages.getPrimaryColor()+ "/" + label.toLowerCase() + commandMessages.getValueColor() + " " + argument.getDisplay() + commandMessages.getPrimaryColor() + " to " + argument.getDescription(), new HoverModifier(hoverText));
+                        message.sendMessage((Player) sender);
                     }
                 } else {
                     for (int i = (page - 1) * 6; i < Math.min(arguments.size(), page * 6); i++) {
