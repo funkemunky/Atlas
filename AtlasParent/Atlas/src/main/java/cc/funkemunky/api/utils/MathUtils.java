@@ -1,5 +1,6 @@
 package cc.funkemunky.api.utils;
 
+import cc.funkemunky.api.tinyprotocol.api.ProtocolVersion;
 import org.bukkit.Location;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -43,14 +44,17 @@ public class MathUtils {
         return box.getMinimum().midpoint(box.getMaximum());
     }
 
-    //Returns -1 if fails.
-    public static <T extends Number> T tryParse(String string) {
-        try {
-            return (T)(Number)Double.parseDouble(string);
-        } catch(NumberFormatException e) {
+    public static int tryParse(String string) {
+        Object object = ProtocolVersion.getGameVersion().isAbove(ProtocolVersion.V1_7_10)
+                ? ReflectionsUtil.getMethodValue(
+                ReflectionsUtil.getMethod(ReflectionsUtil.getClass("com.google.common.primitives.Ints"), "tryParse", String.class), ReflectionsUtil.getClass("com.google.common.primitives.Ints"), string)
+                : ReflectionsUtil.getMethodValue(ReflectionsUtil.getMethod(ReflectionsUtil.getClass("net.minecraft.util.com.google.common.primitives.Ints"), "tryParse", String.class), ReflectionsUtil.getClass("net.minecraft.util.com.google.common.primitives.Ints"), string);
 
+        if (object != null) {
+            return (int) object;
         }
-        return (T)(Number)(-1);
+
+        return -1;
     }
 
     //A lighter version of the Java hypotenuse function.

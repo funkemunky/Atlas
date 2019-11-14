@@ -23,7 +23,6 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.lang.reflect.Field;
 import java.util.*;
-import java.util.function.Supplier;
 
 public class MiscUtils {
 
@@ -58,18 +57,6 @@ public class MiscUtils {
         }
         return total;
     }
-
-    public static String trimEnd(String string) {
-        if(string.length() <= 1) {
-            return string;
-        }
-        return string.substring(0, string.length() - 1);
-    }
-
-    public static <T> T getResult(Supplier<T> consumer) {
-        return consumer.get();
-    }
-
     public static String lineNoStrike() {
         return "-----------------------------------------------------";
     }
