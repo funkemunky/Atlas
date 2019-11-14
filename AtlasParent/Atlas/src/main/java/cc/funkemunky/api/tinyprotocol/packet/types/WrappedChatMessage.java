@@ -14,6 +14,7 @@ public class WrappedChatMessage extends NMSObject {
 
     private static FieldAccessor<String> messageField = fetchField(type, String.class, 0);
     private static FieldAccessor<Object[]> objectsField = fetchField(type, Object[].class, 0);
+    private static Class<?> chatMsgClass = ReflectionsUtil.getClass(type);
 
     public WrappedChatMessage(String chatMessage, Object... object) {
         this.chatMessage = chatMessage;
@@ -25,7 +26,6 @@ public class WrappedChatMessage extends NMSObject {
     }
 
     public void setPacket(String packet, Object... args) {
-        Class<?> chatMsgClass = ReflectionsUtil.getClass(type);
 
         Object o = ReflectionsUtil.newInstance(chatMsgClass, packet, args);
 
