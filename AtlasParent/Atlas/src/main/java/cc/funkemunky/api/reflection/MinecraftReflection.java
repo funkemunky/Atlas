@@ -24,8 +24,10 @@ public class MinecraftReflection {
     public static WrappedClass entity = Reflections.getNMSClass("Entity");
     public static WrappedClass axisAlignedBB = Reflections.getNMSClass("AxisAlignedBB");
     public static WrappedClass entityHuman = Reflections.getNMSClass("EntityHuman");
+    public static WrappedClass entityLiving = Reflections.getNMSClass("EntityLiving");
     public static WrappedClass block = Reflections.getNMSClass("Block");
     public static WrappedClass iBlockData;
+    public static WrappedClass itemClass = Reflections.getNMSClass("Item");
     public static WrappedClass world = Reflections.getNMSClass("World");
     public static WrappedClass worldServer = Reflections.getNMSClass("WorldServer");
     public static WrappedClass playerInventory = Reflections.getNMSClass("PlayerInventory");
@@ -47,6 +49,9 @@ public class MinecraftReflection {
 
     //ItemStack methods and fields
     public static WrappedMethod enumAnimationStack;
+    public static WrappedField activeItemField;
+    public static WrappedMethod getItemMethod = itemStack.getMethod("getItem");
+    public static WrappedMethod getAnimationMethod = itemClass.getMethodByType(enumAnimation.getParent(), 0);
 
     //1.13+ only
     public static WrappedClass voxelShape;
@@ -113,6 +118,33 @@ public class MinecraftReflection {
         Object vanillaEntity = CraftReflection.getEntity(entity);
 
         return fromAABB(entityBoundingBox.get(vanillaEntity));
+    }
+
+    public static <T> T getItemInUse(HumanEntity entity) {
+        Object humanEntity = CraftReflection.getEntityHuman(entity);
+        return activeItemField.get(humanEntity);
+    }
+
+    //Can use either a Bukkit or vanilla object
+    public static <T> T getItemFromStack(Object object) {
+        Object vanillaStack;
+        if(object instanceof ItemStack) {
+            vanillaStack = CraftReflection.getVanillaItemStack((ItemStack)object);
+        } else vanillaStack = object;
+
+        return getItemMethod.invoke(vanillaStack);
+    }
+
+    //Can use either a Bukkit or vanilla object
+    public static <T> T getItemAnimation(Object object) {
+        Object vanillaStack;
+        if(object instanceof ItemStack) {
+            vanillaStack = CraftReflection.getVanillaItemStack((ItemStack)object);
+        } else vanillaStack = object;
+
+        Object item = getItemFromStack(vanillaStack);
+
+        return getAnimationMethod.invoke(item, vanillaStack);
     }
 
     public static List<BoundingBox> getCollidingBoxes(@Nullable Entity entity, World world, BoundingBox box) {
@@ -223,6 +255,12 @@ public class MinecraftReflection {
                     double.class, double.class, double.class);
             voxelShape = Reflections.getNMSClass("VoxelShape");
             getCubesFromVoxelShape = voxelShape.getMethodByType(List.class, 0);
+        }
+
+        if(ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.V1_9)) {
+            activeItemField = entityHuman.getFieldByType(itemStack.getParent(), 0);
+        } else {
+            activeItemField = entityLiving.getFieldByType(itemStack.getParent(), 0);
         }
         try {
             enumAnimationStack = itemStack.getMethodByType(enumAnimation.getParent(), 0);

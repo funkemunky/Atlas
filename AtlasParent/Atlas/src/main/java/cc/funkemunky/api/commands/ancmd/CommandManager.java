@@ -2,10 +2,9 @@ package cc.funkemunky.api.commands.ancmd;
 
 import cc.funkemunky.api.Atlas;
 import cc.funkemunky.api.utils.Color;
+import cc.funkemunky.api.utils.JsonMessage;
 import cc.funkemunky.api.utils.MathUtils;
 import cc.funkemunky.api.utils.MiscUtils;
-import cc.funkemunky.api.utils.messages.JsonMessage;
-import cc.funkemunky.api.utils.messages.modifiers.HoverModifier;
 import lombok.Getter;
 import lombok.val;
 import org.bukkit.command.CommandExecutor;
@@ -238,11 +237,11 @@ public class CommandManager implements CommandExecutor {
                         + " " + Arrays.toString(command.getAnnotation().permission())
                         : scheme.getTitle() + "Permission: " + scheme.getValue() + "none")
                         + "\n" + scheme.getTitle() + "Aliases: " + scheme.getValue() + cmdaliasesFormatted);
-                cmdMessage.addMessage(scheme.getBody() + "/" + scheme.getValue()
+                cmdMessage.addText(scheme.getBody() + "/" + scheme.getValue()
                                 + command.getLabel().toLowerCase()
-                                + scheme.getBody() + " to " + command.getAnnotation().description(),
-                        new HoverModifier(commandText));
-                cmdMessage.sendMessage((Player) sender);
+                                + scheme.getBody() + " to " + command.getAnnotation().description())
+                        .addHoverText(Color.translate(commandText));
+                cmdMessage.sendToPlayer((Player) sender);
                 for (int i = (page - 1) * 6; i < Math.min(page * 6, arguments.size()); i++) {
                     JsonMessage message = new JsonMessage();
 
@@ -266,13 +265,13 @@ public class CommandManager implements CommandExecutor {
                             + " " + Arrays.toString(argument.permission())
                             : scheme.getTitle() + "Permission: " + scheme.getValue() + "none")
                             + "\n" + scheme.getTitle() + "Aliases: " + scheme.getValue() + aliasesFormatted.toString());
-                    message.addMessage(scheme.getBody() + "/" + command.getLabel().toLowerCase()
+                    message.addText(scheme.getBody() + "/" + command.getLabel().toLowerCase()
                                     + scheme.getValue() + " "
                                     + (argument.display().length() > 0
                                     ? argument.display()
-                                    : argument.name()) + scheme.getBody() + " to " + argument.description(),
-                            new HoverModifier(hoverText));
-                    message.sendMessage((Player) sender);
+                                    : argument.name()) + scheme.getBody() + " to " + argument.description())
+                            .addHoverText(Color.translate(hoverText));
+                    message.sendToPlayer((Player) sender);
                 }
             } else {
                 sender.sendMessage(scheme.getBody() + "/" + scheme.getValue() + command.getLabel().toLowerCase()

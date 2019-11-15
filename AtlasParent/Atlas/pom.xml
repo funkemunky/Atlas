@@ -6,7 +6,7 @@
 
     <parent>
         <groupId>cc.funkemunky.utils</groupId>
-        <version>1.7</version>
+        <version>1.6.6</version>
         <artifactId>atlas-parent</artifactId>
     </parent>
 
