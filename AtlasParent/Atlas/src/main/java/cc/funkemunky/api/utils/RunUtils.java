@@ -5,6 +5,12 @@ import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitTask;
 
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
+import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.TimeUnit;
+import java.util.function.Consumer;
+
 /*
    The whole purpose of this class is just to save disk space and make development more efficient
    with the use of lambdas and with less verbose conventions. This does not affect performance.
@@ -57,5 +63,25 @@ public class RunUtils {
 
     public static BukkitTask taskLaterAsync(Runnable runnable, long delay) {
         return taskLaterAsync(runnable, Atlas.getInstance(), delay);
+    }
+
+    public static <T> Future<?> callLater(Future<T> runnable, long delay, Consumer<T> onComplete) {
+        return Atlas.getInstance().getSchedular().schedule(() -> {
+            try {
+                onComplete.accept(runnable.get());
+            } catch (InterruptedException | ExecutionException e) {
+                e.printStackTrace();
+            }
+        }, delay, TimeUnit.MILLISECONDS);
+    }
+
+    public static <T> Future<?> call(Future<T> runnable, Consumer<T> onComplete) {
+        return Atlas.getInstance().getSchedular().submit(() -> {
+            try {
+                onComplete.accept(runnable.get());
+            } catch (InterruptedException | ExecutionException e) {
+                e.printStackTrace();
+            }
+        });
     }
 }
