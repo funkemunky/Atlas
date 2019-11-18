@@ -25,6 +25,15 @@ public class WrappedSuggestion extends GeneralObject {
         if(canBeUsed) wrap(range.getObject(), text);
     }
 
+    public WrappedSuggestion(String string) {
+        super(suggestionClass);
+
+        this.range = new WrappedStringRange(0, string.length());
+        this.text = string;
+
+        if(canBeUsed) wrap(range.getObject(), text);
+    }
+
     public WrappedSuggestion(Object object) {
         super(object, suggestionClass);
 
