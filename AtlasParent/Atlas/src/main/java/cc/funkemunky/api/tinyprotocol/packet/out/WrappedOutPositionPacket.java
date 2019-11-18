@@ -6,7 +6,7 @@ package cc.funkemunky.api.tinyprotocol.packet.out;
 
 import cc.funkemunky.api.tinyprotocol.api.NMSObject;
 import cc.funkemunky.api.tinyprotocol.api.ProtocolVersion;
-import cc.funkemunky.api.tinyprotocol.packet.types.WrappedEnumTeleportFlag;
+import cc.funkemunky.api.tinyprotocol.packet.types.enums.WrappedEnumTeleportFlag;
 import cc.funkemunky.api.tinyprotocol.reflection.FieldAccessor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

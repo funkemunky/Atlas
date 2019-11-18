@@ -54,10 +54,8 @@ public class TinyProtocolHandler {
         return ProtocolVersion.getVersion(instance.getProtocolVersion(player));
     }
 
-    private boolean didPosition = false;
-
     public Object onPacketOutAsync(Player sender, Object packet) {
-        if(!paused && sender != null) {
+        if(!paused && sender != null && packet != null) {
             String name = packet.getClass().getName();
             int index = name.lastIndexOf(".");
             String packetName = name.substring(index + 1);
@@ -72,7 +70,7 @@ public class TinyProtocolHandler {
     }
 
     public Object onPacketInAsync(Player sender, Object packet) {
-        if(!paused && sender != null) {
+        if(!paused && sender != null && packet != null) {
             String name = packet.getClass().getName();
             int index = name.lastIndexOf(".");
             String packetName = name.substring(index + 1).replace("PacketPlayInUseItem", "PacketPlayInBlockPlace")

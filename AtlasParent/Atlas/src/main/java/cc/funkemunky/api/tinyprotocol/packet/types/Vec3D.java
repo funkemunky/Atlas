@@ -34,14 +34,16 @@ public class Vec3D extends NMSObject {
         this.a = var1;
         this.b = var3;
         this.c = var5;
+        
+        setPacket(Type.VEC3D, var1, var3, var5);
     }
 
     public Vec3D(BaseBlockPosition var1) {
-        this((double) var1.getX(), (double) var1.getY(), (double) var1.getZ());
+        this( var1.getX(),  var1.getY(),  var1.getZ());
     }
 
     public Vec3D a() {
-        double var1 = (double) MathHelper.sqrt(this.a * this.a + this.b * this.b + this.c * this.c);
+        double var1 =  MathHelper.sqrt(this.a * this.a + this.b * this.b + this.c * this.c);
         return var1 < 1.0E-4D ? new Vec3D(0.0D, 0.0D, 0.0D) : new Vec3D(this.a / var1, this.b / var1, this.c / var1);
     }
 
@@ -73,7 +75,7 @@ public class Vec3D extends NMSObject {
     }
 
     public double b() {
-        return (double) MathHelper.sqrt(this.a * this.a + this.b * this.b + this.c * this.c);
+        return  MathHelper.sqrt(this.a * this.a + this.b * this.b + this.c * this.c);
     }
 
     public Vec3D a(Vec3D var1, double var2) {
@@ -120,17 +122,17 @@ public class Vec3D extends NMSObject {
         float var2 = MathHelper.cos(var1);
         float var3 = MathHelper.sin(var1);
         double var4 = this.a;
-        double var6 = this.b * (double) var2 + this.c * (double) var3;
-        double var8 = this.c * (double) var2 - this.b * (double) var3;
+        double var6 = this.b *  var2 + this.c *  var3;
+        double var8 = this.c *  var2 - this.b *  var3;
         return new Vec3D(var4, var6, var8);
     }
 
     public Vec3D b(float var1) {
         float var2 = MathHelper.cos(var1);
         float var3 = MathHelper.sin(var1);
-        double var4 = this.a * (double) var2 + this.c * (double) var3;
+        double var4 = this.a *  var2 + this.c *  var3;
         double var6 = this.b;
-        double var8 = this.c * (double) var2 - this.a * (double) var3;
+        double var8 = this.c *  var2 - this.a *  var3;
         return new Vec3D(var4, var6, var8);
     }
 }

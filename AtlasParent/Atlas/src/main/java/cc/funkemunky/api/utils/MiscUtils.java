@@ -3,7 +3,7 @@ package cc.funkemunky.api.utils;
 import cc.funkemunky.api.Atlas;
 import cc.funkemunky.api.tinyprotocol.api.TinyProtocolHandler;
 import cc.funkemunky.api.tinyprotocol.packet.out.WrappedPacketPlayOutWorldParticle;
-import cc.funkemunky.api.tinyprotocol.packet.types.WrappedEnumParticle;
+import cc.funkemunky.api.tinyprotocol.packet.types.enums.WrappedEnumParticle;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.command.PluginCommand;

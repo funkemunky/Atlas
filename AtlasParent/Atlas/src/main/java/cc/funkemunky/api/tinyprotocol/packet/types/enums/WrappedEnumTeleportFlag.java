@@ -1,4 +1,4 @@
-package cc.funkemunky.api.tinyprotocol.packet.types;
+package cc.funkemunky.api.tinyprotocol.packet.types.enums;
 
 import cc.funkemunky.api.reflections.Reflections;
 import net.minecraft.server.v1_8_R3.PacketPlayOutPosition;

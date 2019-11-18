@@ -1,4 +1,4 @@
-package cc.funkemunky.api.tinyprotocol.packet.types;
+package cc.funkemunky.api.tinyprotocol.packet.types.enums;
 
 import cc.funkemunky.api.reflections.Reflections;
 

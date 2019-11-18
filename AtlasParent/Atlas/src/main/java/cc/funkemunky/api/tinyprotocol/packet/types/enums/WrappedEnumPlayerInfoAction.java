@@ -1,4 +1,4 @@
-package cc.funkemunky.api.tinyprotocol.packet.types;
+package cc.funkemunky.api.tinyprotocol.packet.types.enums;
 
 public enum WrappedEnumPlayerInfoAction {
     ADD_PLAYER("addPlayer"),

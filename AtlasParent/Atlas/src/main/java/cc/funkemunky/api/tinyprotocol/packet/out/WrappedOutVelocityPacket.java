@@ -6,6 +6,7 @@ package cc.funkemunky.api.tinyprotocol.packet.out;
 
 import cc.funkemunky.api.tinyprotocol.api.NMSObject;
 import cc.funkemunky.api.tinyprotocol.api.ProtocolVersion;
+import cc.funkemunky.api.tinyprotocol.packet.types.Vec3D;
 import cc.funkemunky.api.tinyprotocol.reflection.FieldAccessor;
 import lombok.Getter;
 import org.bukkit.entity.Player;
@@ -23,6 +24,14 @@ public class WrappedOutVelocityPacket extends NMSObject {
     // Decoded data
     private int id;
     private double x, y, z;
+
+    //Test to see if this works.
+
+    public WrappedOutVelocityPacket(int entityId, double x, double y, double z) {
+        if(ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.V1_14)) {
+            setPacket(packet, entityId, x, y, z);
+        } else setPacket(packet, entityId, new Vec3D(x, y, z).getObject()); //changed to Vec3D for some reason...
+    }
 
     public WrappedOutVelocityPacket(Object packet, Player player) {
         super(packet, player);

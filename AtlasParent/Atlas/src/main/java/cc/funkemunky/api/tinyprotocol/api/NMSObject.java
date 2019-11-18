@@ -154,14 +154,6 @@ public abstract class NMSObject {
         this.object = construct(packet, args);
     }
 
-    public void setPacketArg(String packet, Object arg) {
-        this.object = construct(packet, arg);
-    }
-
-    public void setPacket(String packet, Object arg) {
-        setPacketArg(packet, arg);
-    }
-
     public <T> T fetch(FieldAccessor<T> field) {
         return field.get(object);
     }

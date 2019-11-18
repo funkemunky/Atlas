@@ -3,7 +3,7 @@ package cc.funkemunky.api.tinyprotocol.packet.out;
 import cc.funkemunky.api.tinyprotocol.api.NMSObject;
 import cc.funkemunky.api.tinyprotocol.api.Packet;
 import cc.funkemunky.api.tinyprotocol.api.ProtocolVersion;
-import cc.funkemunky.api.tinyprotocol.packet.types.WrappedEnumParticle;
+import cc.funkemunky.api.tinyprotocol.packet.types.enums.WrappedEnumParticle;
 import lombok.Getter;
 
 @Getter

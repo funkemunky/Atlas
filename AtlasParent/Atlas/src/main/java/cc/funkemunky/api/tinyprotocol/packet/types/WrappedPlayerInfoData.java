@@ -2,6 +2,7 @@ package cc.funkemunky.api.tinyprotocol.packet.types;
 
 import cc.funkemunky.api.tinyprotocol.api.NMSObject;
 import cc.funkemunky.api.tinyprotocol.api.ProtocolVersion;
+import cc.funkemunky.api.tinyprotocol.packet.types.enums.WrappedEnumGameMode;
 import cc.funkemunky.api.tinyprotocol.reflection.FieldAccessor;
 import lombok.NoArgsConstructor;
 import org.bukkit.entity.Player;
