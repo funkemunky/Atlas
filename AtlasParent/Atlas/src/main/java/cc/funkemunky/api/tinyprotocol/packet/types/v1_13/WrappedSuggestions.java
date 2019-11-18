@@ -26,14 +26,16 @@ public class WrappedSuggestions extends GeneralObject {
     public List<WrappedSuggestion> suggestions;
     public WrappedStringRange stringRange;
 
-    public WrappedSuggestions(WrappedStringRange range, Suggestion... suggestions) {
+    public WrappedSuggestions(WrappedStringRange range, WrappedSuggestion... suggestions) {
         this(range, Arrays.asList(suggestions));
     }
 
-    public WrappedSuggestions(WrappedStringRange range, List<Suggestion> suggestions) {
+    public WrappedSuggestions(WrappedStringRange range, List<WrappedSuggestion> suggestions) {
         super(suggestions);
 
-        if(canBeUsed) wrap(range, suggestions);
+        if(canBeUsed) wrap(range, suggestions.stream()
+                .map(WrappedSuggestion::getObject)
+                .collect(Collectors.toList()));
     }
 
     public WrappedSuggestions(Object object) {

@@ -24,9 +24,9 @@ public class Interval<T> extends LinkedList<T> {
                 return streamNumber().mapToLong(val -> (long) val).average().orElse(0.0);
             } else if(getFirst() instanceof Integer) {
                 return streamNumber().mapToInt(val -> (int) val).average().orElse(0.0);
-            } else {
-                return streamNumber().mapToDouble(val -> (double)val).average().orElse(0.0);
-            }
+            } else if(getFirst() instanceof Float) {
+               return streamNumber().mapToDouble(val -> (float)val).average().orElse(0.0);
+            } else return streamNumber().mapToDouble(val -> (double)val).average().orElse(0.0);
         }
         return 0;
     }
@@ -47,12 +47,16 @@ public class Interval<T> extends LinkedList<T> {
         double average = average();
         if(size() > 0) {
             if(getFirst() instanceof Long) {
-                return Math.sqrt(streamNumber().mapToLong(val -> (long)Math.pow((long)val - average, 2)).average().orElse(0.0));
+                return Math.sqrt(streamNumber()
+                        .mapToLong(val -> (long)Math.pow((long)val - average, 2)).average().orElse(0.0));
             } else if(getFirst() instanceof Integer) {
-                return Math.sqrt(streamNumber().mapToInt(val -> (int) Math.pow((int)val - average, 2)).average().orElse(0.0));
-            } else {
-                return Math.sqrt(streamNumber().mapToDouble(val -> Math.pow((double)val - average, 2)).average().orElse(0));
-            }
+                return Math.sqrt(streamNumber()
+                        .mapToInt(val -> (int) Math.pow((int)val - average, 2)).average().orElse(0.0));
+            } else if(getFirst() instanceof Float) {
+                return Math.sqrt(streamNumber()
+                        .mapToDouble(val -> Math.pow((float)val - average, 2)).average().orElse(0));
+            } else return Math.sqrt(streamNumber()
+                    .mapToDouble(val -> Math.pow((double)val - average, 2)).average().orElse(0));
         }
         return 0;
     }

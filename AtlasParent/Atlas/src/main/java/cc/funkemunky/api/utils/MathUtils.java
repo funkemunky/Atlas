@@ -8,7 +8,7 @@ import org.bukkit.util.Vector;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
-import java.util.Arrays;
+import java.util.*;
 
 public class MathUtils {
 
@@ -205,6 +205,24 @@ public class MathUtils {
         BigDecimal bd = new BigDecimal(value);
         bd = bd.setScale(places, RoundingMode.HALF_UP);
         return bd.doubleValue();
+    }
+
+    //May not be the best on performance. Let me know if you have a better way to calculate mode.
+    public static <T extends Number> T getMode(Collection<T> collect) {
+        Map<T, Integer> repeated = new HashMap<>();
+
+        //Sorting each value by how to repeat into a map.
+        collect.forEach(val -> {
+            int number = repeated.getOrDefault(val, 0);
+
+            repeated.put(val, number + 1);
+        });
+
+        //Calculating the largest value to the key, which would be the mode.
+        return (T) repeated.keySet().stream()
+                .map(key -> new Tuple<>(key, repeated.get(key))) //We map it into a Tuple for easier sorting.
+                .max(Comparator.comparing(tup -> tup.two, Comparator.naturalOrder()))
+                .orElseThrow(NullPointerException::new).one;
     }
 
     public static double round(double value, int places, RoundingMode mode) {

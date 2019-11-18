@@ -49,13 +49,18 @@ public class WrappedOutTabComplete extends NMSObject {
     }
 
     //For 1.13 and above
-    public WrappedOutTabComplete(int id, String input, String... result) {
+    public WrappedOutTabComplete(int id, String input, int startChar, String... result) {
         if(ProtocolVersion.getGameVersion().isOrAbove(ProtocolVersion.V1_13)) {
-            List<WrappedSuggestion> suggestionList = Arrays.stream(result)
-                    .map(WrappedSuggestion::new)
-                    .collect(Collectors.toList());
+            WrappedSuggestions.SuggestionsBuilder builder = new WrappedSuggestions.SuggestionsBuilder(input, startChar);
 
-            WrappedSuggestions suggestions = new WrappedSuggestions()
+            for (String s : result) {
+                builder = builder.suggest(s);
+            }
+
+            setPacket(packet,
+                    id,
+                    builder.build()
+                            .getObject());
         }
     }
 
@@ -66,10 +71,12 @@ public class WrappedOutTabComplete extends NMSObject {
             Collections.addAll(suggestions, suggestionsAccessor.get(getObject()));
         } else {
             //Getting suggestions
-            WrappedSuggestions wrappedSuggestions = new WrappedSuggestions(suggestionsAccessor.get(getObject()));
-            wrappedSuggestions.suggestions.forEach(suggest -> suggestions.add(suggest.text));
+            WrappedSuggestions suggestionsObject = new WrappedSuggestions(suggestionsAccessor.get(getObject()));
 
-            //Getting id
+            suggestionsObject.suggestions.stream()
+                    .map(suggestion -> suggestion.text)
+                    .forEachOrdered(suggestions::add);
+
             id = idAccessor.get(getObject());
         }
     }
