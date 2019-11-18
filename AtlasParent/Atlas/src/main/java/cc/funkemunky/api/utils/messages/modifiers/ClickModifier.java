@@ -6,7 +6,6 @@ import cc.funkemunky.api.utils.messages.ModifierType;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
-@RequiredArgsConstructor
 @Getter
 public class ClickModifier extends Modifier {
 
