@@ -79,6 +79,10 @@ public class EventManager {
                         lm.method.invoke(lm.listener, cancellable);
                     }
                 }
+            } else {
+                for(ListenerMethod lm : methods) {
+                    lm.method.invoke(lm.listener, event);
+                }
             }
             Atlas.getInstance().getProfile().stop("event:" + event.getClass().getSimpleName());
         }

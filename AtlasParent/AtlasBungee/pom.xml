@@ -81,7 +81,7 @@
     <repositories>
         <repository>
             <id>funkemunky-releases</id>
-            <url>http://funkemunky.cc:8080/nexus/content/repositories/releases/</url>
+            <url>http://nexus.funkemunky.cc/content/repositories/releases/</url>
         </repository>
     </repositories>
 

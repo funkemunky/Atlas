@@ -1,10 +1,13 @@
 package cc.funkemunky.api.utils.objects;
 
+import cc.funkemunky.api.utils.MathUtils;
+
 import java.util.Collections;
 import java.util.LinkedList;
+import java.util.stream.DoubleStream;
 import java.util.stream.Stream;
 
-public class Interval<T> extends LinkedList<T> {
+public class Interval extends LinkedList<Double> {
 
     private long x, max;
 
@@ -19,16 +22,7 @@ public class Interval<T> extends LinkedList<T> {
     }
 
     public double average() {
-        if(size() > 0) {
-            if(getFirst() instanceof Long) {
-                return streamNumber().mapToLong(val -> (long) val).average().orElse(0.0);
-            } else if(getFirst() instanceof Integer) {
-                return streamNumber().mapToInt(val -> (int) val).average().orElse(0.0);
-            } else if(getFirst() instanceof Float) {
-               return streamNumber().mapToDouble(val -> (float)val).average().orElse(0.0);
-            } else return streamNumber().mapToDouble(val -> (double)val).average().orElse(0.0);
-        }
-        return 0;
+        return getDoubleStream().summaryStatistics().getAverage();
     }
 
     public double frequency(double freq) {
@@ -36,62 +30,31 @@ public class Interval<T> extends LinkedList<T> {
     }
 
     public long distinctCount() {
-        return streamNumber().distinct().count();
+        return getDoubleStream().distinct().count();
     }
 
-    public Stream<Number> distinct() {
-        return streamNumber().distinct();
+    public Stream<Double> distinct() {
+        return stream().distinct();
     }
 
     public double std() {
-        double average = average();
-        if(size() > 0) {
-            if(getFirst() instanceof Long) {
-                return Math.sqrt(streamNumber()
-                        .mapToLong(val -> (long)Math.pow((long)val - average, 2)).average().orElse(0.0));
-            } else if(getFirst() instanceof Integer) {
-                return Math.sqrt(streamNumber()
-                        .mapToInt(val -> (int) Math.pow((int)val - average, 2)).average().orElse(0.0));
-            } else if(getFirst() instanceof Float) {
-                return Math.sqrt(streamNumber()
-                        .mapToDouble(val -> Math.pow((float)val - average, 2)).average().orElse(0));
-            } else return Math.sqrt(streamNumber()
-                    .mapToDouble(val -> Math.pow((double)val - average, 2)).average().orElse(0));
-        }
-        return 0;
+        return MathUtils.stdev(this);
     }
 
     public double max() {
-        if(size() > 0) {
-            if(getFirst() instanceof Long) {
-                return streamNumber().mapToLong(val -> (long) val).max().orElse(0);
-            } else if(getFirst() instanceof Integer) {
-                return streamNumber().mapToInt(val -> (int) val).max().orElse(0);
-            } else {
-                return streamNumber().mapToDouble(val -> (double)val).max().orElse(0);
-            }
-        }
-        return 0;
+        return getDoubleStream().summaryStatistics().getMax();
     }
 
     public double min() {
-        if(size() > 0) {
-            if(getFirst() instanceof Long) {
-                return streamNumber().mapToLong(val -> (long) val).min().orElse(0);
-            } else if(getFirst() instanceof Integer) {
-                return streamNumber().mapToInt(val -> (int) val).min().orElse(0);
-            } else {
-                return streamNumber().mapToDouble(val -> (double)val).min().orElse(0);
-            }
-        }
-        return 0;
+        return getDoubleStream().summaryStatistics().getMin();
     }
 
-    public boolean add(T x) {
+    public boolean add(double x) {
         if (size() > max) {
-            remove(size() - 1);
+            removeLast();
         }
-        return super.add(x);
+        addFirst(x);
+        return true;
     }
 
     public void clearIfMax() {
@@ -99,8 +62,8 @@ public class Interval<T> extends LinkedList<T> {
             this.clear();
         }
     }
-
-    public Stream<Number> streamNumber() {
-        return (Stream<Number>)super.stream();
+    
+    public DoubleStream getDoubleStream() { 
+        return stream().mapToDouble(val -> val);
     }
 }

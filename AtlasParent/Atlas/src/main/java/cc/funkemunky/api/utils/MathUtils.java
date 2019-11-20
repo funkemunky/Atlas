@@ -156,6 +156,26 @@ public class MathUtils {
         return Math.sqrt(deltaX * deltaX + deltaZ * deltaZ);
     }
 
+    public static double stdev(Collection<Double> list) {
+        double sum = 0.0;
+        double mean;
+        double num = 0.0;
+        double numi;
+        double deno = 0.0;
+
+        for (double i : list) {
+            sum += i;
+        }
+        mean = sum / list.size();
+
+        for (double i : list) {
+            numi = Math.pow(i - mean, 2);
+            num += numi;
+        }
+
+        return Math.sqrt(num / list.size());
+    }
+
     public static int millisToTicks(long millis) {
         return (int) Math.ceil(millis / 50D);
     }
