@@ -16,12 +16,13 @@ import java.lang.reflect.InvocationTargetException;
 @Setter
 public class WrappedWatchableObject extends NMSObject {
     private static String type = Type.WATCHABLE_OBJECT;
-    private FieldAccessor<Integer> objectTypeField;
     private FieldAccessor<Integer> dataValueIdField;
+    private FieldAccessor<Object> dataWatcherObjectField;
+    private FieldAccessor<Integer> dataWatcherObjectIdField;
     private FieldAccessor<Object> watchedObjectField;
     private FieldAccessor<Boolean> watchedField;
 
-    private int objectType, dataValueId;
+    private int dataValueId;
     private Object watchedObject;
     private boolean watched;
 
@@ -31,12 +32,19 @@ public class WrappedWatchableObject extends NMSObject {
 
     @Override
     public void process(Player player, ProtocolVersion version) {
-        objectTypeField = fetchField(type, int.class, 0);
-        dataValueIdField = fetchField(type, int.class, 1);
-        watchedObjectField = fetchField(type, Object.class, 0);
+        if(ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.V1_9)) {
+            dataValueIdField = fetchField(type, int.class, 1);
+            dataValueId = fetch(dataValueIdField);
+            watchedObjectField = fetchField(type, Object.class, 0);
+        } else {
+            dataWatcherObjectField = fetchField(type, Object.class, 0);
+            watchedObjectField = fetchField(type, Object.class, 1);
+            dataWatcherObjectIdField = fetchField("DataWatcherObject", int.class, 0);
+
+            Object dwo = fetch(dataWatcherObjectField);
+            dataValueId = dataWatcherObjectIdField.get(dwo);
+        }
         watchedField = fetchField(type, boolean.class, 0);
-        objectType = fetch(objectTypeField);
-        dataValueId = fetch(dataValueIdField);
         watchedObject = fetch(watchedObjectField);
         watched = fetch(watchedField);
     }

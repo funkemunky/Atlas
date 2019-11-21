@@ -163,7 +163,11 @@ public abstract class NMSObject {
     }
 
     public static class Type {
-        public static final String WATCHABLE_OBJECT = (ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.V1_8_5)) ? "WatchableObject" : "DataWatcher$WatchableObject";
+        public static final String WATCHABLE_OBJECT = (ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.V1_8_5))
+                ? "WatchableObject" :
+                (ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.V1_9)
+                ? "DataWatcher$WatchableObject"
+                : "DataWatcher$Item");
         public static final String BASEBLOCKPOSITION = "BaseBlockPosition";
         public static final String BLOCKPOSITION = "BlockPosition";
         public static final String ITEMSTACK = Reflection.NMS_PREFIX + ".ItemStack";

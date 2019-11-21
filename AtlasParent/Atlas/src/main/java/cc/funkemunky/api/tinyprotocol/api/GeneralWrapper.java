@@ -4,8 +4,8 @@ import cc.funkemunky.api.reflections.types.WrappedClass;
 import cc.funkemunky.api.reflections.types.WrappedConstructor;
 import cc.funkemunky.api.reflections.types.WrappedField;
 import cc.funkemunky.api.reflections.types.WrappedMethod;
-import cc.funkemunky.api.utils.Tuple;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import lombok.val;
 import org.bukkit.entity.Player;
 
@@ -13,12 +13,13 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-/* This class can be used for packets that do not have dedicated wrappers */
+/* This class can be used for packets that do not have dedicated wrappers or change constantly between versions. */
 @Getter
+@RequiredArgsConstructor
 public class GeneralWrapper {
     private List<GeneralField> fields = new ArrayList<>();
     private List<WrappedMethod> methods;
-    private WrappedClass objectClass;
+    private final WrappedClass objectClass;
 
     public GeneralWrapper(Object object) {
         objectClass = new WrappedClass(object.getClass());
@@ -32,4 +33,6 @@ public class GeneralWrapper {
 
         return objectClass.getConstructor(classes).newInstance(args);
     }
+
+
 }

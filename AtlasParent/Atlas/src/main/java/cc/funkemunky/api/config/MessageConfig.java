@@ -2,7 +2,6 @@ package cc.funkemunky.api.config;
 
 import cc.funkemunky.api.utils.Color;
 import cc.funkemunky.api.utils.FunkeFile;
-import cc.funkemunky.api.utils.MiscUtils;
 import cc.funkemunky.carbon.utils.Pair;
 
 import java.util.HashMap;
