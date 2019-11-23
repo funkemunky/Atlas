@@ -5,6 +5,7 @@ import cc.funkemunky.api.commands.FunkeArgument;
 import cc.funkemunky.api.commands.FunkeCommand;
 import cc.funkemunky.api.profiling.ResultsType;
 import cc.funkemunky.api.utils.Color;
+import cc.funkemunky.api.utils.MiscUtils;
 import cc.funkemunky.api.utils.Pastebin;
 import cc.funkemunky.api.utils.Tuple;
 import lombok.val;

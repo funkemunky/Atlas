@@ -3,6 +3,7 @@ package cc.funkemunky.api.handlers;
 import cc.funkemunky.api.Atlas;
 import cc.funkemunky.api.utils.AutoLoad;
 import cc.funkemunky.api.utils.Init;
+import cc.funkemunky.api.utils.MiscUtils;
 import lombok.Getter;
 import lombok.val;
 import org.bukkit.event.EventHandler;

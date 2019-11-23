@@ -3,21 +3,20 @@ package cc.funkemunky.api.utils.objects;
 import cc.funkemunky.api.utils.MathUtils;
 
 import java.util.Collections;
+import java.util.DoubleSummaryStatistics;
 import java.util.LinkedList;
 import java.util.stream.DoubleStream;
 import java.util.stream.Stream;
 
 public class Interval extends LinkedList<Double> {
 
-    private long x, max;
+    private long max;
 
-    public Interval(long x, long max) {
-        this.x = x;
+    public Interval(long max) {
         this.max = max;
     }
 
     public Interval(Interval in) {
-        this.x = in.x;
         this.max = in.max;
     }
 
@@ -25,6 +24,9 @@ public class Interval extends LinkedList<Double> {
         return getDoubleStream().summaryStatistics().getAverage();
     }
 
+    public DoubleSummaryStatistics getSummary() {
+        return getDoubleStream().summaryStatistics();
+    }
     public double frequency(double freq) {
         return Collections.frequency(this, freq);
     }
