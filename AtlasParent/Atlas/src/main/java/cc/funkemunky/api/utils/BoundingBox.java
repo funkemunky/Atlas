@@ -4,12 +4,14 @@ import cc.funkemunky.api.Atlas;
 import cc.funkemunky.api.reflection.MinecraftReflection;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class BoundingBox {
 
@@ -100,6 +102,7 @@ public class BoundingBox {
         return (vector.getX() > this.minX && vector.getX() < this.maxX) && ((vector.getY() > this.minY && vector.getY() < this.maxY) && (vector.getZ() > this.minZ && vector.getZ() < this.maxZ));
     }
 
+    @Deprecated
     public List<BoundingBox> getCollidingBlockBoxes(Player player) {
         List<BoundingBox> toReturn = new ArrayList<>();
         int minX = MathUtils.floor(this.minX);
@@ -135,11 +138,10 @@ public class BoundingBox {
         return new Vector(maxX, maxY, maxZ);
     }
 
-    public List<Block> getCollidingBlocks(Player player) {
-        List<Block> toReturn = new ArrayList<>();
-
-        getCollidingBlockBoxes(player).forEach(bb -> bb.getMinimum().toLocation(player.getWorld()).getBlock());
-        return toReturn;
+    public List<Tuple<Block, BoundingBox>> getCollidingBlocks(World world) {
+        return Atlas.getInstance().getBlockBoxManager().getBlockBox().getCollidingBoxes(world, this).stream()
+                .map(bb -> new Tuple<>(bb.getMinimum().toLocation(world).getBlock(), bb))
+                .collect(Collectors.toList());
     }
 
     public List<Block> getAllBlocks(Player player) {
@@ -160,7 +162,7 @@ public class BoundingBox {
     }
 
     public boolean inBlock(Player player) {
-        return getCollidingBlocks(player).size() > 0;
+        return getCollidingBlocks(player.getWorld()).size() > 0;
     }
 
     public boolean intersectsWithBox(Object other) {

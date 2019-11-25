@@ -61,6 +61,10 @@ public enum ProtocolVersion {
         return this.getVersion() < version.getVersion();
     }
 
+    public boolean isOrBelow(ProtocolVersion version) {
+        return this.getVersion() <= version.getVersion();
+    }
+
     public boolean isAbove(ProtocolVersion version) {
         return this.getVersion() > version.getVersion();
     }
