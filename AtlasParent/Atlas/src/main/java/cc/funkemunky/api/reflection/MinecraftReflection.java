@@ -153,7 +153,7 @@ public class MinecraftReflection {
         if(ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.V1_13)) {
             List<Object> aabbs = ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.V1_12)
                     ? getCubes.invoke(vWorld, box.toAxisAlignedBB())
-                    : getCubes.invoke(vWorld, box.toAxisAlignedBB(), false, entity != null ? CraftReflection.getEntity(entity) : null);
+                    : getCubes.invoke(vWorld, entity != null ? CraftReflection.getEntity(entity) : null, box.toAxisAlignedBB());
 
             boxes = aabbs
                     .stream()
@@ -248,7 +248,7 @@ public class MinecraftReflection {
                         axisAlignedBB.getParent(), List.class, entity.getParent());
             }
         } else if(ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.V1_13)) {
-            getCubes = world.getMethod("a", entity.getParent(), axisAlignedBB.getParent(), boolean.class, List.class);
+            getCubes = world.getMethod("getCubes", entity.getParent(), axisAlignedBB.getParent());
             addCBoxes = block.getMethod("a", world.getParent(), blockPos.getParent(), iBlockData.getParent(),
                     axisAlignedBB.getParent(), List.class, entity.getParent());
         } else {
