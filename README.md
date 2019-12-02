@@ -202,4 +202,7 @@ MiscUtils.getEntityBoundingBox(e.getPlayer());
 ## Credits
 
 ### TinyProtocol and Additions
-Credits to @dmulloy2 and @aandk for the TinyProtocol and Reflection utilities. Thanks to @DeprecatedLuke for his useful additions to TinyProtocol and for few packet wrappers that worked right out of the gate.
+Credits to [@dmulloy2](https://github.com/dmulloy2) and [@aandk](https://github.com/aandk) for the TinyProtocol and Reflection utilities. Thanks to [@DeprecatedLuke](https://github.com/DeprecatedLuke) for his useful additions to TinyProtocol and for few packet wrappers that worked right out of the gate.
+
+### Code Profile System
+Credits to [@DeprecatedLuke](https://github.com/DeprecatedLuke) for the BaseProfiler and Profiler classes.
