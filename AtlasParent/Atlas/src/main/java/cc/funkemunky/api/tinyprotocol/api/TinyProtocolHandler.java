@@ -1,6 +1,7 @@
 package cc.funkemunky.api.tinyprotocol.api;
 
 import cc.funkemunky.api.Atlas;
+import cc.funkemunky.api.bungee.BungeeAPI;
 import cc.funkemunky.api.events.impl.PacketReceiveEvent;
 import cc.funkemunky.api.events.impl.PacketSendEvent;
 import cc.funkemunky.api.tinyprotocol.api.packets.AbstractTinyProtocol;
@@ -9,11 +10,17 @@ import cc.funkemunky.api.tinyprotocol.api.packets.channelhandler.TinyProtocol1_8
 import lombok.Getter;
 import org.bukkit.entity.Player;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
+
 public class TinyProtocolHandler {
     @Getter
     private static AbstractTinyProtocol instance;
 
     public boolean paused = false;
+
+    public static Map<UUID, Integer> bungeeVersionCache = new HashMap<>();
 
     public TinyProtocolHandler() {
         // 1.8+ and 1.7 NMS have different class paths for their libraries used. This is why we have to separate the two.
@@ -22,7 +29,8 @@ public class TinyProtocolHandler {
         TinyProtocolHandler self = this;
         // 1.8+ and 1.7 NMS have different class paths for their libraries used. This is why we have to separate the two.
         // These feed the packets asynchronously, before Minecraft processes it, into our own methods to process and be used as an API.
-        instance = ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.V1_8) ? new TinyProtocol1_7(Atlas.getInstance()) {
+        instance = ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.V1_8) ?
+                new TinyProtocol1_7(Atlas.getInstance()) {
             @Override
             public Object onPacketOutAsync(Player receiver, Object packet) {
                 return self.onPacketOutAsync(receiver, packet);
@@ -51,6 +59,16 @@ public class TinyProtocolHandler {
     }
 
     public static ProtocolVersion getProtocolVersion(Player player) {
+        if(BungeeAPI.bungee) {
+            int version = bungeeVersionCache
+                    .computeIfAbsent(player.getUniqueId(), key -> {
+                        int bv = BungeeAPI.getPlayerVersion(player);
+                        bungeeVersionCache.put(key, bv);
+                        return bv;
+                    });
+
+            if(version != -1) return ProtocolVersion.getVersion(version);
+        }
         return ProtocolVersion.getVersion(instance.getProtocolVersion(player));
     }
 
@@ -73,14 +91,13 @@ public class TinyProtocolHandler {
         if(!paused && sender != null && packet != null) {
             String name = packet.getClass().getName();
             int index = name.lastIndexOf(".");
-            String packetName = name.substring(index + 1).replace("PacketPlayInUseItem", "PacketPlayInBlockPlace")
+            String packetName = name.substring(index + 1)
+                    .replace("PacketPlayInUseItem", "PacketPlayInBlockPlace")
                     .replace(Packet.Client.LEGACY_LOOK, Packet.Client.LOOK)
                     .replace(Packet.Client.LEGACY_POSITION, Packet.Client.POSITION)
                     .replace(Packet.Client.LEGACY_POSITION_LOOK, Packet.Client.POSITION_LOOK);
 
             PacketReceiveEvent event = new PacketReceiveEvent(sender, packet, packetName);
-
-            //EventManager.callEvent(new cc.funkemunky.api.event.custom.PacketReceiveEvent(sender, packet, packetName));
 
             Atlas.getInstance().getEventManager().callEvent(event);
 

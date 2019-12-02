@@ -7,6 +7,7 @@ import net.md_5.bungee.BungeeCord;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.event.PluginMessageEvent;
 import net.md_5.bungee.api.event.PostLoginEvent;
+import net.md_5.bungee.api.event.PreLoginEvent;
 import net.md_5.bungee.api.plugin.Listener;
 import net.md_5.bungee.event.EventHandler;
 
@@ -48,9 +49,9 @@ public class JoinListener implements Listener {
                 data.writeUTF("mods");
                 data.writeObject(modData.getModsMap());
 
-                BungeeCord.getInstance().getServers().values().forEach(server -> {
-                    server.sendData("atlasIn", byteStream.toByteArray());
-                });
+                BungeeCord.getInstance().getServers()
+                        .values()
+                        .forEach(server -> server.sendData("atlasIn", byteStream.toByteArray()));
             } catch (IOException e) {
                 e.printStackTrace();
             }

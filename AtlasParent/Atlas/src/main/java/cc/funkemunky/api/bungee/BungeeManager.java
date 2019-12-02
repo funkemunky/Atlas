@@ -4,6 +4,7 @@ import cc.funkemunky.api.Atlas;
 import cc.funkemunky.api.bungee.events.BungeeReceiveEvent;
 import cc.funkemunky.api.bungee.objects.BungeePlayer;
 import cc.funkemunky.api.handlers.ForgeHandler;
+import cc.funkemunky.api.utils.Tuple;
 import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -18,15 +19,14 @@ import java.util.UUID;
 public class BungeeManager implements PluginMessageListener {
     private String channelOut = "BungeeCord", channelIn = "BungeeCord";
     private String atlasIn = "atlasIn", atlasOut = "atlasOut";
-    private BungeeAPI bungeeAPI;
     private Map<UUID, BungeePlayer> bungeePlayers = new HashMap<>();
+    private Map<UUID, Tuple<Boolean, Integer>> versionsMap = new HashMap<>();
 
     public BungeeManager() {
         Bukkit.getMessenger().registerOutgoingPluginChannel(Atlas.getInstance(), channelOut);
         Bukkit.getMessenger().registerOutgoingPluginChannel(Atlas.getInstance(), atlasOut);
         Bukkit.getMessenger().registerIncomingPluginChannel(Atlas.getInstance(), channelIn, this);
         Bukkit.getMessenger().registerIncomingPluginChannel(Atlas.getInstance(), atlasIn, this);
-        bungeeAPI = new BungeeAPI();
     }
 
     public void sendData(byte[] data, String out) {
@@ -97,14 +97,16 @@ public class BungeeManager implements PluginMessageListener {
             } catch (IOException | ClassNotFoundException e) {
                 e.printStackTrace();
             }
-        } else if(ForgeHandler.fromBungee && channel.equals("atlasIn")) {
+        } else if(channel.equals("atlasIn")) {
             try {
                 ObjectInputStream input = new ObjectInputStream(stream);
 
-                if(input.readUTF().equals("mods")) {
+                String dataType = input.readUTF();
+                System.out.println(dataType);
+                if(dataType.equals("mods")) {
                     Map<String, String> mods = (Map<String, String>) input.readObject();
                     ForgeHandler.runBungeeModChecker(player, mods);
-                } else if(input.readUTF().equals("sendObjects")) {
+                } else if(dataType.equals("sendObjects")) {
                     String type = input.readUTF();
 
                     byte[] array = new byte[input.readShort()];
@@ -119,6 +121,12 @@ public class BungeeManager implements PluginMessageListener {
                     }
 
                     Atlas.getInstance().getEventManager().callEvent(new BungeeReceiveEvent(objects, type));
+                } else if(dataType.equalsIgnoreCase("version")) {
+                    boolean success = input.readBoolean();
+                    int version = input.readInt();
+                    UUID uuid = (UUID) input.readObject();
+
+                    versionsMap.put(uuid, new Tuple<>(success, version));
                 }
             } catch (IOException | ClassNotFoundException e) {
                 e.printStackTrace();

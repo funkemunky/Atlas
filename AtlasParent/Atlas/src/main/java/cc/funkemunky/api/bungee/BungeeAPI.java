@@ -3,20 +3,30 @@ package cc.funkemunky.api.bungee;
 import cc.funkemunky.api.Atlas;
 import cc.funkemunky.api.bungee.objects.BungeePlayer;
 import cc.funkemunky.api.utils.Color;
+import cc.funkemunky.api.utils.ConfigSetting;
+import cc.funkemunky.api.utils.Init;
+import cc.funkemunky.api.utils.MathUtils;
 import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 
 import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.util.UUID;
 
+
+@Init
 public class BungeeAPI {
+
+    @ConfigSetting(name = "bungee")
+    public static boolean bungee = true;
     
-    public void broadcastMessage(String message) {
+    public static void broadcastMessage(String message) {
         broadcastMessage(message, "");
     }
 
-    public void broadcastMessage(String message, String permission) {
+    public static void broadcastMessage(String message, String permission) {
         for (UUID uuid : Atlas.getInstance().getBungeeManager().getBungeePlayers().keySet()) {
             BungeePlayer player = Atlas.getInstance().getBungeeManager().getBungeePlayers().get(uuid);
 
@@ -26,7 +36,7 @@ public class BungeeAPI {
         }
     }
 
-    public void movePlayerToServer(String playerName, String server) {
+    public static void movePlayerToServer(String playerName, String server) {
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
         DataOutputStream oStream = new DataOutputStream(stream);
 
@@ -40,11 +50,11 @@ public class BungeeAPI {
         Atlas.getInstance().getBungeeManager().sendData(stream.toByteArray());
     }
 
-    public void movePlayerToServer(UUID uuid, String server) {
+    public static void movePlayerToServer(UUID uuid, String server) {
         movePlayerToServer(Bukkit.getOfflinePlayer(uuid).getName(), server);
     }
 
-    public void kickPlayer(String name, String reason) {
+    public static void kickPlayer(String name, String reason) {
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
         DataOutputStream oStream = new DataOutputStream(stream);
 
@@ -59,7 +69,7 @@ public class BungeeAPI {
         Atlas.getInstance().getBungeeManager().sendData(stream.toByteArray());
     }
 
-    public void sendMessageToPlayer(String name, String message) {
+    public static void sendMessageToPlayer(String name, String message) {
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
         DataOutputStream oStream = new DataOutputStream(stream);
 
@@ -74,11 +84,36 @@ public class BungeeAPI {
         Atlas.getInstance().getBungeeManager().sendData(stream.toByteArray());
     }
 
-    public void sendMessageToPlayer(BungeePlayer player, String message) {
+    public static void sendMessageToPlayer(BungeePlayer player, String message) {
         sendMessageToPlayer(player.name, message);
     }
 
-    public void sendCommand(String command) {
+    public static int getPlayerVersion(Player player) {
+        if(player == null) return -1;
+        try {
+            ByteArrayOutputStream bstream = new ByteArrayOutputStream();
+            ObjectOutputStream ostream = new ObjectOutputStream(bstream);
+
+            ostream.writeUTF("version");
+            ostream.writeObject(player.getUniqueId());
+
+            player.sendPluginMessage(Atlas.getInstance(), "atlasOut", bstream.toByteArray());
+
+            long started = System.currentTimeMillis();
+
+            while(!MathUtils.elapsed(started, 5000L)) {
+                if(Atlas.getInstance().getBungeeManager().getVersionsMap().containsKey(player.getUniqueId())) {
+                    return Atlas.getInstance().getBungeeManager().getVersionsMap().get(player.getUniqueId()).two;
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return -1;
+    }
+
+    public static void sendCommand(String command) {
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
         DataOutputStream oStream = new DataOutputStream(stream);
 
@@ -88,14 +123,10 @@ public class BungeeAPI {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        Atlas.getInstance().getBungeeManager().sendData(stream.toByteArray());
+        Atlas.getInstance().getBungeeManager().sendData(stream.toByteArray(), "atlasOut");
     }
 
-    public void queryUpdate(boolean waitUntilComplete) {
-        //TODO Query update.
-    }
-
-    public void kickPlayer(UUID uuid, String reason) {
+    public static void kickPlayer(UUID uuid, String reason) {
         kickPlayer(Bukkit.getOfflinePlayer(uuid).getName(), reason);
     }
 }
