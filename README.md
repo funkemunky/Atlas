@@ -198,3 +198,8 @@ List<BoundingBox> box = Atlas.getInstance().getBlockBoxManager().getBlockBox().g
 MiscUtils.getEntityBoundingBox(e.getPlayer());
 ```
 [Latest]: https://github.com/funkemunky/Atlas/releases "Download Latest"
+
+## Credits
+
+### TinyProtocol and Additions
+Credits to @dmulloy2 and @aandk for the TinyProtocol and Reflection utilities. Thanks to @DeprecatedLuke for his useful additions to TinyProtocol and for few packet wrappers that worked right out of the gate.
