@@ -14,6 +14,7 @@ import cc.funkemunky.api.reflection.BukkitReflection;
 import cc.funkemunky.api.reflection.CraftReflection;
 import cc.funkemunky.api.reflection.MinecraftReflection;
 import cc.funkemunky.api.reflections.Reflections;
+import cc.funkemunky.api.reflections.types.WrappedClass;
 import cc.funkemunky.api.reflections.types.WrappedField;
 import cc.funkemunky.api.tinyprotocol.api.TinyProtocolHandler;
 import cc.funkemunky.api.updater.Updater;
@@ -32,6 +33,7 @@ import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Entity;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -112,8 +114,8 @@ public class Atlas extends JavaPlugin {
 
         MiscUtils.printToConsole(Color.Gray + "Starting scanner...");
 
-        initializeScanner(getClass(),
-                this,
+        initializeScanner(getClass(), this,
+                null,
                 true,
                 true);
 
@@ -247,11 +249,27 @@ public class Atlas extends JavaPlugin {
         });
     }
 
-    public void initializeScanner(Class<? extends JavaPlugin> mainClass, JavaPlugin plugin,
+
+    public void initializeScanner(Class<? extends Plugin> mainClass, Plugin plugin, ClassLoader loader,
                                   boolean loadListeners, boolean loadCommands) {
-        ClassScanner.scanFile(null, mainClass)
+        initializeScanner(mainClass, plugin, loader, ClassScanner.scanFile(null, mainClass), loadListeners, loadCommands);
+    }
+    public void initializeScanner(Class<? extends Plugin> mainClass, Plugin plugin, ClassLoader loader, Set<String> names,
+                                  boolean loadListeners, boolean loadCommands) {
+        names
                 .stream()
-                .map(Reflections::getClass)
+                .map(name -> {
+                    if(loader != null) {
+                        try {
+                            return new WrappedClass(Class.forName(name, true, loader));
+                        } catch (ClassNotFoundException e) {
+                            e.printStackTrace();
+                        }
+                        return (WrappedClass) null;
+                    } else {
+                        return Reflections.getClass(name);
+                    }
+                }).filter(Objects::nonNull)
                 .sorted(Comparator.comparing(c ->
                         c.getAnnotation(Init.class).priority().getPriority(), Comparator.reverseOrder()))
                 .forEach(c -> {
@@ -298,16 +316,16 @@ public class Atlas extends JavaPlugin {
                 });
     }
 
-    public void initializeScanner(Class<? extends JavaPlugin> mainClass, JavaPlugin plugin) {
-        initializeScanner(mainClass, plugin, true, true);
+    public void initializeScanner(Class<? extends Plugin> mainClass, Plugin plugin) {
+        initializeScanner(mainClass, plugin, null, true, true);
     }
 
-    public void initializeScanner(JavaPlugin plugin) {
+    public void initializeScanner(Plugin plugin) {
         initializeScanner(plugin.getClass(), plugin);
     }
 
-    public void initializeScanner(JavaPlugin plugin, boolean loadListeners, boolean loadCommands) {
-        initializeScanner(plugin.getClass(), plugin, loadListeners, loadCommands);
+    public void initializeScanner(Plugin plugin, boolean loadListeners, boolean loadCommands) {
+        initializeScanner(plugin.getClass(), plugin, null, loadListeners, loadCommands);
     }
 
     //Always wait to load chunks if you never want this to return as null. It may add delays tho when it is null.

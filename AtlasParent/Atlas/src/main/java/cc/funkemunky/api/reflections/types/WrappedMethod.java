@@ -25,6 +25,7 @@ public class WrappedMethod {
     public WrappedMethod(WrappedClass parent, Method method) {
         this.parent = parent;
         this.method = method;
+        method.setAccessible(true);
         this.name = method.getName();
         this.parameters = Arrays.asList(method.getParameterTypes());
     }
