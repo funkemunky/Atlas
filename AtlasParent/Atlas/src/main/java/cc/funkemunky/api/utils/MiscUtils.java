@@ -4,6 +4,7 @@ import cc.funkemunky.api.Atlas;
 import cc.funkemunky.api.tinyprotocol.api.TinyProtocolHandler;
 import cc.funkemunky.api.tinyprotocol.packet.out.WrappedPacketPlayOutWorldParticle;
 import cc.funkemunky.api.tinyprotocol.packet.types.enums.WrappedEnumParticle;
+import cc.funkemunky.api.utils.world.types.SimpleCollisionBox;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.command.PluginCommand;
@@ -107,6 +108,33 @@ public class MiscUtils {
         }
     }
 
+    public static void drawCuboid(SimpleCollisionBox box, WrappedEnumParticle particle, Collection<? extends Player> players) {
+        Step.GenericStepper<Float> x = Step.step((float) box.xMin, 0.241f, (float) box.xMax);
+        Step.GenericStepper<Float> y = Step.step((float) box.yMin, 0.241f, (float) box.yMax);
+        Step.GenericStepper<Float> z = Step.step((float) box.zMin, 0.241f, (float) box.zMax);
+        for (float fx : x) {
+            for (float fy : y) {
+                for (float fz : z) {
+                    int check = 0;
+                    if (x.first() || x.last()) check++;
+                    if (y.first() || y.last()) check++;
+                    if (z.first() || z.last()) check++;
+                    if (check >= 2) {
+                        Object packet = new WrappedPacketPlayOutWorldParticle(particle, true, fx, fy, fz,
+                                0F, 0F, 0F, 0, 0).getObject();
+                        for (Player p : players) TinyProtocolHandler.sendPacket(p, packet);
+                    }
+                }
+            }
+        }
+    }
+
+    public static void drawPoint(Vector point, WrappedEnumParticle particle, Collection<? extends Player> players) {
+        Object packet = new WrappedPacketPlayOutWorldParticle(particle, true, (float) point.getX(), (float) point.getY(), (float) point.getZ(),
+                0F, 0F, 0F, 0, 0).getObject();
+        for (Player p : players) TinyProtocolHandler.sendPacket(p, packet);
+    }
+
     public static String unloadPlugin(String pl) {
         PluginManager pm = Bukkit.getServer().getPluginManager();
         SimplePluginManager spm = (SimplePluginManager)pm;
@@ -197,6 +225,12 @@ public class MiscUtils {
         }
 
         return var21 + "has been unloaded and disabled!";
+    }
+
+    //Stolen from Luke
+    public static boolean contains(Object[] array, Object obj) {
+        for (Object object : array) if (object != null && object.equals(obj)) return true;
+        return false;
     }
 
     public static <T> T parseObjectFromString(String s, Class<T> clazz) throws Exception {
