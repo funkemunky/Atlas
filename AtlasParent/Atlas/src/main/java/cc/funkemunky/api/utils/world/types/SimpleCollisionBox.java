@@ -1,8 +1,11 @@
 package cc.funkemunky.api.utils.world.types;
 
+import cc.funkemunky.api.reflection.MinecraftReflection;
 import cc.funkemunky.api.tinyprotocol.packet.types.enums.WrappedEnumParticle;
+import cc.funkemunky.api.utils.BoundingBox;
 import cc.funkemunky.api.utils.MiscUtils;
 import cc.funkemunky.api.utils.world.CollisionBox;
+import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
@@ -38,6 +41,29 @@ public class SimpleCollisionBox implements CollisionBox {
             this.zMin = zMax;
             this.zMax = zMin;
         }
+    }
+
+    public SimpleCollisionBox(Vector min, Vector max) {
+        this(min.getX(), min.getY(), min.getZ(), max.getX(), max.getY(), max.getZ());
+    }
+    
+    public SimpleCollisionBox(Location loc, double width, double height) {
+        this(loc.toVector(), width, height);
+    }
+
+    public SimpleCollisionBox(Vector vec, double width, double height) {
+        this(vec.getX(), vec.getY(), vec.getZ(), vec.getX(), vec.getY(), vec.getZ());
+
+        expand(width / 2, 0, width / 2);
+        yMax+= height;
+    }
+
+    public SimpleCollisionBox(BoundingBox box) {
+        this(box.minX, box.minY, box.minZ, box.maxX, box.maxY, box.maxZ);
+    }
+
+    public SimpleCollisionBox(Object aabb) {
+        this(MinecraftReflection.fromAABB(aabb));
     }
 
     private void sort() {
@@ -147,6 +173,10 @@ public class SimpleCollisionBox implements CollisionBox {
     public void draw(WrappedEnumParticle particle, Collection<? extends Player> players) {
         SimpleCollisionBox box = this.copy().expand(0.025);
         MiscUtils.drawCuboid(box, particle, players);
+    }
+
+    public BoundingBox toBoundingBox() {
+        return new BoundingBox(new Vector(xMin, yMin, zMin), new Vector(xMax, yMax, zMax));
     }
 
     public double distance(SimpleCollisionBox box) {

@@ -2,6 +2,7 @@ package cc.funkemunky.api.utils;
 
 import cc.funkemunky.api.Atlas;
 import cc.funkemunky.api.reflection.MinecraftReflection;
+import cc.funkemunky.api.utils.world.types.SimpleCollisionBox;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -347,8 +348,12 @@ public class BoundingBox {
         return new BoundingBox(d0,d1,d2,d3,d4,d5);
     }
 
-    public Object toAxisAlignedBB() {
+    public <T> T toAxisAlignedBB() {
         return MinecraftReflection.toAABB(this);
+    }
+
+    public SimpleCollisionBox toCollisionBox() {
+        return new SimpleCollisionBox(minX, minY, minZ, maxX, maxY, maxZ);
     }
 
     public String toString() {

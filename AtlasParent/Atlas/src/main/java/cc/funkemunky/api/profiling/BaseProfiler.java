@@ -37,20 +37,20 @@ public class BaseProfiler implements Profiler {
     }
 
     @Override
-    public void start() {
+    public synchronized void start() {
         StackTraceElement stack = Thread.currentThread().getStackTrace()[2];
         start(stack.getMethodName());
     }
 
     @Override
-    public void start(String name) {
+    public synchronized void start(String name) {
         timings.put(name, System.nanoTime());
         calls.put(name, calls.getOrDefault(name, 0) + 1);
         totalCalls++;
     }
 
     @Override
-    public void stop() {
+    public synchronized void stop() {
         if(System.currentTimeMillis() - lastReset < 100L) return;
         long extense = System.nanoTime();
         StackTraceElement stack = Thread.currentThread().getStackTrace()[2];
@@ -102,7 +102,7 @@ public class BaseProfiler implements Profiler {
     }
 
     @Override
-    public void stop(String name) {
+    public synchronized void stop(String name) {
         if(System.currentTimeMillis() - lastReset < 100L || !timings.containsKey(name)) return;
         long extense = System.nanoTime();
         long start = timings.get(name);
@@ -133,7 +133,7 @@ public class BaseProfiler implements Profiler {
     }
 
     @Override
-    public void stop(String name, long extense) {
+    public synchronized void stop(String name, long extense) {
         if(System.currentTimeMillis() - lastReset < 100L || !timings.containsKey(name)) return;
         long start = timings.get(name);
         long time = (System.nanoTime() - start) - (System.nanoTime() - extense);

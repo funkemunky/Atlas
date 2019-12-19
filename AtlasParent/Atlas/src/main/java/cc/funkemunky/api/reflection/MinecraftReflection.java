@@ -13,6 +13,7 @@ import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.HumanEntity;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import javax.annotation.Nullable;
@@ -52,6 +53,9 @@ public class MinecraftReflection {
     public static WrappedField activeItemField;
     public static WrappedMethod getItemMethod = itemStack.getMethod("getItem");
     public static WrappedMethod getAnimationMethod = itemClass.getMethodByType(enumAnimation.getParent(), 0);
+    public static WrappedMethod canDestroyMethod = playerInventory.getMethod("b",
+            ProtocolVersion.getGameVersion().isAbove(ProtocolVersion.V1_8_9)
+                    ? iBlockData.getParent() : block.getParent());
 
     //1.13+ only
     public static WrappedClass voxelShape;
@@ -61,8 +65,11 @@ public class MinecraftReflection {
     //Blocks
     public static WrappedMethod addCBoxes;
     public static WrappedClass blockPos;
+    public static WrappedField blockData = block.getFieldByName("blockData");
     public static WrappedConstructor blockPosConstructor;
     public static WrappedMethod getBlockData;
+    public static WrappedField frictionFactor = block.getFieldByName("frictionFactor");
+    public static WrappedField strength = block.getFieldByName("strength");
     public static WrappedField chunkProvider = MinecraftReflection.world
             .getFieldByType(Reflections.getNMSClass("IChunkProvider").getParent(), 0);
     public static WrappedField chunksList = Reflections.getNMSClass("ChunkProviderServer")
@@ -114,10 +121,10 @@ public class MinecraftReflection {
 
     //1.7 field is boundingBox
     //1.8+ method is getBoundingBox.
-    public static BoundingBox getEntityBoundingBox(Entity entity) {
+    public static <T> T getEntityBoundingBox(Entity entity) {
         Object vanillaEntity = CraftReflection.getEntity(entity);
 
-        return fromAABB(entityBoundingBox.get(vanillaEntity));
+        return entityBoundingBox.get(vanillaEntity);
     }
 
     public static <T> T getItemInUse(HumanEntity entity) {
@@ -145,6 +152,48 @@ public class MinecraftReflection {
         Object item = getItemFromStack(vanillaStack);
 
         return getAnimationMethod.invoke(item, vanillaStack);
+    }
+
+    /* Checks if the player is able to destroy a block. Input can be NMS Block or Bukkit Block */
+    public static boolean canDestroyBlock(Player player, Object block) {
+        Object inventory = CraftReflection.getVanillaInventory(player);
+        Object vBlock;
+        if(block instanceof Block) {
+            vBlock = CraftReflection.getVanillaBlock((Block)block);
+        } else vBlock = block;
+
+        return canDestroyMethod.invoke(inventory,
+                ProtocolVersion.getGameVersion().isAbove(ProtocolVersion.V1_8_9)
+                        ? blockData.get(vBlock) : vBlock);
+    }
+
+    /* Gets the friction of a block. Input can be NMS Block or Bukkit Block. */
+    public static float getFriction(Object block) {
+        Object vBlock;
+        if(block instanceof Block) {
+            vBlock = CraftReflection.getVanillaBlock((Block)block);
+        } else vBlock = block;
+
+        return frictionFactor.get(vBlock);
+    }
+
+    /* Gets the amount of mining required to break a block. Input can be NMS Block or Bukkit Block. */
+    public static float getBlockDurability(Object block) {
+        Object vBlock;
+        if(block instanceof Block) {
+            vBlock = CraftReflection.getVanillaBlock((Block)block);
+        } else vBlock = block;
+
+        return strength.get(vBlock);
+    }
+
+    public static <T> T getBlockData(Object block) {
+        Object vBlock;
+        if(block instanceof Block) {
+            vBlock = CraftReflection.getVanillaBlock((Block)block);
+        } else vBlock = block;
+
+        return blockData.get(vBlock);
     }
 
     public static List<BoundingBox> getCollidingBoxes(@Nullable Entity entity, World world, BoundingBox box) {
