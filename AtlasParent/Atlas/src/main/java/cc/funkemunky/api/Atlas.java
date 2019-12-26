@@ -307,6 +307,7 @@ public class Atlas extends JavaPlugin {
                                 if(plugin.getConfig().get(setting.path() + "." + name) == null) {
                                     MiscUtils.printToConsole("&7Value not set in config! Setting value...");
                                     plugin.getConfig().set(setting.path() + "." + name, field.get(obj));
+                                    plugin.saveConfig();
                                 } else {
                                     Object configObj = plugin.getConfig().get(setting.path() + "." + name);
                                     MiscUtils.printToConsole("&7Set field to value &e" + configObj + "&7.");

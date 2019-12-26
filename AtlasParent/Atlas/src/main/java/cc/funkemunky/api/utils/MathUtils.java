@@ -61,7 +61,7 @@ public class MathUtils {
             total += (val * val);
         }
 
-        return Math.sqrt(total);
+        return sqrt(total);
     }
 
     public static float hypot(float... value) {
@@ -71,7 +71,11 @@ public class MathUtils {
             total += (val * val);
         }
 
-        return (float) Math.sqrt(total);
+        return (float) sqrt(total);
+    }
+
+    public static double get3DDistance(Vector one, Vector two) {
+        return hypot(one.getX() - two.getX(), one.getY() - two.getY(), one.getZ() - two.getZ());
     }
 
     public static boolean playerMoved(Vector from, Vector to) {
@@ -103,6 +107,35 @@ public class MathUtils {
         long result = input[0];
         for(int i = 1; i < input.length; i++) result = gcd(result, input[i]);
         return result;
+    }
+
+    //A much lighter but very slightly less accurate Math.sqrt.
+    public static double sqrt(double number) {
+        if(number == 0) return 0;
+        double t;
+
+        double squareRoot = number / 2;
+
+        do {
+            t = squareRoot;
+            squareRoot = (t + (number / t)) / 2;
+        } while ((t - squareRoot) != 0);
+
+        return squareRoot;
+    }
+
+    public static float sqrt(float number) {
+        if(number == 0) return 0;
+        float t;
+
+        float squareRoot = number / 2;
+
+        do {
+            t = squareRoot;
+            squareRoot = (t + (number / t)) / 2;
+        } while ((t - squareRoot) != 0);
+
+        return squareRoot;
     }
 
     public static float normalizeAngle(float yaw) {
@@ -153,7 +186,7 @@ public class MathUtils {
 
     public static double getHorizontalDistance(Location from, Location to) {
         double deltaX = to.getX() - from.getX(), deltaZ = to.getZ() - from.getZ();
-        return Math.sqrt(deltaX * deltaX + deltaZ * deltaZ);
+        return sqrt(deltaX * deltaX + deltaZ * deltaZ);
     }
 
     public static double stdev(Collection<Double> list) {
@@ -173,7 +206,7 @@ public class MathUtils {
             num += numi;
         }
 
-        return Math.sqrt(num / list.size());
+        return sqrt(num / list.size());
     }
 
     public static int millisToTicks(long millis) {
@@ -322,7 +355,7 @@ public class MathUtils {
         double diffX = two.getX() - one.getX();
         double diffZ = two.getZ() - one.getZ();
         double diffY = two.getY() + 2.0 - 0.4 - (one.getY() + 2.0);
-        double dist = Math.sqrt(diffX * diffX + diffZ * diffZ);
+        double dist = sqrt(diffX * diffX + diffZ * diffZ);
         float yaw = (float) (Math.atan2(diffZ, diffX) * 180.0 / 3.141592653589793) - 90.0f;
         float pitch = (float) (-Math.atan2(diffY, dist) * 180.0 / 3.141592653589793);
         return new float[]{yaw, pitch};
@@ -333,7 +366,7 @@ public class MathUtils {
         double diffX = two.getX() - one.getX();
         double diffZ = two.getZ() - one.getZ();
         double diffY = two.getY() + 2.0 - 0.4 - (one.getY() + 2.0);
-        double dist = Math.sqrt(diffX * diffX + diffZ * diffZ);
+        double dist = sqrt(diffX * diffX + diffZ * diffZ);
         float yaw = (float) (Math.atan2(diffZ, diffX) * 180.0 / 3.141592653589793) - 90.0f;
         float pitch = (float) (-Math.atan2(diffY, dist) * 180.0 / 3.141592653589793);
         return new float[]{yaw, pitch};
