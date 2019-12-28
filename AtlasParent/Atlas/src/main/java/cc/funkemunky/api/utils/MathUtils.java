@@ -109,6 +109,53 @@ public class MathUtils {
         return result;
     }
 
+    // Returns the absolute value of n-mid*mid*mid
+    static double diff(double n,double mid)
+    {
+        if (n > (mid*mid*mid))
+            return (n-(mid*mid*mid));
+        else
+            return ((mid*mid*mid) - n);
+    }
+
+    // Returns cube root of a no n
+    public static double cbrt(double n)
+    {
+        // Set start and end for binary search
+        double start = 0, end = n;
+
+        // Set precision
+        double e = 0.0000001;
+
+        double mid = -1;
+        double error = 1000;
+
+        long ticks = 0;
+        while (error > e)
+        {
+            mid = (start + end)/2;
+            error = diff(n, mid);
+
+            // If error is less than e then mid is
+            // our answer so return mid
+
+            // If mid*mid*mid is greater than n set
+            // end = mid
+            if ((mid*mid*mid) > n)
+                end = mid;
+
+                // If mid*mid*mid is less than n set
+                // start = mid
+            else
+                start = mid;
+
+            if(error > e && ticks++ > 3E4) {
+                return -1;
+            }
+        }
+        return mid;
+    }
+
     //A much lighter but very slightly less accurate Math.sqrt.
     public static double sqrt(double number) {
         if(number == 0) return 0;
