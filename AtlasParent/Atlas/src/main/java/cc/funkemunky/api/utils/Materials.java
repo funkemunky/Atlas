@@ -28,7 +28,7 @@ public class Materials {
                 MATERIAL_FLAGS[i] |= STAIRS;
             }
 
-            if (material.name().contains("SLAB")) {
+            if (material.name().contains("SLAB") || material.name().contains("STEP")) {
                 MATERIAL_FLAGS[i] |= SLABS;
             }
         }
@@ -77,11 +77,23 @@ public class Materials {
 	    }
     }
 
+    public static int getBitmask(Material material) {
+        return MATERIAL_FLAGS[material.getId()];
+    }
+
     private Materials() {
     }
 
     public static boolean checkFlag(Material material, int flag) {
         return (MATERIAL_FLAGS[material.getId()] & flag) == flag;
+    }
+
+    public static boolean isUsable(Material material) {
+        String nameLower = material.name().toLowerCase();
+        return material.isEdible()
+                || nameLower.contains("bow")
+                || nameLower.contains("sword")
+                || nameLower.contains("trident");
     }
 
 }
