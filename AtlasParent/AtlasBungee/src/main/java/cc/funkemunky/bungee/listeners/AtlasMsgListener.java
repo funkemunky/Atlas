@@ -1,5 +1,6 @@
 package cc.funkemunky.bungee.listeners;
 
+import cc.funkemunky.bungee.data.user.User;
 import cc.funkemunky.bungee.utils.asm.Init;
 import cc.funkemunky.bungee.utils.reflection.types.WrappedClass;
 import cc.funkemunky.bungee.utils.reflection.types.WrappedMethod;
@@ -13,10 +14,7 @@ import net.md_5.bungee.event.EventHandler;
 import java.io.*;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.Arrays;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 @Init
 public class AtlasMsgListener implements Listener {
@@ -30,7 +28,6 @@ public class AtlasMsgListener implements Listener {
         if(event.getTag().equalsIgnoreCase("atlasOut")) {
             try {
                 ByteArrayInputStream bis = new ByteArrayInputStream(event.getData());
-                System.out.println("length: " + event.getData().length);
                 ObjectInputStream inputStream = new ObjectInputStream(bis);
 
                 String type = inputStream.readUTF();
@@ -60,36 +57,32 @@ public class AtlasMsgListener implements Listener {
                     case "version": {
 
                         UUID uuid = (UUID) inputStream.readObject();
-                        ProxiedPlayer player = BungeeCord.getInstance().getPlayer(uuid);
 
                         ByteArrayOutputStream bOut = new ByteArrayOutputStream();
                         ObjectOutputStream dataOut = new ObjectOutputStream(bOut);
 
                         dataOut.writeUTF("version");
 
-                        if(player == null) {
-                            dataOut.writeBoolean(false);
-                            dataOut.writeInt(-1);
-                            dataOut.writeObject(uuid);
-                        } else {
-                            int version = -1;
-                            try {
-                                Class<?> Via = Class.forName("us.myles.ViaVersion.api.Via");
-                                Class<?> clazzViaAPI = Class.forName("us.myles.ViaVersion.api.ViaAPI");
-                                Object ViaAPI = Via.getMethod("getAPI").invoke(null);
-                                Method getPlayerVersion = clazzViaAPI.getMethod("getPlayerVersion", Object.class);
-                                System.out.println("viaversion");
-                                version = (int) getPlayerVersion.invoke(ViaAPI, player);
-                            } catch(Exception e) {
-                                version = player.getPendingConnection().getVersion();
-                            }
+                        User user = User.getUser(uuid);
 
-                            System.out.println(player.getName() + " version: " + version);
-                            dataOut.writeBoolean(true);
-                            dataOut.writeInt(version);
-                            dataOut.writeObject(uuid);
+                        dataOut.writeBoolean(true);
+                        dataOut.writeInt(user.version);
+                        dataOut.writeObject(uuid);
 
-                        }
+                        BungeeCord.getInstance().getServers()
+                                .forEach((name, info) -> info.sendData("atlasIn", bOut.toByteArray()));
+                        break;
+                    }
+                    case "mods": {
+                        UUID uuid = (UUID) inputStream.readObject();
+                        User user = User.getUser(uuid);
+
+                        ByteArrayOutputStream bOut = new ByteArrayOutputStream();
+                        ObjectOutputStream dataOut = new ObjectOutputStream(bOut);
+
+                        dataOut.writeUTF("mods");
+                        dataOut.writeObject(uuid);
+                        dataOut.writeObject(user.modData != null ? user.modData.getModsMap() : "");
 
                         BungeeCord.getInstance().getServers()
                                 .forEach((name, info) -> info.sendData("atlasIn", bOut.toByteArray()));

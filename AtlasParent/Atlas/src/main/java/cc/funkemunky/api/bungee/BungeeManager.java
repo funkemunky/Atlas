@@ -10,6 +10,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.messaging.PluginMessageListener;
 
+import javax.print.DocFlavor;
 import java.io.*;
 import java.util.HashMap;
 import java.util.Map;
@@ -102,10 +103,17 @@ public class BungeeManager implements PluginMessageListener {
                 ObjectInputStream input = new ObjectInputStream(stream);
 
                 String dataType = input.readUTF();
-                System.out.println(dataType);
                 if(dataType.equals("mods")) {
-                    Map<String, String> mods = (Map<String, String>) input.readObject();
-                    ForgeHandler.runBungeeModChecker(player, mods);
+                    UUID uuid = (UUID) input.readObject();
+                    Object modsObject = input.readObject();
+
+                    if(!(modsObject instanceof String)) {
+                        Map<String, String> mods = (Map<String, String>) modsObject;
+                        Player pl = Bukkit.getPlayer(uuid);
+                        if(pl != null) {
+                            ForgeHandler.runBungeeModChecker(pl, mods);
+                        }
+                    }
                 } else if(dataType.equals("sendObjects")) {
                     String type = input.readUTF();
 

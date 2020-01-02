@@ -3,6 +3,7 @@ package cc.funkemunky.api.handlers;
 import cc.funkemunky.api.Atlas;
 import cc.funkemunky.api.utils.ConfigSetting;
 import cc.funkemunky.api.utils.Init;
+import cc.funkemunky.api.utils.RunUtils;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -10,6 +11,9 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.plugin.messaging.PluginMessageListener;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -31,26 +35,26 @@ public class ForgeHandler implements Listener, PluginMessageListener {
 
     private static Map<Player, ModData> mods = new HashMap<>();
 
-    public static ModData getMods(Player player) {
-        return mods.getOrDefault(player, null);
-    }
-
     @EventHandler
     public void onJoin(PlayerJoinEvent event)
     {
-        if(enabled && !fromBungee) {
-            Player player = event.getPlayer();
+        if(enabled) {
+            if(!fromBungee) {
+                Player player = event.getPlayer();
 
-            new BukkitRunnable()
-            {
-                @Override
-                public void run()
-                {
-                    sendFmlPacket(player, (byte) -2, (byte) 0);
-                    sendFmlPacket(player, (byte) 0, (byte) 2, (byte) 0, (byte) 0, (byte) 0, (byte) 0);
-                    sendFmlPacket(player, (byte) 2, (byte) 0, (byte) 0, (byte) 0, (byte) 0);
-                }
-            }.runTaskLater(Atlas.getInstance(), 20L);
+                new BukkitRunnable() {
+                    @Override
+                    public void run() {
+                        sendFmlPacket(player, (byte) -2, (byte) 0);
+                        sendFmlPacket(player, (byte) 0, (byte) 2, (byte) 0, (byte) 0, (byte) 0, (byte) 0);
+                        sendFmlPacket(player, (byte) 2, (byte) 0, (byte) 0, (byte) 0, (byte) 0);
+                    }
+                }.runTaskLater(Atlas.getInstance(), 20L);
+            } else {
+                RunUtils.taskLater(() -> {
+                    queryBungeeMods(event.getPlayer());
+                }, 80L);
+            }
         }
     }
 
@@ -111,7 +115,25 @@ public class ForgeHandler implements Listener, PluginMessageListener {
         return new ModData(mods);
     }
 
+    public static ModData getMods(Player player) {
+        return mods.getOrDefault(player, null);
+    }
+
     public static void runBungeeModChecker(Player player, Map<String, String> modStrings) {
         mods.put(player, new ModData(modStrings));
+    }
+
+    private void queryBungeeMods(Player player) {
+        try {
+            ByteArrayOutputStream bytesOut = new ByteArrayOutputStream();
+            ObjectOutputStream output = new ObjectOutputStream(bytesOut);
+
+            output.writeUTF("mods");
+            output.writeObject(player.getUniqueId());
+
+            player.sendPluginMessage(Atlas.getInstance(), "atlasOut", bytesOut.toByteArray());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

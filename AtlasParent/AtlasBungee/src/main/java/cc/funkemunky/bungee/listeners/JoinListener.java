@@ -2,18 +2,20 @@ package cc.funkemunky.bungee.listeners;
 
 import cc.funkemunky.bungee.AtlasBungee;
 import cc.funkemunky.bungee.data.ModData;
+import cc.funkemunky.bungee.data.user.User;
 import cc.funkemunky.bungee.utils.asm.Init;
 import net.md_5.bungee.BungeeCord;
+import net.md_5.bungee.UserConnection;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.event.PluginMessageEvent;
 import net.md_5.bungee.api.event.PostLoginEvent;
-import net.md_5.bungee.api.event.PreLoginEvent;
 import net.md_5.bungee.api.plugin.Listener;
 import net.md_5.bungee.event.EventHandler;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
+import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -35,6 +37,20 @@ public class JoinListener implements Listener {
             sendFmlPacket(player, (byte) 0, (byte) 2, (byte) 0, (byte) 0, (byte) 0, (byte) 0);
             sendFmlPacket(player, (byte) 2, (byte) 0, (byte) 0, (byte) 0, (byte) 0);
         }, 1, TimeUnit.SECONDS);
+
+        User user = User.getUser(event.getPlayer().getUniqueId());
+
+        int version = -1;
+        try {
+            Class<?> Via = Class.forName("us.myles.ViaVersion.api.Via");
+            Class<?> clazzViaAPI = Class.forName("us.myles.ViaVersion.api.ViaAPI");
+            Object ViaAPI = Via.getMethod("getAPI").invoke(null);
+            Method getPlayerVersion = clazzViaAPI.getMethod("getPlayerVersion", Object.class);
+            version = (int) getPlayerVersion.invoke(ViaAPI, player);
+        } catch(Exception e) {
+            version = player.getPendingConnection().getVersion();
+        }
+        user.version = version;
     }
 
     @EventHandler
@@ -42,19 +58,10 @@ public class JoinListener implements Listener {
         // ModList has ID 2
         if (event.getData()[0] == 2)
         {
-            try {
-                ModData modData = getModData(event.getData());
-                ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
-                ObjectOutputStream data = new ObjectOutputStream(byteStream);
-                data.writeUTF("mods");
-                data.writeObject(modData.getModsMap());
+            UserConnection connection = (UserConnection) event.getSender();
+            User user = User.getUser(connection.getUniqueId());
 
-                BungeeCord.getInstance().getServers()
-                        .values()
-                        .forEach(server -> server.sendData("atlasIn", byteStream.toByteArray()));
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            user.modData = getModData(event.getData());
         }
     }
 
