@@ -1,6 +1,7 @@
 package cc.funkemunky.api.commands.ancmd;
 
 import cc.funkemunky.api.Atlas;
+import cc.funkemunky.api.commands.tab.TabHandler;
 import cc.funkemunky.api.utils.Color;
 import cc.funkemunky.api.utils.JsonMessage;
 import cc.funkemunky.api.utils.MathUtils;
@@ -61,7 +62,10 @@ public class CommandManager implements CommandExecutor {
                 Command annotation = method.getAnnotation(Command.class);
 
                 registerCommand(plugin, annotation, annotation.name(), method, clazz);
-                Arrays.stream(annotation.aliases()).forEach(alias -> registerCommand(plugin, annotation, alias, method, clazz));
+                if(annotation.aliases().length > 0) {
+                    Arrays.stream(annotation.aliases())
+                            .forEach(alias -> registerCommand(plugin, annotation, alias, method, clazz));
+                }
             });
         } catch(Exception e) {
             e.printStackTrace();
@@ -319,8 +323,26 @@ public class CommandManager implements CommandExecutor {
             SpigotCommand cmd = new SpigotCommand(cmdLabel, this, plugin);
             Arrays.stream(annotation.tabCompletions()).forEach(string -> {
                 String[] split = string.split("::");
-                cmd.completer.addCompleter(split[0], split[1]);
+
+                List<String[]> requirement = new ArrayList<>();
+
+                if(split[0].equals("%label%")) {
+                    requirement.add(command.name().split("\\."));
+                } else {
+                    String[] requirements = split[0].split(",,");
+
+                    for (String s : requirements) {
+                        requirement.add(s.split(" "));
+                    }
+                }
+
+                String[] tabsArray = split[1].split(",,");
+
+                for (String[] require : requirement) {
+                    TabHandler.INSTANCE.addTabComplete(require, tabsArray);
+                }
             });
+
             map.register(plugin.getName(), cmd);
 
             registered.add(cmd);

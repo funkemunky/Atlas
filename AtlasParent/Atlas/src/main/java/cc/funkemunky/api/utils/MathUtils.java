@@ -61,7 +61,7 @@ public class MathUtils {
             total += (val * val);
         }
 
-        return sqrt(total);
+        return Math.sqrt(total);
     }
 
     public static float hypot(float... value) {
@@ -71,7 +71,7 @@ public class MathUtils {
             total += (val * val);
         }
 
-        return (float) sqrt(total);
+        return (float) Math.sqrt(total);
     }
 
     public static double get3DDistance(Vector one, Vector two) {
@@ -160,7 +160,6 @@ public class MathUtils {
     public static double sqrt(double number) {
         if(number == 0) return 0;
         double t;
-
         double squareRoot = number / 2;
 
         do {

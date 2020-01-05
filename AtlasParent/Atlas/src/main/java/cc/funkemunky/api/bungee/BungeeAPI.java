@@ -90,24 +90,9 @@ public class BungeeAPI {
 
     public static int getPlayerVersion(Player player) {
         if(player == null) return -1;
-        try {
-            ByteArrayOutputStream bstream = new ByteArrayOutputStream();
-            ObjectOutputStream ostream = new ObjectOutputStream(bstream);
 
-            ostream.writeUTF("version");
-            ostream.writeObject(player.getUniqueId());
-
-            player.sendPluginMessage(Atlas.getInstance(), "atlasOut", bstream.toByteArray());
-
-            long started = System.currentTimeMillis();
-
-            while(!MathUtils.elapsed(started, 5000L)) {
-                if(Atlas.getInstance().getBungeeManager().getVersionsMap().containsKey(player.getUniqueId())) {
-                    return Atlas.getInstance().getBungeeManager().getVersionsMap().get(player.getUniqueId()).two;
-                }
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
+        if(Atlas.getInstance().getBungeeManager().getVersionsMap().containsKey(player.getUniqueId())) {
+            return Atlas.getInstance().getBungeeManager().getVersionsMap().get(player.getUniqueId()).two;
         }
 
         return -1;

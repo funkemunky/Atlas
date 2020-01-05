@@ -7,5 +7,6 @@ import java.lang.annotation.RetentionPolicy;
 public @interface Init {
     Priority priority() default Priority.NORMAL;
     boolean commands() default false;
+    String[] requirePlugins() default {};
 
 }

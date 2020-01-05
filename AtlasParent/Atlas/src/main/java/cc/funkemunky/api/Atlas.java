@@ -265,11 +265,21 @@ public class Atlas extends JavaPlugin {
                         } catch (ClassNotFoundException e) {
                             e.printStackTrace();
                         }
-                        return (WrappedClass) null;
+                        return null;
                     } else {
                         return Reflections.getClass(name);
                     }
-                }).filter(Objects::nonNull)
+                })
+                .filter(Objects::nonNull)
+                .filter(c -> {
+                    String[] required = c.getAnnotation(Init.class).requirePlugins();
+
+                    if(required.length > 0) {
+                        return Arrays.stream(required)
+                                .anyMatch(name -> Bukkit.getPluginManager().isPluginEnabled(name));
+                    }
+                    return true;
+                })
                 .sorted(Comparator.comparing(c ->
                         c.getAnnotation(Init.class).priority().getPriority(), Comparator.reverseOrder()))
                 .forEach(c -> {

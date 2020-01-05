@@ -270,6 +270,19 @@ public class MiscUtils {
         return thing;
     }
 
+    public static boolean arraysSimilar(String[] one, String[] two) {
+        if(one.length != two.length) return false;
+
+        for (int i = 0; i < one.length; i++) {
+            String a1 = one[i], a2 = two[i];
+
+            if(!a1.equalsIgnoreCase(a2)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
     public static List<File> getAtlasDependingPlugins() {
         List<File> plugins = new ArrayList<>();
 
