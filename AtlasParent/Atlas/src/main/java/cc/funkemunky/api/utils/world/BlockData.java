@@ -6,6 +6,7 @@ import cc.funkemunky.api.utils.world.types.*;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
+import org.bukkit.material.Cake;
 import org.bukkit.material.Gate;
 import org.bukkit.material.MaterialData;
 
@@ -66,6 +67,13 @@ public enum BlockData {
     _DOOR(new DoorHandler(), WOODEN_DOOR, ACACIA_DOOR, BIRCH_DOOR, JUNGLE_DOOR, IRON_DOOR, DARK_OAK_DOOR, SPRUCE_DOOR, IRON_DOOR_BLOCK),
 
     _HOPPER(new HopperBounding(), HOPPER),
+    _CAKE((protocol, block) -> {
+        Cake cake = (Cake) block.getType().getNewData(block.getData());
+
+        double f1 = (1 + cake.getSlicesEaten() * 2) / 16D;
+
+        return new SimpleCollisionBox(f1, 0, 0.0625, 1 - 0.0625, 0.5, 1 - 0.0625);
+    }, CAKE, CAKE_BLOCK),
 
     _LADDER((protocol, b) -> {
         CollisionBox box = NoCollisionBox.INSTANCE;
@@ -162,6 +170,7 @@ public enum BlockData {
     _STRUCTURE_VOID(new SimpleCollisionBox(0.375, 0.375, 0.375, 0.625, 0.625, 0.625), Material2.STRUCTURE_VOID), //
     _END_ROD(new DynamicRod(), Material2.END_ROD),
     _CAULDRON(new CouldronBounding(), CAULDRON),
+    _CACTUS(new SimpleCollisionBox(0.0625, 0, 0.0625, 1 - 0.0625, 1 - 0.0625, 1 - 0.0625), CACTUS),
 
 
     _PISTON_BASE(new PistonBaseCollision(), Material.PISTON_BASE, Material.PISTON_STICKY_BASE),
