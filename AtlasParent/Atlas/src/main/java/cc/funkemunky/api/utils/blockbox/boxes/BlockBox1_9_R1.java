@@ -50,6 +50,7 @@ public class BlockBox1_9_R1 implements BlockBox {
                     if(BlockUtils.collisionBoundingBoxes.containsKey(block.getType())) {
                         BoundingBox box2 = BlockUtils.collisionBoundingBoxes.get(block.getType()).add(block.getLocation().toVector());
                         boxes.add(box2);
+
                     } else {
                         int x = block.getX(), y = block.getY(), z = block.getZ();
 
