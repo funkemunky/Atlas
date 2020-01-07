@@ -4,6 +4,7 @@ import cc.funkemunky.api.Atlas;
 import cc.funkemunky.api.tinyprotocol.api.TinyProtocolHandler;
 import cc.funkemunky.api.tinyprotocol.packet.out.WrappedPacketPlayOutWorldParticle;
 import cc.funkemunky.api.tinyprotocol.packet.types.enums.WrappedEnumParticle;
+import cc.funkemunky.api.utils.world.types.RayCollision;
 import cc.funkemunky.api.utils.world.types.SimpleCollisionBox;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -65,6 +66,17 @@ public class MiscUtils {
             return string;
         }
         return string.substring(0, string.length() - 1);
+    }
+
+    public static void drawRay(RayCollision collision, WrappedEnumParticle particle, Collection<? extends Player> players) {
+        for (double i = 0; i < 8; i += 0.2) {
+            float fx = (float) (collision.originX + (collision.directionX * i));
+            float fy = (float) (collision.originY + (collision.directionY * i));
+            float fz = (float) (collision.originZ + (collision.directionZ * i));
+            Object packet = new WrappedPacketPlayOutWorldParticle(particle, true, fx, fy, fz,
+                    0F, 0F, 0F, 0, 0).getObject();
+            players.forEach(p -> TinyProtocolHandler.sendPacket(p, packet));
+        }
     }
 
     public static <T> T getResult(Supplier<T> consumer) {

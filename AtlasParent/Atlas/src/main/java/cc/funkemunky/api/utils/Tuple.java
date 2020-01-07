@@ -1,5 +1,8 @@
 package cc.funkemunky.api.utils;
 
+import lombok.NoArgsConstructor;
+
+@NoArgsConstructor
 public class Tuple<A, B> {
     public A one;
     public B two;
