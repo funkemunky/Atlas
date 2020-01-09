@@ -35,45 +35,47 @@ public class MinecraftReflection {
     public static WrappedClass itemStack = Reflections.getNMSClass("ItemStack");
     public static WrappedClass enumAnimation = Reflections.getNMSClass("EnumAnimation");
     public static WrappedClass chunk = Reflections.getNMSClass("Chunk");
+    public static WrappedClass minecraftServer = Reflections.getNMSClass("MinecraftServer");
 
     //BoundingBoxes
     public static WrappedMethod getCubes;
-    public static WrappedField aBB = axisAlignedBB.getFieldByName("a");
-    public static WrappedField bBB = axisAlignedBB.getFieldByName("b");
-    public static WrappedField cBB = axisAlignedBB.getFieldByName("c");
-    public static WrappedField dBB = axisAlignedBB.getFieldByName("d");
-    public static WrappedField eBB = axisAlignedBB.getFieldByName("e");
-    public static WrappedField fBB = axisAlignedBB.getFieldByName("f");
+    private static WrappedField aBB = axisAlignedBB.getFieldByName("a");
+    private static WrappedField bBB = axisAlignedBB.getFieldByName("b");
+    private static WrappedField cBB = axisAlignedBB.getFieldByName("c");
+    private static WrappedField dBB = axisAlignedBB.getFieldByName("d");
+    private static WrappedField eBB = axisAlignedBB.getFieldByName("e");
+    private static WrappedField fBB = axisAlignedBB.getFieldByName("f");
     public static WrappedConstructor aabbConstructor;
     public static WrappedMethod idioticOldStaticConstructorAABB;
-    public static WrappedField entityBoundingBox = entity.getFirstFieldByType(axisAlignedBB.getParent());
+    private static WrappedField entityBoundingBox = entity.getFirstFieldByType(axisAlignedBB.getParent());
 
     //ItemStack methods and fields
     public static WrappedMethod enumAnimationStack;
-    public static WrappedField activeItemField;
+    private static WrappedField activeItemField;
     public static WrappedMethod getItemMethod = itemStack.getMethod("getItem");
     public static WrappedMethod getAnimationMethod = itemClass.getMethodByType(enumAnimation.getParent(), 0);
-    public static WrappedMethod canDestroyMethod = playerInventory.getMethod("b",
-            ProtocolVersion.getGameVersion().isAbove(ProtocolVersion.V1_8_9)
-                    ? iBlockData.getParent() : block.getParent());
+    public static WrappedMethod canDestroyMethod;
 
     //1.13+ only
     public static WrappedClass voxelShape;
     public static WrappedClass worldReader;
-    public static WrappedMethod getCubesFromVoxelShape;
+    private static WrappedMethod getCubesFromVoxelShape;
 
     //Blocks
     public static WrappedMethod addCBoxes;
     public static WrappedClass blockPos;
-    public static WrappedField blockData = block.getFieldByName("blockData");
     public static WrappedConstructor blockPosConstructor;
-    public static WrappedMethod getBlockData;
-    public static WrappedField frictionFactor = block.getFieldByName("frictionFactor");
-    public static WrappedField strength = block.getFieldByName("strength");
-    public static WrappedField chunkProvider = MinecraftReflection.world
+    private static WrappedMethod getBlockData;
+    private static WrappedField blockData = block.getFieldByName("blockData");
+    private static WrappedField frictionFactor = block.getFieldByName("frictionFactor");
+    private static WrappedField strength = block.getFieldByName("strength");
+    private static WrappedField chunkProvider = MinecraftReflection.world
             .getFieldByType(Reflections.getNMSClass("IChunkProvider").getParent(), 0);
-    public static WrappedField chunksList = Reflections.getNMSClass("ChunkProviderServer")
+    private static WrappedField chunksList = Reflections.getNMSClass("ChunkProviderServer")
             .getFieldByName("chunks");
+
+    //General Fields
+    private static WrappedField primaryThread = minecraftServer.getFirstFieldByType(Thread.class);
 
     public static WrappedEnumAnimation getArmAnimation(HumanEntity entity) {
         if(entity.getItemInHand() != null) {
@@ -230,6 +232,14 @@ public class MinecraftReflection {
         return boxes;
     }
 
+    public static Thread getMainThread(Object minecraftServer) {
+        return primaryThread.get(minecraftServer);
+    }
+
+    public static Thread getMainThread() {
+        return getMainThread(CraftReflection.getMinecraftServer());
+    }
+
     //a, b, c is minX, minY, minZ
     //d, e, f is maxX, maxY, maxZ
     public static BoundingBox fromAABB(Object aabb) {
@@ -319,5 +329,8 @@ public class MinecraftReflection {
         } catch(Exception e) {
             e.printStackTrace();
         }
+        canDestroyMethod = playerInventory.getMethod("b",
+                ProtocolVersion.getGameVersion().isAbove(ProtocolVersion.V1_8_9)
+                        ? iBlockData.getParent() : block.getParent());
     }
 }

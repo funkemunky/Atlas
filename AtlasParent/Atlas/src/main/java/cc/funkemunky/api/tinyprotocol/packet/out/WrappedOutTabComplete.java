@@ -5,17 +5,12 @@ import cc.funkemunky.api.reflections.types.WrappedClass;
 import cc.funkemunky.api.reflections.types.WrappedField;
 import cc.funkemunky.api.tinyprotocol.api.NMSObject;
 import cc.funkemunky.api.tinyprotocol.api.ProtocolVersion;
-import cc.funkemunky.api.tinyprotocol.packet.types.v1_13.WrappedSuggestion;
 import cc.funkemunky.api.tinyprotocol.packet.types.v1_13.WrappedSuggestions;
-import lombok.Getter;
-import lombok.val;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class WrappedOutTabComplete extends NMSObject {
 

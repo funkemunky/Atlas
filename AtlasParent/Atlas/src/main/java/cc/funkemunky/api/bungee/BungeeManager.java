@@ -10,7 +10,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.messaging.PluginMessageListener;
 
-import javax.print.DocFlavor;
 import java.io.*;
 import java.util.HashMap;
 import java.util.Map;
