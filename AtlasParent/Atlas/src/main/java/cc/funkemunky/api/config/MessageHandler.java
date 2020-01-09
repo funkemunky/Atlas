@@ -3,7 +3,6 @@ package cc.funkemunky.api.config;
 import cc.funkemunky.api.utils.FunkeFile;
 import lombok.Setter;
 import org.bukkit.plugin.Plugin;
-import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
 import java.util.ArrayList;

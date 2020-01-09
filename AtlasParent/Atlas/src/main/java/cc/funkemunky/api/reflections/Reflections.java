@@ -44,7 +44,6 @@ public class Reflections {
         try {
             return new WrappedClass(Class.forName(name));
         } catch (ClassNotFoundException e) {
-            e.printStackTrace();
             throw new NullPointerException("Class" + name + " could not be found!");
         }
     }

@@ -2,19 +2,13 @@ package cc.funkemunky.api.tinyprotocol.packet.types.v1_13;
 
 import cc.funkemunky.api.reflections.Reflections;
 import cc.funkemunky.api.reflections.types.WrappedClass;
-import cc.funkemunky.api.reflections.types.WrappedConstructor;
 import cc.funkemunky.api.reflections.types.WrappedField;
 import cc.funkemunky.api.tinyprotocol.GeneralObject;
 import cc.funkemunky.api.tinyprotocol.api.ProtocolVersion;
-import com.mojang.brigadier.context.StringRange;
-import com.mojang.brigadier.suggestion.IntegerSuggestion;
-import com.mojang.brigadier.suggestion.Suggestion;
-import com.mojang.brigadier.suggestion.Suggestions;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 
 public class WrappedSuggestions extends GeneralObject {

@@ -4,7 +4,6 @@ import cc.funkemunky.api.reflections.types.WrappedClass;
 import lombok.*;
 
 import java.util.Arrays;
-import java.util.stream.Collectors;
 
 @Getter
 @Setter

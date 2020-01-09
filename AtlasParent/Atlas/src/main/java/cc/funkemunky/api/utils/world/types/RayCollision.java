@@ -4,25 +4,19 @@ import cc.funkemunky.api.tinyprotocol.api.ProtocolVersion;
 import cc.funkemunky.api.tinyprotocol.packet.types.enums.WrappedEnumParticle;
 import cc.funkemunky.api.utils.KLocation;
 import cc.funkemunky.api.utils.MiscUtils;
-import cc.funkemunky.api.utils.ReflectionsUtil;
 import cc.funkemunky.api.utils.Tuple;
 import cc.funkemunky.api.utils.world.BlockData;
 import cc.funkemunky.api.utils.world.CollisionBox;
-import lombok.val;
 import org.bukkit.Location;
 import org.bukkit.World;
-import org.bukkit.block.Block;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
-import org.spigotmc.AsyncCatcher;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.DoubleStream;
 
 public class RayCollision implements CollisionBox {
 
@@ -111,7 +105,7 @@ public class RayCollision implements CollisionBox {
     
     public List<CollisionBox> boxesOnRay(World world, double distance) {
         int amount = Math.round((float)(distance / 0.5));
-        Location[] locs = new Location[amount];
+        Location[] locs = new Location[Math.max(2, amount)]; //We do a max to prevent NegativeArraySizeException.
         for (int i = 0; i < locs.length; i++) {
             double ix = i / 2d;
 

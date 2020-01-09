@@ -3,6 +3,7 @@ package cc.funkemunky.api.reflection;
 import cc.funkemunky.api.reflections.Reflections;
 import cc.funkemunky.api.reflections.types.WrappedClass;
 import cc.funkemunky.api.reflections.types.WrappedMethod;
+import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
@@ -17,6 +18,7 @@ public class CraftReflection {
     public static WrappedClass craftBlock = Reflections.getCBClass("block.CraftBlock");
     public static WrappedClass craftWorld = Reflections.getCBClass("CraftWorld");
     public static WrappedClass craftInventoryPlayer = Reflections.getCBClass("inventory.CraftInventoryPlayer");
+    public static WrappedClass craftServer = Reflections.getCBClass("CraftServer");
 
     //Vanilla Instances
     public static WrappedMethod itemStackInstance = craftItemStack.getMethod("asNMSCopy", ItemStack.class);
@@ -26,6 +28,8 @@ public class CraftReflection {
     public static WrappedMethod worldInstance = craftWorld.getMethod("getHandle");
     public static WrappedMethod bukkitEntity = MinecraftReflection.entity.getMethod("getBukkitEntity");
     public static WrappedMethod getInventory = craftInventoryPlayer.getMethod("getInventory");
+    public static WrappedMethod mcServerInstance =
+            craftServer.getMethodByType(MinecraftReflection.minecraftServer.getParent(), 0);
 
     public static <T> T getVanillaItemStack(ItemStack stack) {
         return itemStackInstance.invoke(null, stack);
@@ -53,5 +57,9 @@ public class CraftReflection {
     
     public static <T> T getVanillaInventory(Player player) {
         return getInventory.invoke(player.getInventory());
+    }
+
+    public static <T> T getMinecraftServer() {
+        return mcServerInstance.invoke(Bukkit.getServer());
     }
 }

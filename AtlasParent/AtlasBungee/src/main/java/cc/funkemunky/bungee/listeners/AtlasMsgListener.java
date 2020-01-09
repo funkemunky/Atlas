@@ -2,19 +2,15 @@ package cc.funkemunky.bungee.listeners;
 
 import cc.funkemunky.bungee.data.user.User;
 import cc.funkemunky.bungee.utils.asm.Init;
-import cc.funkemunky.bungee.utils.reflection.types.WrappedClass;
-import cc.funkemunky.bungee.utils.reflection.types.WrappedMethod;
 import net.md_5.bungee.BungeeCord;
 import net.md_5.bungee.api.config.ServerInfo;
-import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.event.PluginMessageEvent;
 import net.md_5.bungee.api.plugin.Listener;
 import net.md_5.bungee.event.EventHandler;
 
 import java.io.*;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.util.*;
+import java.util.Optional;
+import java.util.UUID;
 
 @Init
 public class AtlasMsgListener implements Listener {
