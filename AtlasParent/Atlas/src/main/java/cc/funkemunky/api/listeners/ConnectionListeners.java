@@ -23,7 +23,7 @@ public class ConnectionListeners implements Listener {
 
     @EventHandler
     public void onJoin(PlayerJoinEvent event) {
-        if(BungeeAPI.bungee) {
+        if(Atlas.getInstance().getBungeeManager().isBungee()) {
             try {
                 ByteArrayOutputStream bstream = new ByteArrayOutputStream();
                 ObjectOutputStream ostream = new ObjectOutputStream(bstream);

@@ -10,7 +10,6 @@
         <artifactId>atlas-parent</artifactId>
     </parent>
 
-    <groupId>cc.funkemunky.plugins</groupId>
     <artifactId>Atlas</artifactId>
     <version>1.7</version>
 

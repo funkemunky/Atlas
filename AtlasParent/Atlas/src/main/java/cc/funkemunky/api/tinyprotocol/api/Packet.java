@@ -164,6 +164,7 @@ public abstract class Packet {
         public static final String ENTITY_METADATA = SERVER + "EntityMetadata";
         public static final String ENTITY_VELOCITY = SERVER + "EntityVelocity";
         public static final String ENTITY_DESTROY = SERVER + "EntityDestroy";
+        public static final String ENTITY_HEAD_ROTATION = SERVER + "EntityHeadRotation";
         public static final String BLOCK_CHANGE = SERVER + "BlockChange";
         public static final String CLOSE_WINDOW = SERVER + "CloseWindow";
         public static final String HELD_ITEM = SERVER + "HeldItemSlot";

@@ -50,6 +50,29 @@ public class AtlasMsgListener implements Listener {
 
                         break;
                     }
+                    /*case "ping": {
+                        String name = inputStream.readUTF();
+                        long time = inputStream.readLong();
+                        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                        ObjectOutputStream output = new ObjectOutputStream(baos);
+
+                        output.writeUTF("ping");
+                        output.writeUTF("ALL");
+                        output.writeLong(time);
+                        output.writeLong(System.currentTimeMillis() - time);
+
+                        if(name.equalsIgnoreCase("ALL")) {
+                            BungeeCord.getInstance().getServers()
+                                    .forEach((sname, info) -> info.sendData("atlasIn", baos.toByteArray()));
+                        } else {
+                            ServerInfo field;
+
+                            if((field = BungeeCord.getInstance().getServerInfo(name)) != null) {
+                                field.sendData("atlasIn", baos.toByteArray());
+                            }
+                        }
+                        break;
+                    }*/
                     case "version": {
 
                         UUID uuid = (UUID) inputStream.readObject();
