@@ -68,7 +68,7 @@ public class Atlas extends JavaPlugin {
     private boolean done;
     private ExecutorService service;
     private File file;
-    private Map<UUID, List<Entity>> entities = new ConcurrentHashMap<>();
+    private Map<UUID, List<Entity>> entities = Collections.synchronizedMap(new HashMap<>());
     private Map<Location, Block> blocksMap = new ConcurrentHashMap<>();
 
     @ConfigSetting(path = "updater", name = "autoDownload")
@@ -164,8 +164,6 @@ public class Atlas extends JavaPlugin {
                 .filter(plugin -> plugin.getDescription().getDepend().contains("Atlas"))
                 .forEach(plugin -> MiscUtils.unloadPlugin(plugin.getName()));
         shutdownExecutor();
-        schedular.shutdown();
-
 
         MiscUtils.printToConsole(Color.Red + "Completed shutdown process.");
     }
@@ -173,6 +171,7 @@ public class Atlas extends JavaPlugin {
 
     private void shutdownExecutor() {
         service.shutdown();
+        schedular.shutdown();
     }
 
     private void runTasks() {
@@ -197,18 +196,12 @@ public class Atlas extends JavaPlugin {
 
         RunUtils.taskTimer(() -> {
             for (World world : Bukkit.getWorlds()) {
-                Object vWorld = CraftReflection.getVanillaWorld(world);
-
-                List<Object> vEntities = Collections.synchronizedList(entityList.get(vWorld));
-
-                List<Entity> bukkitEntities = vEntities
-                        .parallelStream()
-                        .map(CraftReflection::getBukkitEntity)
-                        .collect(Collectors.toList());
-
-                entities.put(world.getUID(), bukkitEntities);
+                entities.remove(world.getUID());
+                entities
+                        .put(world.getUID(),
+                                Collections.synchronizedList(new ArrayList<>(world.getEntities())));
             }
-        }, 2L, 2L);
+        }, 2L, 5L);
 
         //This allows us to cache the blocks to improve the performance of getting blocks.
         schedular.scheduleAtFixedRate(() -> {
@@ -239,9 +232,6 @@ public class Atlas extends JavaPlugin {
             profile.stop("task::chunkLoader");
         }, 10L, 60L, TimeUnit.SECONDS);
     }
-
-    private static WrappedField entityList = Reflections.getNMSClass("World").getFieldByName("entityList");
-
     private void runTickEvent() {
         service.execute(() -> {
             TickEvent tickEvent = new TickEvent(currentTicks++);

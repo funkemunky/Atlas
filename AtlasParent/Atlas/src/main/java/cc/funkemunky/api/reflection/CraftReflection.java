@@ -12,24 +12,23 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 public class CraftReflection {
-    public static WrappedClass craftHumanEntity = Reflections.getCBClass("entity.CraftHumanEntity");
-    public static WrappedClass craftEntity = Reflections.getCBClass("entity.CraftEntity");
-    public static WrappedClass craftItemStack = Reflections.getCBClass("inventory.CraftItemStack");
-    public static WrappedClass craftBlock = Reflections.getCBClass("block.CraftBlock");
-    public static WrappedClass craftWorld = Reflections.getCBClass("CraftWorld");
-    public static WrappedClass craftInventoryPlayer = Reflections.getCBClass("inventory.CraftInventoryPlayer");
-    public static WrappedClass craftServer = Reflections.getCBClass("CraftServer");
+    public static WrappedClass craftHumanEntity = Reflections.getCBClass("entity.CraftHumanEntity"); //1.7-1.14
+    public static WrappedClass craftEntity = Reflections.getCBClass("entity.CraftEntity"); //1.7-1.14
+    public static WrappedClass craftItemStack = Reflections.getCBClass("inventory.CraftItemStack"); //1.7-1.14
+    public static WrappedClass craftBlock = Reflections.getCBClass("block.CraftBlock"); //1.7-1.14
+    public static WrappedClass craftWorld = Reflections.getCBClass("CraftWorld"); //1.7-1.14
+    public static WrappedClass craftInventoryPlayer = Reflections.getCBClass("inventory.CraftInventoryPlayer"); //1.7-1.14
+    public static WrappedClass craftServer = Reflections.getCBClass("CraftServer");//1.7-1.14
 
     //Vanilla Instances
-    public static WrappedMethod itemStackInstance = craftItemStack.getMethod("asNMSCopy", ItemStack.class);
-    public static WrappedMethod humanEntityInstance = craftHumanEntity.getMethod("getHandle");
-    public static WrappedMethod entityInstance = craftEntity.getMethod("getHandle");
-    public static WrappedMethod blockInstance = craftBlock.getMethod("getNMSBlock");
-    public static WrappedMethod worldInstance = craftWorld.getMethod("getHandle");
-    public static WrappedMethod bukkitEntity = MinecraftReflection.entity.getMethod("getBukkitEntity");
-    public static WrappedMethod getInventory = craftInventoryPlayer.getMethod("getInventory");
-    public static WrappedMethod mcServerInstance =
-            craftServer.getMethodByType(MinecraftReflection.minecraftServer.getParent(), 0);
+    public static WrappedMethod itemStackInstance = craftItemStack.getMethod("asNMSCopy", ItemStack.class); //1.7-1.14
+    public static WrappedMethod humanEntityInstance = craftHumanEntity.getMethod("getHandle"); //1.7-1.14
+    public static WrappedMethod entityInstance = craftEntity.getMethod("getHandle"); //1.7-1.14
+    public static WrappedMethod blockInstance = craftBlock.getMethod("getNMSBlock"); //1.7-1.14
+    public static WrappedMethod worldInstance = craftWorld.getMethod("getHandle"); //1.7-1.14
+    public static WrappedMethod bukkitEntity = MinecraftReflection.entity.getMethod("getBukkitEntity"); //1.7-1.14
+    public static WrappedMethod getInventory = craftInventoryPlayer.getMethod("getInventory"); //1.7-1.14
+    public static WrappedMethod mcServerInstance = craftServer.getMethod("getServer"); //1.7-1.14
 
     public static <T> T getVanillaItemStack(ItemStack stack) {
         return itemStackInstance.invoke(null, stack);
@@ -60,6 +59,6 @@ public class CraftReflection {
     }
 
     public static <T> T getMinecraftServer() {
-        return mcServerInstance.invoke(Bukkit.getServer());
+        return mcServerInstance.invoke(null);
     }
 }

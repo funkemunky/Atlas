@@ -26,6 +26,10 @@ public class AtlasBungee extends Plugin {
         initializeScanner(this);
     }
 
+    public void onDisable() {
+        executorService.shutdown();
+    }
+
     public void initializeScanner(Class<? extends Plugin> mainClass, Plugin plugin, boolean loadListeners) {
         ClassScanner.scanFile(null, mainClass)
                 .stream()

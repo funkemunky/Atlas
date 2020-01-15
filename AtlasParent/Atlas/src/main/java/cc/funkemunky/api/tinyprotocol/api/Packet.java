@@ -139,6 +139,7 @@ public abstract class Packet {
         public static final String ENTITY_ACTION = CLIENT + "EntityAction";
         public static final String USE_ENTITY = CLIENT + "UseEntity";
         public static final String WINDOW_CLICK = CLIENT + "WindowClick";
+        public static final String STEER_VEHICLE = CLIENT + "SteerVehicle";
         public static final String CUSTOM_PAYLOAD = CLIENT + "CustomPayload";
         public static final String ARM_ANIMATION = CLIENT + "ArmAnimation";
         public static final String BLOCK_PLACE = CLIENT + "BlockPlace";
@@ -147,6 +148,7 @@ public abstract class Packet {
         public static final String CLOSE_WINDOW = CLIENT + "CloseWindow";
         public static final String TAB_COMPLETE = CLIENT + "TabComplete";
         public static final String CHAT = CLIENT + "Chat";
+        public static final String CLIENT_COMMAND = CLIENT + "ClientCommand";
     }
 
     public static class Server {

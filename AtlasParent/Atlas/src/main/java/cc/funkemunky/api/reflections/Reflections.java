@@ -43,7 +43,7 @@ public class Reflections {
     public static WrappedClass getClass(String name) {
         try {
             return new WrappedClass(Class.forName(name));
-        } catch (ClassNotFoundException e) {
+        } catch (ClassNotFoundException | NoClassDefFoundError e) {
             throw new NullPointerException("Class" + name + " could not be found!");
         }
     }
