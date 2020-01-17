@@ -5,10 +5,13 @@
 package cc.funkemunky.api.tinyprotocol.api;
 
 import cc.funkemunky.api.Atlas;
+import cc.funkemunky.api.events.impl.PacketReceiveEvent;
+import cc.funkemunky.api.events.impl.PacketSendEvent;
 import cc.funkemunky.api.tinyprotocol.reflection.FieldAccessor;
 import cc.funkemunky.api.tinyprotocol.reflection.MethodInvoker;
 import cc.funkemunky.api.tinyprotocol.reflection.Reflection;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -22,6 +25,7 @@ import static cc.funkemunky.api.tinyprotocol.api.NMSObject.Type.ITEMSTACK;
 
 @Getter
 @Setter
+@NoArgsConstructor
 public abstract class NMSObject {
     private static final MethodInvoker asCraftMirror = Reflection.getMethod(CRAFTITEMSTACK, "asCraftMirror", Reflection.getClass(ITEMSTACK));
     private static Map<String, Class<?>> constructors = new HashMap<>();
@@ -37,14 +41,20 @@ public abstract class NMSObject {
         Atlas.getInstance().getProfile().stop("processor:" + object.getClass().getName());
     }
 
-    public NMSObject() {
-
-    }
-
     public NMSObject(Object object, Player player) {
         this.object = object;
         this.player = player;
         process(player, ProtocolVersion.getGameVersion());
+    }
+
+    public NMSObject(PacketReceiveEvent event) {
+        this.object = event.getPacket();
+        this.player = event.getPlayer();
+    }
+
+    public NMSObject(PacketSendEvent event) {
+        this.object = event.getPacket();
+        this.player = event.getPlayer();
     }
 
     public static Object construct(String packet, Object... args) {
