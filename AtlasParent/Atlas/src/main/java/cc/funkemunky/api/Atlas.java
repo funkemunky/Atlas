@@ -11,17 +11,15 @@ import cc.funkemunky.api.handlers.PluginLoaderHandler;
 import cc.funkemunky.api.metrics.Metrics;
 import cc.funkemunky.api.profiling.BaseProfiler;
 import cc.funkemunky.api.reflection.BukkitReflection;
-import cc.funkemunky.api.reflection.CraftReflection;
 import cc.funkemunky.api.reflection.MinecraftReflection;
 import cc.funkemunky.api.reflections.Reflections;
 import cc.funkemunky.api.reflections.types.WrappedClass;
-import cc.funkemunky.api.reflections.types.WrappedField;
 import cc.funkemunky.api.tinyprotocol.api.TinyProtocolHandler;
 import cc.funkemunky.api.updater.Updater;
 import cc.funkemunky.api.utils.*;
 import cc.funkemunky.api.utils.blockbox.BlockBoxManager;
 import cc.funkemunky.api.utils.blockbox.impl.BoundingBoxes;
-import cc.funkemunky.carbon.Carbon;
+import dev.brighten.db.Carbon;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Bukkit;
@@ -56,7 +54,6 @@ public class Atlas extends JavaPlugin {
     private Updater updater;
     private BaseProfiler profile;
     private Metrics metrics;
-    private Carbon carbon;
     private TinyProtocolHandler tinyProtocolHandler;
     private int currentThread = 0;
     private long profileStart;
@@ -94,7 +91,7 @@ public class Atlas extends JavaPlugin {
         service = Executors.newFixedThreadPool(2);
         schedular = Executors.newSingleThreadScheduledExecutor();
         eventManager = new EventManager();
-        carbon = new Carbon();
+        Carbon.setup();
 
         pluginLoaderHandler = new PluginLoaderHandler();
         tinyProtocolHandler =  new TinyProtocolHandler();
@@ -110,7 +107,6 @@ public class Atlas extends JavaPlugin {
         updater = new Updater();
 
         runTasks();
-        Carbon.init();
 
         MiscUtils.printToConsole(Color.Gray + "Starting scanner...");
 

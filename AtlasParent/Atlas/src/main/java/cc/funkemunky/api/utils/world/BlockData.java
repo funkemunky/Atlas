@@ -65,7 +65,9 @@ public enum BlockData {
         return box;
     }, SKULL),
 
-    _DOOR(new DoorHandler(), WOODEN_DOOR, ACACIA_DOOR, BIRCH_DOOR, JUNGLE_DOOR, IRON_DOOR, DARK_OAK_DOOR, SPRUCE_DOOR, IRON_DOOR_BLOCK),
+    _DOOR(new DoorHandler(), Arrays.stream(Material.values())
+            .filter(mat -> mat.name().contains("DOOR"))
+            .toArray(Material[]::new)),
 
     _HOPPER(new HopperBounding(), HOPPER),
     _CAKE((protocol, block) -> {
@@ -105,9 +107,10 @@ public enum BlockData {
             }
         }
         return box;
-    }, FENCE_GATE, ACACIA_FENCE_GATE, BIRCH_FENCE_GATE, DARK_OAK_FENCE_GATE, JUNGLE_FENCE_GATE, SPRUCE_FENCE_GATE),
+    }, Arrays.stream(Material.values()).filter(mat -> mat.name().contains("FENCE_GATE")).toArray(Material[]::new)),
 
-    _FENCE(new DynamicFence(), ACACIA_FENCE, BIRCH_FENCE, DARK_OAK_FENCE, JUNGLE_FENCE, FENCE, NETHER_FENCE, SPRUCE_FENCE),
+    _FENCE(new DynamicFence(), Arrays.stream(Material.values())
+            .filter(mat -> mat.name().equals("FENCE") || mat.name().endsWith("FENCE")).toArray(Material[]::new)),
     _PANE(new DynamicPane(), THIN_GLASS, STAINED_GLASS_PANE, IRON_FENCE),
     _WALL(new DynamicWall(), COBBLE_WALL),
 
@@ -124,7 +127,8 @@ public enum BlockData {
         if ((state.getData() & 8) == 0)
             return new SimpleCollisionBox(0, 0, 0, 1, .5, 1);
         else return new SimpleCollisionBox(0, .5, 0, 1, 1, 1);
-    }, Material.STONE_SLAB2, Material.STEP, Material2.PURPUR_SLAB, Material.WOOD_STEP),
+    }, Arrays.stream(Material.values()).filter(mat ->
+            mat.name().contains("STEP") || mat.name().contains("SLAB")).toArray(Material[]::new)),
 
     _STAIR((protocol, b) -> {
         MaterialData state = b.getState().getData();
@@ -141,9 +145,7 @@ public enum BlockData {
             bottom.offset(0, .5, 0);
         }
         return new ComplexCollisionBox(top, bottom);
-    }, ACACIA_STAIRS, BIRCH_WOOD_STAIRS, DARK_OAK_STAIRS, JUNGLE_WOOD_STAIRS, WOOD_STAIRS, SPRUCE_WOOD_STAIRS,
-            BRICK_STAIRS, COBBLESTONE_STAIRS, SMOOTH_STAIRS, RED_SANDSTONE_STAIRS, SANDSTONE_STAIRS, QUARTZ_STAIRS,
-            Material2.PURPUR_STAIRS),
+    }, Arrays.stream(Material.values()).filter(mat -> mat.name().contains("STAIRS")).toArray(Material[]::new)),
 
     _CHEST(new SimpleCollisionBox(0, 0, 0, 1, 1 - 0.125, 1).expand(-0.125, 0, -0.125),
             CHEST, TRAPPED_CHEST, ENDER_CHEST),
@@ -163,7 +165,8 @@ public enum BlockData {
     _BED(new SimpleCollisionBox(0.0F, 0.0F, 0.0F, 1.0F, 0.5625, 1.0F), BED_BLOCK),
 
 
-    _TRAPDOOR(new TrapDoorHandler(), IRON_TRAPDOOR, TRAP_DOOR),
+    _TRAPDOOR(new TrapDoorHandler(), Arrays.stream(Material.values())
+            .filter(mat -> mat.name().contains("TRAP_DOOR")).toArray(Material[]::new)),
 
     _STUPID(new SimpleCollisionBox(0.0F, 0.0F, 0.0F, 1.0F, 0.125F, 1.0F),
             DIODE_BLOCK_OFF, DIODE_BLOCK_ON, REDSTONE_COMPARATOR_ON, REDSTONE_COMPARATOR_OFF),

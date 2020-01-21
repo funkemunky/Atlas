@@ -13,7 +13,7 @@ import java.nio.file.StandardCopyOption;
 
 @Getter
 public class Updater {
-    private int update = -1, currentUpdate = 56;
+    private int update = -1, currentUpdate = 57;
     private String version, downloadLink;
     private File pluginLocation;
     private boolean importantUpdate = true;
