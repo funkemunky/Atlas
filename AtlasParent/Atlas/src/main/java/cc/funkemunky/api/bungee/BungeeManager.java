@@ -4,17 +4,13 @@ import cc.funkemunky.api.Atlas;
 import cc.funkemunky.api.bungee.events.BungeeReceiveEvent;
 import cc.funkemunky.api.bungee.objects.BungeePlayer;
 import cc.funkemunky.api.handlers.ForgeHandler;
-import cc.funkemunky.api.utils.MathUtils;
 import cc.funkemunky.api.utils.MiscUtils;
 import cc.funkemunky.api.utils.RunUtils;
 import cc.funkemunky.api.utils.Tuple;
-import it.unimi.dsi.fastutil.objects.Object2DoubleArrayMap;
 import lombok.Getter;
-import lombok.val;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.messaging.PluginMessageListener;
-import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 
 import java.io.*;

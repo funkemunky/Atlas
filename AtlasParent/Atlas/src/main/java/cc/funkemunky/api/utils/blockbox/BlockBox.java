@@ -1,6 +1,5 @@
 package cc.funkemunky.api.utils.blockbox;
 
-import cc.funkemunky.api.tinyprotocol.packet.in.WrappedInTabComplete;
 import cc.funkemunky.api.utils.BoundingBox;
 import org.bukkit.Location;
 import org.bukkit.World;

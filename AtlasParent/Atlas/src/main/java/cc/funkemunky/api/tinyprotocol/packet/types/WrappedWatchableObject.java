@@ -5,13 +5,10 @@ import cc.funkemunky.api.reflections.types.WrappedClass;
 import cc.funkemunky.api.tinyprotocol.api.NMSObject;
 import cc.funkemunky.api.tinyprotocol.api.ProtocolVersion;
 import cc.funkemunky.api.tinyprotocol.reflection.FieldAccessor;
-import cc.funkemunky.api.tinyprotocol.reflection.Reflection;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.entity.Player;
-
-import java.lang.reflect.InvocationTargetException;
 
 @AllArgsConstructor
 @Getter

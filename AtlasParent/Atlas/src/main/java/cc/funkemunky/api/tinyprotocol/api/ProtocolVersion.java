@@ -7,7 +7,6 @@ package cc.funkemunky.api.tinyprotocol.api;
 import cc.funkemunky.api.tinyprotocol.reflection.Reflection;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import org.bukkit.Bukkit;
 
 @Getter
 @AllArgsConstructor

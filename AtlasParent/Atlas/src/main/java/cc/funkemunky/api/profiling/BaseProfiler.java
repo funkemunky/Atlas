@@ -1,57 +1,42 @@
 package cc.funkemunky.api.profiling;
 
-import cc.funkemunky.api.Atlas;
 import cc.funkemunky.api.utils.Tuple;
 import lombok.val;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
-import java.util.concurrent.TimeUnit;
 
 public class BaseProfiler implements Profiler {
-    public Map<String, Long> timings = new HashMap<>();
-    public Map<String, Integer> calls = new HashMap<>();
-    public Map<String, Long> stddev = new HashMap<>();
-    public Map<String, Long> total = new HashMap<>();
-    public Map<String, Tuple<Long, Long>> samples = new HashMap<>();
-    public Map<String, Long> averageSamples = new HashMap<>();
-    public Map<String, List<Long>> samplesPerTick = new HashMap<>();
-    public Map<String, List<Long>> samplesTotal = new HashMap<>();
+    public Map<String, Long> timings = new ConcurrentHashMap<>();
+    public Map<String, Integer> calls = new ConcurrentHashMap<>();
+    public Map<String, Long> stddev = new ConcurrentHashMap<>();
+    public Map<String, Long> total = new ConcurrentHashMap<>();
+    public Map<String, Tuple<Long, Long>> samples = new ConcurrentHashMap<>();
+    public Map<String, List<Long>> samplesTotal = new ConcurrentHashMap<>();
     public long lastSample = 0, lastReset;
     public int totalCalls = 0;
 
     public BaseProfiler() {
-        Atlas.getInstance().getSchedular().scheduleAtFixedRate(() -> {
-            for (String name : samplesPerTick.keySet()) {
-
-                long avg = new ArrayList<>(samplesPerTick.getOrDefault(name, new CopyOnWriteArrayList<>())).stream()
-                        .mapToLong(val -> val)
-                        .sum();
-
-                averageSamples.put(name, avg);
-                samplesPerTick.put(name, new CopyOnWriteArrayList<>());
-            }
-        }, 50L, 50L, TimeUnit.MILLISECONDS);
     }
 
     @Override
-    public synchronized void start() {
+    public void start() {
         StackTraceElement stack = Thread.currentThread().getStackTrace()[2];
         start(stack.getMethodName());
     }
 
     @Override
-    public synchronized void start(String name) {
+    public void start(String name) {
         timings.put(name, System.nanoTime());
         calls.put(name, calls.getOrDefault(name, 0) + 1);
         totalCalls++;
     }
 
     @Override
-    public synchronized void stop() {
+    public void stop() {
         if(System.currentTimeMillis() - lastReset < 100L) return;
         long extense = System.nanoTime();
         StackTraceElement stack = Thread.currentThread().getStackTrace()[2];
@@ -76,7 +61,7 @@ public class BaseProfiler implements Profiler {
         switch(type) {
             case TOTAL: {
                 for (String key : total.keySet()) {
-                    toReturn.put(key, new Tuple<>(calls.get(key), total.get(key) * ((double) calls.get(key) / totalCalls)));
+                    toReturn.put(key, new Tuple<>(calls.get(key), total.get(key) / (double)calls.get(key)));
                 }
                 break;
             }
@@ -95,8 +80,9 @@ public class BaseProfiler implements Profiler {
                 break;
             }
             case TICK: {
+                long timeStamp = System.currentTimeMillis();
                 samples.keySet().stream()
-                        .filter(key -> System.currentTimeMillis() - samples.get(key).two < 100L)
+                        .filter(key -> timeStamp - samples.get(key).two < 45L)
                         .forEach(key -> toReturn.put(key, new Tuple<>(calls.get(key), (double)samples.get(key).one)));
                 break;
             }
@@ -114,13 +100,6 @@ public class BaseProfiler implements Profiler {
         val sample = samples.getOrDefault(name, new Tuple<>(time, System.currentTimeMillis()));
 
         samples.put(name, new Tuple<>(time, System.currentTimeMillis()));
-        List<Long> sList = this.samplesPerTick.getOrDefault(name, new CopyOnWriteArrayList<>());
-
-        if(sList.size() > 100) {
-            sList.clear();
-        } else sList.add(time);
-
-        samplesPerTick.put(name, sList);
         stddev.put(name, Math.abs(sample.one - time));
 
         List<Long> samplesTotal = this.samplesTotal.getOrDefault(name, new CopyOnWriteArrayList<>());
@@ -136,20 +115,14 @@ public class BaseProfiler implements Profiler {
     }
 
     @Override
-    public synchronized void stop(String name, long extense) {
+    public void stop(String name, long extense) {
         if(System.currentTimeMillis() - lastReset < 100L || !timings.containsKey(name)) return;
         long start = timings.get(name);
         long time = (System.nanoTime() - start) - (System.nanoTime() - extense);
         long lastTotal = total.getOrDefault(name, time);
         val sample = samples.getOrDefault(name, new Tuple<>(time, System.currentTimeMillis()));
         samples.put(name, new Tuple<>(time, System.currentTimeMillis()));
-        List<Long> sList = this.samplesPerTick.getOrDefault(name, new CopyOnWriteArrayList<>());
 
-        if(sList.size() > 100) {
-            sList.clear();
-        } else sList.add(time);
-
-        samplesPerTick.put(name, sList);
         stddev.put(name, Math.abs(sample.one - time));
 
         List<Long> samplesTotal = this.samplesTotal.getOrDefault(name, new CopyOnWriteArrayList<>());

@@ -1,7 +1,6 @@
 package cc.funkemunky.api.listeners;
 
 import cc.funkemunky.api.Atlas;
-import cc.funkemunky.api.bungee.BungeeAPI;
 import cc.funkemunky.api.tinyprotocol.api.TinyProtocolHandler;
 import cc.funkemunky.api.utils.Init;
 import org.bukkit.event.EventHandler;
