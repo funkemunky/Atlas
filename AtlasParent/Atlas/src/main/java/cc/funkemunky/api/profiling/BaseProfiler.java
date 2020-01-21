@@ -82,7 +82,7 @@ public class BaseProfiler implements Profiler {
             case TICK: {
                 long timeStamp = System.currentTimeMillis();
                 samples.keySet().stream()
-                        .filter(key -> timeStamp - samples.get(key).two < 45L)
+                        .filter(key -> timeStamp - samples.get(key).two < 60L)
                         .forEach(key -> toReturn.put(key, new Tuple<>(calls.get(key), (double)samples.get(key).one)));
                 break;
             }
