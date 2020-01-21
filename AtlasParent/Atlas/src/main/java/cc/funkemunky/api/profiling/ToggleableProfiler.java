@@ -4,31 +4,31 @@ public class ToggleableProfiler extends BaseProfiler {
     public boolean enabled;
 
     @Override
-    public synchronized void start() {
+    public void start() {
         if(!enabled) return;
         super.start();
     }
 
     @Override
-    public synchronized void start(String name) {
+    public void start(String name) {
         if(!enabled) return;
         super.start(name);
     }
 
     @Override
-    public synchronized void stop() {
+    public void stop() {
         if(!enabled) return;
         super.stop();
     }
 
     @Override
-    public synchronized void stop(String name) {
+    public void stop(String name) {
         if(!enabled) return;
         super.stop(name);
     }
 
     @Override
-    public synchronized void stop(String name, long extense) {
+    public void stop(String name, long extense) {
         if(!enabled) return;
         super.stop(name, extense);
     }
