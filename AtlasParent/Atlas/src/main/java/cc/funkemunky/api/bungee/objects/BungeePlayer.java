@@ -1,8 +1,8 @@
 package cc.funkemunky.api.bungee.objects;
 
 import cc.funkemunky.api.tinyprotocol.reflection.Reflection;
-import cc.funkemunky.api.utils.json.JSONException;
-import cc.funkemunky.api.utils.json.JSONObject;
+import dev.brighten.db.utils.json.JSONException;
+import dev.brighten.db.utils.json.JSONObject;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import org.bukkit.Bukkit;
