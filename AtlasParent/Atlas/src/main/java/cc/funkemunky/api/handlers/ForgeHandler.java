@@ -1,6 +1,7 @@
 package cc.funkemunky.api.handlers;
 
 import cc.funkemunky.api.Atlas;
+import cc.funkemunky.api.tinyprotocol.api.ProtocolVersion;
 import cc.funkemunky.api.utils.ConfigSetting;
 import cc.funkemunky.api.utils.Init;
 import cc.funkemunky.api.utils.RunUtils;
@@ -22,9 +23,12 @@ import java.util.Map;
 public class ForgeHandler implements Listener, PluginMessageListener {
 
     public ForgeHandler() {
-        Atlas.getInstance().getServer().getMessenger()
-                .registerIncomingPluginChannel(Atlas.getInstance(), "FML|HS", this);
-        Atlas.getInstance().getServer().getMessenger().registerOutgoingPluginChannel(Atlas.getInstance(), "FML|HS");
+        if(ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.V1_13)) {
+            Atlas.getInstance().getServer().getMessenger()
+                    .registerIncomingPluginChannel(Atlas.getInstance(), "FML|HS", this);
+            Atlas.getInstance().getServer().getMessenger()
+                    .registerOutgoingPluginChannel(Atlas.getInstance(), "FML|HS");
+        }
     }
 
     @ConfigSetting(path = "forge", name = "enabled")
@@ -131,7 +135,7 @@ public class ForgeHandler implements Listener, PluginMessageListener {
             output.writeUTF("mods");
             output.writeObject(player.getUniqueId());
 
-            player.sendPluginMessage(Atlas.getInstance(), "atlasOut", bytesOut.toByteArray());
+            player.sendPluginMessage(Atlas.getInstance(), "atlas:out", bytesOut.toByteArray());
         } catch (IOException e) {
             e.printStackTrace();
         }
