@@ -4,10 +4,12 @@ import cc.funkemunky.api.Atlas;
 import cc.funkemunky.api.bungee.events.BungeeReceiveEvent;
 import cc.funkemunky.api.bungee.objects.BungeePlayer;
 import cc.funkemunky.api.handlers.ForgeHandler;
+import cc.funkemunky.api.reflections.types.WrappedClass;
 import cc.funkemunky.api.utils.MiscUtils;
 import cc.funkemunky.api.utils.RunUtils;
 import cc.funkemunky.api.utils.Tuple;
 import lombok.Getter;
+import lombok.val;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.messaging.PluginMessageListener;
@@ -25,7 +27,6 @@ public class BungeeManager implements PluginMessageListener {
     private boolean isBungee;
     private List<String> bungeeServers = Collections.synchronizedList(new ArrayList<>());
     private BukkitTask serverCheckTask;
-    private long bungeePing, bungeeToPing, bungeeFromPing;
 
     public BungeeManager() {
         Bukkit.getMessenger().registerOutgoingPluginChannel(Atlas.getInstance(), channelOut);
@@ -50,6 +51,15 @@ public class BungeeManager implements PluginMessageListener {
                 }
             }
         }.runTaskTimerAsynchronously(Atlas.getInstance(), 20L, 10L);*/
+
+        try {
+            val wrappedClass = new WrappedClass(Class.forName("org.spigotmc.SpigotConfig"));
+
+            isBungee = wrappedClass.getFieldByName("bungee").get(null);
+        } catch(ClassNotFoundException e) {
+            //empty
+            isBungee = false;
+        }
     }
 
     public void sendData(byte[] data, String out) {
@@ -186,7 +196,7 @@ public class BungeeManager implements PluginMessageListener {
         }
     }
 
-    private void runServerCheckTask() {
+    /*private void runServerCheckTask() {
         if(serverCheckTask != null) serverCheckTask.cancel();
         serverCheckTask = RunUtils.taskTimerAsync(() -> {
             try {
@@ -206,5 +216,5 @@ public class BungeeManager implements PluginMessageListener {
                 e.printStackTrace();
             }
         }, 20*30, 20*60);
-    }
+    }*/
 }

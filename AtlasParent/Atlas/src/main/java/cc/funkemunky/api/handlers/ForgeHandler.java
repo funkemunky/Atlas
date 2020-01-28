@@ -29,6 +29,7 @@ public class ForgeHandler implements Listener, PluginMessageListener {
             Atlas.getInstance().getServer().getMessenger()
                     .registerOutgoingPluginChannel(Atlas.getInstance(), "FML|HS");
         }
+        INSTANCE = this;
     }
 
     @ConfigSetting(path = "forge", name = "enabled")
@@ -39,11 +40,13 @@ public class ForgeHandler implements Listener, PluginMessageListener {
 
     private static Map<Player, ModData> mods = new HashMap<>();
 
+    private static ForgeHandler INSTANCE;
+
     @EventHandler
     public void onJoin(PlayerJoinEvent event)
     {
         if(enabled) {
-            if(!fromBungee) {
+            if(!Atlas.getInstance().getBungeeManager().isBungee()) {
                 Player player = event.getPlayer();
 
                 new BukkitRunnable() {
@@ -120,7 +123,17 @@ public class ForgeHandler implements Listener, PluginMessageListener {
     }
 
     public static ModData getMods(Player player) {
-        return mods.getOrDefault(player, null);
+        return mods.computeIfAbsent(player, key -> {
+            if(Atlas.getInstance().getBungeeManager().isBungee()) {
+                ForgeHandler.INSTANCE.queryBungeeMods(player);
+            } else {
+                sendFmlPacket(player, (byte) -2, (byte) 0);
+                sendFmlPacket(player, (byte) 0, (byte) 2, (byte) 0, (byte) 0, (byte) 0, (byte) 0);
+                sendFmlPacket(player, (byte) 2, (byte) 0, (byte) 0, (byte) 0, (byte) 0);
+            }
+
+            return null;
+        });
     }
 
     public static void runBungeeModChecker(Player player, Map<String, String> modStrings) {
@@ -128,16 +141,18 @@ public class ForgeHandler implements Listener, PluginMessageListener {
     }
 
     private void queryBungeeMods(Player player) {
-        try {
-            ByteArrayOutputStream bytesOut = new ByteArrayOutputStream();
-            ObjectOutputStream output = new ObjectOutputStream(bytesOut);
+        if(Atlas.getInstance().getBungeeManager().isBungee()) {
+            try {
+                ByteArrayOutputStream bytesOut = new ByteArrayOutputStream();
+                ObjectOutputStream output = new ObjectOutputStream(bytesOut);
 
-            output.writeUTF("mods");
-            output.writeObject(player.getUniqueId());
+                output.writeUTF("mods");
+                output.writeObject(player.getUniqueId());
 
-            player.sendPluginMessage(Atlas.getInstance(), "atlas:out", bytesOut.toByteArray());
-        } catch (IOException e) {
-            e.printStackTrace();
+                player.sendPluginMessage(Atlas.getInstance(), "atlas:out", bytesOut.toByteArray());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 }

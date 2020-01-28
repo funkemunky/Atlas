@@ -4,6 +4,9 @@ import cc.funkemunky.bungee.AtlasBungee;
 import cc.funkemunky.bungee.data.ModData;
 import cc.funkemunky.bungee.data.user.User;
 import cc.funkemunky.bungee.utils.asm.Init;
+import cc.funkemunky.bungee.utils.reflection.Reflections;
+import cc.funkemunky.bungee.utils.reflection.types.WrappedClass;
+import lombok.val;
 import net.md_5.bungee.BungeeCord;
 import net.md_5.bungee.UserConnection;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
@@ -21,18 +24,40 @@ import java.util.concurrent.TimeUnit;
 @Init
 public class JoinListener implements Listener {
 
+    public static boolean isForgeSupport = false;
     public JoinListener() {
-        BungeeCord.getInstance().registerChannel("FML|HS");
+        if(BungeeCord.getInstance().getChannels().contains("FML|HS")) {
+            BungeeCord.getInstance().unregisterChannel("FML|HS");
+        }
+
+
+        try {
+            BungeeCord.getInstance().getConfig().getClass().getMethod("isForgeSupport");
+
+            isForgeSupport = BungeeCord.getInstance().getConfig().isForgeSupport();
+        } catch (NoSuchMethodException e) {
+            isForgeSupport = false;
+        }
+
     }
 
     @EventHandler
     public void onJoin(PostLoginEvent event) {
         ProxiedPlayer player = event.getPlayer();
 
-        AtlasBungee.INSTANCE.executorService.schedule(() -> {
-            sendFmlPacket(player, (byte) -2, (byte) 0);
-            sendFmlPacket(player, (byte) 0, (byte) 2, (byte) 0, (byte) 0, (byte) 0, (byte) 0);
-            sendFmlPacket(player, (byte) 2, (byte) 0, (byte) 0, (byte) 0, (byte) 0);
+        BungeeCord.getInstance().getScheduler().schedule(AtlasBungee.INSTANCE, () -> {
+            if(!isForgeSupport) {
+                sendFmlPacket(player, (byte) -2, (byte) 0);
+                sendFmlPacket(player, (byte) 0, (byte) 2, (byte) 0, (byte) 0, (byte) 0, (byte) 0);
+                sendFmlPacket(player, (byte) 2, (byte) 0, (byte) 0, (byte) 0, (byte) 0);
+            } else if(event.getPlayer().isForgeUser()) {
+                User user = User.getUser(event.getPlayer().getUniqueId());
+
+                if(user != null) {
+                    user.modData = new ModData(event.getPlayer().getModList());
+                    System.out.println("set mods");
+                }
+            }
         }, 1, TimeUnit.SECONDS);
 
         User user = User.getUser(event.getPlayer().getUniqueId());
