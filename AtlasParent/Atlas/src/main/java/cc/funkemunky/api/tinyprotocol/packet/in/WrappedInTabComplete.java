@@ -40,22 +40,24 @@ public class WrappedInTabComplete extends NMSObject {
                 hasToolTip = fetch(hasToolTipAccessor);
             }
             if(ProtocolVersion.getGameVersion().isAbove(ProtocolVersion.V1_8)) {
-                blockPosition = new BaseBlockPosition(fetch(blockPositionAcessor));
+                Object blockPos = fetch(blockPositionAcessor);
+                if(blockPos != null)
+                    blockPosition = new BaseBlockPosition(fetch(blockPositionAcessor));
             }
         }
     }
 
     static {
-        stuff = new DontImportIfNotLatestThanks();
 
-        if(ProtocolVersion.getGameVersion().isAbove(ProtocolVersion.V1_13)) {
+        if(ProtocolVersion.getGameVersion().isOrAbove(ProtocolVersion.V1_13)) {
             idAccessor = fetchField(packet, int.class, 0);
+            stuff = new DontImportIfNotLatestThanks();
         } else {
             if(ProtocolVersion.getGameVersion().isAbove(ProtocolVersion.V1_8_9)) {
                 hasToolTipAccessor = fetchField(packet, boolean.class, 0);
             }
             if(ProtocolVersion.getGameVersion().isOrAbove(ProtocolVersion.V1_8)) {
-                blockPositionAcessor = fetchField(packet, Object.class, 0);
+                blockPositionAcessor = fetchField(packet, Object.class, 1);
             }
         }
     }

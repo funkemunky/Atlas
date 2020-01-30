@@ -1,7 +1,7 @@
 package cc.funkemunky.api.profiling;
 
 public class ToggleableProfiler extends BaseProfiler {
-    public boolean enabled;
+    private boolean enabled;
 
     @Override
     public void start() {
@@ -31,5 +31,10 @@ public class ToggleableProfiler extends BaseProfiler {
     public void stop(String name, long extense) {
         if(!enabled) return;
         super.stop(name, extense);
+    }
+
+    public void setEnabled(boolean enabled) {
+        if(this.enabled = enabled) start = System.currentTimeMillis();
+        else reset();
     }
 }

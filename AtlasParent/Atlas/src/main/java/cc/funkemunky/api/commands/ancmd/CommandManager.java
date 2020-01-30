@@ -6,6 +6,7 @@ import cc.funkemunky.api.utils.Color;
 import cc.funkemunky.api.utils.JsonMessage;
 import cc.funkemunky.api.utils.MathUtils;
 import cc.funkemunky.api.utils.MiscUtils;
+import jdk.internal.org.objectweb.asm.tree.TableSwitchInsnNode;
 import lombok.Getter;
 import lombok.val;
 import org.bukkit.command.CommandExecutor;
@@ -314,6 +315,17 @@ public class CommandManager implements CommandExecutor {
 
         commands.put(annotation.name().toLowerCase(), cmdReg);
 
+        val split = ("/" + annotation.name().toLowerCase()).split("\\.");
+        if(split.length > 0) {
+            String[] requirements;
+            if(split.length > 1) {
+                requirements = new String[split.length - 1];
+
+                System.arraycopy(split, 0, requirements, 0, requirements.length);
+            } else requirements = new String[]{"/"};
+
+            TabHandler.INSTANCE.addTabComplete(requirements, split[split.length - 1].replace("/", ""));
+        }
         Arrays.stream(annotation.aliases()).forEach(alias -> commands.put(alias.toLowerCase(), cmdReg));
         MiscUtils.printToConsole(Color.Yellow + "Registered ancmd: " + annotation.name());
 
@@ -322,25 +334,16 @@ public class CommandManager implements CommandExecutor {
         if (map.getCommand(cmdLabel) == null) {
             SpigotCommand cmd = new SpigotCommand(cmdLabel, this, plugin);
             Arrays.stream(annotation.tabCompletions()).forEach(string -> {
-                String[] split = string.split("::");
+                val split1 = ("/" + annotation.name().toLowerCase()).split(".");
+                String[] requirements1;
+                if(split1.length > 1) {
+                    requirements1 = new String[split1.length - 1];
 
-                List<String[]> requirement = new ArrayList<>();
+                    System.arraycopy(split1, 0, requirements1, 0, requirements1.length);
+                } else requirements1 = new String[]{"/"};
 
-                if(split[0].equals("%label%")) {
-                    requirement.add(command.name().split("\\."));
-                } else {
-                    String[] requirements = split[0].split(",,");
-
-                    for (String s : requirements) {
-                        requirement.add(s.split(" "));
-                    }
-                }
-
-                String[] tabsArray = split[1].split(",,");
-
-                for (String[] require : requirement) {
-                    TabHandler.INSTANCE.addTabComplete(require, tabsArray);
-                }
+                TabHandler.INSTANCE.addTabComplete(requirements1, split1[split1.length - 1]
+                        .replace("/", ""));
             });
 
             map.register(plugin.getName(), cmd);
