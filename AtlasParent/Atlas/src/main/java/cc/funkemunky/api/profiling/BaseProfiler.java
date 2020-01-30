@@ -18,6 +18,7 @@ public class BaseProfiler implements Profiler {
     public Map<String, List<Long>> samplesTotal = new ConcurrentHashMap<>();
     public long lastSample = 0, lastReset;
     public int totalCalls = 0;
+    public long start = 0;
 
     public BaseProfiler() {
     }
@@ -26,6 +27,8 @@ public class BaseProfiler implements Profiler {
     public void start() {
         StackTraceElement stack = Thread.currentThread().getStackTrace()[2];
         start(stack.getMethodName());
+
+        if(start == 0) start = System.currentTimeMillis();
     }
 
     @Override
@@ -33,6 +36,8 @@ public class BaseProfiler implements Profiler {
         timings.put(name, System.nanoTime());
         calls.put(name, calls.getOrDefault(name, 0) + 1);
         totalCalls++;
+
+        if(start == 0) start = System.currentTimeMillis();
     }
 
     @Override
@@ -60,8 +65,9 @@ public class BaseProfiler implements Profiler {
         Map<String, Tuple<Integer, Double>> toReturn = new HashMap<>();
         switch(type) {
             case TOTAL: {
+                double totalTime = System.currentTimeMillis() - start;
                 for (String key : total.keySet()) {
-                    toReturn.put(key, new Tuple<>(calls.get(key), total.get(key) / (double)calls.get(key)));
+                    toReturn.put(key, new Tuple<>(calls.get(key), total.get(key) / totalTime));
                 }
                 break;
             }
