@@ -1,7 +1,6 @@
 package cc.funkemunky.api.utils;
 
 import cc.funkemunky.api.tinyprotocol.api.ProtocolVersion;
-import lombok.val;
 import org.bukkit.Location;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Entity;
@@ -13,16 +12,17 @@ import org.bukkit.potion.PotionEffectType;
 
 public class PlayerUtils {
 
-    private static Enchantment DEPTH;
+    public static boolean hasEnchantment(ItemStack item, Enchantment enchantment) {
+        return item.getEnchantments().keySet().contains(enchantment);
+    }
 
     public static int getDepthStriderLevel(Player player) {
-        if(DEPTH == null) return 0;
+        if (player.getInventory().getBoots() != null
+                && hasEnchantment(player.getInventory().getBoots(), Enchantment.getByName("DEPTH_STRIDER"))) {
+            return player.getInventory().getBoots().getEnchantments().get(Enchantment.getByName("DEPTH_STRIDER"));
+        }
 
-        val boots = player.getInventory().getBoots();
-
-        if(boots == null) return 0;
-
-        return boots.getEnchantmentLevel(DEPTH);
+        return 0;
     }
 
     public static boolean hasBlocksAround(Location loc) {
@@ -83,23 +83,5 @@ public class PlayerUtils {
             return pe.getAmplifier() + 1;
         }
         return 0;
-    }
-
-    public static float getJumpHeight(Player player) {
-        float baseHeight = 0.42f;
-
-        if(player.hasPotionEffect(PotionEffectType.JUMP)) {
-            baseHeight+= PlayerUtils.getPotionEffectLevel(player, PotionEffectType.JUMP) * 0.1f;
-        }
-
-        return baseHeight;
-    }
-
-    static {
-        try {
-            DEPTH = Enchantment.getByName("DEPTH_STRIDER");
-        } catch(Exception e) {
-            DEPTH = null;
-        }
     }
 }
