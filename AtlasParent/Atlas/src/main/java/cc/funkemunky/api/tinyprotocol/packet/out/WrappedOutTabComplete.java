@@ -5,7 +5,6 @@ import cc.funkemunky.api.reflections.types.WrappedClass;
 import cc.funkemunky.api.reflections.types.WrappedField;
 import cc.funkemunky.api.tinyprotocol.api.NMSObject;
 import cc.funkemunky.api.tinyprotocol.api.ProtocolVersion;
-import cc.funkemunky.api.tinyprotocol.packet.types.v1_13.DontImportIfNotLatestThanks;
 import cc.funkemunky.api.tinyprotocol.packet.types.v1_13.WrappedSuggestions;
 import org.bukkit.entity.Player;
 
@@ -18,9 +17,8 @@ public class WrappedOutTabComplete extends NMSObject {
     private static String packet = Server.TAB_COMPLETE;
     private static WrappedClass tabClass = Reflections.getNMSClass(packet);
     private static WrappedClass suggestionsClass = WrappedSuggestions.suggestionsClass;
-    private static DontImportIfNotLatestThanks stuff;
 
-    public String[] suggestions;
+    public List<String> suggestions = new ArrayList<>();
 
     //1.13 only
     public int id = -1;
@@ -46,11 +44,18 @@ public class WrappedOutTabComplete extends NMSObject {
     }
 
     //For 1.13 and above
-    public WrappedOutTabComplete(int id, String input, String... result) {
+    public WrappedOutTabComplete(int id, String input, int startChar, String... result) {
         if(ProtocolVersion.getGameVersion().isOrAbove(ProtocolVersion.V1_13)) {
-            Object suggestions = stuff.getSuggestions(input, result);
+            WrappedSuggestions.SuggestionsBuilder builder = new WrappedSuggestions.SuggestionsBuilder(input, startChar);
 
-            setPacket(packet, id, suggestions);
+            for (String s : result) {
+                builder = builder.suggest(s);
+            }
+
+            setPacket(packet,
+                    id,
+                    builder.build()
+                            .getObject());
         }
     }
 
@@ -58,11 +63,16 @@ public class WrappedOutTabComplete extends NMSObject {
     public void process(Player player, ProtocolVersion version) {
         if(ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.V1_13)) {
             //Getting suggestions.
-            suggestions = suggestionsAccessor.get(getObject());
+            Collections.addAll(suggestions, suggestionsAccessor.get(getObject()));
         } else {
             //Getting suggestions
+            WrappedSuggestions suggestionsObject = new WrappedSuggestions(suggestionsAccessor.get(getObject()));
+
+            suggestionsObject.suggestions.stream()
+                    .map(suggestion -> suggestion.text)
+                    .forEachOrdered(suggestions::add);
+
             id = idAccessor.get(getObject());
-            suggestions = stuff.getArrayFromSuggestions(suggestionsAccessor.get(getObject()));
         }
     }
 
@@ -72,7 +82,6 @@ public class WrappedOutTabComplete extends NMSObject {
         } else {
             suggestionsAccessor = tabClass.getFieldByType(suggestionsClass.getParent(), 0);
             idAccessor = tabClass.getFieldByType(int.class, 0);
-            stuff = new DontImportIfNotLatestThanks();
         }
     }
 }
