@@ -16,12 +16,12 @@ import java.util.UUID;
 public class AtlasMsgListener implements Listener {
 
     public AtlasMsgListener() {
-        BungeeCord.getInstance().registerChannel("atlas:out");
+        BungeeCord.getInstance().registerChannel("atlasOut");
     }
 
     @EventHandler
     public void onEvent(PluginMessageEvent event) {
-        if(event.getTag().equalsIgnoreCase("atlas:out")) {
+        if(event.getTag().equalsIgnoreCase("atlasOut")) {
             try {
                 ByteArrayInputStream bis = new ByteArrayInputStream(event.getData());
                 ObjectInputStream inputStream = new ObjectInputStream(bis);
@@ -39,13 +39,13 @@ public class AtlasMsgListener implements Listener {
 
                         if(server.equalsIgnoreCase("all")) {
                             for (ServerInfo info : BungeeCord.getInstance().getServers().values()) {
-                                info.sendData("atlas:in", event.getData());
+                                info.sendData("atlasIn", event.getData());
                             }
                         } else {
                             Optional<ServerInfo> infoOptional = BungeeCord.getInstance().getServers().values()
                                     .stream().filter(val -> val.getName().equalsIgnoreCase(server)).findFirst();
 
-                            infoOptional.ifPresent(serverInfo -> serverInfo.sendData("atlas:in", event.getData()));
+                            infoOptional.ifPresent(serverInfo -> serverInfo.sendData("atlasIn", event.getData()));
                         }
 
                         break;
@@ -63,12 +63,12 @@ public class AtlasMsgListener implements Listener {
 
                         if(name.equalsIgnoreCase("ALL")) {
                             BungeeCord.getInstance().getServers()
-                                    .forEach((sname, info) -> info.sendData("atlas:in", baos.toByteArray()));
+                                    .forEach((sname, info) -> info.sendData("atlasIn", baos.toByteArray()));
                         } else {
                             ServerInfo field;
 
                             if((field = BungeeCord.getInstance().getServerInfo(name)) != null) {
-                                field.sendData("atlas:in", baos.toByteArray());
+                                field.sendData("atlasIn", baos.toByteArray());
                             }
                         }
                         break;
@@ -89,7 +89,7 @@ public class AtlasMsgListener implements Listener {
                         dataOut.writeObject(uuid);
 
                         BungeeCord.getInstance().getServers()
-                                .forEach((name, info) -> info.sendData("atlas:in", bOut.toByteArray()));
+                                .forEach((name, info) -> info.sendData("atlasIn", bOut.toByteArray()));
                         break;
                     }
                     case "mods": {
@@ -104,7 +104,7 @@ public class AtlasMsgListener implements Listener {
                         dataOut.writeObject(user.modData != null ? user.modData.getModsMap() : "");
 
                         BungeeCord.getInstance().getServers()
-                                .forEach((name, info) -> info.sendData("atlas:in", bOut.toByteArray()));
+                                .forEach((name, info) -> info.sendData("atlasIn", bOut.toByteArray()));
                         break;
                     }
                     case "commandBungee": {

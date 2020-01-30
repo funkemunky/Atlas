@@ -106,7 +106,7 @@ public class BungeeAPI {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        Atlas.getInstance().getBungeeManager().sendData(stream.toByteArray(), "atlas:out");
+        Atlas.getInstance().getBungeeManager().sendData(stream.toByteArray(), "atlasOut");
     }
 
     public static void kickPlayer(UUID uuid, String reason) {

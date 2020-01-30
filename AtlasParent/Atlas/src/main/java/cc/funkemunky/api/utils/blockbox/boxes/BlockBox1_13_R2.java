@@ -19,11 +19,18 @@ import java.util.stream.Stream;
 
 public class BlockBox1_13_R2 implements BlockBox {
 
+    private static MethodInvoker getShape = Reflection.getMethod(Reflection.getMinecraftClass("IBlockData"),
+            Reflection.getMinecraftClass("VoxelShape"), 0,
+            Reflection.getClass("IBlockAccess"),
+            Reflection.getClass("BlockPosition"));
+    private static MethodInvoker getBoundingBox = Reflection.getMethod(Reflection.getMinecraftClass("VoxelShape"),
+            Reflection.getMinecraftClass("AxisAlignedBB"), 0);
+
     @Override
     public List<BoundingBox> getCollidingBoxes(org.bukkit.World world, BoundingBox box) {
         World vWorld = ((CraftWorld) world).getHandle();
 
-        Stream<VoxelShape> voxelShapes = vWorld.a(null, box.toAxisAlignedBB(), 0,0,0);
+        Stream<VoxelShape> voxelShapes = vWorld.a(null, (AxisAlignedBB)box.toAxisAlignedBB(), 0,0,0);
 
         Vector<BoundingBox> boxes = new Vector<>();
 

@@ -21,7 +21,7 @@ import java.util.*;
 @Getter
 public class BungeeManager implements PluginMessageListener {
     private String channelOut = "BungeeCord", channelIn = "BungeeCord";
-    private String atlasIn = "atlas:in", atlasOut = "atlas:out";
+    private String atlasIn = "atlasIn", atlasOut = "atlasOut";
     private Map<UUID, BungeePlayer> bungeePlayers = new HashMap<>();
     private Map<UUID, Tuple<Boolean, Integer>> versionsMap = new HashMap<>();
     private boolean isBungee;
@@ -136,7 +136,7 @@ public class BungeeManager implements PluginMessageListener {
             } catch (IOException | ClassNotFoundException e) {
                 e.printStackTrace();
             }
-        } else if(channel.equals("atlas:in")) {
+        } else if(channel.equals("atlasIn")) {
             try {
                 ObjectInputStream input = new ObjectInputStream(stream);
 
