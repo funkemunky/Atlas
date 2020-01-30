@@ -15,6 +15,7 @@ public class CraftReflection {
     public static WrappedClass craftEntity = Reflections.getCBClass("entity.CraftEntity"); //1.7-1.14
     public static WrappedClass craftItemStack = Reflections.getCBClass("inventory.CraftItemStack"); //1.7-1.14
     public static WrappedClass craftBlock = Reflections.getCBClass("block.CraftBlock"); //1.7-1.14
+    public static WrappedClass craftPlayer = Reflections.getCBClass("entity.CraftPlayer");
     public static WrappedClass craftWorld = Reflections.getCBClass("CraftWorld"); //1.7-1.14
     public static WrappedClass craftInventoryPlayer = Reflections.getCBClass("inventory.CraftInventoryPlayer"); //1.7-1.14
     public static WrappedClass craftServer = Reflections.getCBClass("CraftServer");//1.7-1.14
@@ -28,6 +29,7 @@ public class CraftReflection {
     public static WrappedMethod bukkitEntity = MinecraftReflection.entity.getMethod("getBukkitEntity"); //1.7-1.14
     public static WrappedMethod getInventory = craftInventoryPlayer.getMethod("getInventory"); //1.7-1.14
     public static WrappedMethod mcServerInstance = craftServer.getMethod("getServer"); //1.7-1.14
+    public static WrappedMethod entityPlayerInstance = craftPlayer.getMethod("getHandle");
 
     public static <T> T getVanillaItemStack(ItemStack stack) {
         return itemStackInstance.invoke(null, stack);
@@ -39,6 +41,10 @@ public class CraftReflection {
 
     public static <T> T getEntity(Entity entity) {
         return entityInstance.invoke(entity);
+    }
+
+    public static <T> T getEntityPlayer(Player player) {
+        return entityPlayerInstance.invoke(player);
     }
 
     public static <T> T getVanillaBlock(Block block) {

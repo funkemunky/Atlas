@@ -36,6 +36,7 @@ public class MinecraftReflection {
     public static WrappedClass enumAnimation = Reflections.getNMSClass("EnumAnimation");
     public static WrappedClass chunk = Reflections.getNMSClass("Chunk");
     public static WrappedClass minecraftServer = Reflections.getNMSClass("MinecraftServer");
+    public static WrappedClass entityPlayer = Reflections.getNMSClass("EntityPlayer");
 
     //BoundingBoxes
     public static WrappedMethod getCubes;
@@ -60,6 +61,8 @@ public class MinecraftReflection {
     public static WrappedClass voxelShape;
     public static WrappedClass worldReader;
     private static WrappedMethod getCubesFromVoxelShape;
+
+    public static WrappedField pingField = entityPlayer.getFieldByName("ping");
 
     //Blocks
     public static WrappedMethod addCBoxes;
@@ -177,6 +180,10 @@ public class MinecraftReflection {
         } else vBlock = block;
 
         return frictionFactor.get(vBlock);
+    }
+
+    public static int getPing(Player player) {
+        return pingField.get(CraftReflection.getEntityPlayer(player));
     }
 
     /* Gets the amount of mining required to break a block. Input can be NMS Block or Bukkit Block. */
