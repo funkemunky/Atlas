@@ -93,7 +93,6 @@ public final class Material2 {
     public static final Material SHULKER_SHELL = m(450);
     public static final Material IRON_NUGGET = m(452);
     public static final Material KNOWLEDGE_BOOK = m(453);
-    public static final Material LECTERN = m(23490);
 
     private static Material m(String name) {
         return Material.getMaterial(name);

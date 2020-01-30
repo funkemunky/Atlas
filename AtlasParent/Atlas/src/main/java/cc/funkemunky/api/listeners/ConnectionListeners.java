@@ -30,7 +30,7 @@ public class ConnectionListeners implements Listener {
                 ostream.writeUTF("version");
                 ostream.writeObject(event.getPlayer().getUniqueId());
 
-                event.getPlayer().sendPluginMessage(Atlas.getInstance(), "atlas:out", bstream.toByteArray());
+                event.getPlayer().sendPluginMessage(Atlas.getInstance(), "atlasOut", bstream.toByteArray());
             } catch(IOException e) {
                 e.printStackTrace();
             }
