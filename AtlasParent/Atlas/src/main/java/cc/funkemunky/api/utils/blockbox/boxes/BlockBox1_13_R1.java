@@ -18,12 +18,6 @@ import java.util.Vector;
 
 public class BlockBox1_13_R1 implements BlockBox {
 
-    private static MethodInvoker getShape = Reflection.getMethod(Reflection.getMinecraftClass("IBlockData"),
-            Reflection.getMinecraftClass("VoxelShape"), 0, Reflection.getClass("IBlockAccess"),
-            Reflection.getClass("BlockPosition"));
-    private static MethodInvoker getBoundingBox = Reflection.getMethod(Reflection.getMinecraftClass("VoxelShape"),
-            Reflection.getMinecraftClass("AxisAlignedBB"), 0);
-
     @Override
     public List<BoundingBox> getCollidingBoxes(org.bukkit.World world, BoundingBox box) {
        World vWorld = ((CraftWorld) world).getHandle();

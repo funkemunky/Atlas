@@ -59,7 +59,7 @@ public class TinyProtocolHandler {
     }
 
     public static ProtocolVersion getProtocolVersion(Player player) {
-        if(Atlas.getInstance().getBungeeManager().isBungee()) {
+        if(BungeeAPI.bungee) {
             int version = bungeeVersionCache
                     .computeIfAbsent(player.getUniqueId(), key -> {
                         int bv = BungeeAPI.getPlayerVersion(player);
