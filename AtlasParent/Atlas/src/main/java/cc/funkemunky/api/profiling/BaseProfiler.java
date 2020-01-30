@@ -57,7 +57,6 @@ public class BaseProfiler implements Profiler {
         stddev.clear();
         total.clear();
         samples.clear();
-        start = System.currentTimeMillis();
     }
 
     //Returns Tuple<Total Calls, Result>

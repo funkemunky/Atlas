@@ -23,13 +23,14 @@ public class TabHandler implements AtlasListener {
         INSTANCE = this;
     }
 
-    @Listen(priority = ListenerPriority.HIGH)
+    @Listen(priority = ListenerPriority.LOWEST)
     public void onTab(PacketReceiveEvent event) {
-        if(event.getType().equals(Packet.Client.TAB_COMPLETE)) {
+        if(event.getType().equals(Packet.Client.TAB_COMPLETE)
+                && ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.V1_13)) {
             WrappedInTabComplete packet = new WrappedInTabComplete(event.getPacket(), event.getPlayer());
 
             String[] args = (packet.getMessage().startsWith("/")
-                    ? packet.getMessage().toLowerCase().substring(1) : packet.getMessage().toLowerCase())
+                    ? packet.getMessage().substring(1) : packet.getMessage())
                     .split(" ");
 
             if(tabArgs.containsKey(args)) {
