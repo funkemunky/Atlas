@@ -1,6 +1,7 @@
 package cc.funkemunky.api.utils;
 
 import cc.funkemunky.api.Atlas;
+import cc.funkemunky.api.reflections.types.WrappedClass;
 import cc.funkemunky.api.tinyprotocol.api.TinyProtocolHandler;
 import cc.funkemunky.api.tinyprotocol.packet.out.WrappedPacketPlayOutWorldParticle;
 import cc.funkemunky.api.tinyprotocol.packet.types.enums.WrappedEnumParticle;
@@ -29,10 +30,31 @@ import java.util.function.Supplier;
 
 public class MiscUtils {
 
+    public static Material[] array = new WrappedClass(Material.class)
+            .getFields(field -> field.getType().equals(Material.class) && field.isAnnotationPresent(Deprecated.class))
+            .stream().map(field -> (Material)field.get(null)
+            ).toArray(Material[]::new);
+
     public static Map<EntityType, Vector> entityDimensions = new HashMap<>();;
 
     public static boolean containsIgnoreCase(String toCheck, String contains) {
         return toCheck.toLowerCase().contains(contains.toLowerCase());
+    }
+
+    public static int getOridinal(Material material) {
+        int i = 0;
+        for (Material mat : array) {
+            if(mat.getId() == material.getId()) {
+                return i;
+            }
+            i++;
+        }
+        return -1;
+    }
+
+    public static Material getById(int id) {
+        return Arrays.stream(array).filter(mat -> mat.getId() == id).findFirst()
+                .orElse(Material.getMaterial("AIR"));
     }
 
     public static String line(String color) {

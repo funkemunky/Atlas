@@ -12,7 +12,6 @@ public class WrappedOutTransaction extends NMSObject {
     private static FieldAccessor<Integer> fieldId = fetchField(packet, int.class, 0);
     private static FieldAccessor<Short> fieldAction = fetchField(packet, short.class, 0);
     private static FieldAccessor<Boolean> fieldAccepted = fetchField(packet, boolean.class, 0);
-    final String fnwo = "%%__NONCE__%%";
     private int id;
     private short action;
     private boolean accept;

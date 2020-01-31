@@ -1,4 +1,4 @@
-package cc.funkemunky.api.reflection;
+package cc.funkemunky.api.reflections.impl;
 
 import cc.funkemunky.api.reflections.Reflections;
 import cc.funkemunky.api.reflections.types.WrappedClass;
@@ -58,7 +58,7 @@ public class CraftReflection {
     public static Entity getBukkitEntity(Object vanillaEntity) {
         return bukkitEntity.invoke(vanillaEntity);
     }
-    
+
     public static <T> T getVanillaInventory(Player player) {
         return getInventory.invoke(player.getInventory());
     }

@@ -10,15 +10,14 @@ import cc.funkemunky.api.events.impl.TickEvent;
 import cc.funkemunky.api.handlers.PluginLoaderHandler;
 import cc.funkemunky.api.metrics.Metrics;
 import cc.funkemunky.api.profiling.BaseProfiler;
-import cc.funkemunky.api.reflection.BukkitReflection;
-import cc.funkemunky.api.reflection.MinecraftReflection;
+import cc.funkemunky.api.reflections.impl.BukkitReflection;
 import cc.funkemunky.api.reflections.Reflections;
+import cc.funkemunky.api.reflections.impl.MinecraftReflection;
 import cc.funkemunky.api.reflections.types.WrappedClass;
 import cc.funkemunky.api.tinyprotocol.api.TinyProtocolHandler;
 import cc.funkemunky.api.updater.Updater;
 import cc.funkemunky.api.utils.*;
 import cc.funkemunky.api.utils.blockbox.BlockBoxManager;
-import cc.funkemunky.api.utils.blockbox.impl.BoundingBoxes;
 import dev.brighten.db.Carbon;
 import lombok.Getter;
 import lombok.Setter;
@@ -57,7 +56,6 @@ public class Atlas extends JavaPlugin {
     private TinyProtocolHandler tinyProtocolHandler;
     private int currentThread = 0;
     private long profileStart;
-    private BoundingBoxes boxes;
     private EventManager eventManager;
     private int currentTicks;
     private PluginLoaderHandler pluginLoaderHandler;
@@ -120,7 +118,6 @@ public class Atlas extends JavaPlugin {
         bungeeManager = new BungeeManager();
 
         MiscUtils.printToConsole(Color.Gray + "Loading other managers and utilities...");
-        boxes = new BoundingBoxes();
 
         if(metricsEnabled) {
             MiscUtils.printToConsole(Color.Gray + "Setting up bStats Metrics...");

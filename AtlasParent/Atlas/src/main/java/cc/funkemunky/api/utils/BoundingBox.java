@@ -1,7 +1,7 @@
 package cc.funkemunky.api.utils;
 
 import cc.funkemunky.api.Atlas;
-import cc.funkemunky.api.reflection.MinecraftReflection;
+import cc.funkemunky.api.reflections.impl.MinecraftReflection;
 import cc.funkemunky.api.utils.world.types.SimpleCollisionBox;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -121,8 +121,8 @@ public class BoundingBox {
 
                     if (Atlas.getInstance().getBlockBoxManager().getBlockBox().isChunkLoaded(loc)) {
                         org.bukkit.block.Block block = BlockUtils.getBlock(loc);
-                        if (!block.getType().equals(Material.AIR)) {
-                            toReturn.addAll(Atlas.getInstance().getBoxes().getBoundingBox(block));
+                        if (block != null && block.getType().getId() != 0) {
+                            toReturn.addAll(BlockUtils.getBlockBoundingBox(block));
                         }
                     }
                 }
@@ -153,7 +153,7 @@ public class BoundingBox {
             for (float y = (float) min.getY(); y < max.getY(); y++) {
                 for (float z = (float) min.getZ(); z < max.getZ(); z++) {
                     Block block = BlockUtils.getBlock(new Location(player.getWorld(), x, y, z));
-                    if (!block.getType().equals(Material.AIR)) {
+                    if (block != null && block.getType().getId() != 0) {
                         all.add(block);
                     }
                 }

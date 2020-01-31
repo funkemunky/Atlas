@@ -1,6 +1,6 @@
 package cc.funkemunky.api.utils.blockbox.boxes;
 
-import cc.funkemunky.api.reflection.MinecraftReflection;
+import cc.funkemunky.api.reflections.impl.MinecraftReflection;
 import cc.funkemunky.api.tinyprotocol.reflection.MethodInvoker;
 import cc.funkemunky.api.tinyprotocol.reflection.Reflection;
 import cc.funkemunky.api.utils.BoundingBox;
@@ -17,12 +17,6 @@ import java.util.List;
 import java.util.Vector;
 
 public class BlockBox1_13_R1 implements BlockBox {
-
-    private static MethodInvoker getShape = Reflection.getMethod(Reflection.getMinecraftClass("IBlockData"),
-            Reflection.getMinecraftClass("VoxelShape"), 0, Reflection.getClass("IBlockAccess"),
-            Reflection.getClass("BlockPosition"));
-    private static MethodInvoker getBoundingBox = Reflection.getMethod(Reflection.getMinecraftClass("VoxelShape"),
-            Reflection.getMinecraftClass("AxisAlignedBB"), 0);
 
     @Override
     public List<BoundingBox> getCollidingBoxes(org.bukkit.World world, BoundingBox box) {

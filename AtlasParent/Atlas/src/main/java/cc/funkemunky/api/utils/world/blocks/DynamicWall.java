@@ -36,45 +36,21 @@ public class DynamicWall implements CollisionFactory {
 
     private static boolean wallConnects(ProtocolVersion v, Block fenceBlock, BlockFace direction) {
         Block targetBlock = fenceBlock.getRelative(direction,1);
-        BlockState sFence = fenceBlock.getState();
         BlockState sTarget = targetBlock.getState();
         Material target = sTarget.getType();
-        Material fence = sFence.getType();
 
         if (!isWall(target)&&DynamicFence.isBlacklisted(target))
             return false;
 
-        switch (target) {
-            case ACACIA_STAIRS:
-            case SANDSTONE_STAIRS:
-            case SMOOTH_STAIRS:
-            case SPRUCE_WOOD_STAIRS:
-            case BIRCH_WOOD_STAIRS:
-            case BRICK_STAIRS:
-            case COBBLESTONE_STAIRS:
-            case DARK_OAK_STAIRS:
-            case JUNGLE_WOOD_STAIRS:
-            case QUARTZ_STAIRS:
-            case RED_SANDSTONE_STAIRS:
-            case WOOD_STAIRS:
-            case NETHER_BRICK_STAIRS: {
-                if (v.isBelow(ProtocolVersion.V1_12)) return false;
-                Stairs stairs = (Stairs) sTarget.getData();
-                return stairs.getFacing() == direction;
-            }
-            default: {
-                return isWall(target) || (target.isSolid() && !target.isTransparent());
-            }
-        }
+        if(target.name().contains("STAIRS")) {
+            if (v.isBelow(ProtocolVersion.V1_12)) return false;
+            Stairs stairs = (Stairs) sTarget.getData();
+            return stairs.getFacing() == direction;
+        } else return isWall(target) || (target.isSolid() && !target.isTransparent());
     }
 
-    public static boolean isWall(Material m) {
-        switch (m) {
-            case COBBLE_WALL:
-                return true;
-            default:
-                return false;
-        }
+    private static boolean isWall(Material m) {
+        return m.name().contains("WALL");
     }
 
 }

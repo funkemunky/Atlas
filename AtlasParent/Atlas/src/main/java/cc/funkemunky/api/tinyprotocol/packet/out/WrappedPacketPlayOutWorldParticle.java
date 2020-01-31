@@ -1,5 +1,8 @@
 package cc.funkemunky.api.tinyprotocol.packet.out;
 
+import cc.funkemunky.api.reflections.Reflections;
+import cc.funkemunky.api.reflections.types.WrappedClass;
+import cc.funkemunky.api.reflections.types.WrappedMethod;
 import cc.funkemunky.api.tinyprotocol.api.NMSObject;
 import cc.funkemunky.api.tinyprotocol.api.Packet;
 import cc.funkemunky.api.tinyprotocol.api.ProtocolVersion;
@@ -10,6 +13,8 @@ import lombok.Getter;
 public class WrappedPacketPlayOutWorldParticle extends NMSObject {
 
     private WrappedEnumParticle type;
+    private static WrappedClass craftParticle, particle;
+    private static WrappedMethod toNMS;
     private static String packetPlayOutWorldParticle = Packet.Server.WORLD_PARTICLE;
     private boolean j;
     private float x;
@@ -35,7 +40,7 @@ public class WrappedPacketPlayOutWorldParticle extends NMSObject {
         this.amount = amount;
         this.data = data;
 
-        if(ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.V1_8)) {
+        if (ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.V1_8)) {
             setPacket(packetPlayOutWorldParticle, type.getName(), x, y, z, xOffset, yOffset, zOffset, speed, amount);
         } else {
             setPacket(packetPlayOutWorldParticle, type.toNMS(), var2, x, y, z, xOffset, yOffset, zOffset, speed, amount, data);

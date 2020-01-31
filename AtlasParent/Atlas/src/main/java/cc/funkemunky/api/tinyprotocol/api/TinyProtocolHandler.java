@@ -8,6 +8,7 @@ import cc.funkemunky.api.tinyprotocol.api.packets.AbstractTinyProtocol;
 import cc.funkemunky.api.tinyprotocol.api.packets.channelhandler.TinyProtocol1_7;
 import cc.funkemunky.api.tinyprotocol.api.packets.channelhandler.TinyProtocol1_8;
 import lombok.Getter;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import java.util.HashMap;
@@ -91,11 +92,14 @@ public class TinyProtocolHandler {
         if(!paused && sender != null && packet != null) {
             String name = packet.getClass().getName();
             int index = name.lastIndexOf(".");
+
             String packetName = name.substring(index + 1)
                     .replace("PacketPlayInUseItem", "PacketPlayInBlockPlace")
                     .replace(Packet.Client.LEGACY_LOOK, Packet.Client.LOOK)
                     .replace(Packet.Client.LEGACY_POSITION, Packet.Client.POSITION)
                     .replace(Packet.Client.LEGACY_POSITION_LOOK, Packet.Client.POSITION_LOOK);
+
+            //Bukkit.broadcastMessage(packetName);
 
             PacketReceiveEvent event = new PacketReceiveEvent(sender, packet, packetName);
 

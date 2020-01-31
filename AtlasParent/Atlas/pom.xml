@@ -6,12 +6,12 @@
 
     <parent>
         <groupId>cc.funkemunky.utils</groupId>
-        <version>1.7.2</version>
+        <version>1.7.3</version>
         <artifactId>atlas-parent</artifactId>
     </parent>
 
     <artifactId>Atlas</artifactId>
-    <version>1.7.2</version>
+    <version>1.7.3</version>
 
     <scm>
         <connection>scm:svn:http://127.0.0.1/dummy</connection>
@@ -76,6 +76,12 @@
             <artifactId>Assembly</artifactId>
             <version>2.0.1</version>
             <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.github.spigot</groupId>
+            <artifactId>1.13.2</artifactId>
+            <version>1.13.2</version>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>org.github.paperspigot</groupId>
@@ -153,12 +159,6 @@
             <groupId>org.github.spigot</groupId>
             <artifactId>1.13</artifactId>
             <version>1.13</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.github.spigot</groupId>
-            <artifactId>1.13.2</artifactId>
-            <version>1.13.2</version>
             <scope>provided</scope>
         </dependency>
         <dependency>

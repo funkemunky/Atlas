@@ -1,6 +1,6 @@
 package cc.funkemunky.api.utils.blockbox.boxes;
 
-import cc.funkemunky.api.reflection.MinecraftReflection;
+import cc.funkemunky.api.reflections.impl.MinecraftReflection;
 import cc.funkemunky.api.utils.BoundingBox;
 import cc.funkemunky.api.utils.blockbox.BlockBox;
 import net.minecraft.server.v1_14_R1.AxisAlignedBB;

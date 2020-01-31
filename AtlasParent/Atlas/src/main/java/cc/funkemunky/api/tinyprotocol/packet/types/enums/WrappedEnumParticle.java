@@ -1,6 +1,9 @@
 package cc.funkemunky.api.tinyprotocol.packet.types.enums;
 
 import cc.funkemunky.api.reflections.Reflections;
+import cc.funkemunky.api.reflections.types.WrappedClass;
+import cc.funkemunky.api.reflections.types.WrappedMethod;
+import cc.funkemunky.api.tinyprotocol.api.ProtocolVersion;
 import lombok.Getter;
 
 import java.util.Arrays;
@@ -55,6 +58,9 @@ public enum WrappedEnumParticle {
     private boolean something;
     private int data;
 
+    private static WrappedClass craftParticle, particle;
+    private static WrappedMethod toNMS;
+
     WrappedEnumParticle(String name, int value, boolean something) {
         this.name = name;
         this.value = value;
@@ -73,6 +79,22 @@ public enum WrappedEnumParticle {
     }
 
     public Object toNMS() {
-        return Reflections.getNMSClass("EnumParticle").getEnum(getByName(name).name());
+        if(ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.V1_9)) {
+            return Reflections.getNMSClass("EnumParticle").getEnum(getByName(name).name());
+        } else {
+            Object partObj = particle.getEnum(name());
+
+            if(partObj == null) partObj = particle.getEnum("FLAME");
+
+            return toNMS.invoke(null, partObj);
+        }
+    }
+
+    static {
+        if(ProtocolVersion.getGameVersion().isOrAbove(ProtocolVersion.V1_9)) {
+            particle = Reflections.getClass("org.bukkit.Particle");
+            craftParticle = Reflections.getCBClass("CraftParticle");
+            toNMS = craftParticle.getMethod("toNMS", particle.getParent());
+        }
     }
 }

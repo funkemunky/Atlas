@@ -51,39 +51,16 @@ public class DynamicPane implements CollisionFactory {
         if (!isPane(target)&&DynamicFence.isBlacklisted(target))
             return false;
 
-        switch (target) {
-            case ACACIA_STAIRS:
-            case SANDSTONE_STAIRS:
-            case SMOOTH_STAIRS:
-            case SPRUCE_WOOD_STAIRS:
-            case BIRCH_WOOD_STAIRS:
-            case BRICK_STAIRS:
-            case COBBLESTONE_STAIRS:
-            case DARK_OAK_STAIRS:
-            case JUNGLE_WOOD_STAIRS:
-            case QUARTZ_STAIRS:
-            case RED_SANDSTONE_STAIRS:
-            case WOOD_STAIRS:
-            case NETHER_BRICK_STAIRS: {
-                if (v.isBelow(ProtocolVersion.V1_12)) return false;
-                Stairs stairs = (Stairs) sTarget.getData();
-                return stairs.getFacing() == direction;
-            }
-            default: {
-                return isPane(target) || (target.isSolid() && !target.isTransparent());
-            }
-        }
+        if(target.name().contains("STAIRS")) {
+            if (v.isBelow(ProtocolVersion.V1_12)) return false;
+            Stairs stairs = (Stairs) sTarget.getData();
+            return stairs.getFacing() == direction;
+        } else return isPane(target) || (target.isSolid() && !target.isTransparent());
     }
 
-    public static boolean isPane(Material m) {
-        switch (m) {
-            case THIN_GLASS:
-            case STAINED_GLASS_PANE:
-            case IRON_FENCE:
-                return true;
-            default:
-                return false;
-        }
+    private static boolean isPane(Material m) {
+        int id = m.getId();
+        return id == 101 || id == 102 || id == 160;
     }
 
 }

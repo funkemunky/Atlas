@@ -1,4 +1,4 @@
-package cc.funkemunky.api.reflection;
+package cc.funkemunky.api.reflections.impl;
 
 import cc.funkemunky.api.reflections.types.WrappedField;
 import org.bukkit.Chunk;

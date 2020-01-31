@@ -1,9 +1,14 @@
 package cc.funkemunky.api.utils;
 
+import cc.funkemunky.api.reflections.types.WrappedClass;
+import cc.funkemunky.api.reflections.types.WrappedField;
 import org.bukkit.Material;
 
+import java.util.Arrays;
+import java.util.List;
+
 public class Materials {
-    private static final int[] MATERIAL_FLAGS = new int[256];
+    private static final int[] MATERIAL_FLAGS = new int[2276];
 
     public static final int SOLID  = 0b00000000000000000000000000001;
     public static final int LADDER = 0b00000000000000000000000000010;
@@ -17,62 +22,69 @@ public class Materials {
     public static final int FENCE  = 0b00000000000000000000100000000;
 
     static {
-        for (int i = 0; i < MATERIAL_FLAGS.length; i++) {
-            Material material = Material.values()[i];
+        WrappedClass materialClass = new WrappedClass(Material.class);
+
+        Material[] array = materialClass
+                .getFields(field -> field.getType().equals(Material.class) && field.isAnnotationPresent(Deprecated.class))
+                .stream().map(field -> (Material)field.get(null)
+                ).toArray(Material[]::new);
+        System.out.println("size: " + array.length);
+        for (int i = 0; i < array.length; i++) {
+            Material material = array[i];
 
             if (material.isSolid()) {
-                MATERIAL_FLAGS[i] |= SOLID;
+                MATERIAL_FLAGS[material.getId()] |= SOLID;
             }
 
             if (material.name().endsWith("_STAIRS")) {
-                MATERIAL_FLAGS[i] |= STAIRS;
+                MATERIAL_FLAGS[material.getId()] |= STAIRS;
             }
 
             if (material.name().contains("SLAB") || material.name().contains("STEP")) {
-                MATERIAL_FLAGS[i] |= SLABS;
+                MATERIAL_FLAGS[material.getId()] |= SLABS;
             }
         }
 
         // fix some types where isSolid() returns the wrong value
-        MATERIAL_FLAGS[Material.SIGN_POST.getId()] = 0;
-        MATERIAL_FLAGS[Material.WALL_SIGN.getId()] = 0;
-        MATERIAL_FLAGS[Material.GOLD_PLATE.getId()] = 0;
-        MATERIAL_FLAGS[Material.IRON_PLATE.getId()] = 0;
-        MATERIAL_FLAGS[Material.WOOD_PLATE.getId()] = 0;
-        MATERIAL_FLAGS[Material.STONE_PLATE.getId()] = 0;
+        MATERIAL_FLAGS[63] = 0; //SIGN_POST
+        MATERIAL_FLAGS[68] = 0; //WALL_SIGN
+        MATERIAL_FLAGS[147] = 0; //IRON_PLATE
+        MATERIAL_FLAGS[148] = 0; //GOLD_PLATE
+        MATERIAL_FLAGS[72] = 0; //WOOD_PLATE
+        MATERIAL_FLAGS[70] = 0; //STONE_PLATE
         MATERIAL_FLAGS[165] = SOLID;
-        MATERIAL_FLAGS[Material.DIODE_BLOCK_OFF.getId()] = SOLID;
-        MATERIAL_FLAGS[Material.DIODE_BLOCK_ON.getId()] = SOLID;
-        MATERIAL_FLAGS[Material.CARPET.getId()] = SOLID;
-        MATERIAL_FLAGS[Material.SNOW.getId()] = SOLID;
-        MATERIAL_FLAGS[Material.ANVIL.getId()] = SOLID;
-        MATERIAL_FLAGS[Material.WATER_LILY.getId()] = SOLID;
-        MATERIAL_FLAGS[Material.SKULL.getId()] = SOLID;
+        MATERIAL_FLAGS[93] = SOLID; //DIODE_BLOCK_OFF
+        MATERIAL_FLAGS[94] = SOLID; //DIODE_BLOCK_On
+        MATERIAL_FLAGS[171] = SOLID; //CARPET
+        MATERIAL_FLAGS[78] = SOLID; //SNOW
+        MATERIAL_FLAGS[145] = SOLID; //ANVIL
+        MATERIAL_FLAGS[111] = SOLID; //WATER_LILY
+        MATERIAL_FLAGS[144] = SOLID; //SKULL
 
         // liquids
-        MATERIAL_FLAGS[Material.WATER.getId()] |= LIQUID | WATER;
-        MATERIAL_FLAGS[Material.STATIONARY_WATER.getId()] |= LIQUID | WATER;
-        MATERIAL_FLAGS[Material.LAVA.getId()] |= LIQUID | LAVA;
-        MATERIAL_FLAGS[Material.STATIONARY_LAVA.getId()] |= LIQUID | LAVA;
+        MATERIAL_FLAGS[8] |= LIQUID | WATER; //WATER
+        MATERIAL_FLAGS[9] |= LIQUID | WATER; //STATIONARY_WATER
+        MATERIAL_FLAGS[10] |= LIQUID | LAVA; //LAVA
+        MATERIAL_FLAGS[11] |= LIQUID | LAVA; //STATIONARY_LAVA
 
         // ladders
-        MATERIAL_FLAGS[Material.LADDER.getId()] |= LADDER | SOLID;
-        MATERIAL_FLAGS[Material.VINE.getId()] |= LADDER | SOLID;
+        MATERIAL_FLAGS[65] |= LADDER | SOLID; //LADDER
+        MATERIAL_FLAGS[106] |= LADDER | SOLID; //VINE
 
         // walls
-        MATERIAL_FLAGS[Material.FENCE.getId()] |= WALL;
-        MATERIAL_FLAGS[Material.FENCE_GATE.getId()] |= WALL;
-        MATERIAL_FLAGS[Material.COBBLE_WALL.getId()] |= WALL;
-        MATERIAL_FLAGS[Material.NETHER_FENCE.getId()] |= WALL;
+        MATERIAL_FLAGS[85] |= WALL; //FENCE
+        MATERIAL_FLAGS[107] |= WALL; //FENCE_GATE
+        MATERIAL_FLAGS[139] |= WALL; //COBBLE_WALL
+        MATERIAL_FLAGS[113] |= WALL; //NETHER_FENCE
 
         // slabs
-        MATERIAL_FLAGS[Material.BED_BLOCK.getId()] |= SLABS;
+        MATERIAL_FLAGS[26] |= SLABS; //BED_BLOCK
 
         // ice
-        MATERIAL_FLAGS[Material.ICE.getId()] |= ICE;
-        MATERIAL_FLAGS[Material.PACKED_ICE.getId()] |= ICE;
+        MATERIAL_FLAGS[79] |= ICE; //ICE
+        MATERIAL_FLAGS[174] |= ICE; //PACKED_ICE
 
-        for (Material mat : Material.values()) {
+        for (Material mat : array) {
         	if (mat.name().contains("FENCE")) MATERIAL_FLAGS[mat.getId()] |= FENCE;
 	    }
     }
@@ -95,5 +107,4 @@ public class Materials {
                 || nameLower.contains("sword")
                 || nameLower.contains("trident");
     }
-
 }

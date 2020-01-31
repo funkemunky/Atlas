@@ -1,4 +1,4 @@
-package cc.funkemunky.api.reflection;
+package cc.funkemunky.api.reflections.impl;
 
 import cc.funkemunky.api.reflections.Reflections;
 import cc.funkemunky.api.reflections.types.WrappedClass;
@@ -233,7 +233,7 @@ public class MinecraftReflection {
                             return aabbList;
                         }).forEach(aabbs::addAll);
 
-               boxes = aabbs.stream().map(MinecraftReflection::fromAABB).collect(Collectors.toList());
+                boxes = aabbs.stream().map(MinecraftReflection::fromAABB).collect(Collectors.toList());
             }
         }
         return boxes;
@@ -273,7 +273,7 @@ public class MinecraftReflection {
                             (double)box.maxX, (double)box.maxY, (double)box.maxZ);
         } else return aabbConstructor
                 .newInstance((double)box.minX, (double)box.minY, (double)box.minZ,
-                (double)box.maxX, (double)box.maxY, (double)box.maxZ);
+                        (double)box.maxX, (double)box.maxY, (double)box.maxZ);
     }
 
     //Either bukkit or vanilla world object can be used.

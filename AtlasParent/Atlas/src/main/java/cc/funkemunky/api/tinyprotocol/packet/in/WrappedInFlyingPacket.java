@@ -21,6 +21,8 @@ public class WrappedInFlyingPacket extends NMSObject {
     private static FieldAccessor<Float> fieldYaw = fetchField(packet, float.class, 0);
     private static FieldAccessor<Float> fieldPitch = fetchField(packet, float.class, 1);
     private static FieldAccessor<Boolean> fieldGround = fetchField(packet, boolean.class, 0);
+    private static FieldAccessor<Boolean> hasPos = fetchField(packet, boolean.class, 1);
+    private static FieldAccessor<Boolean> hasLook = fetchField(packet, boolean.class, 2);
 
     // Decoded data
     private double x, y, z;
@@ -33,20 +35,13 @@ public class WrappedInFlyingPacket extends NMSObject {
 
     @Override
     public void process(Player player, ProtocolVersion version) {
-        String name = getPacketName();
-        // This saves up 2 reflection calls
-        pos = name.contains("Position");
-        look = name.contains("Look");
-
-        if (pos) {
-            x = fetch(fieldX);
-            y = fetch(fieldY);
-            z = fetch(fieldZ);
-        }
-        if (look) {
-            yaw = fetch(fieldYaw);
-            pitch = fetch(fieldPitch);
-        }
+        x = fetch(fieldX);
+        y = fetch(fieldY);
+        z = fetch(fieldZ);
+        yaw = fetch(fieldYaw);
+        pitch = fetch(fieldPitch);
         ground = fetch(fieldGround);
+        pos = fetch(hasPos);
+        look = fetch(hasLook);
     }
 }
