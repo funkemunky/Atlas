@@ -1,5 +1,6 @@
 package cc.funkemunky.api.utils;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 
 public class Materials {
@@ -34,58 +35,46 @@ public class Materials {
         }
 
         // fix some types where isSolid() returns the wrong value
-        MATERIAL_FLAGS[MiscUtils.match("SIGN_POST").getId()] = 0;
-        MATERIAL_FLAGS[Material.WALL_SIGN.getId()] = 0;
-        MATERIAL_FLAGS[MiscUtils.match("GOLD_PLATE").getId()] = 0;
-        MATERIAL_FLAGS[MiscUtils.match("IRON_PLATE").getId()] = 0;
-        MATERIAL_FLAGS[MiscUtils.match("WOOD_PLATE").getId()] = 0;
-        MATERIAL_FLAGS[MiscUtils.match("STONE_PLATE").getId()] = 0;
-        MATERIAL_FLAGS[165] = SOLID;
-        MATERIAL_FLAGS[MiscUtils.match("DIODE_BLOCK_OFF").getId()] = SOLID;
-        MATERIAL_FLAGS[MiscUtils.match("DIODE_BLOCK_ON").getId()] = SOLID;
-        MATERIAL_FLAGS[MiscUtils.match("CARPET").getId()] = SOLID;
-        MATERIAL_FLAGS[Material.SNOW.getId()] = SOLID;
-        MATERIAL_FLAGS[Material.ANVIL.getId()] = SOLID;
-        MATERIAL_FLAGS[MiscUtils.match("WATER_LILY").getId()] = SOLID;
-        MATERIAL_FLAGS[MiscUtils.match("SKULL").getId()] = SOLID;
+        MATERIAL_FLAGS[XMaterial.SLIME_BLOCK.parseMaterial().ordinal()] = SOLID;
+        MATERIAL_FLAGS[XMaterial.COMPARATOR.parseMaterial().ordinal()] = SOLID;
+        MATERIAL_FLAGS[XMaterial.REPEATER.parseMaterial().ordinal()] = SOLID;
+        MATERIAL_FLAGS[XMaterial.SNOW.parseMaterial().ordinal()] = SOLID;
+        MATERIAL_FLAGS[XMaterial.ANVIL.parseMaterial().ordinal()] = SOLID;
+        MATERIAL_FLAGS[XMaterial.LILY_PAD.parseMaterial().ordinal()] = SOLID;
+        MATERIAL_FLAGS[XMaterial.SKELETON_SKULL.parseMaterial().ordinal()] = SOLID;
+        MATERIAL_FLAGS[XMaterial.SKELETON_WALL_SKULL.parseMaterial().ordinal()] = SOLID;
+        MATERIAL_FLAGS[XMaterial.WITHER_SKELETON_SKULL.parseMaterial().ordinal()] = SOLID;
+        MATERIAL_FLAGS[XMaterial.WITHER_SKELETON_WALL_SKULL.parseMaterial().ordinal()] = SOLID;
 
         // liquids
-        MATERIAL_FLAGS[Material.WATER.getId()] |= LIQUID | WATER;
-        MATERIAL_FLAGS[MiscUtils.match("STATIONARY_WATER").getId()] |= LIQUID | WATER;
-        MATERIAL_FLAGS[Material.LAVA.getId()] |= LIQUID | LAVA;
-        MATERIAL_FLAGS[MiscUtils.match("STATIONARY_LAVA").getId()] |= LIQUID | LAVA;
+        MATERIAL_FLAGS[XMaterial.WATER.ordinal()] |= LIQUID | WATER;
+        MATERIAL_FLAGS[XMaterial.LAVA.ordinal()] |= LIQUID | LAVA;
 
         // ladders
-        MATERIAL_FLAGS[Material.LADDER.getId()] |= LADDER | SOLID;
-        MATERIAL_FLAGS[Material.VINE.getId()] |= LADDER | SOLID;
-
-        // walls
-        MATERIAL_FLAGS[MiscUtils.match("FENCE").getId()] |= WALL;
-        MATERIAL_FLAGS[MiscUtils.match("FENCE_GATE").getId()] |= WALL;
-        MATERIAL_FLAGS[MiscUtils.match("COBBLE_WALL").getId()] |= WALL;
-        MATERIAL_FLAGS[MiscUtils.match("NETHER_FENCE").getId()] |= WALL;
-
-        // slabs
-        MATERIAL_FLAGS[MiscUtils.match("BED_BLOCK").getId()] |= SLABS;
-
-        // ice
-        MATERIAL_FLAGS[Material.ICE.getId()] |= ICE;
-        MATERIAL_FLAGS[Material.PACKED_ICE.getId()] |= ICE;
+        MATERIAL_FLAGS[XMaterial.LADDER.parseMaterial().ordinal()] |= LADDER | SOLID;
+        MATERIAL_FLAGS[XMaterial.VINE.parseMaterial().ordinal()] |= LADDER | SOLID;
 
         for (Material mat : Material.values()) {
-            if (mat.name().contains("FENCE")) MATERIAL_FLAGS[mat.getId()] |= FENCE;
+            if (mat.name().contains("FENCE")) {
+                if(!mat.name().contains("GATE")) MATERIAL_FLAGS[mat.ordinal()] |= FENCE | WALL;
+                else MATERIAL_FLAGS[mat.ordinal()] |= WALL;
+            }
+            if(mat.name().contains("WALL")) MATERIAL_FLAGS[mat.ordinal()] |= WALL;
+            if(mat.name().contains("PLATE")) MATERIAL_FLAGS[mat.ordinal()] = 0;
+            if(mat.name().contains("BED")) MATERIAL_FLAGS[mat.ordinal()]  |= SLABS;
+            if(mat.name().contains("ICE")) MATERIAL_FLAGS[mat.ordinal()] |= ICE;
         }
     }
 
     public static int getBitmask(Material material) {
-        return MATERIAL_FLAGS[material.getId()];
+        return MATERIAL_FLAGS[material.ordinal()];
     }
 
     private Materials() {
     }
 
     public static boolean checkFlag(Material material, int flag) {
-        return (MATERIAL_FLAGS[material.getId()] & flag) == flag;
+        return (MATERIAL_FLAGS[material.ordinal()] & flag) == flag;
     }
 
     public static boolean isUsable(Material material) {

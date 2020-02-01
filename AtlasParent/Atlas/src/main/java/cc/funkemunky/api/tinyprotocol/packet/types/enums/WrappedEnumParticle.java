@@ -6,7 +6,6 @@ import cc.funkemunky.api.reflections.types.WrappedMethod;
 import cc.funkemunky.api.tinyprotocol.api.ProtocolVersion;
 import lombok.Getter;
 import org.bukkit.Particle;
-import org.bukkit.material.MaterialData;
 
 import java.util.Arrays;
 

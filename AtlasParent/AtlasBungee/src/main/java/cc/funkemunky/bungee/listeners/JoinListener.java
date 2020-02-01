@@ -4,9 +4,6 @@ import cc.funkemunky.bungee.AtlasBungee;
 import cc.funkemunky.bungee.data.ModData;
 import cc.funkemunky.bungee.data.user.User;
 import cc.funkemunky.bungee.utils.asm.Init;
-import cc.funkemunky.bungee.utils.reflection.Reflections;
-import cc.funkemunky.bungee.utils.reflection.types.WrappedClass;
-import lombok.val;
 import net.md_5.bungee.BungeeCord;
 import net.md_5.bungee.UserConnection;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
@@ -55,7 +52,6 @@ public class JoinListener implements Listener {
 
                 if(user != null) {
                     user.modData = new ModData(event.getPlayer().getModList());
-                    System.out.println("set mods");
                 }
             }
         }, 1, TimeUnit.SECONDS);

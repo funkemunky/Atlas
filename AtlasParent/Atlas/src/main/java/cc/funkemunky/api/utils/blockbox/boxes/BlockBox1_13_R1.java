@@ -1,8 +1,6 @@
 package cc.funkemunky.api.utils.blockbox.boxes;
 
 import cc.funkemunky.api.reflections.impl.MinecraftReflection;
-import cc.funkemunky.api.tinyprotocol.reflection.MethodInvoker;
-import cc.funkemunky.api.tinyprotocol.reflection.Reflection;
 import cc.funkemunky.api.utils.BoundingBox;
 import cc.funkemunky.api.utils.blockbox.BlockBox;
 import net.minecraft.server.v1_13_R1.*;

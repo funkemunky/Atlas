@@ -6,7 +6,6 @@ import cc.funkemunky.api.utils.Color;
 import cc.funkemunky.api.utils.JsonMessage;
 import cc.funkemunky.api.utils.MathUtils;
 import cc.funkemunky.api.utils.MiscUtils;
-import jdk.internal.org.objectweb.asm.tree.TableSwitchInsnNode;
 import lombok.Getter;
 import lombok.val;
 import org.bukkit.command.CommandExecutor;

@@ -1,7 +1,6 @@
 package cc.funkemunky.api.utils;
 
 import cc.funkemunky.api.Atlas;
-import cc.funkemunky.api.reflections.types.WrappedClass;
 import cc.funkemunky.api.tinyprotocol.api.ProtocolVersion;
 import cc.funkemunky.api.tinyprotocol.api.TinyProtocolHandler;
 import cc.funkemunky.api.tinyprotocol.packet.out.WrappedPacketPlayOutWorldParticle;
@@ -85,8 +84,14 @@ public class MiscUtils {
 
     public static Material match(String material) {
         if(ProtocolVersion.getGameVersion().isOrAbove(ProtocolVersion.V1_13)) {
-            return Material.matchMaterial(material, true);
-        } return Material.matchMaterial(material);
+            return Material.matchMaterial(material, material.contains("LEGACY_"));
+        } return Material.matchMaterial(material.replace("LEGACY_", ""));
+    }
+
+    public static <T> List<T> combine(List<T> one, List<T> two) {
+        one.addAll(two);
+
+        return one;
     }
 
     public static String trimEnd(String string) {
@@ -190,8 +195,6 @@ public class MiscUtils {
                         Object packet = new WrappedPacketPlayOutWorldParticle(particle, true, fx, fy, fz,
                                 0F, 0F, 0F, 0, 1).getObject();
                         for (Player p : players) {
-                            if(p == null) Bukkit.broadcastMessage("player null");
-                            if(packet == null) Bukkit.broadcastMessage("packet null");
                             TinyProtocolHandler.sendPacket(p, packet);
                         }
                     }

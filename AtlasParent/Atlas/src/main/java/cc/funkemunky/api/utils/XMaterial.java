@@ -22,12 +22,13 @@
 **/
 
 package cc.funkemunky.api.utils;
- 
-import java.util.HashMap;
- 
+
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
- 
+
+import java.util.HashMap;
+import java.util.Map;
+
 public enum XMaterial {
     ACACIA_BOAT(0, "BOAT_ACACIA"),
     ACACIA_BUTTON(0, "WOOD_BUTTON"),
@@ -79,7 +80,7 @@ public enum XMaterial {
     BIRCH_TRAPDOOR(0, "TRAP_DOOR"),
     BIRCH_WOOD(2, "LOG"),
     BLACK_BANNER(0, "BANNER", "STANDING_BANNER"),
-    BLACK_BED(15, "BED", "BED_BLOCK"),
+    BLACK_BED(15, "BED_BLOCK", "BED"),
     BLACK_CARPET(15, "CARPET"),
     BLACK_CONCRETE(15, "CONCRETE"),
     BLACK_CONCRETE_POWDER(15, "CONCRETE_POWDER"),
@@ -94,7 +95,7 @@ public enum XMaterial {
     BLAZE_ROD(0, "BLAZE_ROD"),
     BLAZE_SPAWN_EGG(0, "MONSTER_EGG"),
     BLUE_BANNER(11, "BANNER", "STANDING_BANNER"),
-    BLUE_BED(4, "BED", "BED_BLOCK"),
+    BLUE_BED(4, "BED_BLOCK", "BED"),
     BLUE_CARPET(11, "CARPET"),
     BLUE_CONCRETE(11, "CONCRETE"),
     BLUE_CONCRETE_POWDER(11, "CONCRETE_POWDER"),
@@ -124,7 +125,7 @@ public enum XMaterial {
     BRICK_SLAB(4, "STEP"),
     BRICK_STAIRS(0, "BRICK_STAIRS"),
     BROWN_BANNER(3, "BANNER", "STANDING_BANNER"),
-    BROWN_BED(12, "BED", "BED_BLOCK"),
+    BROWN_BED(12, "BED_BLOCK", "BED"),
     BROWN_CARPET(12, "CARPET"),
     BROWN_CONCRETE(12, "CONCRETE"),
     BROWN_CONCRETE_POWDER(12, "CONCRETE_POWDER"),
@@ -209,7 +210,7 @@ public enum XMaterial {
     CUT_RED_SANDSTONE(0, "STONE"),
     CUT_SANDSTONE(0, "STONE"),
     CYAN_BANNER(6, "BANNER", "STANDING_BANNER"),
-    CYAN_BED(9, "BED", "BED_BLOCK"),
+    CYAN_BED(9, "BED_BLOCK", "BED"),
     CYAN_CARPET(9, "CARPET"),
     CYAN_CONCRETE(9, "CONCRETE"),
     CYAN_CONCRETE_POWDER(9, "CONCRETE_POWDER"),
@@ -242,6 +243,7 @@ public enum XMaterial {
     DARK_PRISMARINE_SLAB(0, "STONE"),
     DARK_PRISMARINE_STAIRS(0, "STONE"),
     DAYLIGHT_DETECTOR(0, "DAYLIGHT_DETECTOR", "DAYLIGHT_DETECTOR_INVERTED"),
+    DAYLIGHT_DETECTOR_INVERTED(0, "DAYLIGHT_DETECTOR_INVERTED"),
     DEAD_BRAIN_CORAL_BLOCK(0, "STONE"),
     DEAD_BUBBLE_CORAL_BLOCK(0, "STONE"),
     DEAD_BUSH(0, "DEAD_BUSH"),
@@ -348,7 +350,7 @@ public enum XMaterial {
     GRASS_PATH(0, "GRASS_PATH"),
     GRAVEL(0, "GRAVEL"),
     GRAY_BANNER(8, "BANNER", "STANDING_BANNER"),
-    GRAY_BED(7, "BED", "BED_BLOCK"),
+    GRAY_BED(7, "BED_BLOCK", "BED"),
     GRAY_CARPET(7, "CARPET"),
     GRAY_CONCRETE(7, "CONCRETE"),
     GRAY_CONCRETE_POWDER(7, "CONCRETE_POWDER"),
@@ -361,7 +363,7 @@ public enum XMaterial {
     GRAY_WALL_BANNER(0, "WALL_BANNER"),
     GRAY_WOOL(7, "WOOL"),
     GREEN_BANNER(2, "BANNER", "STANDING_BANNER"),
-    GREEN_BED(13, "BED", "BED_BLOCK"),
+    GREEN_BED(13, "BED_BLOCK", "BED"),
     GREEN_CARPET(13, "CARPET"),
     GREEN_CONCRETE(13, "CONCRETE"),
     GREEN_CONCRETE_POWDER(13, "CONCRETE_POWDER"),
@@ -444,7 +446,7 @@ public enum XMaterial {
     LEATHER_LEGGINGS(0, "LEATHER_LEGGINGS"),
     LEVER(0, "LEVER"),
     LIGHT_BLUE_BANNER(12, "BANNER", "STANDING_BANNER"),
-    LIGHT_BLUE_BED(3, "BED", "BED_BLOCK"),
+    LIGHT_BLUE_BED(3, "BED_BLOCK", "BED"),
     LIGHT_BLUE_CARPET(3, "CARPET"),
     LIGHT_BLUE_CONCRETE(3, "CONCRETE"),
     LIGHT_BLUE_CONCRETE_POWDER(3, "CONCRETE_POWDER"),
@@ -457,7 +459,7 @@ public enum XMaterial {
     LIGHT_BLUE_WALL_BANNER(0, "BANNER", "STANDING_BANNER"),
     LIGHT_BLUE_WOOL(3, "WOOL"),
     LIGHT_GRAY_BANNER(7, "BANNER", "STANDING_BANNER"),
-    LIGHT_GRAY_BED(8, "BED", "BED_BLOCK"),
+    LIGHT_GRAY_BED(8, "BED_BLOCK", "BED"),
     LIGHT_GRAY_CARPET(8, "CARPET"),
     LIGHT_GRAY_CONCRETE(8, "CONCRETE"),
     LIGHT_GRAY_CONCRETE_POWDER(8, "CONCRETE_POWDER"),
@@ -473,7 +475,7 @@ public enum XMaterial {
     LILAC(1, "DOUBLE_PLANT"),
     LILY_PAD(0, "WATER_LILY"),
     LIME_BANNER(10, "BANNER", "STANDING_BANNER"),
-    LIME_BED(5, "BED", "BED_BLOCK"),
+    LIME_BED(5, "BED_BLOCK", "BED"),
     LIME_CARPET(5, "CARPET"),
     LIME_CONCRETE(5, "CONCRETE"),
     LIME_CONCRETE_POWDER(5, "CONCRETE_POWDER"),
@@ -488,7 +490,7 @@ public enum XMaterial {
     LINGERING_POTION(0, "LINGERING_POTION"),
     LLAMA_SPAWN_EGG(0, "MONSTER_EGG"),
     MAGENTA_BANNER(13, "BANNER", "STANDING_BANNER"),
-    MAGENTA_BED(2, "BED", "BED_BLOCK"),
+    MAGENTA_BED(2, "BED_BLOCK", "BED"),
     MAGENTA_CARPET(2, "CARPET"),
     MAGENTA_CONCRETE(2, "CONCRETE"),
     MAGENTA_CONCRETE_POWDER(2, "CONCRETE_POWDER"),
@@ -503,7 +505,7 @@ public enum XMaterial {
     MAGMA_BLOCK(0, "MAGMA"),
     MAGMA_CREAM(0, "MAGMA_CREAM"),
     MAGMA_CUBE_SPAWN_EGG(0, "MONSTER_EGG"),
-    MAP(0, "MAP", "EMPTY_MAP"),
+    MAP(0, "EMPTY_MAP", "MAP"),
     MELON(0, "MELON_BLOCK"),
     MELON_SEEDS(0, "MELON_SEEDS"),
     MELON_SLICE(0, "MELON"),
@@ -564,7 +566,7 @@ public enum XMaterial {
     OBSIDIAN(0, "OBSIDIAN"),
     OCELOT_SPAWN_EGG(0, "RECORD_12"),
     ORANGE_BANNER(14, "BANNER", "STANDING_BANNER"),
-    ORANGE_BED(1, "BED", "BED_BLOCK"),
+    ORANGE_BED(1, "BED_BLOCK", "BED"),
     ORANGE_CARPET(1, "CARPET"),
     ORANGE_CONCRETE(1, "CONCRETE"),
     ORANGE_CONCRETE_POWDER(1, "CONCRETE_POWDER"),
@@ -588,7 +590,7 @@ public enum XMaterial {
     PHANTOM_SPAWN_EGG(0, "MONSTER_EGG"),
     PIG_SPAWN_EGG(0, "MONSTER_EGG"),
     PINK_BANNER(9, "BANNER", "STANDING_BANNER"),
-    PINK_BED(6, "BED", "BED_BLOCK"),
+    PINK_BED(6, "BED_BLOCK", "BED"),
     PINK_CARPET(6, "CARPET"),
     PINK_CONCRETE(6, "CONCRETE"),
     PINK_CONCRETE_POWDER(6, "CONCRETE_POWDER"),
@@ -655,7 +657,7 @@ public enum XMaterial {
     PUMPKIN_SEEDS(0, "PUMPKIN_SEEDS"),
     PUMPKIN_STEM(0, "PUMPKIN_STEM"),
     PURPLE_BANNER(5, "BANNER", "STANDING_BANNER"),
-    PURPLE_BED(10, "BED", "BED_BLOCK"),
+    PURPLE_BED(10, "BED_BLOCK", "BED"),
     PURPLE_CARPET(10, "CARPET"),
     PURPLE_CONCRETE(10, "CONCRETE"),
     PURPLE_CONCRETE_POWDER(10, "CONCRETE_POWDER"),
@@ -690,7 +692,7 @@ public enum XMaterial {
     REDSTONE_WALL_TORCH(1, "REDSTONE_TORCH_ON", "REDSTONE_TORCH_OFF"),
     REDSTONE_WIRE(0, "REDSTONE_WIRE"),
     RED_BANNER(1, "BANNER", "STANDING_BANNER"),
-    RED_BED(14, "BED", "BED_BLOCK"),
+    RED_BED(14, "BED_BLOCK", "BED"),
     RED_CARPET(14, "CARPET"),
     RED_CONCRETE(14, "CONCRETE"),
     RED_CONCRETE_POWDER(14, "CONCRETE_POWDER"),
@@ -837,7 +839,7 @@ public enum XMaterial {
     WHEAT(0, "WHEAT", "CROPS"),
     WHEAT_SEEDS(0, "WHEAT_SEEDS", "SEEDS"),
     WHITE_BANNER(15, "BANNER", "STANDING_BANNER"),
-    WHITE_BED(0, "BED", "BED_BLOCK"),
+    WHITE_BED(0, "BED_BLOCK", "BED"),
     WHITE_CARPET(0, "CARPET"),
     WHITE_CONCRETE(0, "CONCRETE"),
     WHITE_CONCRETE_POWDER(0, "CONCRETE_POWDER"),
@@ -862,7 +864,7 @@ public enum XMaterial {
     WRITABLE_BOOK(0, "BOOK_AND_QUILL"),
     WRITTEN_BOOK(0, "WRITTEN_BOOK"),
     YELLOW_BANNER(11, "BANNER", "STANDING_BANNER"),
-    YELLOW_BED(4, "BED", "BED_BLOCK"),
+    YELLOW_BED(4, "BED_BLOCK", "BED"),
     YELLOW_CARPET(4, "CARPET"),
     YELLOW_CONCRETE(4, "CONCRETE"),
     YELLOW_CONCRETE_POWDER(4, "CONCRETE_POWDER"),
@@ -880,11 +882,11 @@ public enum XMaterial {
     ZOMBIE_VILLAGER_SPAWN_EGG(0, "MONSTER_EGG"),
     ZOMBIE_WALL_HEAD(0, "SKULL","SKULL_ITEM"),
     ;
-    String[] m;
-    int data;
+    public final String[] names;
+    public final int data;
    
-    XMaterial(int data, String... m){
-        this.m = m;
+    XMaterial(int data, String... names){
+        this.names = names;
         this.data = data;
     }
    
@@ -897,19 +899,18 @@ public enum XMaterial {
     }
     public static boolean isNewVersion(){
         Material mat = Material.getMaterial("RED_WOOL");
-        if(mat != null){
-            return true;
-        }
-        return false;
+        return mat != null;
     }
    
-    private static HashMap<String, XMaterial> cachedSearch = new HashMap<>();
+    private static Map<String, XMaterial> cachedSearch = new HashMap<>();
+    private static Map<XMaterial, Material> cachedParse = new HashMap<>();
+
     public static XMaterial requestXMaterial(String name, byte data){
         if(cachedSearch.containsKey(name.toUpperCase()+","+data)){
             return cachedSearch.get(name.toUpperCase()+","+data);
         }
         for(XMaterial mat:XMaterial.values()){
-            for(String test:mat.m){
+            for(String test:mat.names){
                 if(name.toUpperCase().equals(test) && ((byte)mat.data) == data){
                     cachedSearch.put(test+","+data,mat);
                     return mat;
@@ -941,7 +942,7 @@ public enum XMaterial {
             return XMaterial.valueOf(mat.toString());
         }catch(IllegalArgumentException e){
             for(XMaterial xmat:XMaterial.values()){
-                for(String test:xmat.m){
+                for(String test:xmat.names){
                     if(test.equalsIgnoreCase(mat.toString())){
                         return xmat;
                     }
@@ -972,46 +973,41 @@ public enum XMaterial {
         if(type == null) return false;
         String[] split = type.toString().split("_");
         int length = split.length;
-        switch(split[length-1]){
-        case "HELMET":
-            return true;
-        case "CHESTPLATE":
-            return true;
-        case "LEGGINGS":
-            return true;
-        case "BOOTS":
-            return true;
-        case "SWORD":
-            return true;
-        case "AXE":
-            return true;
-        case "PICKAXE":
-            return true;
-        case "SHOVEL":
-            return true;
-        case "HOE":
-            return true;
-        case "ELYTRA":
-            return true;
-        case "TURTLE_HELMET":
-            return true;
-        case "TRIDENT":
-            return true;
-        case "HORSE_ARMOR":
-            return true;
-        case "SHEARS":
-            return true;
-        default:
-            return false;
+        switch(split[length-1]) {
+            case "HELMET":
+            case "CHESTPLATE":
+            case "LEGGINGS":
+            case "BOOTS":
+            case "SWORD":
+            case "AXE":
+            case "PICKAXE":
+            case "SHOVEL":
+            case "HOE":
+            case "ELYTRA":
+            case "TURTLE_HELMET":
+            case "TRIDENT":
+            case "HORSE_ARMOR":
+            case "SHEARS":
+                return true;
+            default:
+                return false;
         }
     }
    
-    public Material parseMaterial(){
-        Material mat = Material.matchMaterial(this.toString());
-        if(mat != null){
+    public Material parseMaterial() {
+        return cachedParse.computeIfAbsent(this, key -> {
+            Material mat = MiscUtils.match(this.toString());
+            if(mat == null) {
+                for(int i = 0 ; i < names.length ; i++) {
+                    if((mat = MiscUtils.match(names[i])) != null) break;
+                }
+            }
+
+            if(mat != null) {
+                cachedParse.put(key, mat);
+            }
             return mat;
-        }
-        return Material.matchMaterial(m[0]);
+        });
     }
    
 }

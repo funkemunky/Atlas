@@ -151,7 +151,6 @@ public class WrappedClass {
                 return new WrappedMethod(this, method);
             }
         }
-        System.out.println("Shit didnt get: " + type.getName());
         throw new NullPointerException("Could not find method with return type " + type.getSimpleName()
                 + " at index " + index);
     }

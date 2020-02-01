@@ -23,6 +23,8 @@ public class PacketListeners implements AtlasListener {
             case Packet.Client.LOOK: {
                 WrappedInFlyingPacket packet = new WrappedInFlyingPacket
                         (event.getPacket(), event.getPlayer());
+
+                System.out.println("flying: " + packet.isGround() + ", " + packet.isPos() + ", " + packet.isLook());
                 break;
             }
             case Packet.Client.STEER_VEHICLE: {

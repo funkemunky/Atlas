@@ -1,5 +1,6 @@
 package cc.funkemunky.api.utils;
 
+import cc.funkemunky.api.utils.XMaterial;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Color;
@@ -12,7 +13,9 @@ import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.material.MaterialData;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * This is a chainable builder for {@link ItemStack}s in {@link Bukkit} <br>
@@ -73,7 +76,7 @@ public class ItemBuilder {
     public ItemBuilder owner(String name) {
         final SkullMeta meta = (SkullMeta) is.getItemMeta();
         meta.setOwner(name);
-        is.setItemMeta((ItemMeta) meta);
+        is.setItemMeta(meta);
         return this;
     }
 
@@ -98,11 +101,8 @@ public class ItemBuilder {
 
     public ItemBuilder lore(String... lore) {
         ItemMeta meta = is.getItemMeta();
-        List<String> lores = new ArrayList<>();
-        for (final String s : lore) {
-            lores.add(ChatColor.translateAlternateColorCodes('&', s));
-        }
-        meta.setLore((List) lores);
+        List<String> lores = Arrays.stream(lore).map(s -> ChatColor.translateAlternateColorCodes('&', s)).collect(Collectors.toList());
+        meta.setLore(lores);
         is.setItemMeta(meta);
         return this;
     }
@@ -191,7 +191,7 @@ public class ItemBuilder {
      */
     public ItemBuilder clearLore() {
         ItemMeta meta = is.getItemMeta();
-        meta.setLore(new ArrayList<String>());
+        meta.setLore(new ArrayList<>());
         is.setItemMeta(meta);
         return this;
     }
@@ -203,9 +203,7 @@ public class ItemBuilder {
      * @since 1.0
      */
     public ItemBuilder clearEnchantments() {
-        for (Enchantment e : is.getEnchantments().keySet()) {
-            is.removeEnchantment(e);
-        }
+        is.getEnchantments().keySet().forEach(e -> is.removeEnchantment(e));
         return this;
     }
 
@@ -217,7 +215,10 @@ public class ItemBuilder {
      * @since 1.1
      */
     public ItemBuilder color(Color color) {
-        if (is.getType() == Material.LEATHER_BOOTS || is.getType() == Material.LEATHER_CHESTPLATE || is.getType() == Material.LEATHER_HELMET || is.getType() == Material.LEATHER_LEGGINGS) {
+        if (is.getType() == XMaterial.LEATHER_BOOTS.parseMaterial()
+                || is.getType() == XMaterial.LEATHER_CHESTPLATE .parseMaterial()
+                || is.getType() == XMaterial.LEATHER_HELMET.parseMaterial()
+                || is.getType() == XMaterial.LEATHER_LEGGINGS.parseMaterial()) {
             LeatherArmorMeta meta = (LeatherArmorMeta) is.getItemMeta();
             meta.setColor(color);
             is.setItemMeta(meta);

@@ -23,6 +23,18 @@ public class MathUtils {
         return playerMoved(from.toVector(), to.toVector());
     }
 
+    /* Stolen from Bukkit */
+    public static Vector getDirection(KLocation loc) {
+        Vector vector = new Vector();
+        double rotX = loc.yaw;
+        double rotY = loc.pitch;
+        vector.setY(-Math.sin(Math.toRadians(rotY)));
+        double xz = Math.cos(Math.toRadians(rotY));
+        vector.setX(-xz * Math.sin(Math.toRadians(rotX)));
+        vector.setZ(xz * Math.cos(Math.toRadians(rotX)));
+        return vector;
+    }
+
     public static boolean approxEquals(double accuracy, double equalTo, double... equals) {
         return Arrays.stream(equals).allMatch(equal -> MathUtils.getDelta(equalTo, equal) < accuracy);
     }

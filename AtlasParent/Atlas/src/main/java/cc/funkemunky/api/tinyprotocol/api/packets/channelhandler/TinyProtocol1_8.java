@@ -16,7 +16,6 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.MapMaker;
 import com.mojang.authlib.GameProfile;
 import io.netty.channel.*;
-import lombok.val;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -175,8 +174,6 @@ public abstract class TinyProtocol1_8 implements AbstractTinyProtocol {
 			public final void onPlayerLogin(PlayerJoinEvent e) {
 				if (closed)
 					return;
-
-				Bukkit.broadcastMessage("did the thing");
 
 				Channel channel = getChannel(e.getPlayer());
 
