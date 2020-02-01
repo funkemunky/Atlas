@@ -1,21 +1,20 @@
 package cc.funkemunky.api.utils.world;
 
-import cc.funkemunky.api.reflections.types.WrappedClass;
 import cc.funkemunky.api.tinyprotocol.api.ProtocolVersion;
-import cc.funkemunky.api.utils.Materials;
 import cc.funkemunky.api.utils.MiscUtils;
+import cc.funkemunky.api.utils.XMaterial;
 import cc.funkemunky.api.utils.world.blocks.*;
 import cc.funkemunky.api.utils.world.types.*;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
+import org.bukkit.block.data.type.SeaPickle;
 import org.bukkit.material.Cake;
 import org.bukkit.material.Gate;
 import org.bukkit.material.MaterialData;
 
 import java.util.Arrays;
 import java.util.HashSet;
-import java.util.Objects;
 import java.util.Set;
 
 import static org.bukkit.Material.*;
@@ -25,18 +24,16 @@ public enum BlockData {
             VINE),
 
     _LIQUID(new SimpleCollisionBox(0, 0, 0, 1, 0.9, 1),
-            Arrays.stream(MiscUtils.array)
-                    .filter(mat -> Materials.checkFlag(mat, Materials.LIQUID))
-                    .toArray(Material[]::new)),
+            WATER, LAVA, MiscUtils.match("STATIONARY_LAVA"), MiscUtils.match("STATIONARY_WATER")),
 
     _BREWINGSTAND(new ComplexCollisionBox(
             new SimpleCollisionBox(0, 0, 0, 1, 0.125, 1),                      //base
             new SimpleCollisionBox(0.4375, 0.0, 0.4375, 0.5625, 0.875, 0.5625) //top
-    ), MiscUtils.getById(117)),
+    ), BREWING_STAND),
 
     _ANVIL((protocol, b) -> {
         BlockState state = b.getState();
-        b.setType(MiscUtils.getById(145), true);
+        b.setType(Material.ANVIL, true);
         int dir = state.getData().getData() & 0b01;
         CollisionBox box;
         if (dir == 1) {
@@ -45,7 +42,7 @@ public enum BlockData {
             box = new SimpleCollisionBox(0.125F, 0.0F, 0.0F, 0.875F, 1.0F, 1.0F);
         }
         return box;
-    }, MiscUtils.getById(145)),
+    }, ANVIL),
 
     _SKULL((protocol, b) -> {
         int rotation = b.getState().getData().getData() & 7;
@@ -69,20 +66,20 @@ public enum BlockData {
                 box = new SimpleCollisionBox(0.0F, 0.25F, 0.25F, 0.5F, 0.75F, 0.75F);
         }
         return box;
-    }, MiscUtils.getById(144)),
+    }, MiscUtils.match("SKULL")),
 
-    _DOOR(new DoorHandler(), Arrays.stream(MiscUtils.array)
-            .filter(mat -> mat.name().endsWith("_DOOR"))
+    _DOOR(new DoorHandler(), Arrays.stream(Material.values())
+            .filter(mat -> mat.name().contains("DOOR"))
             .toArray(Material[]::new)),
 
-    _HOPPER(new HopperBounding(), MiscUtils.getById(154)),
+    _HOPPER(new HopperBounding(), HOPPER),
     _CAKE((protocol, block) -> {
         Cake cake = (Cake) block.getType().getNewData(block.getData());
 
         double f1 = (1 + cake.getSlicesEaten() * 2) / 16D;
 
         return new SimpleCollisionBox(f1, 0, 0.0625, 1 - 0.0625, 0.5, 1 - 0.0625);
-    }, MiscUtils.getById(92)),
+    }, MiscUtils.match("CAKE"), MiscUtils.match("CAKE_BLOCK")),
 
     _LADDER((protocol, b) -> {
         CollisionBox box = NoCollisionBox.INSTANCE;
@@ -99,7 +96,7 @@ public enum BlockData {
             box = new SimpleCollisionBox(0.0F, 0.0F, 0.0F, var3, 1.0F, 1.0F);
         }
         return box;
-    }, MiscUtils.getById(65)),
+    }, LADDER),
 
     _FENCE_GATE((protocol, b) -> {
         byte var5 = b.getState().getData().getData();
@@ -113,30 +110,30 @@ public enum BlockData {
             }
         }
         return box;
-    }, Arrays.stream(MiscUtils.array).filter(mat -> mat.name().endsWith("_GATE")).toArray(Material[]::new)),
+    }, Arrays.stream(Material.values()).filter(mat -> mat.name().contains("FENCE_GATE")).toArray(Material[]::new)),
 
-    _FENCE(new DynamicFence(), MiscUtils.getById(85), MiscUtils.getById(113), MiscUtils.getById(188),
-            MiscUtils.getById(189), MiscUtils.getById(190), MiscUtils.getById(191), MiscUtils.getById(192)),
-    _PANE(new DynamicPane(), Arrays.stream(MiscUtils.array)
-            .filter(mat -> mat.getId() == 101 || mat.getId() == 102 || mat.name().contains("PANE"))
-            .toArray(Material[]::new)), //Checking for THIN_GLASS AND IRON_FENCE
-    _WALL(new DynamicWall(), Arrays.stream(MiscUtils.array)
+    _FENCE(new DynamicFence(), Arrays.stream(Material.values())
+            .filter(mat -> mat.name().equals("FENCE") || mat.name().endsWith("FENCE")).toArray(Material[]::new)),
+    _PANE(new DynamicPane(), MiscUtils.match("THIN_GLASS"), MiscUtils.match("STAINED_GLASS_PANE"),
+            MiscUtils.match("IRON_FENCE")),
+    _WALL(new DynamicWall(), Arrays.stream(Material.values())
             .filter(mat -> mat.name().contains("WALL"))
             .toArray(Material[]::new)),
+
 
     _SNOW((protocol, b) -> {
         MaterialData state = b.getState().getData();
         int height = (state.getData() & 0b1111);
         if (height == 0) return new SimpleCollisionBox(0, 0, 0, 1, 0, 1); // return NoCollisionBox.INSTANCE;
         return new SimpleCollisionBox(0, 0, 0, 1, height * 0.125, 1);
-    }, MiscUtils.getById(78)),
+    }, Material.SNOW),
 
     _SLAB((protocol, b) -> {
         MaterialData state = b.getState().getData();
         if ((state.getData() & 8) == 0)
             return new SimpleCollisionBox(0, 0, 0, 1, .5, 1);
         else return new SimpleCollisionBox(0, .5, 0, 1, 1, 1);
-    }, Arrays.stream(MiscUtils.array).filter(mat ->
+    }, Arrays.stream(Material.values()).filter(mat ->
             mat.name().contains("STEP") || mat.name().contains("SLAB")).toArray(Material[]::new)),
 
     _STAIR((protocol, b) -> {
@@ -154,57 +151,76 @@ public enum BlockData {
             bottom.offset(0, .5, 0);
         }
         return new ComplexCollisionBox(top, bottom);
-    }, Arrays.stream(MiscUtils.array).filter(mat -> mat.name().contains("STAIRS")).toArray(Material[]::new)),
+    }, Arrays.stream(Material.values()).filter(mat -> mat.name().contains("STAIRS")).toArray(Material[]::new)),
 
-    _CHEST(new SimpleCollisionBox(0, 0, 0, 1, 1 - 0.125, 1)
-            .expand(-0.125, 0, -0.125),
-            MiscUtils.getById(54), MiscUtils.getById(146), MiscUtils.getById(130)),
+    _CHEST(new SimpleCollisionBox(0, 0, 0, 1, 1 - 0.125, 1).expand(-0.125, 0, -0.125),
+            CHEST, TRAPPED_CHEST, ENDER_CHEST),
     _ETABLE(new SimpleCollisionBox(0, 0, 0, 1, 1 - 0.25, 1),
-            MiscUtils.getById(116)),
+            MiscUtils.match("ENCHANTMENT_TABLE")),
     _FRAME(new SimpleCollisionBox(0, 0, 0, 1, 1 - (0.0625 * 3), 1),
-            MiscUtils.getById(120)),
+            MiscUtils.match("ENDER_PORTAL_FRAME")),
 
-    _CARPET(new SimpleCollisionBox(0.0F, 0.0F, 0.0F, 1.0F, 0.0625F, 1.0F),
-            MiscUtils.getById(171)),
+    _CARPET(new SimpleCollisionBox(0.0F, 0.0F, 0.0F, 1.0F, 0.0625F, 1.0F), MiscUtils.match("CARPET")),
     _Daylight(new SimpleCollisionBox(0.0F, 0.0F, 0.0F, 1.0F, 0.375, 1.0F),
-            MiscUtils.getById(151), Material2.DAYLIGHT_DETECTOR_INVERTED),
+            MiscUtils.match("DAYLIGHT_DETECTOR"), MiscUtils.match("DAYLIGHT_DETECTOR_INVERTED")),
     _LILIPAD((v, b) -> {
         if (v.isBelow(ProtocolVersion.V1_9))
             return new SimpleCollisionBox(0.0f, 0.0F, 0.0f, 1.0f, 0.015625F, 1.0f);
         return new SimpleCollisionBox(0.0625, 0.0F, 0.0625, 0.9375, 0.015625F, 0.9375);
-    }, MiscUtils.getById(111)),
+    }, MiscUtils.match("WATER_LILY")),
 
     _BED(new SimpleCollisionBox(0.0F, 0.0F, 0.0F, 1.0F, 0.5625, 1.0F),
-            MiscUtils.getById(26)),
+            MiscUtils.match("BED_BLOCK")),
 
 
-    _TRAPDOOR(new TrapDoorHandler(), MiscUtils.getById(96), MiscUtils.getById(167)),
+    _TRAPDOOR(new TrapDoorHandler(), Arrays.stream(Material.values())
+            .filter(mat -> mat.name().contains("TRAP_DOOR")).toArray(Material[]::new)),
 
-    _LOGIC(new SimpleCollisionBox(0.0F, 0.0F, 0.0F, 1.0F, 0.125F, 1.0F),
-            MiscUtils.getById(93), MiscUtils.getById(94), MiscUtils.getById(149), MiscUtils.getById(150)),
+    _STUPID(new SimpleCollisionBox(0.0F, 0.0F, 0.0F, 1.0F, 0.125F, 1.0F),
+            MiscUtils.match("DIODE_BLOCK_OFF"), MiscUtils.match("DIODE_BLOCK_ON"),
+            MiscUtils.match("REDSTONE_COMPARATOR_ON"), MiscUtils.match("REDSTONE_COMPARATOR_OFF")),
 
-    _STRUCTURE_VOID(new SimpleCollisionBox(0.375, 0.375, 0.375, 0.625, 0.625, 0.625),
-            Material2.STRUCTURE_VOID), //
+    _STRUCTURE_VOID(new SimpleCollisionBox(0.375, 0.375, 0.375, 0.625, 0.625, 0.625), Material2.STRUCTURE_VOID), //
     _END_ROD(new DynamicRod(), Material2.END_ROD),
-    _CAULDRON(new CouldronBounding(), MiscUtils.getById(118)),
-    _CACTUS(new SimpleCollisionBox(0.0625, 0, 0.0625,
-            1 - 0.0625, 1 - 0.0625, 1 - 0.0625), MiscUtils.getById(81)),
+    _CAULDRON(new CouldronBounding(), CAULDRON),
+    _CACTUS(new SimpleCollisionBox(0.0625, 0, 0.0625, 1 - 0.0625, 1 - 0.0625, 1 - 0.0625), CACTUS),
 
 
-    _PISTON_BASE(new PistonBaseCollision(), MiscUtils.getById(29), MiscUtils.getById(33)),
+    _PISTON_BASE(new PistonBaseCollision(), MiscUtils.match("PISTON_BASE"), MiscUtils.match("PISTON_STICKY_BASE")),
 
-    _PISTON_ARM(new PistonDickCollision(), MiscUtils.getById(34)),
+    _PISTON_ARM(new PistonDickCollision(), MiscUtils.match("PISTON_EXTENSION")),
 
     _SOULSAND(new SimpleCollisionBox(0, 0, 0, 1, 0.875, 1),
-            MiscUtils.getById(88)),
+            SOUL_SAND),
+    _PICKLE((version, block) -> {
+        SeaPickle pickle = (SeaPickle) block.getBlockData();
 
-    _NONE(NoCollisionBox.INSTANCE, MiscUtils.getById(69), MiscUtils.getById(50), MiscUtils.getById(72), MiscUtils.getById(70), MiscUtils.getById(147), MiscUtils.getById(148), MiscUtils.getById(75),
-            MiscUtils.getById(76), MiscUtils.getById(55), MiscUtils.getById(66), MiscUtils.getById(27), MiscUtils.getById(157), MiscUtils.getById(28),
-            MiscUtils.getById(77), MiscUtils.getById(143)),
+        switch(pickle.getPickles()) {
+            case 1:
+                return new SimpleCollisionBox(6.0D / 15, 0.0, 6.0D / 15,
+                        10.0D / 15, 6.0D / 15, 10.0D / 15);
+            case 2:
+                return new SimpleCollisionBox(3.0D / 15, 0.0D, 3.0D / 15,
+                        13.0D / 15, 6.0D / 15, 13.0D / 15);
+            case 3:
+                return new SimpleCollisionBox(2.0D / 15, 0.0D, 2.0D / 15,
+                        14.0D / 15, 6.0D / 15, 14.0D / 15);
+            case 4:
+                return new SimpleCollisionBox(2.0D / 15, 0.0D, 2.0D / 15,
+                        14.0D / 15, 7.0D / 15, 14.0D / 15);
+        }
+        return NoCollisionBox.INSTANCE;
+    }, XMaterial.SEA_PICKLE.parseMaterial()),
+
+    _NONE(NoCollisionBox.INSTANCE, LEVER, TORCH,
+            MiscUtils.match("STONE_PLATE"),MiscUtils.match("GOLD_PLATE"),
+            MiscUtils.match("IRON_PLATE"), MiscUtils.match("REDSTONE_TORCH_OFF"),
+            MiscUtils.match("REDSTONE_TORCH_ON"), REDSTONE_WIRE,
+            Material.matchMaterial("RAILS", true), POWERED_RAIL, ACTIVATOR_RAIL, DETECTOR_RAIL,
+            STONE_BUTTON, MiscUtils.match("WOOD_BUTTON")),
 
 
     _DEFAULT(new SimpleCollisionBox(0, 0, 0, 1, 1, 1));
-
 
     private CollisionBox box;
     private CollisionFactory dynamic;
@@ -212,16 +228,19 @@ public enum BlockData {
 
     BlockData(CollisionBox box, Material... materials) {
         this.box = box;
-        Set<Material> mList = new HashSet<>(Arrays.asList(materials));
+        Set<Material> mList = new HashSet<>();
+        mList.addAll(Arrays.asList(materials));
         mList.remove(null); // Sets can contain one null
-        this.materials = mList.toArray(new Material[0]);
+        this.materials = mList.toArray(new Material[mList.size()]);
     }
 
     BlockData(CollisionFactory dynamic, Material... materials) {
         this.dynamic = dynamic;
-        Set<Material> mList = new HashSet<>(Arrays.asList(materials));
+        this.box = box;
+        Set<Material> mList = new HashSet<>();
+        mList.addAll(Arrays.asList(materials));
         mList.remove(null); // Sets can contain one null
-        this.materials = mList.toArray(new Material[0]);
+        this.materials = mList.toArray(new Material[mList.size()]);
     }
 
     public CollisionBox getBox(Block block, ProtocolVersion version) {
@@ -230,20 +249,18 @@ public enum BlockData {
         return new DynamicCollisionBox(dynamic, block, version).offset(block.getX(), block.getY(), block.getZ());
     }
 
-    private static BlockData[] lookup = new BlockData[2276];
+    private static BlockData[] lookup = new BlockData[Material.values().length];
+
     static {
         for (BlockData data : values()) {
-            for (Material mat : data.materials) lookup[mat.getId()] = data;
+            for (Material mat : data.materials) lookup[mat.ordinal()] = data;
         }
     }
 
     public static BlockData getData(Material material) {
-        if(material.getId() > lookup.length - 1) return BlockData._DEFAULT;
-        BlockData data = lookup[material.getId() - 1];
-
-        if(data != null) {
-            return data;
-        }
-        return BlockData._DEFAULT;
+        BlockData data = lookup[material.ordinal()];
+        return data != null ? data : _DEFAULT;
     }
+
+
 }

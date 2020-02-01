@@ -5,96 +5,97 @@ import cc.funkemunky.api.reflections.types.WrappedClass;
 import cc.funkemunky.api.reflections.types.WrappedMethod;
 import cc.funkemunky.api.tinyprotocol.api.ProtocolVersion;
 import lombok.Getter;
+import org.bukkit.Particle;
+import org.bukkit.material.MaterialData;
 
 import java.util.Arrays;
 
 @Getter
 public enum WrappedEnumParticle {
-    EXPLOSION_NORMAL("explode", 0, true),
-    EXPLOSION_LARGE("largeexplode", 1, true),
-    EXPLOSION_HUGE("hugeexplosion", 2, true),
-    FIREWORKS_SPARK("fireworksSpark", 3, false),
-    WATER_BUBBLE("bubble", 4, false),
-    WATER_SPLASH("splash", 5, false),
-    WATER_WAKE("wake", 6, false),
-    SUSPENDED("suspended", 7, false),
-    SUSPENDED_DEPTH("depthsuspend", 8, false),
-    CRIT("crit", 9, false),
-    CRIT_MAGIC("magicCrit", 10, false),
-    SMOKE_NORMAL("smoke", 11, false),
-    SMOKE_LARGE("largesmoke", 12, false),
-    SPELL("spell", 13, false),
-    SPELL_INSTANT("instantSpell", 14, false),
-    SPELL_MOB("mobSpell", 15, false),
-    SPELL_MOB_AMBIENT("mobSpellAmbient", 16, false),
-    SPELL_WITCH("witchMagic", 17, false),
-    DRIP_WATER("dripWater", 18, false),
-    DRIP_LAVA("dripLava", 19, false),
-    VILLAGER_ANGRY("angryVillager", 20, false),
-    VILLAGER_HAPPY("happyVillager", 21, false),
-    TOWN_AURA("townaura", 22, false),
-    NOTE("note", 23, false),
-    PORTAL("portal", 24, false),
-    ENCHANTMENT_TABLE("enchantmenttable", 25, false),
-    FLAME("flame", 26, false),
-    LAVA("lava", 27, false),
-    FOOTSTEP("footstep", 28, false),
-    CLOUD("cloud", 29, false),
-    REDSTONE("reddust", 30, false),
-    SNOWBALL("snowballpoof", 31, false),
-    SNOW_SHOVEL("snowshovel", 32, false),
-    SLIME("slime", 33, false),
-    HEART("heart", 34, false),
-    BARRIER("barrier", 35, false),
-    ITEM_CRACK("iconcrack_", 36, false, 2),
-    BLOCK_CRACK("blockcrack_", 37, false, 1),
-    BLOCK_DUST("blockdust_", 38, false, 1),
-    WATER_DROP("droplet", 39, false),
-    ITEM_TAKE("take", 40, false),
-    MOB_APPEARANCE("mobappearance", 41, true);
+    EXPLOSION_NORMAL,
+    EXPLOSION_LARGE,
+    EXPLOSION_HUGE,
+    FIREWORKS_SPARK,
+    WATER_BUBBLE,
+    WATER_SPLASH,
+    WATER_WAKE,
+    SUSPENDED,
+    SUSPENDED_DEPTH,
+    CRIT,
+    CRIT_MAGIC,
+    SMOKE_NORMAL,
+    SMOKE_LARGE,
+    SPELL,
+    SPELL_INSTANT,
+    SPELL_MOB,
+    SPELL_MOB_AMBIENT,
+    SPELL_WITCH,
+    DRIP_WATER,
+    DRIP_LAVA,
+    VILLAGER_ANGRY,
+    VILLAGER_HAPPY,
+    TOWN_AURA,
+    NOTE,
+    PORTAL,
+    ENCHANTMENT_TABLE,
+    FLAME,
+    LAVA,
+    CLOUD,
+    REDSTONE,
+    SNOWBALL,
+    SNOW_SHOVEL,
+    SLIME,
+    HEART,
+    BARRIER,
+    ITEM_CRACK,
+    BLOCK_CRACK,
+    BLOCK_DUST,
+    WATER_DROP,
+    MOB_APPEARANCE,
+    DRAGON_BREATH,
+    END_ROD,
+    DAMAGE_INDICATOR,
+    SWEEP_ATTACK,
+    FALLING_DUST,
+    TOTEM,
+    SPIT,
+    SQUID_INK,
+    BUBBLE_POP,
+    CURRENT_DOWN,
+    BUBBLE_COLUMN_UP,
+    NAUTILUS,
+    DOLPHIN,
+    LEGACY_BLOCK_CRACK,
+    LEGACY_BLOCK_DUST,
+    LEGACY_FALLING_DUST;
 
-    private String name;
-    private int value;
-    private boolean something;
-    private int data;
-
-    private static WrappedClass craftParticle, particle;
+    private static WrappedClass particle, craftParticle, nmsParticle;
     private static WrappedMethod toNMS;
 
-    WrappedEnumParticle(String name, int value, boolean something) {
-        this.name = name;
-        this.value = value;
-        this.something = something;
-    }
-
-    WrappedEnumParticle(String name, int value, boolean something, int data) {
-        this.name = name;
-        this.value = value;
-        this.something = something;
-        this.data = data;
-    }
-
     public static WrappedEnumParticle getByName(String name) {
-        return Arrays.stream(values()).filter(val -> val.getName().equalsIgnoreCase(name)).findFirst().orElse(null);
+        return Arrays.stream(values()).filter(val -> val.getName().equalsIgnoreCase(name))
+                .findFirst().orElse(null);
     }
 
     public Object toNMS() {
-        if(ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.V1_9)) {
-            return Reflections.getNMSClass("EnumParticle").getEnum(getByName(name).name());
-        } else {
-            Object partObj = particle.getEnum(name());
+        return toNMS.invoke(null, Particle.valueOf(getName()));
+    }
 
-            if(partObj == null) partObj = particle.getEnum("FLAME");
+    public String getName() {
+        String name = this.name();
 
-            return toNMS.invoke(null, partObj);
+        if(ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.V1_13)) {
+            name = name.replace("LEGACY_", "");
         }
+
+        return name;
     }
 
     static {
-        if(ProtocolVersion.getGameVersion().isOrAbove(ProtocolVersion.V1_9)) {
-            particle = Reflections.getClass("org.bukkit.Particle");
-            craftParticle = Reflections.getCBClass("CraftParticle");
-            toNMS = craftParticle.getMethod("toNMS", particle.getParent());
-        }
+        particle = Reflections.getClass("org.bukkit.Particle");
+        craftParticle = Reflections.getCBClass("CraftParticle");
+        nmsParticle = Reflections.getNMSClass(ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.V1_13)
+                ? "EnumParticle" : "Particle");
+        toNMS = craftParticle.getMethod("toNMS", Particle.class);
     }
 }

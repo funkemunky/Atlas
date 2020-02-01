@@ -2,6 +2,7 @@ package cc.funkemunky.api.utils;
 
 import cc.funkemunky.api.Atlas;
 import cc.funkemunky.api.reflections.types.WrappedClass;
+import cc.funkemunky.api.tinyprotocol.api.ProtocolVersion;
 import cc.funkemunky.api.tinyprotocol.api.TinyProtocolHandler;
 import cc.funkemunky.api.tinyprotocol.packet.out.WrappedPacketPlayOutWorldParticle;
 import cc.funkemunky.api.tinyprotocol.packet.types.enums.WrappedEnumParticle;
@@ -30,10 +31,9 @@ import java.util.function.Supplier;
 
 public class MiscUtils {
 
-    public static Material[] array = new WrappedClass(Material.class)
-            .getFields(field -> field.getType().equals(Material.class) && field.isAnnotationPresent(Deprecated.class))
-            .stream().map(field -> (Material)field.get(null)
-            ).toArray(Material[]::new);
+    public static Material[] array = Arrays.stream(Material.values())
+            .filter(mat -> mat.name().contains("LEGACY"))
+            .toArray(Material[]::new);
 
     public static Map<EntityType, Vector> entityDimensions = new HashMap<>();;
 
@@ -53,7 +53,7 @@ public class MiscUtils {
     }
 
     public static Material getById(int id) {
-        return Arrays.stream(array).filter(mat -> mat.getId() == id).findFirst()
+        return Arrays.stream(Material.values()).filter(mat -> mat.getId() == id).findFirst()
                 .orElse(Material.getMaterial("AIR"));
     }
 
@@ -81,6 +81,12 @@ public class MiscUtils {
             total += r;
         }
         return total;
+    }
+
+    public static Material match(String material) {
+        if(ProtocolVersion.getGameVersion().isOrAbove(ProtocolVersion.V1_13)) {
+            return Material.matchMaterial(material, true);
+        } return Material.matchMaterial(material);
     }
 
     public static String trimEnd(String string) {
@@ -182,8 +188,12 @@ public class MiscUtils {
                     if (z.first() || z.last()) check++;
                     if (check >= 2) {
                         Object packet = new WrappedPacketPlayOutWorldParticle(particle, true, fx, fy, fz,
-                                0F, 0F, 0F, 0, 0).getObject();
-                        for (Player p : players) TinyProtocolHandler.sendPacket(p, packet);
+                                0F, 0F, 0F, 0, 1).getObject();
+                        for (Player p : players) {
+                            if(p == null) Bukkit.broadcastMessage("player null");
+                            if(packet == null) Bukkit.broadcastMessage("packet null");
+                            TinyProtocolHandler.sendPacket(p, packet);
+                        }
                     }
                 }
             }

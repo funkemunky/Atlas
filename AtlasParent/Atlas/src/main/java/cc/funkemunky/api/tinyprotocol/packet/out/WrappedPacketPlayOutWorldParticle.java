@@ -8,6 +8,7 @@ import cc.funkemunky.api.tinyprotocol.api.Packet;
 import cc.funkemunky.api.tinyprotocol.api.ProtocolVersion;
 import cc.funkemunky.api.tinyprotocol.packet.types.enums.WrappedEnumParticle;
 import lombok.Getter;
+import org.bukkit.Bukkit;
 
 @Getter
 public class WrappedPacketPlayOutWorldParticle extends NMSObject {
@@ -42,8 +43,11 @@ public class WrappedPacketPlayOutWorldParticle extends NMSObject {
 
         if (ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.V1_8)) {
             setPacket(packetPlayOutWorldParticle, type.getName(), x, y, z, xOffset, yOffset, zOffset, speed, amount);
-        } else {
+        } else if(ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.V1_13)) {
             setPacket(packetPlayOutWorldParticle, type.toNMS(), var2, x, y, z, xOffset, yOffset, zOffset, speed, amount, data);
+        } else {
+            setPacket(packetPlayOutWorldParticle, x, y, z, xOffset, yOffset, zOffset, speed, amount,
+                    var2, type.toNMS());
         }
     }
 }
