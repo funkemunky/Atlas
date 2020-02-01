@@ -175,6 +175,7 @@ public abstract class TinyProtocol1_8 implements AbstractTinyProtocol {
 				if (closed)
 					return;
 
+
 				Channel channel = getChannel(e.getPlayer());
 
 				// Don't inject players that have been explicitly uninjected
