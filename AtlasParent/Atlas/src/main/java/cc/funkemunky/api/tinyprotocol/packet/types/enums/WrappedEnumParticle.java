@@ -77,6 +77,9 @@ public enum WrappedEnumParticle {
     }
 
     public Object toNMS() {
+        if(ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.V1_9)) {
+            return Reflections.getNMSClass("EnumParticle").getEnum(name());
+        }
         return toNMS.invoke(null, Particle.valueOf(getName()));
     }
 
@@ -91,10 +94,12 @@ public enum WrappedEnumParticle {
     }
 
     static {
-        particle = Reflections.getClass("org.bukkit.Particle");
-        craftParticle = Reflections.getCBClass("CraftParticle");
-        nmsParticle = Reflections.getNMSClass(ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.V1_13)
-                ? "EnumParticle" : "Particle");
-        toNMS = craftParticle.getMethod("toNMS", Particle.class);
+        if(ProtocolVersion.getGameVersion().isOrAbove(ProtocolVersion.V1_9)) {
+            particle = Reflections.getClass("org.bukkit.Particle");
+            craftParticle = Reflections.getCBClass("CraftParticle");
+            nmsParticle = Reflections.getNMSClass(ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.V1_13)
+                    ? "EnumParticle" : "Particle");
+            toNMS = craftParticle.getMethod("toNMS", Particle.class);
+        }
     }
 }

@@ -102,46 +102,12 @@ public class BoundingBox {
         return (vector.getX() > this.minX && vector.getX() < this.maxX) && ((vector.getY() > this.minY && vector.getY() < this.maxY) && (vector.getZ() > this.minZ && vector.getZ() < this.maxZ));
     }
 
-    @Deprecated
-    public List<BoundingBox> getCollidingBlockBoxes(Player player) {
-        List<BoundingBox> toReturn = new ArrayList<>();
-        int minX = MathUtils.floor(this.minX);
-        int maxX = MathUtils.floor(this.maxX + 1);
-        int minY = MathUtils.floor(this.minY);
-        int maxY = MathUtils.floor(this.maxY + 1);
-        int minZ = MathUtils.floor(this.minZ);
-        int maxZ = MathUtils.floor(this.maxZ + 1);
-
-
-        for (double x = minX; x < maxX; x++) {
-            for (double z = minZ; z < maxZ; z++) {
-                for (double y = minY; y < maxY; y++) {
-                    Location loc = new Location(player.getWorld(), x, y, z);
-
-                    if (Atlas.getInstance().getBlockBoxManager().getBlockBox().isChunkLoaded(loc)) {
-                        org.bukkit.block.Block block = BlockUtils.getBlock(loc);
-                        if (block != null && block.getType().getId() != 0) {
-                            toReturn.addAll(BlockUtils.getBlockBoundingBox(block));
-                        }
-                    }
-                }
-            }
-        }
-        return toReturn;
-    }
-
     public Vector getMinimum() {
         return new Vector(minX, minY, minZ);
     }
 
     public Vector getMaximum() {
         return new Vector(maxX, maxY, maxZ);
-    }
-
-    public List<Tuple<Block, BoundingBox>> getCollidingBlocks(World world) {
-        return Atlas.getInstance().getBlockBoxManager().getBlockBox().getCollidingBoxes(world, this).stream()
-                .map(bb -> new Tuple<>(bb.getMinimum().toLocation(world).getBlock(), bb))
-                .collect(Collectors.toList());
     }
 
     public List<Block> getAllBlocks(Player player) {
@@ -159,10 +125,6 @@ public class BoundingBox {
             }
         }
         return all;
-    }
-
-    public boolean inBlock(Player player) {
-        return getCollidingBlocks(player.getWorld()).size() > 0;
     }
 
     public boolean intersectsWithBox(Object other) {

@@ -1,11 +1,7 @@
 package cc.funkemunky.api.utils.blockbox.boxes;
 
-import cc.funkemunky.api.reflections.impl.MinecraftReflection;
-import cc.funkemunky.api.utils.BoundingBox;
 import cc.funkemunky.api.utils.blockbox.BlockBox;
-import net.minecraft.server.v1_15_R1.AxisAlignedBB;
 import net.minecraft.server.v1_15_R1.GenericAttributes;
-import net.minecraft.server.v1_15_R1.VoxelShape;
 import net.minecraft.server.v1_15_R1.World;
 import org.bukkit.Location;
 import org.bukkit.craftbukkit.v1_15_R1.CraftWorld;
@@ -14,16 +10,11 @@ import org.bukkit.craftbukkit.v1_15_R1.entity.CraftPlayer;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Vector;
-import java.util.stream.Stream;
-
-public class BlockBox1_14_R1 implements BlockBox {
+public class BlockBox1_15_R1 implements BlockBox {
 
     @Override
     public boolean isChunkLoaded(Location loc) {
-        net.minecraft.server.v1_15_R1.World world = ((org.bukkit.craftbukkit.v1_15_R1.CraftWorld) loc.getWorld())
+        World world = ((CraftWorld) loc.getWorld())
                 .getHandle();
 
         return !world.isClientSide

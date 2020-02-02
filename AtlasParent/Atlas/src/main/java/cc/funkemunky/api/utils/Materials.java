@@ -34,6 +34,7 @@ public class Materials {
             }
         }
 
+        int i = 0;
         // fix some types where isSolid() returns the wrong value
         MATERIAL_FLAGS[XMaterial.SLIME_BLOCK.parseMaterial().ordinal()] = SOLID;
         MATERIAL_FLAGS[XMaterial.COMPARATOR.parseMaterial().ordinal()] = SOLID;
@@ -47,8 +48,8 @@ public class Materials {
         MATERIAL_FLAGS[XMaterial.WITHER_SKELETON_WALL_SKULL.parseMaterial().ordinal()] = SOLID;
 
         // liquids
-        MATERIAL_FLAGS[XMaterial.WATER.ordinal()] |= LIQUID | WATER;
-        MATERIAL_FLAGS[XMaterial.LAVA.ordinal()] |= LIQUID | LAVA;
+        MATERIAL_FLAGS[XMaterial.WATER.parseMaterial().ordinal()] |= LIQUID | WATER;
+        MATERIAL_FLAGS[XMaterial.LAVA.parseMaterial().ordinal()] |= LIQUID | LAVA;
 
         // ladders
         MATERIAL_FLAGS[XMaterial.LADDER.parseMaterial().ordinal()] |= LADDER | SOLID;
@@ -63,6 +64,7 @@ public class Materials {
             if(mat.name().contains("PLATE")) MATERIAL_FLAGS[mat.ordinal()] = 0;
             if(mat.name().contains("BED")) MATERIAL_FLAGS[mat.ordinal()]  |= SLABS;
             if(mat.name().contains("ICE")) MATERIAL_FLAGS[mat.ordinal()] |= ICE;
+            if(mat.name().contains("CARPET")) MATERIAL_FLAGS[mat.ordinal()] = SOLID;
         }
     }
 

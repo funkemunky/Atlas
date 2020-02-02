@@ -1,15 +1,17 @@
 package cc.funkemunky.api.utils.world;
 
+import cc.funkemunky.api.reflections.Reflections;
+import cc.funkemunky.api.reflections.types.WrappedClass;
 import cc.funkemunky.api.tinyprotocol.api.ProtocolVersion;
 import cc.funkemunky.api.utils.MiscUtils;
 import cc.funkemunky.api.utils.XMaterial;
 import cc.funkemunky.api.utils.world.blocks.*;
 import cc.funkemunky.api.utils.world.types.*;
+import lombok.val;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
-import org.bukkit.block.data.type.SeaPickle;
 import org.bukkit.material.Cake;
 import org.bukkit.material.Gate;
 import org.bukkit.material.MaterialData;
@@ -65,7 +67,12 @@ public enum BlockData {
             box = new SimpleCollisionBox(0.125F, 0.0F, 0.0F, 0.875F, 1.0F, 1.0F);
         }
         return box;
-    }, XMaterial.ANVIL.parseMaterial()),
+    }, XMaterial.ANVIL.parseMaterial())
+
+    ,_WALL(new DynamicWall(), Arrays.stream(XMaterial.values())
+            .filter(mat -> mat.name().contains("WALL"))
+            .map(BlockData::m)
+            .toArray(Material[]::new)),
 
     _SKULL((protocol, b) -> {
         int rotation = b.getState().getData().getData() & 7;
@@ -89,7 +96,8 @@ public enum BlockData {
                 box = new SimpleCollisionBox(0.0F, 0.25F, 0.25F, 0.5F, 0.75F, 0.75F);
         }
         return box;
-    }, MiscUtils.match("SKULL")),
+    }, XMaterial.SKELETON_SKULL.parseMaterial(), XMaterial.WITHER_SKELETON_SKULL.parseMaterial(),
+            XMaterial.WITHER_SKELETON_WALL_SKULL.parseMaterial(), XMaterial.WITHER_SKELETON_SKULL.parseMaterial()),
 
     _DOOR(new DoorHandler(), Arrays.stream(Material.values())
             .filter(mat -> mat.name().contains("DOOR"))
@@ -143,10 +151,6 @@ public enum BlockData {
             .toArray(Material[]::new)),
     _PANE(new DynamicPane(), MiscUtils.match("THIN_GLASS"), MiscUtils.match("STAINED_GLASS_PANE"),
             MiscUtils.match("IRON_FENCE")),
-    _WALL(new DynamicWall(), Arrays.stream(XMaterial.values())
-            .filter(mat -> mat.name().contains("WALL"))
-            .map(BlockData::m)
-            .toArray(Material[]::new)),
 
 
     _SNOW((protocol, b) -> {
@@ -231,9 +235,14 @@ public enum BlockData {
     _SOULSAND(new SimpleCollisionBox(0, 0, 0, 1, 0.875, 1),
             XMaterial.SOUL_SAND.parseMaterial()),
     _PICKLE((version, block) -> {
-        SeaPickle pickle = (SeaPickle) block.getBlockData();
+        val wrapped = new WrappedClass(block.getClass());
+        val getBlockData = wrapped.getMethod("getBlockData");
+        val pickleClass = Reflections.getNMSClass("SeaPickle");
+        Object pickle = getBlockData.invoke(block);
 
-        switch(pickle.getPickles()) {
+        int pickles = pickleClass.getMethod("getPickles").invoke(pickle);
+
+        switch(pickles) {
             case 1:
                 return new SimpleCollisionBox(6.0D / 15, 0.0, 6.0D / 15,
                         10.0D / 15, 6.0D / 15, 10.0D / 15);
@@ -251,8 +260,10 @@ public enum BlockData {
     }, XMaterial.SEA_PICKLE.parseMaterial()),
 
     _NONE(NoCollisionBox.INSTANCE, Stream.of(XMaterial.LEVER, XMaterial.TORCH, XMaterial.REDSTONE_TORCH,
-            XMaterial.REDSTONE_WIRE, XMaterial.REDSTONE_WALL_TORCH, XMaterial.POWERED_RAIL,
-            XMaterial.RAIL, XMaterial.ACTIVATOR_RAIL, XMaterial.DETECTOR_RAIL, XMaterial.AIR, XMaterial.GRASS)
+            XMaterial.REDSTONE_WIRE, XMaterial.REDSTONE_WALL_TORCH, XMaterial.POWERED_RAIL, XMaterial.SIGN,
+            XMaterial.WALL_SIGN, XMaterial.WALL_TORCH, XMaterial.RAIL, XMaterial.ACTIVATOR_RAIL,
+            XMaterial.LEGACY_SIGN_POST, XMaterial.DETECTOR_RAIL, XMaterial.AIR, XMaterial.LONG_GRASS, XMaterial.TRIPWIRE,
+            XMaterial.TRIPWIRE_HOOK)
             .map(BlockData::m)
             .toArray(Material[]::new)),
 
@@ -263,7 +274,8 @@ public enum BlockData {
                 return names.stream().anyMatch(name ->
                         name.contains("PLATE") || name.contains("BUTTON"));
             }).map(BlockData::m).toArray(Material[]::new)),
-    _DEFAULT(new SimpleCollisionBox(0, 0, 0, 1, 1, 1));
+    _DEFAULT(new SimpleCollisionBox(0, 0, 0, 1, 1, 1),
+            XMaterial.STONE.parseMaterial());
 
     private CollisionBox box;
     private CollisionFactory dynamic;

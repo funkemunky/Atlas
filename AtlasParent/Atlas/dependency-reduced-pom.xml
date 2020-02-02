@@ -61,15 +61,57 @@
   </repositories>
   <dependencies>
     <dependency>
-      <groupId>org.github.spigot</groupId>
-      <artifactId>1.13.2</artifactId>
-      <version>1.13.2</version>
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
       <groupId>org.github.paperspigot</groupId>
       <artifactId>1.8.8</artifactId>
       <version>1.8.8</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.github.spigot</groupId>
+      <artifactId>1.14.1</artifactId>
+      <version>1.14.1</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.github.spigot</groupId>
+      <artifactId>1.14</artifactId>
+      <version>1.14</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.github.spigot</groupId>
+      <artifactId>1.15.1</artifactId>
+      <version>1.15.1</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.github.spigot</groupId>
+      <artifactId>1.14.3</artifactId>
+      <version>1.14.3</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.github.spigot</groupId>
+      <artifactId>1.14.2</artifactId>
+      <version>1.14.2</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.github.spigot</groupId>
+      <artifactId>1.15</artifactId>
+      <version>1.15</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.github.spigot</groupId>
+      <artifactId>1.15.2</artifactId>
+      <version>1.15.2</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.github.spigot</groupId>
+      <artifactId>1.13.2</artifactId>
+      <version>1.13.2</version>
       <scope>provided</scope>
     </dependency>
     <dependency>
@@ -142,12 +184,6 @@
       <groupId>org.github.spigot</groupId>
       <artifactId>1.13</artifactId>
       <version>1.13</version>
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.github.spigot</groupId>
-      <artifactId>1.14</artifactId>
-      <version>1.14</version>
       <scope>provided</scope>
     </dependency>
     <dependency>

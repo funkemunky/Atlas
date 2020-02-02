@@ -245,18 +245,6 @@ public class BlockUtils {
         return false;
     }
 
-    public static List<BoundingBox> getBlockBoundingBox(Block block) {
-        List<BoundingBox> boxes = Atlas.getInstance().getBlockBoxManager().getBlockBox().getSpecificBox(block.getLocation());
-
-        for (int i = 0; i < boxes.size(); i++) {
-            if (boxes.get(i).getMaximum().length() == boxes.get(i).getMinimum().length()) {
-                boxes.remove(i);
-                boxes.add(collisionBoundingBoxes.getOrDefault(block.getType(), new BoundingBox(0, 0, 0, 1, 1, 1)).add(block.getLocation().toVector()));
-            }
-        }
-        return boxes;
-    }
-
     public static boolean isLiquid(Block block) {
         return block.getType().toString().contains("WATER") || block.getType().toString().contains("LAVA");
     }
@@ -313,13 +301,6 @@ public class BlockUtils {
         String name = stack.getType().name().toLowerCase();
 
         return name.contains("axe") || name.contains("spade") || name.contains("shovel") || name.contains("shear") || name.contains("sword");
-    }
-
-    public static List<Block> getBlocks(BoundingBox box, World world) {
-        List<Block> block = new ArrayList<>();
-
-        Atlas.getInstance().getBlockBoxManager().getBlockBox().getCollidingBoxes(world, box).forEach(box2 -> BlockUtils.getBlock(box2.getMinimum().toLocation(world)));
-        return block;
     }
 
     public static Location findGround(World world, Location point) {

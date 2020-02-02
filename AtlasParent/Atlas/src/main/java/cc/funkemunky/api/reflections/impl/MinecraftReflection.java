@@ -37,6 +37,8 @@ public class MinecraftReflection {
     public static WrappedClass chunk = Reflections.getNMSClass("Chunk");
     public static WrappedClass minecraftServer = Reflections.getNMSClass("MinecraftServer");
     public static WrappedClass entityPlayer = Reflections.getNMSClass("EntityPlayer");
+    public static WrappedClass playerConnection = Reflections.getNMSClass("PlayerConnection");
+    public static WrappedClass networkManager = Reflections.getNMSClass("NetworkManager");
 
     //BoundingBoxes
     public static WrappedMethod getCubes;
@@ -76,6 +78,12 @@ public class MinecraftReflection {
             .getFieldByType(Reflections.getNMSClass("IChunkProvider").getParent(), 0);
     private static WrappedField chunksList = Reflections.getNMSClass("ChunkProviderServer")
             .getFieldByName("chunks");
+
+    //Entity Player fields
+    private static WrappedField connectionField = entityPlayer.getFieldByName("playerConnection");
+    private static WrappedField connectionNetworkField = playerConnection
+            .getFieldByType(networkManager.getParent(), 0);
+    private static WrappedField networkChannelField = networkManager.getFieldByName("channel");
 
     //General Fields
     private static WrappedField primaryThread = minecraftServer.getFirstFieldByType(Thread.class);
@@ -260,6 +268,34 @@ public class MinecraftReflection {
         f = fBB.get(aabb);
 
         return new BoundingBox((float) a,(float) b,(float) c,(float) d,(float) e,(float) f);
+    }
+
+
+    //Can either use Player or EntityPlayer object.
+    public static <T> T getPlayerConnection(Object player) {
+        Object entityPlayer;
+        if(player instanceof Player) {
+            entityPlayer = CraftReflection.getEntityPlayer((Player)player);
+        } else entityPlayer = player;
+
+        return connectionField.get(entityPlayer);
+    }
+
+    //Can either use Player or EntityPlayer object.
+    public static <T> T getNetworkManager(Object player) {
+        return connectionNetworkField.get(getPlayerConnection(player));
+    }
+
+    //Can either use Player or EntityPlayer object.
+    public static <T> T getChannel(Object player) {
+        Object networkManager = getNetworkManager(player);
+
+        return networkChannelField.get(networkManager);
+    }
+
+    //Use the netty Channel class.
+    public static void disconnectChannel(Object channel) {
+        new WrappedClass(channel.getClass()).getMethod("close").invoke(channel);
     }
 
     //1.13 Method

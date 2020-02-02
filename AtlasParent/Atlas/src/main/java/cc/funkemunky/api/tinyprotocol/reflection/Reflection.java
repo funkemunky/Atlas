@@ -23,7 +23,8 @@ public final class Reflection {
     // Deduce the net.minecraft.server.v* package
     public static String OBC_PREFIX = Bukkit.getServer().getClass().getPackage().getName();
     public static String NMS_PREFIX = OBC_PREFIX.replace("org.bukkit.craftbukkit", "net.minecraft.server");
-    public static String VERSION = OBC_PREFIX.replace("org.bukkit.craftbukkit", "").replace(".", "");
+    public static String VERSION = OBC_PREFIX.replace("org.bukkit.craftbukkit", "")
+            .replace(".", "");
 
     // Variable replacement
     private static Pattern MATCH_VARIABLE = Pattern.compile("\\{([^\\}]+)\\}");

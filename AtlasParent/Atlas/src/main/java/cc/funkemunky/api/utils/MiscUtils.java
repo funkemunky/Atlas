@@ -1,6 +1,7 @@
 package cc.funkemunky.api.utils;
 
 import cc.funkemunky.api.Atlas;
+import cc.funkemunky.api.reflections.types.WrappedClass;
 import cc.funkemunky.api.tinyprotocol.api.ProtocolVersion;
 import cc.funkemunky.api.tinyprotocol.api.TinyProtocolHandler;
 import cc.funkemunky.api.tinyprotocol.packet.out.WrappedPacketPlayOutWorldParticle;
@@ -84,8 +85,10 @@ public class MiscUtils {
 
     public static Material match(String material) {
         if(ProtocolVersion.getGameVersion().isOrAbove(ProtocolVersion.V1_13)) {
-            return Material.matchMaterial(material, material.contains("LEGACY_"));
-        } return Material.matchMaterial(material.replace("LEGACY_", ""));
+            return new WrappedClass(Material.class)
+                    .getMethod("matchMaterial", String.class, boolean.class)
+                    .invoke(null, material, material.contains("LEGACY_"));
+        } return Material.getMaterial(material.replace("LEGACY_", ""));
     }
 
     public static <T> List<T> combine(List<T> one, List<T> two) {
