@@ -3,6 +3,7 @@ package cc.funkemunky.api.reflections.impl;
 import cc.funkemunky.api.reflections.Reflections;
 import cc.funkemunky.api.reflections.types.WrappedClass;
 import cc.funkemunky.api.reflections.types.WrappedMethod;
+import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
@@ -64,6 +65,6 @@ public class CraftReflection {
     }
 
     public static <T> T getMinecraftServer() {
-        return mcServerInstance.invoke(null);
+        return mcServerInstance.invoke(Bukkit.getServer());
     }
 }

@@ -2,6 +2,10 @@ package cc.funkemunky.api.commands.ancmd;
 
 import cc.funkemunky.api.Atlas;
 import cc.funkemunky.api.commands.tab.TabHandler;
+import cc.funkemunky.api.reflections.types.WrappedClass;
+import cc.funkemunky.api.reflections.types.WrappedMethod;
+import cc.funkemunky.api.tinyprotocol.api.ProtocolVersion;
+import cc.funkemunky.api.tinyprotocol.packet.types.v1_13.DontImportIfNotLatestThanks;
 import cc.funkemunky.api.utils.Color;
 import cc.funkemunky.api.utils.JsonMessage;
 import cc.funkemunky.api.utils.MathUtils;
@@ -28,8 +32,9 @@ public class CommandManager implements CommandExecutor {
     private Map<String, CommandRegister> commands = new ConcurrentHashMap<>();
     private Plugin plugin;
     @Getter
-    private SimpleCommandMap map;
-    private List<SpigotCommand> registered = new ArrayList<>();
+    public SimpleCommandMap map;
+    public List<SpigotCommand> registered = new ArrayList<>();
+    private static DontImportIfNotLatestThanks stuff;
 
     public CommandManager(Plugin plugin) {
         this.plugin = plugin;
@@ -57,16 +62,19 @@ public class CommandManager implements CommandExecutor {
 
     public void registerCommands(Object clazz) {
         try {
+            new WrappedClass(clazz.getClass()).getMethods().stream()
+                    .filter(method -> method.getMethod().isAnnotationPresent(Command.class)
+                            && method.getMethod().getParameterCount() > 0
+                            && method.getParameters().get(0) == CommandAdapter.class)
+                    .forEach(method -> {
+                        Command annotation = method.getMethod().getAnnotation(Command.class);
 
-            Arrays.stream(clazz.getClass().getMethods()).filter(method -> method.isAnnotationPresent(Command.class) && method.getParameterCount() > 0 && method.getParameters()[0].getType() == CommandAdapter.class).forEach(method -> {
-                Command annotation = method.getAnnotation(Command.class);
-
-                registerCommand(plugin, annotation, annotation.name(), method, clazz);
-                if(annotation.aliases().length > 0) {
-                    Arrays.stream(annotation.aliases())
-                            .forEach(alias -> registerCommand(plugin, annotation, alias, method, clazz));
-                }
-            });
+                        registerCommand(annotation, annotation.name(), method, clazz);
+                        if(annotation.aliases().length > 0) {
+                            Arrays.stream(annotation.aliases())
+                                    .forEach(alias -> registerCommand(annotation, alias, method, clazz));
+                        }
+                    });
         } catch(Exception e) {
             e.printStackTrace();
         }
@@ -146,7 +154,7 @@ public class CommandManager implements CommandExecutor {
                 Atlas.getInstance().getProfile().start("anCommand:" + cmd.getLabel());
                 CommandRegister entry = commands.get(buffer.toString());
 
-                Command command = entry.getMethod().getAnnotation(Command.class);
+                Command command = entry.getMethod().getMethod().getAnnotation(Command.class);
 
                 if(command.playerOnly() && !(sender instanceof Player)) {
                     sender.sendMessage(Color.Red + "This command is for players only!");
@@ -187,7 +195,7 @@ public class CommandManager implements CommandExecutor {
             commands.keySet().stream().filter(key -> key.contains(".") && key.startsWith(command.getLabel().toLowerCase())).forEach(key -> {
                 CommandRegister reg = commands.get(key);
 
-                Command cmd = reg.getMethod().getAnnotation(Command.class);
+                Command cmd = reg.getMethod().getMethod().getAnnotation(Command.class);
 
                 argumentSet.add(cmd);
             });
@@ -307,8 +315,8 @@ public class CommandManager implements CommandExecutor {
         }*/
     }
 
-    public void registerCommand(Command command, String label, Method method, Object clazz) {
-        Command annotation = method.getAnnotation(Command.class);
+    public void registerCommand(Command command, String label, WrappedMethod method, Object clazz) {
+        Command annotation = method.getMethod().getAnnotation(Command.class);
 
         CommandRegister cmdReg = new CommandRegister(plugin, method, clazz);
 
@@ -374,7 +382,7 @@ public class CommandManager implements CommandExecutor {
 
     @Deprecated
     public void registerCommand(Plugin plugin, Command command, String label, Method method, Object clazz) {
-        registerCommand(command, label, method, clazz);
+        registerCommand(command, label, new WrappedMethod(new WrappedClass(clazz.getClass()), method), clazz);
     }
 
     public void addCompletionsForCommand(String command, String...completions) {
@@ -389,6 +397,12 @@ public class CommandManager implements CommandExecutor {
             for (String completion : completions) {
                 cmd.completer.addCompleter(command, completion);
             }
+        }
+    }
+
+    static {
+        if(ProtocolVersion.getGameVersion().isOrAbove(ProtocolVersion.V1_13)) {
+            stuff = new DontImportIfNotLatestThanks();
         }
     }
 }
