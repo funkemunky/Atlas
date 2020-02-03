@@ -23,7 +23,6 @@ public class Materials {
             if (material.isSolid()) {
                 MATERIAL_FLAGS[i] |= SOLID;
             }
-
             if (material.name().endsWith("_STAIRS")) {
                 MATERIAL_FLAGS[i] |= STAIRS;
             }
@@ -48,6 +47,8 @@ public class Materials {
         // liquids
         MATERIAL_FLAGS[XMaterial.WATER.parseMaterial().ordinal()] |= LIQUID | WATER;
         MATERIAL_FLAGS[XMaterial.LAVA.parseMaterial().ordinal()] |= LIQUID | LAVA;
+        MATERIAL_FLAGS[XMaterial.STATIONARY_LAVA.parseMaterial().ordinal()] |= LIQUID | LAVA;
+        MATERIAL_FLAGS[XMaterial.STATIONARY_WATER.parseMaterial().ordinal()] |= LIQUID | WATER;
 
         // ladders
         MATERIAL_FLAGS[XMaterial.LADDER.parseMaterial().ordinal()] |= LADDER | SOLID;
