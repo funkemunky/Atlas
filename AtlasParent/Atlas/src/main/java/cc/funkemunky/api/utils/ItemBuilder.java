@@ -1,6 +1,5 @@
 package cc.funkemunky.api.utils;
 
-import cc.funkemunky.api.utils.XMaterial;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Color;

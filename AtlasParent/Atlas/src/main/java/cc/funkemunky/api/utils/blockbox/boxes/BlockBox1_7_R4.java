@@ -1,20 +1,11 @@
 package cc.funkemunky.api.utils.blockbox.boxes;
 
-import cc.funkemunky.api.utils.BlockUtils;
-import cc.funkemunky.api.utils.BoundingBox;
-import cc.funkemunky.api.utils.MathUtils;
 import cc.funkemunky.api.utils.blockbox.BlockBox;
-import net.minecraft.server.v1_7_R4.*;
+import net.minecraft.server.v1_7_R4.GenericAttributes;
 import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.craftbukkit.v1_7_R4.CraftWorld;
 import org.bukkit.craftbukkit.v1_7_R4.entity.CraftPlayer;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 
 public class BlockBox1_7_R4 implements BlockBox {
 

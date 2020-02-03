@@ -6,10 +6,11 @@
 package cc.funkemunky.api.utils.objects.evicting;
 
 import java.util.Collection;
+import java.util.concurrent.ConcurrentLinkedDeque;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.stream.Stream;
 
-public class ConcurrentEvictingList<T> extends CopyOnWriteArrayList<T> {
+public class ConcurrentEvictingList<T> extends ConcurrentLinkedDeque<T> {
     private int maxSize;
 
     public ConcurrentEvictingList(int maxSize) {

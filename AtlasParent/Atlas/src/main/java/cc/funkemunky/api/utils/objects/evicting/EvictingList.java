@@ -7,10 +7,11 @@ package cc.funkemunky.api.utils.objects.evicting;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.LinkedList;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.stream.Stream;
 
-public class EvictingList<T> extends ArrayList<T> {
+public class EvictingList<T> extends LinkedList<T> {
     private int maxSize;
 
     public EvictingList(int maxSize) {
@@ -28,7 +29,7 @@ public class EvictingList<T> extends ArrayList<T> {
 
     @Override
     public boolean add(T t) {
-        if (size() >= maxSize) remove(0);
+        if (size() >= maxSize) removeFirst();
         return super.add(t);
     }
 

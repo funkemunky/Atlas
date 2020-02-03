@@ -1,17 +1,14 @@
 package cc.funkemunky.api.utils;
 
-import cc.funkemunky.api.Atlas;
 import cc.funkemunky.api.reflections.impl.MinecraftReflection;
 import cc.funkemunky.api.utils.world.types.SimpleCollisionBox;
 import org.bukkit.Location;
-import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class BoundingBox {
 

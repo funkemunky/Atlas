@@ -1,19 +1,12 @@
 package cc.funkemunky.api.utils.blockbox.boxes;
 
-import cc.funkemunky.api.reflections.impl.MinecraftReflection;
-import cc.funkemunky.api.utils.BoundingBox;
 import cc.funkemunky.api.utils.blockbox.BlockBox;
-import net.minecraft.server.v1_13_R2.*;
+import net.minecraft.server.v1_13_R2.GenericAttributes;
 import org.bukkit.Location;
-import org.bukkit.craftbukkit.v1_13_R2.CraftWorld;
 import org.bukkit.craftbukkit.v1_13_R2.entity.CraftLivingEntity;
 import org.bukkit.craftbukkit.v1_13_R2.entity.CraftPlayer;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
-
-import java.util.List;
-import java.util.Vector;
-import java.util.stream.Stream;
 
 public class BlockBox1_13_R2 implements BlockBox {
     @Override

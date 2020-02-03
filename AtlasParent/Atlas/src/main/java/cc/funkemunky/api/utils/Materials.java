@@ -1,6 +1,5 @@
 package cc.funkemunky.api.utils;
 
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
 
 public class Materials {
@@ -33,7 +32,7 @@ public class Materials {
                 MATERIAL_FLAGS[i] |= SLABS;
             }
         }
-        
+
         // fix some types where isSolid() returns the wrong value
         MATERIAL_FLAGS[XMaterial.SLIME_BLOCK.parseMaterial().ordinal()] = SOLID;
         MATERIAL_FLAGS[XMaterial.COMPARATOR.parseMaterial().ordinal()] = SOLID;
