@@ -24,10 +24,8 @@ public class WrappedInEntityActionPacket extends NMSObject {
     @Override
     public void process(Player player, ProtocolVersion version) {
         if (ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.V1_8)) {
-            fieldAction1_7 = fetchField(packet, int.class, 0);
             action = EnumPlayerAction.values()[Math.min(8, fetch(fieldAction1_7))];
         } else {
-            fieldAction1_8 = fetchField(packet, Enum.class, 0);
             action = EnumPlayerAction.values()[fetch(fieldAction1_8).ordinal()];
         }
     }
@@ -42,5 +40,11 @@ public class WrappedInEntityActionPacket extends NMSObject {
         STOP_RIDING_JUMP,
         OPEN_INVENTORY,
         START_FALL_FLYING
+    }
+
+    static {
+        if(ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.V1_8)) {
+            fieldAction1_7 = fetchField(packet, int.class, 0);
+        } else fieldAction1_8 = fetchField(packet, Enum.class, 0);
     }
 }

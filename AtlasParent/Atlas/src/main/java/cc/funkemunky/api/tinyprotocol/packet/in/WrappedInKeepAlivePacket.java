@@ -27,12 +27,16 @@ public class WrappedInKeepAlivePacket extends NMSObject {
     @Override
     public void process(Player player, ProtocolVersion version) {
         if (ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.V1_12)) {
-            fieldLegacy = fetchField(packet, int.class, 0);
             time = fetch(fieldLegacy);
         }
         else {
-            field = fetchField(packet, long.class, 0);
             time = fetch(field);
         }
+    }
+
+    static {
+        if(ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.V1_12)) {
+            fieldLegacy = fetchField(packet, int.class, 0);
+        } else field = fetchField(packet, long.class, 0);
     }
 }

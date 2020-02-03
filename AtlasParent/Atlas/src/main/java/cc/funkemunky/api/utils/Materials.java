@@ -33,8 +33,7 @@ public class Materials {
                 MATERIAL_FLAGS[i] |= SLABS;
             }
         }
-
-        int i = 0;
+        
         // fix some types where isSolid() returns the wrong value
         MATERIAL_FLAGS[XMaterial.SLIME_BLOCK.parseMaterial().ordinal()] = SOLID;
         MATERIAL_FLAGS[XMaterial.COMPARATOR.parseMaterial().ordinal()] = SOLID;
@@ -54,7 +53,6 @@ public class Materials {
         // ladders
         MATERIAL_FLAGS[XMaterial.LADDER.parseMaterial().ordinal()] |= LADDER | SOLID;
         MATERIAL_FLAGS[XMaterial.VINE.parseMaterial().ordinal()] |= LADDER | SOLID;
-
         for (Material mat : Material.values()) {
             if (mat.name().contains("FENCE")) {
                 if(!mat.name().contains("GATE")) MATERIAL_FLAGS[mat.ordinal()] |= FENCE | WALL;
