@@ -157,6 +157,35 @@ public class SimpleCollisionBox implements CollisionBox {
         return vectors;
     }
 
+    public SimpleCollisionBox addCoord(double x, double y, double z) {
+        double d0 = this.xMin;
+        double d1 = this.yMin;
+        double d2 = this.zMin;
+        double d3 = this.xMax;
+        double d4 = this.yMax;
+        double d5 = this.zMax;
+
+        if (x < 0.0D) {
+            d0 += x;
+        } else if (x > 0.0D) {
+            d3 += x;
+        }
+
+        if (y < 0.0D) {
+            d1 += y;
+        } else if (y > 0.0D) {
+            d4 += y;
+        }
+
+        if (z < 0.0D) {
+            d2 += z;
+        } else if (z > 0.0D) {
+            d5 += z;
+        }
+
+        return this;
+    }
+
     @Override
     public boolean isCollided(CollisionBox other) {
         if (other instanceof SimpleCollisionBox) {
@@ -168,7 +197,88 @@ public class SimpleCollisionBox implements CollisionBox {
             return other.isCollided(this);
             // throw new IllegalStateException("Attempted to check collision with " + other.getClass().getSimpleName());
         }
+    }   /**
+     * if instance and the argument bounding boxes overlap in the Y and Z dimensions, calculate the offset between them
+     * in the X dimension.  return var2 if the bounding boxes do not overlap or if var2 is closer to 0 then the
+     * calculated offset.  Otherwise return the calculated offset.
+     */
+    public double calculateXOffset(SimpleCollisionBox other, double offsetX) {
+        if (other.yMax > this.yMin && other.yMin < this.yMax && other.zMax > this.zMin && other.zMin < this.zMax) {
+            if (offsetX > 0.0D && other.xMax <= this.xMin) {
+                double d1 = this.xMin - other.xMax;
+
+                if (d1 < offsetX) {
+                    offsetX = d1;
+                }
+            } else if (offsetX < 0.0D && other.xMin >= this.xMax) {
+                double d0 = this.xMax - other.xMin;
+
+                if (d0 > offsetX) {
+                    offsetX = d0;
+                }
+            }
+
+            return offsetX;
+        } else {
+            return offsetX;
+        }
     }
+
+    /**
+     * if instance and the argument bounding boxes overlap in the X and Z dimensions, calculate the offset between them
+     * in the Y dimension.  return var2 if the bounding boxes do not overlap or if var2 is closer to 0 then the
+     * calculated offset.  Otherwise return the calculated offset.
+     */
+    public double calculateYOffset(SimpleCollisionBox other, double offsetY) {
+        if (other.xMax > this.xMin && other.xMin < this.xMax && other.zMax > this.zMin && other.zMin < this.zMax) {
+            if (offsetY > 0.0D && other.yMax <= this.yMin) {
+                double d1 = this.yMin - other.yMax;
+
+                if (d1 < offsetY) {
+                    offsetY = d1;
+                }
+            } else if (offsetY < 0.0D && other.yMin >= this.yMax) {
+                double d0 = this.yMax - other.yMin;
+
+                if (d0 > offsetY) {
+                    offsetY = d0;
+                }
+            }
+
+            return offsetY;
+        } else {
+            return offsetY;
+        }
+    }
+
+    /**
+     * if instance and the argument bounding boxes overlap in the Y and X dimensions, calculate the offset between them
+     * in the Z dimension.  return var2 if the bounding boxes do not overlap or if var2 is closer to 0 then the
+     * calculated offset.  Otherwise return the calculated offset.
+     */
+    public double calculateZOffset(SimpleCollisionBox other, double offsetZ) {
+        if (other.xMax > this.xMin && other.xMin < this.xMax && other.yMax > this.yMin && other.yMin < this.yMax) {
+            if (offsetZ > 0.0D && other.zMax <= this.zMin) {
+                double d1 = this.zMin - other.zMax;
+
+                if (d1 < offsetZ) {
+                    offsetZ = d1;
+                }
+            } else if (offsetZ < 0.0D && other.zMin >= this.zMax) {
+                double d0 = this.zMax - other.zMin;
+
+                if (d0 > offsetZ) {
+                    offsetZ = d0;
+                }
+            }
+
+            return offsetZ;
+        } else {
+            return offsetZ;
+        }
+    }
+
+
 
     public void draw(WrappedEnumParticle particle, Collection<? extends Player> players) {
         SimpleCollisionBox box = this.copy().expand(0.025);

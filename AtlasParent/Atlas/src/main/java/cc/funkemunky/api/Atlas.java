@@ -232,15 +232,14 @@ public class Atlas extends JavaPlugin {
         });
     }
 
-
     public void initializeScanner(Class<? extends Plugin> mainClass, Plugin plugin, ClassLoader loader,
                                   boolean loadListeners, boolean loadCommands) {
         initializeScanner(mainClass, plugin, loader, ClassScanner.scanFile(null, mainClass), loadListeners, loadCommands);
     }
+
     public void initializeScanner(Class<? extends Plugin> mainClass, Plugin plugin, ClassLoader loader, Set<String> names,
                                   boolean loadListeners, boolean loadCommands) {
-        names
-                .stream()
+        names.stream()
                 .map(name -> {
                     if(loader != null) {
                         try {
@@ -272,21 +271,38 @@ public class Atlas extends JavaPlugin {
                     if(loadListeners) {
                         if(obj instanceof AtlasListener) {
                             Atlas.getInstance().getEventManager().registerListeners((AtlasListener)obj, plugin);
-                            MiscUtils.printToConsole("&7Registered Atlas listener &e" + c.getParent().getSimpleName() + "&7.");
+                            MiscUtils.printToConsole("&7Registered Atlas listener &e"
+                                    + c.getParent().getSimpleName() + "&7.");
                         }
                         if(obj instanceof Listener) {
                             Bukkit.getPluginManager().registerEvents((Listener)obj, plugin);
-                            MiscUtils.printToConsole("&7Registered Atlas listener &e" + c.getParent().getSimpleName() + "&7.");
+                            MiscUtils.printToConsole("&7Registered Atlas listener &e"
+                                    + c.getParent().getSimpleName() + "&7.");
                         }
                     }
 
                     if(loadCommands && annotation.commands()) {
-                        MiscUtils.printToConsole("&7Registering commands in class &e" + c.getParent().getSimpleName() + "&7...");
+                        MiscUtils.printToConsole("&7Registering commands in class &e"
+                                + c.getParent().getSimpleName() + "&7...");
                         Atlas.getInstance().getCommandManager().registerCommands(obj);
                     }
 
-                    c.getFields().stream()
-                            .filter(field -> field.getField().isAnnotationPresent(ConfigSetting.class))
+                    c.getMethods(method -> method.getMethod().isAnnotationPresent(Invoke.class))
+                            .forEach(method -> {
+                                MiscUtils.printToConsole("&7Invoking method &e" + method.getName() + " &7in &e"
+                                        + c.getClass().getSimpleName() + "&7...");
+                                method.invoke(obj);
+                            });
+
+                    c.getFields(field -> field.isAnnotationPresent(Instance.class))
+                            .forEach(field -> {
+                                MiscUtils.printToConsole("&7Setting instance of &e"
+                                        + c.getClass().getSimpleName() + " &7on field &e"
+                                        + field.getField().getName() + "&7...");
+                                field.set(obj, obj);
+                            });
+
+                    c.getFields(field -> field.isAnnotationPresent(ConfigSetting.class))
                             .forEach(field -> {
                                 ConfigSetting setting = field.getAnnotation(ConfigSetting.class);
 
