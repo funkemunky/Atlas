@@ -37,3 +37,4 @@ AtlasParent/AtlasBungee/target/**
 *.properties
 AtlasParent/**/buildNumber.properties
 AtlasParent/AtlasBungee/buildNumber.properties
+AtlasParent/AtlasBungee/buildNumber.properties
