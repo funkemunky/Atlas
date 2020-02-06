@@ -24,7 +24,7 @@ public class WrappedInEntityActionPacket extends NMSObject {
     @Override
     public void process(Player player, ProtocolVersion version) {
         if (ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.V1_8)) {
-            action = EnumPlayerAction.values()[Math.min(8, fetch(fieldAction1_7))];
+            action = EnumPlayerAction.values()[Math.min(8, fetch(fieldAction1_7) - 1)];
         } else {
             action = EnumPlayerAction.values()[fetch(fieldAction1_8).ordinal()];
         }
@@ -44,7 +44,7 @@ public class WrappedInEntityActionPacket extends NMSObject {
 
     static {
         if(ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.V1_8)) {
-            fieldAction1_7 = fetchField(packet, int.class, 0);
+            fieldAction1_7 = fetchField(packet, int.class, 1);
         } else fieldAction1_8 = fetchField(packet, Enum.class, 0);
     }
 }
