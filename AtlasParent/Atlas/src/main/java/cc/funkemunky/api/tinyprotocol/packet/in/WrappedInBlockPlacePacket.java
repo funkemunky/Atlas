@@ -1,6 +1,7 @@
 package cc.funkemunky.api.tinyprotocol.packet.in;
 
 import cc.funkemunky.api.reflections.Reflections;
+import cc.funkemunky.api.reflections.impl.MinecraftReflection;
 import cc.funkemunky.api.reflections.types.WrappedClass;
 import cc.funkemunky.api.reflections.types.WrappedField;
 import cc.funkemunky.api.tinyprotocol.api.NMSObject;
@@ -91,9 +92,9 @@ public class WrappedInBlockPlacePacket extends NMSObject {
             enumHand = blockPlacePacket.getFieldByType(Enum.class, 0);
         } else if(ProtocolVersion.getGameVersion().isOrAbove(ProtocolVersion.V1_8)) {
             blockPlacePacket = Reflections.getNMSClass(packet);
-            fieldBlockPosition = blockPlacePacket.getFieldByType(Object.class, 0);
+            fieldBlockPosition = blockPlacePacket.getFieldByType(MinecraftReflection.blockPos.getParent(), 1);
             fieldFace = blockPlacePacket.getFieldByType(int.class, 0);
-            fieldItemStack = blockPlacePacket.getFieldByType(Object.class, 2);
+            fieldItemStack = blockPlacePacket.getFieldByType(MinecraftReflection.itemStack.getParent(), 0);
             fieldVecX = blockPlacePacket.getFieldByType(float.class, 0);
             fieldVecY = blockPlacePacket.getFieldByType(float.class, 1);
             fieldVecZ = blockPlacePacket.getFieldByType(float.class, 2);
