@@ -9,6 +9,7 @@ import cc.funkemunky.api.tinyprotocol.api.NMSObject;
 import cc.funkemunky.api.tinyprotocol.api.ProtocolVersion;
 import cc.funkemunky.api.tinyprotocol.packet.types.WrappedPacketDataSerializer;
 import lombok.Getter;
+import lombok.val;
 import org.bukkit.entity.Player;
 
 @Getter
@@ -68,6 +69,18 @@ public class WrappedInCustomPayload extends NMSObject {
                 Object mk = mkField.get(getObject());
                 tag = keyOne.get(mk) + ":" + keyTwo.get(mk);
             }
+        }
+    }
+
+    @Override
+    public void updateObject() {
+        if(ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.V1_8)) {
+            setObject(NMSObject.construct(getObject(), Client.CUSTOM_PAYLOAD, tag, length, data));
+        } else {
+            Object serializer = new WrappedPacketDataSerializer(data).getObject();
+            if(ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.V1_13)) {
+                setObject(NMSObject.construct(getObject(), Client.CUSTOM_PAYLOAD, tag, serializer));
+            } else setObject(NMSObject.construct(getObject(), Client.CUSTOM_PAYLOAD, serializer));
         }
     }
 

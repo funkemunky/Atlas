@@ -30,6 +30,11 @@ public class WrappedOutEntityHeadRotation extends NMSObject {
     }
 
     @Override
+    public void updateObject() {
+
+    }
+
+    @Override
     public void process(Player player, ProtocolVersion version) {
         entityId = entityIdField.get(getObject());
         yaw = yawField.get(getObject());

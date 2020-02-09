@@ -135,4 +135,9 @@ public class Vec3D extends NMSObject {
         double var8 = this.c *  var2 - this.a *  var3;
         return new Vec3D(var4, var6, var8);
     }
+
+    @Override
+    public void updateObject() {
+
+    }
 }

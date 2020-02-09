@@ -47,6 +47,11 @@ public class WrappedOutChatPacket extends NMSObject {
         chatType = WrappedChatMessageType.fromNMS(chatTypeField.get(getObject()));
     }
 
+    @Override
+    public void updateObject() {
+
+    }
+
     static {
         if(ProtocolVersion.getGameVersion().isOrAbove(ProtocolVersion.V1_12)) {
             chatTypeField = outChatClass.getFieldByType(Reflections.getNMSClass("ChatMessageType").getParent(), 0);

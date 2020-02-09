@@ -44,4 +44,9 @@ public class WrappedOutEntityMetadata extends NMSObject {
             list.forEach(object -> watchableObjects.add(object));
         }
     }
+
+    @Override
+    public void updateObject() {
+
+    }
 }

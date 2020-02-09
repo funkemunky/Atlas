@@ -1,6 +1,7 @@
 package cc.funkemunky.api.tinyprotocol.packet.types.enums;
 
 import cc.funkemunky.api.reflections.Reflections;
+import cc.funkemunky.api.reflections.types.WrappedClass;
 import net.minecraft.server.v1_8_R3.PacketPlayOutPosition;
 
 import java.util.EnumSet;
@@ -15,6 +16,7 @@ public enum WrappedEnumTeleportFlag {
     X_ROT(4);
 
     private int f;
+    private static final WrappedClass enumTeleportFlag = Reflections.getNMSClass("EnumTeleportFlag");
 
     WrappedEnumTeleportFlag(int var3) {
         this.f = var3;
@@ -58,7 +60,7 @@ public enum WrappedEnumTeleportFlag {
         return values()[var.ordinal()];
     }
 
-    public Object getObject() {
-        return Reflections.getNMSClass("EnumTeleportFlag").getEnum(this.name());
+    public <T> T getObject() {
+        return (T) enumTeleportFlag.getEnum(this.name());
     }
 }

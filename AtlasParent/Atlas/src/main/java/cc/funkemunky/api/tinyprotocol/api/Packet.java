@@ -142,6 +142,7 @@ public abstract class Packet {
         public static final String STEER_VEHICLE = CLIENT + "SteerVehicle";
         public static final String CUSTOM_PAYLOAD = CLIENT + "CustomPayload";
         public static final String ARM_ANIMATION = CLIENT + "ArmAnimation";
+        public static final String BLOCK_PLACE_1_9 = CLIENT + "BlockPlace1_9";
         public static final String BLOCK_PLACE = CLIENT + "BlockPlace";
         public static final String ABILITIES = CLIENT + "Abilities";
         public static final String HELD_ITEM_SLOT = CLIENT + "HeldItemSlot";
@@ -174,5 +175,11 @@ public abstract class Packet {
         public static final String RESPAWN = SERVER + "Respawn";
         public static final String WORLD_PARTICLE = SERVER + "WorldParticles";
         public static final String COMMANDS = SERVER + "Commands";
+    }
+
+    public static class Login {
+        public static final String HANDSHAKE = "PacketHandshakingInSetProtocol";
+        public static final String PING = "PacketStatusInPing";
+        public static final String START = "PacketStatusInStart";
     }
 }

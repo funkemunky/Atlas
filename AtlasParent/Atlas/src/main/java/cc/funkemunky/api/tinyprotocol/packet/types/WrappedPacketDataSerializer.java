@@ -24,6 +24,11 @@ public class WrappedPacketDataSerializer extends NMSObject {
         data = readBytesMethod.invoke(object);
     }
 
+    @Override
+    public void updateObject() {
+        //Empty method
+    }
+
     public WrappedPacketDataSerializer(byte[] data) {
         Object pds = byteConst.newInstance(Unpooled.wrappedBuffer(data));
 

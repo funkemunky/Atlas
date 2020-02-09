@@ -47,4 +47,9 @@ public class WrappedGameProfile extends NMSObject {
         name = fieldName.get(getObject());
         propertyMap = fieldPropertyMap.get(getObject());
     }
+
+    @Override
+    public void updateObject() {
+
+    }
 }

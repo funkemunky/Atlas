@@ -35,4 +35,9 @@ public class WrappedOutKeepAlivePacket extends NMSObject {
             time = fetch(field);
         }
     }
+
+    @Override
+    public void updateObject() {
+
+    }
 }

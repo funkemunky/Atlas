@@ -32,4 +32,9 @@ public class WrappedOutHeldItemSlot extends NMSObject {
     public Object getObject() {
         return super.getObject();
     }
+
+    @Override
+    public void updateObject() {
+
+    }
 }

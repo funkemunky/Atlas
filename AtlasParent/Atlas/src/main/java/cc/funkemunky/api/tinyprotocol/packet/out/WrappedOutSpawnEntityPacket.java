@@ -75,4 +75,9 @@ public class WrappedOutSpawnEntityPacket extends NMSObject {
            } else MiscUtils.printToConsole("&cError on WrappedOutSpawnEntityPacket, size=" + wrapper.getFields().size());
         }
     }
+
+    @Override
+    public void updateObject() {
+
+    }
 }

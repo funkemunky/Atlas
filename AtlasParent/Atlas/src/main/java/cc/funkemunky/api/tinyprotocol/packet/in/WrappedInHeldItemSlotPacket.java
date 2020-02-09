@@ -25,4 +25,9 @@ public class WrappedInHeldItemSlotPacket extends NMSObject {
     public void process(Player player, ProtocolVersion version) {
         slot = fetch(fieldHeldSlot);
     }
+
+    @Override
+    public void updateObject() {
+
+    }
 }

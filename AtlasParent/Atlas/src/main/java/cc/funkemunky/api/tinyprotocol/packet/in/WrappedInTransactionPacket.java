@@ -28,4 +28,9 @@ public class WrappedInTransactionPacket extends NMSObject {
         action = fetch(fieldAction);
         accept = fetch(fieldAccepted);
     }
+
+    @Override
+    public void updateObject() {
+
+    }
 }

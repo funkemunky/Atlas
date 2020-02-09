@@ -24,4 +24,9 @@ public class WrappedInCloseWindowPacket extends NMSObject {
     public void process(Player player, ProtocolVersion version) {
         id = fetch(fieldId);
     }
+
+    @Override
+    public void updateObject() {
+        setObject(NMSObject.construct(getObject(), packet, id));
+    }
 }

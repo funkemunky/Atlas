@@ -108,6 +108,11 @@ public class BaseBlockPosition extends NMSObject {
         return blockPosConstructor.newInstance(getX(), getY(), getZ());
     }
 
+    @Override
+    public void updateObject() {
+
+    }
+
     static {
         if(ProtocolVersion.getGameVersion().isAbove(ProtocolVersion.V1_7_10)) {
             fieldX = fetchField(Type.BASEBLOCKPOSITION, int.class, 0);

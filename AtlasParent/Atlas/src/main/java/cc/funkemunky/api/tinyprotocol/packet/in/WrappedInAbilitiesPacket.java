@@ -37,4 +37,10 @@ public class WrappedInAbilitiesPacket extends NMSObject {
         flySpeed = fetch(flySpeedField);
         walkSpeed = fetch(walkSpeedField);
     }
+
+    @Override
+    public void updateObject() {
+        setObject(NMSObject.construct(getObject(),
+                packet, invulnerable, flying, allowedFlight, creativeMode, flySpeed, walkSpeed));
+    }
 }

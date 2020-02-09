@@ -59,4 +59,9 @@ public class WrappedOutAbilitiesPacket extends NMSObject {
         flySpeed = fetch(flySpeedField);
         walkSpeed = fetch(walkSpeedField);
     }
+
+    @Override
+    public void updateObject() {
+
+    }
 }

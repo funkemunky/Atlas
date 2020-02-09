@@ -1,5 +1,7 @@
 package cc.funkemunky.api.tinyprotocol.packet.in;
 
+import cc.funkemunky.api.reflections.Reflections;
+import cc.funkemunky.api.reflections.types.WrappedClass;
 import cc.funkemunky.api.tinyprotocol.api.NMSObject;
 import cc.funkemunky.api.tinyprotocol.api.ProtocolVersion;
 import cc.funkemunky.api.tinyprotocol.reflection.FieldAccessor;
@@ -12,6 +14,9 @@ public class WrappedInClientCommandPacket extends NMSObject {
 
     // Fields
     private static FieldAccessor<Enum> fieldCommand = fetchField(packet, Enum.class, 0);
+    private static WrappedClass enumClientCommand = Reflections.getNMSClass(
+            (ProtocolVersion.getGameVersion().isAbove(ProtocolVersion.V1_8_5) ? packet + "." : "")
+                    + "EnumClientCommand");
 
     // Decoded data
     EnumClientCommand command;
@@ -23,6 +28,11 @@ public class WrappedInClientCommandPacket extends NMSObject {
     @Override
     public void process(Player player, ProtocolVersion version) {
         command = EnumClientCommand.values()[fetch(fieldCommand).ordinal()];
+    }
+
+    @Override
+    public void updateObject() {
+        setObject(NMSObject.construct(getObject(), packet, enumClientCommand.getEnum(command.name())));
     }
 
     public enum EnumClientCommand {

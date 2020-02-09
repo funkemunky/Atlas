@@ -30,6 +30,11 @@ public class WrappedInEntityActionPacket extends NMSObject {
         }
     }
 
+    @Override
+    public void updateObject() {
+
+    }
+
     public enum EnumPlayerAction {
         START_SNEAKING,
         STOP_SNEAKING,

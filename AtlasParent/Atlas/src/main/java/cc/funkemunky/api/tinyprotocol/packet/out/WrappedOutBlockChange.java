@@ -58,6 +58,11 @@ public class WrappedOutBlockChange extends NMSObject {
         }
     }
 
+    @Override
+    public void updateObject() {
+
+    }
+
     static {
         if(ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.V1_8)) {
             legacyX = fetchField(packet, int.class, 0);

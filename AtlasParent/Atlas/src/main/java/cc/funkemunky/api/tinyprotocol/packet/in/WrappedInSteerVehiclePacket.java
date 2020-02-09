@@ -35,4 +35,9 @@ public class WrappedInSteerVehiclePacket extends NMSObject {
         jump = jumpField.get(getObject());
         unmount = unmountField.get(getObject());
     }
+
+    @Override
+    public void updateObject() {
+
+    }
 }

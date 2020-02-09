@@ -49,6 +49,11 @@ public class WrappedOutRespawnPacket extends NMSObject {
         worldType = WorldType.getByName(worldTypeClass.getFirstFieldByType(String.class).get(getObject()));
     }
 
+    @Override
+    public void updateObject() {
+
+    }
+
     static {
         if(ProtocolVersion.getGameVersion().isOrAbove(ProtocolVersion.V1_13)) {
             dimensionManagerAcceessor = fetchField(packet, Object.class, 0);

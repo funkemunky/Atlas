@@ -92,6 +92,11 @@ public class WrappedInWindowClickPacket extends NMSObject {
         }
     }
 
+    @Override
+    public void updateObject() {
+
+    }
+
     public enum ClickType {
         LEFT,
         SHIFT_LEFT,

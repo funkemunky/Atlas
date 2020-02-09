@@ -1,6 +1,7 @@
 package cc.funkemunky.api.tinyprotocol.packet.types.enums;
 
 import cc.funkemunky.api.reflections.Reflections;
+import cc.funkemunky.api.reflections.types.WrappedClass;
 
 public enum WrappedEnumGameMode {
     NOT_SET(-1, ""),
@@ -11,6 +12,8 @@ public enum WrappedEnumGameMode {
 
     int f;
     String g;
+
+    private static WrappedClass enumGamemode = Reflections.getNMSClass("EnumGameMode");
 
     WrappedEnumGameMode(int var3, String var4) {
         this.f = var3;
@@ -59,8 +62,8 @@ public enum WrappedEnumGameMode {
         return SURVIVAL;
     }
 
-    public Object getObject(WrappedEnumGameMode gamemode) {
-        return Reflections.getNMSClass("EnumGameMode").getEnum(gamemode.name());
+    public <T> T getObject(WrappedEnumGameMode gamemode) {
+        return (T) enumGamemode.getEnum(gamemode.name());
     }
 
     public Object getObject() {

@@ -76,9 +76,9 @@ public enum WrappedEnumParticle {
                 .findFirst().orElse(null);
     }
 
-    public Object toNMS() {
+    public <T> T toNMS() {
         if(ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.V1_9)) {
-            return Reflections.getNMSClass("EnumParticle").getEnum(name());
+            return (T) Reflections.getNMSClass("EnumParticle").getEnum(name());
         }
         return toNMS.invoke(null, Particle.valueOf(getName()));
     }

@@ -22,4 +22,9 @@ public class WrappedInChatPacket extends NMSObject {
     public void process(Player player, ProtocolVersion version) {
         this.message = fetch(messageAccessor);
     }
+
+    @Override
+    public void updateObject() {
+        setObject(NMSObject.construct(getObject(), packet, message));
+    }
 }

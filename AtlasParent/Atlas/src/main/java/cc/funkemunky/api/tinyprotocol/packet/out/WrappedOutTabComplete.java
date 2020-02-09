@@ -62,6 +62,11 @@ public class WrappedOutTabComplete extends NMSObject {
         }
     }
 
+    @Override
+    public void updateObject() {
+
+    }
+
     static {
         if(ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.V1_13)) {
             suggestionsAccessor = tabClass.getFieldByType(String[].class, 0);

@@ -166,7 +166,9 @@ public enum BlockData {
             return new SimpleCollisionBox(0, 0, 0, 1, .5, 1);
         else return new SimpleCollisionBox(0, .5, 0, 1, 1, 1);
     }, Arrays.stream(Material.values()).filter(mat ->
-            mat.name().contains("STEP") || mat.name().contains("SLAB")).toArray(Material[]::new)),
+            mat.name().contains("STEP") || mat.name().contains("SLAB"))
+            .filter(mat -> !mat.name().contains("DOUBLE"))
+            .toArray(Material[]::new)),
 
     _STAIR((protocol, b) -> {
         MaterialData state = b.getState().getData();
