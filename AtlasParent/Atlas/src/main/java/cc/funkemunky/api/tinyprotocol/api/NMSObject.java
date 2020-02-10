@@ -109,13 +109,20 @@ public abstract class NMSObject {
         return null;
     }
 
-    public static Object construct(Object p, String packet, Object... args) {
+    public static Object construct(Object obj, String packet, Object... args) {
         try {
             Class<?> c = constructors.get(packet);
             if (c == null) {
                 c = Reflection.getMinecraftClass(packet);
                 constructors.put(packet, c);
             }
+
+            Object p = obj != null ? obj : constructors.computeIfAbsent(packet, key -> {
+                Class<?> clazz = Reflection.getMinecraftClass(key);
+
+                constructors.put(key, clazz);
+                return clazz;
+            }).newInstance();
             Field[] fields = c.getDeclaredFields();
             int failed = 0;
             for (int i = 0; i < args.length; i++) {
@@ -264,6 +271,7 @@ public abstract class NMSObject {
         public static final String TAB_COMPLETE = SERVER + "TabComplete";
         public static final String RESPAWN = SERVER + "Respawn";
         public static final String COMMANDS = SERVER + "Commands";
+        public static final String CLOSE_WINDOW = SERVER + "CloseWindow";
     }
 
     public static class Login {
