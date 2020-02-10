@@ -66,7 +66,12 @@ public class TinyProtocolHandler {
     }
 
     // Purely for making the code cleaner
-    public static void sendPacket(Player player, Object packet) {
+    public static void sendPacket(Player player, Object obj) {
+        Object packet;
+
+        if(obj instanceof NMSObject) packet = ((NMSObject) obj).getObject();
+        else packet = obj;
+
         instance.sendPacket(player, packet);
     }
 

@@ -28,6 +28,6 @@ public class WrappedInHeldItemSlotPacket extends NMSObject {
 
     @Override
     public void updateObject() {
-
+        setObject(NMSObject.construct(getObject(), packet, slot));
     }
 }

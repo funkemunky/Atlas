@@ -31,6 +31,6 @@ public class WrappedInTransactionPacket extends NMSObject {
 
     @Override
     public void updateObject() {
-
+        setObject(NMSObject.construct(getObject(), packet, id, action, accept));
     }
 }

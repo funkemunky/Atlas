@@ -1,6 +1,9 @@
 package cc.funkemunky.api.tinyprotocol.packet.in;
 
 import cc.funkemunky.api.Atlas;
+import cc.funkemunky.api.reflections.Reflections;
+import cc.funkemunky.api.reflections.types.WrappedClass;
+import cc.funkemunky.api.reflections.types.WrappedField;
 import cc.funkemunky.api.tinyprotocol.api.NMSObject;
 import cc.funkemunky.api.tinyprotocol.api.ProtocolVersion;
 import cc.funkemunky.api.tinyprotocol.reflection.FieldAccessor;
@@ -14,10 +17,12 @@ import java.util.Objects;
 
 @Getter
 public class WrappedInUseEntityPacket extends NMSObject {
-    private static String packet = Client.USE_ENTITY;
+    private static WrappedClass packet = Reflections.getNMSClass(Client.USE_ENTITY);
 
-    private static FieldAccessor<Integer> fieldId = fetchField(packet, int.class, 0);
-    private static FieldAccessor<Enum> fieldAction = fetchField(packet, Enum.class, 0);
+    private static WrappedField idField = packet.getFieldByType(int.class, 0),
+            actionField = packet.getFieldByType(Enum.class, 0);
+
+    private static WrappedClass enumAction = new WrappedClass(actionField.getType());
 
     private int id;
     private EnumEntityUseAction action;
@@ -29,8 +34,9 @@ public class WrappedInUseEntityPacket extends NMSObject {
 
     @Override
     public void process(Player player, ProtocolVersion version) {
-        id = Objects.requireNonNull(fetch(fieldId));
-        Enum fieldAct = Objects.nonNull(fetch(fieldAction)) ? fetch(fieldAction) : null;
+        id = Objects.requireNonNull(fetch(idField));
+        Object enumObj = fetch(actionField);
+        Enum fieldAct = enumObj != null ? (Enum) enumObj : null;
         action = fieldAct == null ? EnumEntityUseAction.INTERACT_AT : EnumEntityUseAction.valueOf(fieldAct.name());
 
         List<Entity> entities = Atlas.getInstance().getEntities()
@@ -46,7 +52,7 @@ public class WrappedInUseEntityPacket extends NMSObject {
 
     @Override
     public void updateObject() {
-
+        setObject(NMSObject.construct(getObject(), Client.USE_ENTITY, id, enumAction.getEnum(action.name)));
     }
 
     public enum EnumEntityUseAction {
