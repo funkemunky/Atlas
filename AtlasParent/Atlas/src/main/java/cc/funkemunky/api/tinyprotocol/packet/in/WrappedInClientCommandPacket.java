@@ -14,9 +14,6 @@ public class WrappedInClientCommandPacket extends NMSObject {
 
     // Fields
     private static FieldAccessor<Enum> fieldCommand = fetchField(packet, Enum.class, 0);
-    private static WrappedClass enumClientCommand = Reflections.getNMSClass(
-            (ProtocolVersion.getGameVersion().isAbove(ProtocolVersion.V1_8_5) ? packet + "." : "")
-                    + "EnumClientCommand");
 
     // Decoded data
     EnumClientCommand command;
@@ -32,7 +29,7 @@ public class WrappedInClientCommandPacket extends NMSObject {
 
     @Override
     public void updateObject() {
-        setObject(NMSObject.construct(getObject(), packet, enumClientCommand.getEnum(command.name())));
+        //setObject(NMSObject.construct(getObject(), packet, enumClientCommancd));
     }
 
     public enum EnumClientCommand {

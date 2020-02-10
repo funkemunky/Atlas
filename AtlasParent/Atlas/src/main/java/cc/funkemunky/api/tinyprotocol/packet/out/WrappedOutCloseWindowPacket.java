@@ -16,6 +16,11 @@ public class WrappedOutCloseWindowPacket extends NMSObject {
         super(object, player);
     }
 
+    public WrappedOutCloseWindowPacket(int id) {
+        this.id = id;
+        updateObject();
+    }
+
     public int id;
 
     @Override
