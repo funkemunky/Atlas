@@ -22,6 +22,6 @@ public class WrappedOutCloseWindowPacket extends NMSObject {
 
     @Override
     public void process(Player player, ProtocolVersion version) {
-        
+
     }
 }
