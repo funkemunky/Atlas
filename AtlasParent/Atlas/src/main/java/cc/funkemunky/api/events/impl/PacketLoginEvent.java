@@ -11,7 +11,7 @@ import java.net.SocketAddress;
 
 @RequiredArgsConstructor
 @Getter
-public class PacketHandshakeEvent extends AtlasEvent implements Cancellable {
+public class PacketLoginEvent extends AtlasEvent implements Cancellable {
     @Setter
     private boolean cancelled;
 

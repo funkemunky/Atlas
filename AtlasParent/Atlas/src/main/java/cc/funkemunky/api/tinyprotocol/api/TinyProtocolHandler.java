@@ -2,7 +2,7 @@ package cc.funkemunky.api.tinyprotocol.api;
 
 import cc.funkemunky.api.Atlas;
 import cc.funkemunky.api.bungee.BungeeAPI;
-import cc.funkemunky.api.events.impl.PacketHandshakeEvent;
+import cc.funkemunky.api.events.impl.PacketLoginEvent;
 import cc.funkemunky.api.events.impl.PacketReceiveEvent;
 import cc.funkemunky.api.events.impl.PacketSendEvent;
 import cc.funkemunky.api.tinyprotocol.api.packets.AbstractTinyProtocol;
@@ -135,7 +135,7 @@ public class TinyProtocolHandler {
         int index = name.lastIndexOf(".");
         String packetName = name.substring(index + 1);
 
-        PacketHandshakeEvent event = new PacketHandshakeEvent(address, packet, packetName);
+        PacketLoginEvent event = new PacketLoginEvent(address, packet, packetName);
 
         Atlas.getInstance().getEventManager().callEvent(event);
 
