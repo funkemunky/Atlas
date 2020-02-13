@@ -6,9 +6,6 @@ package cc.funkemunky.api.tinyprotocol.api.packets;
 
 import org.bukkit.entity.Player;
 
-import java.net.InetAddress;
-import java.net.SocketAddress;
-
 public interface AbstractTinyProtocol {
     void sendPacket(Player player, Object packet);
 

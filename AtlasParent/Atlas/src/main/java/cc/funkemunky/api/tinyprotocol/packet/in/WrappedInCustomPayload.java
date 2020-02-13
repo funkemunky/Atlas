@@ -9,7 +9,6 @@ import cc.funkemunky.api.tinyprotocol.api.NMSObject;
 import cc.funkemunky.api.tinyprotocol.api.ProtocolVersion;
 import cc.funkemunky.api.tinyprotocol.packet.types.WrappedPacketDataSerializer;
 import lombok.Getter;
-import lombok.val;
 import org.bukkit.entity.Player;
 
 @Getter

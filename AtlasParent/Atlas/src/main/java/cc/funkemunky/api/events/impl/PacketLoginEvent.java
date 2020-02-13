@@ -6,7 +6,6 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
-import java.net.InetAddress;
 import java.net.SocketAddress;
 
 @RequiredArgsConstructor

@@ -8,8 +8,6 @@
 
 package cc.funkemunky.api.tinyprotocol.api.packets.channelhandler;
 
-import cc.funkemunky.api.reflections.impl.CraftReflection;
-import cc.funkemunky.api.reflections.impl.MinecraftReflection;
 import cc.funkemunky.api.tinyprotocol.api.packets.AbstractTinyProtocol;
 import cc.funkemunky.api.tinyprotocol.reflection.FieldAccessor;
 import cc.funkemunky.api.tinyprotocol.reflection.MethodInvoker;
@@ -17,24 +15,19 @@ import cc.funkemunky.api.tinyprotocol.reflection.Reflection;
 import com.google.common.collect.Lists;
 import com.google.common.collect.MapMaker;
 import com.mojang.authlib.GameProfile;
-import io.netty.buffer.ByteBuf;
 import io.netty.channel.*;
-import io.netty.handler.codec.ByteToMessageDecoder;
-import lombok.val;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.AsyncPlayerPreLoginEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.server.PluginDisableEvent;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.lang.reflect.Method;
-import java.net.InetAddress;
 import java.net.SocketAddress;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
