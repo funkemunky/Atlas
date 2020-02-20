@@ -71,6 +71,18 @@ public class WrappedInCustomPayload extends NMSObject {
         }
     }
 
+    @Override
+    public void updateObject() {
+        if(ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.V1_8)) {
+            setObject(NMSObject.construct(getObject(), Client.CUSTOM_PAYLOAD, tag, length, data));
+        } else {
+            Object serializer = new WrappedPacketDataSerializer(data).getObject();
+            if(ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.V1_13)) {
+                setObject(NMSObject.construct(getObject(), Client.CUSTOM_PAYLOAD, tag, serializer));
+            } else setObject(NMSObject.construct(getObject(), Client.CUSTOM_PAYLOAD, serializer));
+        }
+    }
+
     static {
         if(ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.V1_8)) {
             lengthField = wrapped.getFieldByType(int.class, 0);

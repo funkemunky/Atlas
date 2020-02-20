@@ -7,6 +7,7 @@ package cc.funkemunky.api.tinyprotocol.api;
 import cc.funkemunky.api.Atlas;
 import cc.funkemunky.api.events.impl.PacketReceiveEvent;
 import cc.funkemunky.api.events.impl.PacketSendEvent;
+import cc.funkemunky.api.reflections.types.WrappedField;
 import cc.funkemunky.api.tinyprotocol.reflection.FieldAccessor;
 import cc.funkemunky.api.tinyprotocol.reflection.MethodInvoker;
 import cc.funkemunky.api.tinyprotocol.reflection.Reflection;
@@ -32,7 +33,7 @@ public abstract class NMSObject {
     @Setter
     private Object object;
     private boolean cancelled;
-    private Player player;
+    private Player player = null;
 
     public NMSObject(Object object) {
         Atlas.getInstance().getProfile().start("processor:" + object.getClass().getName());
@@ -108,13 +109,20 @@ public abstract class NMSObject {
         return null;
     }
 
-    public static Object construct(Object p, String packet, Object... args) {
+    public static Object construct(Object obj, String packet, Object... args) {
         try {
             Class<?> c = constructors.get(packet);
             if (c == null) {
                 c = Reflection.getMinecraftClass(packet);
                 constructors.put(packet, c);
             }
+
+            Object p = obj != null ? obj : constructors.computeIfAbsent(packet, key -> {
+                Class<?> clazz = Reflection.getMinecraftClass(key);
+
+                constructors.put(key, clazz);
+                return clazz;
+            }).newInstance();
             Field[] fields = c.getDeclaredFields();
             int failed = 0;
             for (int i = 0; i < args.length; i++) {
@@ -152,6 +160,9 @@ public abstract class NMSObject {
         return Reflection.getFieldSafe(Reflection.NMS_PREFIX + "." + className, (Class<T>) Reflection.getClass(fieldType), index);
     }
 
+    /** Updates the vanilla object with the fields set **/
+    public abstract void updateObject();
+
     public String getPacketName() {
         String name = object.getClass().getName();
         return name.substring(name.lastIndexOf(".") + 1);
@@ -166,6 +177,14 @@ public abstract class NMSObject {
 
     public <T> T fetch(FieldAccessor<T> field) {
         return field.get(object);
+    }
+
+    public <T> T fetch(WrappedField field) {
+        return field.get(object);
+    }
+
+    public <T> T fetch(WrappedField field, Object obj) {
+        return field.get(obj);
     }
 
     public <T> T fetch(FieldAccessor<T> field, Object obj) {
@@ -210,7 +229,9 @@ public abstract class NMSObject {
         public static final String WINDOW_CLICK = CLIENT + "WindowClick";
         public static final String CUSTOM_PAYLOAD = CLIENT + "CustomPayload";
         public static final String ARM_ANIMATION = CLIENT + "ArmAnimation";
-        public static final String BLOCK_PLACE = CLIENT + "BlockPlace";
+        public static final String BLOCK_PLACE_1_9 = CLIENT + "BlockPlace";
+        public static final String BLOCK_PLACE = CLIENT
+                + (ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.V1_9) ? "BlockPlace" : "UseItem");
         public static final String STEER_VEHICLE = CLIENT + "SteerVehicle";
         public static final String HELD_ITEM = CLIENT + "HeldItemSlot";
         public static final String CLIENT_COMMAND = CLIENT + "ClientCommand";
@@ -250,5 +271,12 @@ public abstract class NMSObject {
         public static final String TAB_COMPLETE = SERVER + "TabComplete";
         public static final String RESPAWN = SERVER + "Respawn";
         public static final String COMMANDS = SERVER + "Commands";
+        public static final String CLOSE_WINDOW = SERVER + "CloseWindow";
+    }
+
+    public static class Login {
+        public static final String HANDSHAKE = "PacketHandshakingInSetProtocol";
+        public static final String PING = "PacketStatusInPing";
+        public static final String START = "PacketStatusInStart";
     }
 }

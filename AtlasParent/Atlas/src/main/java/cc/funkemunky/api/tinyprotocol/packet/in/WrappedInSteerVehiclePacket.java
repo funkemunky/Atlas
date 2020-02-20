@@ -10,8 +10,7 @@ import org.bukkit.entity.Player;
 
 @Getter
 public class WrappedInSteerVehiclePacket extends NMSObject {
-    private static final String packet = Client.STEER_VEHICLE;
-    private static final WrappedClass packetClass = Reflections.getNMSClass(packet);
+    private static final WrappedClass packetClass = Reflections.getNMSClass(Client.STEER_VEHICLE);
 
     // Fields
     private float sideways, forward;
@@ -34,5 +33,10 @@ public class WrappedInSteerVehiclePacket extends NMSObject {
 
         jump = jumpField.get(getObject());
         unmount = unmountField.get(getObject());
+    }
+
+    @Override
+    public void updateObject() {
+        setObject(NMSObject.construct(getObject(), Client.STEER_VEHICLE, sideways, forward, jump, unmount));
     }
 }

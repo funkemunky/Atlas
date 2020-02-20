@@ -37,4 +37,9 @@ public class WrappedOutOpenWindow extends NMSObject {
         chatComponent = new WrappedChatMessage(fetch(chatCompField));
         size = fetch(inventorySize);
     }
+
+    @Override
+    public void updateObject() {
+
+    }
 }

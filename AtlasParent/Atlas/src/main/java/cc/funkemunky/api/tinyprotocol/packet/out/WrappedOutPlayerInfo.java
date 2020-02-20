@@ -77,4 +77,9 @@ public class WrappedOutPlayerInfo extends NMSObject {
             playerInfo.add(new WrappedPlayerInfoData(profile, gamemode, ping));
         }
     }
+
+    @Override
+    public void updateObject() {
+
+    }
 }

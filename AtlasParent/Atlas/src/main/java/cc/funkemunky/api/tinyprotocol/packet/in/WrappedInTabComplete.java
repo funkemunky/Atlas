@@ -47,6 +47,11 @@ public class WrappedInTabComplete extends NMSObject {
         }
     }
 
+    @Override
+    public void updateObject() {
+
+    }
+
     static {
 
         if(ProtocolVersion.getGameVersion().isOrAbove(ProtocolVersion.V1_13)) {

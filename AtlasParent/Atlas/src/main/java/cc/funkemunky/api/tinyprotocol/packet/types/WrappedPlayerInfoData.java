@@ -46,4 +46,9 @@ public class WrappedPlayerInfoData extends NMSObject {
         gameMode = WrappedEnumGameMode.fromObject(fetch(enumGamemodeAccessor));
         username = player.getName();
     }
+
+    @Override
+    public void updateObject() {
+
+    }
 }

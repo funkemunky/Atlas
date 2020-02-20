@@ -44,4 +44,9 @@ public class WrappedOutVelocityPacket extends NMSObject {
         y = fetch(fieldY) / 8000D;
         z = fetch(fieldZ) / 8000D;
     }
+
+    @Override
+    public void updateObject() {
+
+    }
 }

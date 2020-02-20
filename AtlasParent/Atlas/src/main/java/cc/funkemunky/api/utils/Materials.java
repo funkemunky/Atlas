@@ -35,7 +35,11 @@ public class Materials {
         // fix some types where isSolid() returns the wrong value
         MATERIAL_FLAGS[XMaterial.SLIME_BLOCK.parseMaterial().ordinal()] = SOLID;
         MATERIAL_FLAGS[XMaterial.COMPARATOR.parseMaterial().ordinal()] = SOLID;
+        MATERIAL_FLAGS[XMaterial.REDSTONE_COMPARATOR_OFF.parseMaterial().ordinal()] = SOLID;
+        MATERIAL_FLAGS[XMaterial.REDSTONE_COMPARATOR_ON.parseMaterial().ordinal()] = SOLID;
         MATERIAL_FLAGS[XMaterial.REPEATER.parseMaterial().ordinal()] = SOLID;
+        MATERIAL_FLAGS[XMaterial.DIODE_BLOCK_OFF.parseMaterial().ordinal()] = SOLID;
+        MATERIAL_FLAGS[XMaterial.DIODE_BLOCK_ON.parseMaterial().ordinal()] = SOLID;
         MATERIAL_FLAGS[XMaterial.SNOW.parseMaterial().ordinal()] = SOLID;
         MATERIAL_FLAGS[XMaterial.ANVIL.parseMaterial().ordinal()] = SOLID;
         MATERIAL_FLAGS[XMaterial.LILY_PAD.parseMaterial().ordinal()] = SOLID;

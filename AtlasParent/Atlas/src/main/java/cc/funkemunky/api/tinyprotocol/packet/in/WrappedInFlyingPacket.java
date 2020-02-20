@@ -44,4 +44,9 @@ public class WrappedInFlyingPacket extends NMSObject {
         pos = fetch(hasPos);
         look = fetch(hasLook);
     }
+
+    @Override
+    public void updateObject() {
+        setObject(NMSObject.construct(getObject(), packet, x, y, z, yaw, pitch, ground, pos, look));
+    }
 }

@@ -1,6 +1,7 @@
 package cc.funkemunky.api.tinyprotocol.packet.types.enums;
 
 import cc.funkemunky.api.reflections.Reflections;
+import cc.funkemunky.api.reflections.types.WrappedClass;
 
 public enum WrappedEnumDifficulty {
     PEACEFUL(0, "options.difficulty.peaceful"),
@@ -11,6 +12,7 @@ public enum WrappedEnumDifficulty {
     private static final WrappedEnumDifficulty[] e = new WrappedEnumDifficulty[values().length];
     private final int f;
     private final String g;
+    private static final WrappedClass enumDifficulty = Reflections.getNMSClass("EnumDifficulty");
 
     private WrappedEnumDifficulty(int var3, String var4) {
         this.f = var3;
@@ -49,7 +51,7 @@ public enum WrappedEnumDifficulty {
     }
 
     public Object getObject() {
-        return Reflections.getNMSClass("EnumDifficulty").getEnum(this.name());
+        return enumDifficulty.getEnum(this.name());
     }
 
     public static WrappedEnumDifficulty fromObject(Enum var) {

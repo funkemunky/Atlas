@@ -25,6 +25,11 @@ public class WrappedInClientCommandPacket extends NMSObject {
         command = EnumClientCommand.values()[fetch(fieldCommand).ordinal()];
     }
 
+    @Override
+    public void updateObject() {
+        //setObject(NMSObject.construct(getObject(), packet, enumClientCommancd));
+    }
+
     public enum EnumClientCommand {
         PERFORM_RESPAWN,
         REQUEST_STATS,

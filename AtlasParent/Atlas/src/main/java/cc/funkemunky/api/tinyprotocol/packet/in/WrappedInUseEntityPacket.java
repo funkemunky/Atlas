@@ -44,6 +44,11 @@ public class WrappedInUseEntityPacket extends NMSObject {
         }
     }
 
+    @Override
+    public void updateObject() {
+
+    }
+
     public enum EnumEntityUseAction {
         INTERACT("INTERACT"),
         ATTACK("ATTACK"),

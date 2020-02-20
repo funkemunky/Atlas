@@ -48,4 +48,9 @@ public class WrappedPacketPlayOutWorldParticle extends NMSObject {
                     var2, type.toNMS());
         }
     }
+
+    @Override
+    public void updateObject() {
+
+    }
 }

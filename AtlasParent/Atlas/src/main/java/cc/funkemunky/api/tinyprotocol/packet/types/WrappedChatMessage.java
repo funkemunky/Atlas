@@ -38,4 +38,9 @@ public class WrappedChatMessage extends NMSObject {
         chatMessage = fetch(messageField);
         objects = fetch(objectsField);
     }
+
+    @Override
+    public void updateObject() {
+
+    }
 }

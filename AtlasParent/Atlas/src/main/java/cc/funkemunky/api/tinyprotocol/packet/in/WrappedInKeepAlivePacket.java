@@ -1,8 +1,9 @@
 package cc.funkemunky.api.tinyprotocol.packet.in;
 
+import cc.funkemunky.api.reflections.Reflections;
+import cc.funkemunky.api.reflections.types.WrappedField;
 import cc.funkemunky.api.tinyprotocol.api.NMSObject;
 import cc.funkemunky.api.tinyprotocol.api.ProtocolVersion;
-import cc.funkemunky.api.tinyprotocol.reflection.FieldAccessor;
 import lombok.Getter;
 import org.bukkit.entity.Player;
 
@@ -10,8 +11,7 @@ import org.bukkit.entity.Player;
 public class WrappedInKeepAlivePacket extends NMSObject {
     private static final String packet = Client.KEEP_ALIVE;
 
-    private static FieldAccessor<Integer> fieldLegacy;
-    private static FieldAccessor<Long> field;
+    private static WrappedField timeField;
 
     private long time;
 
@@ -26,17 +26,23 @@ public class WrappedInKeepAlivePacket extends NMSObject {
 
     @Override
     public void process(Player player, ProtocolVersion version) {
-        if (ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.V1_12)) {
-            time = fetch(fieldLegacy);
-        }
-        else {
-            time = fetch(field);
-        }
+        Object object = timeField.get(getObject());
+
+        if(object instanceof Long) {
+            time = (long) object;
+        } else time = (int) object;
+    }
+
+    @Override
+    public void updateObject() {
+        if(ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.V1_12)) {
+            setObject(NMSObject.construct(getObject(), packet, (int) time));
+        } else setObject(NMSObject.construct(getObject(), packet, time));
     }
 
     static {
-        if(ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.V1_12)) {
-            fieldLegacy = fetchField(packet, int.class, 0);
-        } else field = fetchField(packet, long.class, 0);
+        timeField = Reflections.getNMSClass(packet)
+                .getFieldByType(ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.V1_12)
+                        ? int.class : long.class, 0);
     }
 }

@@ -72,6 +72,11 @@ public class WrappedWatchableObject extends NMSObject {
                 .newInstance(dataWatcherObject, watchedObject));
     }
 
+    @Override
+    public void updateObject() {
+
+    }
+
     static {
         if(ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.V1_9)) {
             firstIntField = fetchField(type, int.class, 0);

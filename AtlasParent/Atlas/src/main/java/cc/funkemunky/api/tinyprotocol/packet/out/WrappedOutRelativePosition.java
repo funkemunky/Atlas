@@ -48,4 +48,9 @@ public class WrappedOutRelativePosition extends NMSObject {
         pitch = fetch(fieldPitch);
         ground = fetch(fieldGround);
     }
+
+    @Override
+    public void updateObject() {
+
+    }
 }

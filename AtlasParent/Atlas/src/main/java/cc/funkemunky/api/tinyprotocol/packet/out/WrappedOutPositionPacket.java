@@ -58,9 +58,15 @@ public class WrappedOutPositionPacket extends NMSObject {
         pitch = fetch(fieldPitch);
     }
 
+    @Override
+    public void updateObject() {
+
+    }
+
     private List<Integer> toOrdinal(Set<Enum> enums) {
         List<Integer> ordinals = new ArrayList<>();
         enums.forEach(e -> ordinals.add(e.ordinal()));
         return ordinals;
     }
+
 }

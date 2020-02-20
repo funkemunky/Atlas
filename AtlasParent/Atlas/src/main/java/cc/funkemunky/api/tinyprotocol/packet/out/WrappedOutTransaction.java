@@ -18,7 +18,6 @@ public class WrappedOutTransaction extends NMSObject {
 
     public WrappedOutTransaction(int id, short action, boolean accept) {
         setPacket(packet, id, action, accept);
-
     }
 
     public WrappedOutTransaction(Object packet, Player player) {
@@ -30,5 +29,10 @@ public class WrappedOutTransaction extends NMSObject {
         id = fetch(fieldId);
         action = fetch(fieldAction);
         accept = fetch(fieldAccepted);
+    }
+
+    @Override
+    public void updateObject() {
+
     }
 }

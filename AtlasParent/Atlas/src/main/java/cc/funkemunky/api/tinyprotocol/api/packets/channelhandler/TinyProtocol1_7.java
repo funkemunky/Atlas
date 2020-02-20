@@ -20,6 +20,7 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.lang.reflect.Method;
+import java.net.SocketAddress;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.logging.Level;
@@ -268,6 +269,10 @@ public abstract class TinyProtocol1_7 implements AbstractTinyProtocol {
         return packet;
     }
 
+    public Object onHandshake(SocketAddress address, Object packet) {
+        return packet;
+    }
+
     /**
      * Send a packet to a particular player.
      * <p>
@@ -493,10 +498,10 @@ public abstract class TinyProtocol1_7 implements AbstractTinyProtocol {
      */
     private final class PacketInterceptor extends ChannelDuplexHandler {
         // Updated by the login event
-        public volatile Player player;
+        public Player player;
 
         @Override
-        public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
+        public void channelRead(ChannelHandlerContext ctx, Object msg) {
             // Intercept channel
             final Channel channel = ctx.channel();
             if (PACKET_LOGIN_IN_START.isInstance(msg)) {
@@ -509,27 +514,43 @@ public abstract class TinyProtocol1_7 implements AbstractTinyProtocol {
                 }
             }
 
-            try {
-                msg = onPacketInAsync(player, msg);
-            } catch (Exception e) {
-                plugin.getLogger().log(Level.SEVERE, "Error in onPacketInAsync().", e);
-            }
+            if(player != null) {
+                try {
+                    msg = onPacketInAsync(player, msg);
+                } catch (Exception e) {
+                    plugin.getLogger().log(Level.SEVERE, "Error in onPacketInAsync().", e);
+                }
+            } else msg = onHandshake(ctx.channel().remoteAddress(), msg);
 
             if (msg != null) {
-                super.channelRead(ctx, msg);
+                try {
+                    super.channelRead(ctx, msg);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    ctx.channel().flush();
+                    ctx.channel().close();
+                }
             }
         }
 
         @Override
-        public void write(ChannelHandlerContext ctx, Object msg, ChannelPromise promise) throws Exception {
-            try {
-                msg = onPacketOutAsync(player, msg);
-            } catch (Exception e) {
-                plugin.getLogger().log(Level.SEVERE, "Error in onPacketOutAsync().", e);
+        public void write(ChannelHandlerContext ctx, Object msg, ChannelPromise promise) {
+            if(player != null) {
+                try {
+                    msg = onPacketOutAsync(player, msg);
+                } catch (Exception e) {
+                    plugin.getLogger().log(Level.SEVERE, "Error in onPacketOutAsync().", e);
+                }
             }
 
             if (msg != null) {
-                super.write(ctx, msg, promise);
+                try {
+                    super.write(ctx, msg, promise);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    ctx.channel().flush();
+                    ctx.channel().close();
+                }
             }
         }
     }

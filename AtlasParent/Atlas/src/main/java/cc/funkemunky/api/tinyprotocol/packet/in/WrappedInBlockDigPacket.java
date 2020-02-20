@@ -3,12 +3,11 @@ package cc.funkemunky.api.tinyprotocol.packet.in;
 import cc.funkemunky.api.tinyprotocol.api.NMSObject;
 import cc.funkemunky.api.tinyprotocol.api.ProtocolVersion;
 import cc.funkemunky.api.tinyprotocol.packet.types.BaseBlockPosition;
-import cc.funkemunky.api.tinyprotocol.packet.types.EnumDirection;
+import cc.funkemunky.api.tinyprotocol.packet.types.enums.WrappedEnumDirection;
 import cc.funkemunky.api.tinyprotocol.reflection.FieldAccessor;
 import lombok.Getter;
 import org.bukkit.entity.Player;
 
-//TODO Fix for 1.7.10.
 @Getter
 public class WrappedInBlockDigPacket extends NMSObject {
     private static final String packet = Client.BLOCK_DIG;
@@ -26,12 +25,17 @@ public class WrappedInBlockDigPacket extends NMSObject {
 
     // Decoded data
     private BaseBlockPosition position;
-    private EnumDirection direction;
+    private WrappedEnumDirection direction;
     private EnumPlayerDigType action;
 
 
     public WrappedInBlockDigPacket(Object packet, Player player) {
         super(packet, player);
+    }
+
+    @Override
+    public void updateObject() {
+
     }
 
     @Override
@@ -43,14 +47,14 @@ public class WrappedInBlockDigPacket extends NMSObject {
             face = fetchField(packet, int.class, 3);
             intAction = fetchField(packet, int.class, 4);
             position = new BaseBlockPosition(fetch(fieldPosX), fetch(fieldPosY), fetch(fieldPosZ));
-            direction = EnumDirection.values()[Math.min(fetch(face), 5)];
+            direction = WrappedEnumDirection.values()[Math.min(fetch(face), 5)];
             action = EnumPlayerDigType.values()[fetch(intAction)];
         } else {
             fieldBlockPosition = fetchField(packet, Object.class, 0);
             fieldDirection = fetchField(packet, Object.class, 1);
             fieldDigType = fetchField(packet, Object.class, 2);
             position = new BaseBlockPosition(fetch(fieldBlockPosition));
-            direction = EnumDirection.values()[((Enum) fetch(fieldDirection)).ordinal()];
+            direction = WrappedEnumDirection.values()[((Enum) fetch(fieldDirection)).ordinal()];
             action = EnumPlayerDigType.values()[((Enum) fetch(fieldDigType)).ordinal()];
         }
     }

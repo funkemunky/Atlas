@@ -311,7 +311,7 @@ public class Atlas extends JavaPlugin {
                                         : field.getField().getName();
 
                                 MiscUtils.printToConsole("&7Found ConfigSetting &e" + field.getField().getName()
-                                        + " &7(default=&f" + field.get(obj) + "&7.");
+                                        + " &7(default=&f" + (setting.hide() ? "HIDDEN" : field.get(obj)) + "&7.");
 
                                 if(plugin.getConfig().get(setting.path() + "." + name) == null) {
                                     MiscUtils.printToConsole("&7Value not set in config! Setting value...");
@@ -319,7 +319,8 @@ public class Atlas extends JavaPlugin {
                                     plugin.saveConfig();
                                 } else {
                                     Object configObj = plugin.getConfig().get(setting.path() + "." + name);
-                                    MiscUtils.printToConsole("&7Set field to value &e" + configObj + "&7.");
+                                    MiscUtils.printToConsole("&7Set field to value &e"
+                                            + (setting.hide() ? "HIDDEN" : configObj) + "&7.");
                                     field.set(obj, configObj);
                                 }
                             });
