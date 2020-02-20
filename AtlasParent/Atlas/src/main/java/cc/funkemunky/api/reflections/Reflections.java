@@ -9,13 +9,26 @@
 package cc.funkemunky.api.reflections;
 
 import cc.funkemunky.api.reflections.types.WrappedClass;
+import cc.funkemunky.api.utils.objects.QuadFunction;
+import cc.funkemunky.api.utils.objects.TriFunction;
 import lombok.Getter;
+import lombok.SneakyThrows;
+import lombok.val;
 import org.bukkit.Bukkit;
+
+import java.lang.invoke.LambdaMetafactory;
+import java.lang.invoke.MethodHandle;
+import java.lang.invoke.MethodHandles;
+import java.lang.invoke.MethodType;
+import java.lang.reflect.Method;
+import java.util.function.BiFunction;
+import java.util.function.Function;
 
 @Getter
 public class Reflections {
     private static final String craftBukkitString;
     private static final String netMinecraftServerString;
+    private static MethodHandles.Lookup lookup = MethodHandles.lookup();
 
     static {
         String version = Bukkit.getServer().getClass().getPackage().getName().split("\\.")[3];
@@ -46,6 +59,38 @@ public class Reflections {
         } catch (ClassNotFoundException | NoClassDefFoundError e) {
             throw new NullPointerException("Class" + name + " could not be found!");
         }
+    }
+
+    @SneakyThrows
+    public static <T> T createMethodLambda(Method method) {
+        if(!method.isAccessible()) return null;
+        val handle = lookup.unreflect(method);
+        Class<?> functionType;
+        switch(method.getParameterCount()) {
+            case 0:
+                functionType = Function.class;
+                break;
+            case 1:
+                functionType = BiFunction.class;
+                break;
+            case 2:
+                functionType = TriFunction.class;
+                break;
+            case 3:
+                functionType = QuadFunction.class;
+            default:
+                functionType = null;
+                break;
+        }
+
+        if(functionType != null) {
+            return (T) LambdaMetafactory.metafactory(lookup, "apply",
+                    MethodType.methodType(functionType),
+                    MethodType.methodType(method.getReturnType(), handle.type().parameterArray()),
+                    handle, handle.type()).getTarget().invoke();
+        }
+
+        return null;
     }
 
     public static WrappedClass getClass(Class clazz) {

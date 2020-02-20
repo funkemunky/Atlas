@@ -17,6 +17,7 @@ import com.google.common.collect.MapMaker;
 import com.mojang.authlib.GameProfile;
 import io.netty.channel.*;
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;

@@ -261,11 +261,148 @@ public enum BlockData {
         return NoCollisionBox.INSTANCE;
     }, XMaterial.SEA_PICKLE.parseMaterial()),
 
-    _NONE(NoCollisionBox.INSTANCE, Stream.of(XMaterial.LEVER, XMaterial.TORCH, XMaterial.REDSTONE_TORCH,
-            XMaterial.REDSTONE_WIRE, XMaterial.REDSTONE_WALL_TORCH, XMaterial.POWERED_RAIL, XMaterial.SIGN,
-            XMaterial.WALL_SIGN, XMaterial.WALL_TORCH, XMaterial.RAIL, XMaterial.ACTIVATOR_RAIL,
-            XMaterial.LEGACY_SIGN_POST, XMaterial.DETECTOR_RAIL, XMaterial.AIR, XMaterial.LONG_GRASS, XMaterial.TRIPWIRE,
-            XMaterial.TRIPWIRE_HOOK)
+    _WALL_SIGN((version, block) -> {
+
+        byte data = block.getData();
+        double var4 = 0.28125;
+        double var5 = 0.78125;
+        double var6 = 0;
+        double var7 = 1.0;
+        double var8 = 0.125;
+
+        BlockFace face;
+        switch(data) {
+            case 2:
+                face = BlockFace.SOUTH;
+                break;
+            case 3:
+                face = BlockFace.NORTH;
+                break;
+            case 4:
+                face = BlockFace.EAST;
+                break;
+            case 5:
+                face = BlockFace.WEST;
+                break;
+            default:
+                face = BlockFace.DOWN;
+                break;
+        }
+
+        face = !face.equals(BlockFace.DOWN) ? face.getOppositeFace() : BlockFace.DOWN;
+
+        switch(face) {
+            case NORTH:
+                return new SimpleCollisionBox(var6, var4, 1.0 - var8, var7, var5, 1.0);
+            case SOUTH:
+                return new SimpleCollisionBox(var6, var4, 0.0, var7, var5, var8);
+            case WEST:
+                return new SimpleCollisionBox(1.0 - var8, var4, var6, 1.0, var5, var7);
+            case EAST:
+                return new SimpleCollisionBox(0.0, var4, var6, var8, var5, var7);
+            default:
+                return new SimpleCollisionBox(0,0,0,1,1,1);
+        }
+    }, Arrays.stream(Material.values()).filter(mat -> mat.name().contains("WALL_SIGN"))
+            .toArray(Material[]::new)),
+
+    _SIGN(new SimpleCollisionBox(0.25, 0.0, 0.25, 0.75, 1.0, 0.75),
+            XMaterial.SIGN.parseMaterial(), XMaterial.LEGACY_SIGN_POST.parseMaterial()),
+    _BUTTON((version, block) -> {
+        BlockFace face;
+        switch(block.getData() & 7) {
+            case 0:
+                face = BlockFace.UP;
+                break;
+            case 1:
+                face = BlockFace.WEST;
+                break;
+            case 2:
+                face = BlockFace.EAST;
+                break;
+            case 3:
+                face = BlockFace.NORTH;
+                break;
+            case 4:
+                face = BlockFace.SOUTH;
+                break;
+            case 5:
+                face = BlockFace.DOWN;
+                break;
+            default:
+                return NoCollisionBox.INSTANCE;
+        }
+
+        face = face.getOppositeFace();
+        boolean flag = (block.getData() & 8) == 8; //is powered;
+        double f2 = (float)(flag ? 1 : 2) / 16.0;
+        switch(face) {
+            case EAST:
+                return new SimpleCollisionBox(0.0, 0.375, 0.3125, f2, 0.625, 0.6875);
+            case WEST:
+                return new SimpleCollisionBox(1.0 - f2, 0.375, 0.3125, 1.0, 0.625, 0.6875);
+            case SOUTH:
+                return new SimpleCollisionBox(0.3125, 0.375, 0.0, 0.6875, 0.625, f2);
+            case NORTH:
+                return new SimpleCollisionBox(0.3125, 0.375, 1.0 - f2, 0.6875, 0.625, 1.0);
+            case UP:
+                return new SimpleCollisionBox(0.3125, 0.0, 0.375, 0.6875, 0.0 + f2, 0.625);
+            case DOWN:
+                return new SimpleCollisionBox(0.3125, 1.0 - f2, 0.375, 0.6875, 1.0, 0.625);
+        }
+        return NoCollisionBox.INSTANCE;
+    }, Arrays.stream(Material.values()).filter(mat -> mat.name().contains("BUTTON")).toArray(Material[]::new)),
+    
+    _LEVER((version, block) -> {
+        byte data = (byte)(block.getData() & 7);
+        BlockFace face;
+        switch(data) {
+            case 0:
+            case 7:
+                face = BlockFace.UP;
+                break;
+            case 1:
+                face = BlockFace.WEST;
+                break;
+            case 2:
+                face = BlockFace.EAST;
+                break;
+            case 3:
+                face = BlockFace.NORTH;
+                break;
+            case 4:
+                face = BlockFace.SOUTH;
+                break;
+            case 5:
+            case 6:
+                face = BlockFace.DOWN;
+                break;
+            default:
+                return NoCollisionBox.INSTANCE;
+        }
+
+        double f = 0.1875;
+        switch(face) {
+            case EAST:
+                return new SimpleCollisionBox(0.0, 0.2, 0.5 - f, f * 2.0, 0.8, 0.5 + f);
+            case WEST:
+                return new SimpleCollisionBox(1.0 - f * 2.0, 0.2, 0.5 - f, 1.0, 0.8, 0.5 + f);
+            case SOUTH:
+                return new SimpleCollisionBox(0.5 - f, 0.2, 0.0, 0.5 + f, 0.8, f * 2.0);
+            case NORTH:
+                return new SimpleCollisionBox(0.5 - f, 0.2, 1.0 - f * 2.0, 0.5 + f, 0.8, 1.0);
+            case UP:
+                return new SimpleCollisionBox(0.25, 0.0, 0.25, 0.75, 0.6, 0.75);
+            case DOWN:
+                return new SimpleCollisionBox(0.25, 0.4, 0.25, 0.75, 1.0, 0.75);
+        }
+        return NoCollisionBox.INSTANCE;
+    }, XMaterial.LEVER.parseMaterial()),
+
+    _NONE(NoCollisionBox.INSTANCE, Stream.of(XMaterial.TORCH, XMaterial.REDSTONE_TORCH,
+            XMaterial.REDSTONE_WIRE, XMaterial.REDSTONE_WALL_TORCH, XMaterial.POWERED_RAIL, XMaterial.WALL_TORCH,
+            XMaterial.RAIL, XMaterial.ACTIVATOR_RAIL, XMaterial.DETECTOR_RAIL, XMaterial.AIR, XMaterial.LONG_GRASS,
+            XMaterial.TRIPWIRE, XMaterial.TRIPWIRE_HOOK)
             .map(BlockData::m)
             .toArray(Material[]::new)),
 
@@ -274,7 +411,7 @@ public enum BlockData {
                 List<String> names = new ArrayList<>(Arrays.asList(mat.names));
                 names.add(mat.name());
                 return names.stream().anyMatch(name ->
-                        name.contains("PLATE") || name.contains("BUTTON"));
+                        name.contains("PLATE"));
             }).map(BlockData::m).toArray(Material[]::new)),
     _DEFAULT(new SimpleCollisionBox(0, 0, 0, 1, 1, 1),
             XMaterial.STONE.parseMaterial());

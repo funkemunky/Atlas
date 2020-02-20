@@ -27,7 +27,6 @@
         <configuration>
           <source>8</source>
           <target>8</target>
-          <compilerArgument>-XDignore.symbol.file</compilerArgument>
         </configuration>
       </plugin>
       <plugin>
@@ -70,12 +69,6 @@
       <groupId>org.github.spigot</groupId>
       <artifactId>1.14.1</artifactId>
       <version>1.14.1</version>
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.github.spigot</groupId>
-      <artifactId>1.14</artifactId>
-      <version>1.14</version>
       <scope>provided</scope>
     </dependency>
     <dependency>
@@ -184,6 +177,12 @@
       <groupId>org.github.spigot</groupId>
       <artifactId>1.13</artifactId>
       <version>1.13</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.github.spigot</groupId>
+      <artifactId>1.14</artifactId>
+      <version>1.14</version>
       <scope>provided</scope>
     </dependency>
     <dependency>

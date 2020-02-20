@@ -429,6 +429,13 @@ public class MiscUtils {
         return null;
     }
 
+    public static <T> T getArgOrNull(T[] array, int index) {
+        if(array.length > index) {
+            return array[index];
+        }
+        return null;
+    }
+
     public static void printToConsole(String string) {
         Atlas.getInstance().getConsoleSender().sendMessage(Color.translate(string));
     }
