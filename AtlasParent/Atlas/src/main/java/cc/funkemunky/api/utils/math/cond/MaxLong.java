@@ -1,9 +1,11 @@
 package cc.funkemunky.api.utils.math.cond;
 
 import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 
 @RequiredArgsConstructor
 public class MaxLong {
+    @Setter
     private long value;
     private final long max;
 

@@ -501,7 +501,7 @@ public abstract class TinyProtocol1_7 implements AbstractTinyProtocol {
         public Player player;
 
         @Override
-        public void channelRead(ChannelHandlerContext ctx, Object msg) {
+        public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
             // Intercept channel
             final Channel channel = ctx.channel();
             if (PACKET_LOGIN_IN_START.isInstance(msg)) {
@@ -523,18 +523,12 @@ public abstract class TinyProtocol1_7 implements AbstractTinyProtocol {
             } else msg = onHandshake(ctx.channel().remoteAddress(), msg);
 
             if (msg != null) {
-                try {
-                    super.channelRead(ctx, msg);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    ctx.channel().flush();
-                    ctx.channel().close();
-                }
+                super.channelRead(ctx, msg);
             }
         }
 
         @Override
-        public void write(ChannelHandlerContext ctx, Object msg, ChannelPromise promise) {
+        public void write(ChannelHandlerContext ctx, Object msg, ChannelPromise promise) throws Exception {
             if(player != null) {
                 try {
                     msg = onPacketOutAsync(player, msg);
@@ -544,13 +538,7 @@ public abstract class TinyProtocol1_7 implements AbstractTinyProtocol {
             }
 
             if (msg != null) {
-                try {
-                    super.write(ctx, msg, promise);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    ctx.channel().flush();
-                    ctx.channel().close();
-                }
+                super.write(ctx, msg, promise);
             }
         }
     }
