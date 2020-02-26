@@ -260,6 +260,8 @@ public enum BlockData {
         }
         return NoCollisionBox.INSTANCE;
     }, XMaterial.SEA_PICKLE.parseMaterial()),
+    _POT(new SimpleCollisionBox(0.3125, 0.0, 0.3125, 0.6875, 0.375, 0.6875),
+            XMaterial.FLOWER_POT.parseMaterial()),
 
     _WALL_SIGN((version, block) -> {
 
