@@ -33,6 +33,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.shanerx.mojang.Mojang;
 
 import java.io.File;
 import java.util.*;
@@ -62,6 +63,7 @@ public class Atlas extends JavaPlugin {
     private BungeeManager bungeeManager;
     private boolean done;
     private ExecutorService service;
+    private Mojang mojang;
     private File file;
     private Map<UUID, List<Entity>> entities = Collections.synchronizedMap(new HashMap<>());
     private Map<Location, Block> blocksMap = new ConcurrentHashMap<>();
@@ -116,6 +118,9 @@ public class Atlas extends JavaPlugin {
         funkeCommandManager.addCommand(this, new AtlasCommand());
 
         bungeeManager = new BungeeManager();
+
+        MiscUtils.printToConsole(Color.Gray + "Implementing Mojang API...");
+        mojang = new Mojang().connect();
 
         MiscUtils.printToConsole(Color.Gray + "Loading other managers and utilities...");
 

@@ -64,8 +64,12 @@
 
     <repositories>
         <repository>
+            <id>jitpack.io</id>
+            <url>https://jitpack.io</url>
+        </repository>
+        <repository>
             <id>funkemunky-releases</id>
-            <url>http://nexus.funkemunky.cc/content/repositories/releases/</url>
+            <url>https://nexus.funkemunky.cc/content/repositories/releases/</url>
         </repository>
     </repositories>
 
@@ -74,6 +78,12 @@
             <groupId>dev.brighten.db</groupId>
             <artifactId>Assembly</artifactId>
             <version>2.0.1</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.github.SparklingComet</groupId>
+            <artifactId>java-mojang-api</artifactId>
+            <version>-60d6231d42-1</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
