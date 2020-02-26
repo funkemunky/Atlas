@@ -3,11 +3,11 @@
   <parent>
     <artifactId>atlas-parent</artifactId>
     <groupId>cc.funkemunky.utils</groupId>
-    <version>1.8</version>
+    <version>1.8.1</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
   <artifactId>Atlas</artifactId>
-  <version>1.8</version>
+  <version>1.8.1</version>
   <scm>
     <connection>scm:svn:http://127.0.0.1/dummy</connection>
     <developerConnection>scm:svn:https://127.0.0.1/dummy</developerConnection>
@@ -27,6 +27,7 @@
         <configuration>
           <source>8</source>
           <target>8</target>
+          <compilerArgument>-XDignore.symbol.file</compilerArgument>
         </configuration>
       </plugin>
       <plugin>
@@ -73,6 +74,12 @@
       <groupId>org.github.spigot</groupId>
       <artifactId>1.14.1</artifactId>
       <version>1.14.1</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.github.spigot</groupId>
+      <artifactId>1.14</artifactId>
+      <version>1.14</version>
       <scope>provided</scope>
     </dependency>
     <dependency>
@@ -181,12 +188,6 @@
       <groupId>org.github.spigot</groupId>
       <artifactId>1.13</artifactId>
       <version>1.13</version>
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.github.spigot</groupId>
-      <artifactId>1.14</artifactId>
-      <version>1.14</version>
       <scope>provided</scope>
     </dependency>
     <dependency>

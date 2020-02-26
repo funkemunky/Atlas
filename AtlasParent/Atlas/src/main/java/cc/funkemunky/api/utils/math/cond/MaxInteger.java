@@ -1,9 +1,11 @@
 package cc.funkemunky.api.utils.math.cond;
 
 import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 
 @RequiredArgsConstructor
 public class MaxInteger {
+    @Setter
     private int value;
     private final int max;
 
