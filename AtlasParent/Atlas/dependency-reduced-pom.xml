@@ -78,12 +78,6 @@
     </dependency>
     <dependency>
       <groupId>org.github.spigot</groupId>
-      <artifactId>1.14</artifactId>
-      <version>1.14</version>
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.github.spigot</groupId>
       <artifactId>1.15.1</artifactId>
       <version>1.15.1</version>
       <scope>provided</scope>
@@ -188,6 +182,12 @@
       <groupId>org.github.spigot</groupId>
       <artifactId>1.13</artifactId>
       <version>1.13</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.github.spigot</groupId>
+      <artifactId>1.14</artifactId>
+      <version>1.14</version>
       <scope>provided</scope>
     </dependency>
     <dependency>

@@ -2,6 +2,7 @@ package cc.funkemunky.api.tinyprotocol.packet.types.enums;
 
 import cc.funkemunky.api.reflections.Reflections;
 import cc.funkemunky.api.reflections.types.WrappedClass;
+import cc.funkemunky.api.tinyprotocol.api.ProtocolVersion;
 
 public enum WrappedEnumGameMode {
     NOT_SET(-1, ""),
@@ -13,7 +14,10 @@ public enum WrappedEnumGameMode {
     int f;
     String g;
 
-    private static WrappedClass enumGamemode = Reflections.getNMSClass("EnumGameMode");
+    private static WrappedClass enumGamemode = Reflections.getNMSClass((ProtocolVersion.getGameVersion()
+            .isOrAbove(ProtocolVersion.V1_8_5) && ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.V1_10)
+                    ? "WorldSettings$" : "") +
+            "EnumGamemode");
 
     WrappedEnumGameMode(int var3, String var4) {
         this.f = var3;

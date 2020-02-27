@@ -18,6 +18,7 @@ import org.bukkit.inventory.ItemStack;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -40,7 +41,13 @@ public class MinecraftReflection {
     public static WrappedClass playerConnection = Reflections.getNMSClass("PlayerConnection");
     public static WrappedClass networkManager = Reflections.getNMSClass("NetworkManager");
     public static WrappedClass serverConnection = Reflections.getNMSClass("ServerConnection");
+    private static WrappedClass gameProfile = Reflections.getClass("com.mojang.authlib.GameProfile");
+    private static WrappedClass propertyMap = Reflections.getClass("com.mojang.authlib.properties.PropertyMap");
 
+    private static WrappedMethod getProfile = CraftReflection.craftPlayer.getMethod("getProfile");
+    private static WrappedMethod getProperties = gameProfile.getMethod("getProperties");
+    private static WrappedMethod removeAll = propertyMap.getMethod("removeAll", String.class);
+    private static WrappedMethod putAll = propertyMap.getMethod("putAll", String.class, Collection.class);
     //BoundingBoxes
     public static WrappedMethod getCubes;
     private static WrappedField aBB = axisAlignedBB.getFieldByName("a");
@@ -131,6 +138,10 @@ public class MinecraftReflection {
         }
 
         return aabbs.stream().map(MinecraftReflection::fromAABB).collect(Collectors.toList());
+    }
+
+    public static <T> T getGameProfile(Player player) {
+       return getProfile.invoke(player);
     }
 
     //1.7 field is boundingBox

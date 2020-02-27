@@ -6,11 +6,9 @@ import cc.funkemunky.api.reflections.types.WrappedField;
 import cc.funkemunky.api.reflections.types.WrappedMethod;
 import cc.funkemunky.api.tinyprotocol.api.NMSObject;
 import cc.funkemunky.api.tinyprotocol.api.ProtocolVersion;
-import cc.funkemunky.api.tinyprotocol.packet.types.WrappedChatMessage;
 import cc.funkemunky.api.tinyprotocol.packet.types.enums.WrappedEnumDifficulty;
 import cc.funkemunky.api.tinyprotocol.packet.types.enums.WrappedEnumGameMode;
 import cc.funkemunky.api.tinyprotocol.reflection.FieldAccessor;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.bukkit.WorldType;
 import org.bukkit.entity.Player;
@@ -28,6 +26,7 @@ public class WrappedOutRespawnPacket extends NMSObject {
     private static FieldAccessor<Enum> gamemodeAccessor;
     private static WrappedClass worldTypeClass;
     private static WrappedField worldTypeField;
+    private static WrappedMethod getTypeWorldType;
 
     //Before 1.13
     private static FieldAccessor<Integer> dimensionAccesor;
@@ -71,7 +70,7 @@ public class WrappedOutRespawnPacket extends NMSObject {
         setPacket(packet, ProtocolVersion.getGameVersion().isAbove(ProtocolVersion.V1_13)
                 ? dimensionManagerFromId.invoke(dimension) : dimension,
                 difficulty.getObject(), gamemode.getObject(),
-                worldTypeClass.getEnum(worldType.getName()));
+                getTypeWorldType.invoke(null, worldType.getName()));
     }
 
     static {
@@ -86,5 +85,6 @@ public class WrappedOutRespawnPacket extends NMSObject {
         gamemodeAccessor = fetchField(packet, Enum.class, 1);
         worldTypeClass = Reflections.getNMSClass("WorldType");
         worldTypeField = worldTypeClass.getFirstFieldByType(String.class);
+        getTypeWorldType = worldTypeClass.getMethod("getType", String.class);
     }
 }

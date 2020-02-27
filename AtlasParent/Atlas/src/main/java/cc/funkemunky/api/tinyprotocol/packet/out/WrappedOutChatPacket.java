@@ -30,7 +30,7 @@ public class WrappedOutChatPacket extends NMSObject {
 
     private static WrappedClass chatBaseComp = Reflections.getNMSClass("IChatBaseComponent");
     private static WrappedClass outChatClass = Reflections.getNMSClass(packet);
-    private static WrappedClass chatSerialClass = Reflections.getNMSClass("IChatBaseComponent.ChatSerializer");
+    private static WrappedClass chatSerialClass = Reflections.getNMSClass("IChatBaseComponent$ChatSerializer");
     private static WrappedMethod stcToComponent = chatSerialClass.getMethod("a", String.class);
     private static WrappedMethod getTextMethod = chatBaseComp.getMethod("getText");
     private static WrappedField chatTypeField;

@@ -11,8 +11,8 @@ public enum WrappedEnumPlayerInfoAction {
     REMOVE_PLAYER("removePlayer");
 
     public String legacyMethodName;
-    private static WrappedClass enumPlayerInfoAction =
-            Reflections.getNMSClass("PacketPlayOutPlayerInfo.EnumPlayerInfoAction");
+    public static WrappedClass enumPlayerInfoAction =
+            Reflections.getNMSClass("PacketPlayOutPlayerInfo$EnumPlayerInfoAction");
 
     WrappedEnumPlayerInfoAction(String legacyMethodName) {
         this.legacyMethodName = legacyMethodName;
