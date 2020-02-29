@@ -22,7 +22,7 @@ public class WrappedOutOpenWindow extends NMSObject {
 
     private static FieldAccessor<Integer> idField = fetchField(packet, int.class, 0);
     private static FieldAccessor<String> nameField = fetchField(packet, String.class, 0);
-    private static FieldAccessor<Object> chatCompField = fetchField(packet, Object.class, 2);
+    private static FieldAccessor<Object> chatCompField = fetchField(packet, Object.class, 1);
     private static FieldAccessor<Integer> inventorySize = fetchField(packet, int.class, 1);
 
     private int id;
