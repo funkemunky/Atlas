@@ -1,21 +1,12 @@
 package cc.funkemunky.api.profiling;
 
 import cc.funkemunky.api.utils.Tuple;
-import lombok.val;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.CopyOnWriteArrayList;
 
 public class BaseProfiler implements Profiler {
-    public Map<String, Long> timings = new ConcurrentHashMap<>();
-    public Map<String, Integer> calls = new ConcurrentHashMap<>();
-    public Map<String, Long> stddev = new ConcurrentHashMap<>();
-    public Map<String, Long> total = new ConcurrentHashMap<>();
-    public Map<String, Tuple<Long, Long>> samples = new ConcurrentHashMap<>();
-    public Map<String, List<Long>> samplesTotal = new ConcurrentHashMap<>();
+    private Map<String, Timing> timingsMap = new HashMap<>();
     public long lastSample = 0, lastReset;
     public int totalCalls = 0;
     public long start = 0;
@@ -33,9 +24,8 @@ public class BaseProfiler implements Profiler {
 
     @Override
     public void start(String name) {
-        timings.put(name, System.nanoTime());
-        calls.put(name, calls.getOrDefault(name, 0) + 1);
-        totalCalls++;
+        Timing timing = getTiming(name);
+        timing.lastCall = System.nanoTime();
 
         if(start == 0) start = System.currentTimeMillis();
     }
@@ -51,11 +41,7 @@ public class BaseProfiler implements Profiler {
     @Override
     public void reset() {
         lastSample = totalCalls = 0;
-        timings.clear();
-        calls.clear();
-        stddev.clear();
-        total.clear();
-        samples.clear();
+        timingsMap.clear();
         start = lastReset = System.currentTimeMillis();
     }
 
@@ -65,31 +51,35 @@ public class BaseProfiler implements Profiler {
         Map<String, Tuple<Integer, Double>> toReturn = new HashMap<>();
         switch(type) {
             case TOTAL: {
-                double totalTime = System.currentTimeMillis() - start;
-                for (String key : total.keySet()) {
-                    toReturn.put(key, new Tuple<>(calls.get(key), total.get(key) / totalTime));
+                for (String key : timingsMap.keySet()) {
+                    Timing timing = timingsMap.get(key);
+
+                    toReturn.put(key, new Tuple<>(timing.calls, timing.total / (double)timing.calls));
                 }
                 break;
             }
             case AVERAGE: {
-                for (String key : samplesTotal.keySet()) {
-                    toReturn.put(key, new Tuple<>(calls.get(key), samplesTotal.get(key).stream()
-                            .mapToLong(val -> val)
-                            .average().orElse(0)));
+                for(String key : timingsMap.keySet()) {
+                    Timing timing = timingsMap.get(key);
+
+                    toReturn.put(key, new Tuple<>(timing.calls, timing.average.getAverage()));
                 }
                 break;
             }
             case SAMPLES: {
-                for (String key : samples.keySet()) {
-                    toReturn.put(key, new Tuple<>(calls.get(key), (double)samples.get(key).one));
+                for(String key : timingsMap.keySet()) {
+                    Timing timing = timingsMap.get(key);
+
+                    toReturn.put(key, new Tuple<>(timing.calls, (double)timing.call));
                 }
                 break;
             }
-            case TICK: {
-                long timeStamp = System.currentTimeMillis();
-                samples.keySet().stream()
-                        .filter(key -> timeStamp - samples.get(key).two < 60L)
-                        .forEach(key -> toReturn.put(key, new Tuple<>(calls.get(key), (double)samples.get(key).one)));
+            default: {
+                for (String key : timingsMap.keySet()) {
+                    Timing timing = timingsMap.get(key);
+
+                    toReturn.put(key, new Tuple<>(timing.calls, timing.total / (double)timing.calls));
+                }
                 break;
             }
         }
@@ -97,49 +87,45 @@ public class BaseProfiler implements Profiler {
     }
 
     @Override
-    public synchronized void stop(String name) {
-        if(System.currentTimeMillis() - lastReset < 100L || !timings.containsKey(name)) return;
+    public void stop(String name) {
+        long ts = System.currentTimeMillis();
+        if(ts - lastReset < 100L) return;
         long extense = System.nanoTime();
-        long start = timings.get(name);
-        long time = (System.nanoTime() - start) - (System.nanoTime() - extense);
-        long lastTotal = total.getOrDefault(name, time);
-        val sample = samples.getOrDefault(name, new Tuple<>(time, System.currentTimeMillis()));
+        Timing timing = getTiming(name);
+        long time = (System.nanoTime() - timing.lastCall) - (System.nanoTime() - extense);
 
-        samples.put(name, new Tuple<>(time, System.currentTimeMillis()));
-        stddev.put(name, Math.abs(sample.one - time));
-
-        List<Long> samplesTotal = this.samplesTotal.getOrDefault(name, new CopyOnWriteArrayList<>());
-
-        if(samplesTotal.size() > 1000) {
-            samplesTotal.remove(0);
-        }
-        samplesTotal.add(time);
-        this.samplesTotal.put(name, samplesTotal);
-
-        total.put(name, lastTotal + time);
+        timing.average.add(time, ts);
+        timing.stdDev = Math.abs(time - timing.average.getAverage());
+        timing.total+= time;
+        timing.call = time;
+        timing.calls++;
+        totalCalls++;
         lastSample = System.currentTimeMillis();
     }
 
     @Override
     public void stop(String name, long extense) {
-        if(System.currentTimeMillis() - lastReset < 100L || !timings.containsKey(name)) return;
-        long start = timings.get(name);
-        long time = (System.nanoTime() - start) - (System.nanoTime() - extense);
-        long lastTotal = total.getOrDefault(name, time);
-        val sample = samples.getOrDefault(name, new Tuple<>(time, System.currentTimeMillis()));
-        samples.put(name, new Tuple<>(time, System.currentTimeMillis()));
+        long ts = System.currentTimeMillis();
+        if(ts - lastReset < 100L) return;
+        Timing timing = getTiming(name);
+        long time = (System.nanoTime() - timing.lastCall) - (System.nanoTime() - extense);
 
-        stddev.put(name, Math.abs(sample.one - time));
-
-        List<Long> samplesTotal = this.samplesTotal.getOrDefault(name, new CopyOnWriteArrayList<>());
-
-        if(samplesTotal.size() > 1000) {
-            samplesTotal.remove(0);
-        }
-        samplesTotal.add(time);
-        this.samplesTotal.put(name, samplesTotal);
-
-        total.put(name, lastTotal + time);
+        timing.average.add(time, ts);
+        timing.stdDev = Math.abs(time - timing.average.getAverage());
+        timing.total+= time;
+        timing.call = time;
+        timing.calls++;
+        totalCalls++;
         lastSample = System.currentTimeMillis();
+    }
+
+    private Timing getTiming(String name) {
+        return timingsMap.computeIfAbsent(name, key -> {
+           Timing timing = new Timing(key);
+
+           timingsMap.put(key, timing);
+
+           return timing;
+        });
     }
 }

@@ -1,11 +1,9 @@
 package cc.funkemunky.api.tinyprotocol.packet.out;
 
 import cc.funkemunky.api.reflections.Reflections;
-import cc.funkemunky.api.reflections.impl.CraftReflection;
 import cc.funkemunky.api.reflections.impl.MinecraftReflection;
 import cc.funkemunky.api.reflections.types.WrappedClass;
 import cc.funkemunky.api.reflections.types.WrappedConstructor;
-import cc.funkemunky.api.reflections.types.WrappedField;
 import cc.funkemunky.api.reflections.types.WrappedMethod;
 import cc.funkemunky.api.tinyprotocol.api.NMSObject;
 import cc.funkemunky.api.tinyprotocol.api.ProtocolVersion;
@@ -20,10 +18,7 @@ import org.bukkit.entity.Player;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Iterator;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class WrappedOutPlayerInfo extends NMSObject {
     private static String packet = Server.PLAYER_INFO;

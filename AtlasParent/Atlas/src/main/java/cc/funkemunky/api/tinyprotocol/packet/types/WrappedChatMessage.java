@@ -5,8 +5,6 @@ import cc.funkemunky.api.reflections.types.WrappedClass;
 import cc.funkemunky.api.reflections.types.WrappedField;
 import cc.funkemunky.api.tinyprotocol.api.NMSObject;
 import cc.funkemunky.api.tinyprotocol.api.ProtocolVersion;
-import cc.funkemunky.api.tinyprotocol.reflection.FieldAccessor;
-import cc.funkemunky.api.utils.ReflectionsUtil;
 import lombok.Getter;
 import org.bukkit.entity.Player;
 
