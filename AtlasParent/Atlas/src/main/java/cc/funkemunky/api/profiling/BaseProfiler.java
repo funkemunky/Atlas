@@ -1,11 +1,13 @@
 package cc.funkemunky.api.profiling;
 
 import cc.funkemunky.api.utils.Tuple;
+import lombok.Getter;
 
 import java.util.HashMap;
 import java.util.Map;
 
 public class BaseProfiler implements Profiler {
+    @Getter
     private Map<String, Timing> timingsMap = new HashMap<>();
     public long lastSample = 0, lastReset;
     public int totalCalls = 0;
