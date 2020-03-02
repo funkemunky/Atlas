@@ -17,7 +17,7 @@ public class WrappedChatMessage extends NMSObject {
     private String chatMessage;
     private Object[] objects;
 
-    private static WrappedClass chatMessageClass = Reflections.getClass(type);
+    private static WrappedClass chatMessageClass = Reflections.getNMSClass("ChatMessage");
     private static WrappedField messageField = chatMessageClass.getFieldByType(String.class, 0);
     private static WrappedField objectsField = chatMessageClass.getFieldByType(Object[].class, 0);
 

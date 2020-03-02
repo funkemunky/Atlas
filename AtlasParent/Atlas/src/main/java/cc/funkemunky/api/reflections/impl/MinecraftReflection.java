@@ -43,6 +43,7 @@ public class MinecraftReflection {
     public static WrappedClass serverConnection = Reflections.getNMSClass("ServerConnection");
     private static WrappedClass gameProfile = Reflections.getClass("com.mojang.authlib.GameProfile");
     private static WrappedClass propertyMap = Reflections.getClass("com.mojang.authlib.properties.PropertyMap");
+    public static WrappedClass iChatBaseComponent = Reflections.getNMSClass("IChatBaseComponent");
 
     private static WrappedMethod getProfile = CraftReflection.craftPlayer.getMethod("getProfile");
     private static WrappedMethod getProperties = gameProfile.getMethod("getProperties");
