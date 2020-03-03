@@ -1,10 +1,10 @@
 package cc.funkemunky.api.tinyprotocol.api;
 
 import cc.funkemunky.api.Atlas;
-import cc.funkemunky.api.bungee.BungeeAPI;
 import cc.funkemunky.api.events.impl.PacketLoginEvent;
 import cc.funkemunky.api.events.impl.PacketReceiveEvent;
 import cc.funkemunky.api.events.impl.PacketSendEvent;
+import cc.funkemunky.api.handlers.protocolsupport.ProtocolAPI;
 import cc.funkemunky.api.tinyprotocol.api.packets.AbstractTinyProtocol;
 import cc.funkemunky.api.tinyprotocol.api.packets.channelhandler.TinyProtocol1_7;
 import cc.funkemunky.api.tinyprotocol.api.packets.channelhandler.TinyProtocol1_8;
@@ -76,17 +76,7 @@ public class TinyProtocolHandler {
     }
 
     public static ProtocolVersion getProtocolVersion(Player player) {
-        if(Atlas.getInstance().getBungeeManager().isBungee()) {
-            int version = bungeeVersionCache
-                    .computeIfAbsent(player.getUniqueId(), key -> {
-                        int bv = BungeeAPI.getPlayerVersion(player);
-                        bungeeVersionCache.put(key, bv);
-                        return bv;
-                    });
-
-            if(version != -1) return ProtocolVersion.getVersion(version);
-        }
-        return ProtocolVersion.getVersion(instance.getProtocolVersion(player));
+        return ProtocolVersion.getVersion(ProtocolAPI.INSTANCE.getPlayerVersion(player));
     }
 
     public Object onPacketOutAsync(Player sender, Object packet) {
