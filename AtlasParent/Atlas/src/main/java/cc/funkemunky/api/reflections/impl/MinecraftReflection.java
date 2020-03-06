@@ -49,36 +49,37 @@ public class MinecraftReflection {
     private static WrappedMethod getProperties = gameProfile.getMethod("getProperties");
     private static WrappedMethod removeAll = propertyMap.getMethod("removeAll", String.class);
     private static WrappedMethod putAll = propertyMap.getMethod("putAll", String.class, Collection.class);
+    private static WrappedMethod worldGetType;
     //BoundingBoxes
-    public static WrappedMethod getCubes;
+    private static WrappedMethod getCubes;
     private static WrappedField aBB = axisAlignedBB.getFieldByName("a");
     private static WrappedField bBB = axisAlignedBB.getFieldByName("b");
     private static WrappedField cBB = axisAlignedBB.getFieldByName("c");
     private static WrappedField dBB = axisAlignedBB.getFieldByName("d");
     private static WrappedField eBB = axisAlignedBB.getFieldByName("e");
     private static WrappedField fBB = axisAlignedBB.getFieldByName("f");
-    public static WrappedConstructor aabbConstructor;
-    public static WrappedMethod idioticOldStaticConstructorAABB;
+    private static WrappedConstructor aabbConstructor;
+    private static WrappedMethod idioticOldStaticConstructorAABB;
     private static WrappedField entityBoundingBox = entity.getFirstFieldByType(axisAlignedBB.getParent());
 
     //ItemStack methods and fields
-    public static WrappedMethod enumAnimationStack;
+    private static WrappedMethod enumAnimationStack;
     private static WrappedField activeItemField;
-    public static WrappedMethod getItemMethod = itemStack.getMethod("getItem");
-    public static WrappedMethod getAnimationMethod = itemClass.getMethodByType(enumAnimation.getParent(), 0);
-    public static WrappedMethod canDestroyMethod;
+    private static WrappedMethod getItemMethod = itemStack.getMethod("getItem");
+    private static WrappedMethod getAnimationMethod = itemClass.getMethodByType(enumAnimation.getParent(), 0);
+    private static WrappedMethod canDestroyMethod;
 
     //1.13+ only
-    public static WrappedClass voxelShape;
-    public static WrappedClass worldReader;
+    private static WrappedClass voxelShape;
+    private static WrappedClass worldReader;
     private static WrappedMethod getCubesFromVoxelShape;
 
-    public static WrappedField pingField = entityPlayer.getFieldByName("ping");
+    private static WrappedField pingField = entityPlayer.getFieldByName("ping");
 
     //Blocks
-    public static WrappedMethod addCBoxes;
+    private static WrappedMethod addCBoxes;
     public static WrappedClass blockPos;
-    public static WrappedConstructor blockPosConstructor;
+    private static WrappedConstructor blockPosConstructor;
     private static WrappedMethod getBlockData;
     private static WrappedField blockData = block.getFieldByName("blockData");
     private static WrappedField frictionFactor = block.getFieldByName("frictionFactor");
@@ -217,13 +218,19 @@ public class MinecraftReflection {
         return strength.get(vBlock);
     }
 
-    public static <T> T getBlockData(Object block) {
-        Object vBlock;
-        if(block instanceof Block) {
-            vBlock = CraftReflection.getVanillaBlock((Block)block);
-        } else vBlock = block;
+    //Argument can either be org.bukkit.block.Block or vanilla Block.
+    public static <T> T getBlockData(Object object) {
+        if(object instanceof Block) {
+            Block block = (Block) object;
+            Object vworld = CraftReflection.getVanillaWorld(block.getWorld());
+            if(ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.V1_8)) {
+                return worldGetType.invoke(vworld, block.getX(), block.getY(), block.getZ());
+            } else {
+                Object bpos = new BaseBlockPosition(block.getX(), block.getY(), block.getZ()).getAsBlockPosition();
 
-        return blockData.get(vBlock);
+                return worldGetType.invoke(vworld, bpos);
+            }
+        } else return blockData.get(object);
     }
 
     public static List<BoundingBox> getCollidingBoxes(@Nullable Entity entity, World world, BoundingBox box) {
@@ -347,9 +354,11 @@ public class MinecraftReflection {
             aabbConstructor = axisAlignedBB
                     .getConstructor(double.class, double.class, double.class, double.class, double.class, double.class);
             iBlockData = Reflections.getNMSClass("IBlockData");
+            worldGetType = worldServer.getMethod("getType", blockPos.getParent());
         } else {
             idioticOldStaticConstructorAABB = axisAlignedBB.getMethod("a",
                     double.class, double.class, double.class, double.class, double.class, double.class);
+            worldGetType = worldServer.getMethod("getType", int.class, int.class, int.class);
         }
         if(ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.V1_12)) {
             getCubes = world.getMethod("a", axisAlignedBB.getParent());

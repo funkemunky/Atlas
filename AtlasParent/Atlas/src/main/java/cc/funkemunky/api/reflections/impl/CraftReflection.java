@@ -3,6 +3,7 @@ package cc.funkemunky.api.reflections.impl;
 import cc.funkemunky.api.reflections.Reflections;
 import cc.funkemunky.api.reflections.types.WrappedClass;
 import cc.funkemunky.api.reflections.types.WrappedMethod;
+import cc.funkemunky.api.tinyprotocol.api.ProtocolVersion;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.block.Block;
@@ -22,15 +23,15 @@ public class CraftReflection {
     public static WrappedClass craftServer = Reflections.getCBClass("CraftServer");//1.7-1.14
 
     //Vanilla Instances
-    public static WrappedMethod itemStackInstance = craftItemStack.getMethod("asNMSCopy", ItemStack.class); //1.7-1.14
-    public static WrappedMethod humanEntityInstance = craftHumanEntity.getMethod("getHandle"); //1.7-1.14
-    public static WrappedMethod entityInstance = craftEntity.getMethod("getHandle"); //1.7-1.14
-    public static WrappedMethod blockInstance = craftBlock.getMethod("getNMSBlock"); //1.7-1.14
-    public static WrappedMethod worldInstance = craftWorld.getMethod("getHandle"); //1.7-1.14
-    public static WrappedMethod bukkitEntity = MinecraftReflection.entity.getMethod("getBukkitEntity"); //1.7-1.14
-    public static WrappedMethod getInventory = craftInventoryPlayer.getMethod("getInventory"); //1.7-1.14
-    public static WrappedMethod mcServerInstance = craftServer.getMethod("getServer"); //1.7-1.14
-    public static WrappedMethod entityPlayerInstance = craftPlayer.getMethod("getHandle");
+    private static WrappedMethod itemStackInstance = craftItemStack.getMethod("asNMSCopy", ItemStack.class); //1.7-1.14
+    private static WrappedMethod humanEntityInstance = craftHumanEntity.getMethod("getHandle"); //1.7-1.14
+    private static WrappedMethod entityInstance = craftEntity.getMethod("getHandle"); //1.7-1.14
+    private static WrappedMethod blockInstance = craftBlock.getMethodByType(MinecraftReflection.block.getParent(), 0); //1.7-1.14
+    private static WrappedMethod worldInstance = craftWorld.getMethod("getHandle"); //1.7-1.14
+    private static WrappedMethod bukkitEntity = MinecraftReflection.entity.getMethod("getBukkitEntity"); //1.7-1.14
+    private static WrappedMethod getInventory = craftInventoryPlayer.getMethod("getInventory"); //1.7-1.14
+    private static WrappedMethod mcServerInstance = craftServer.getMethod("getServer"); //1.7-1.14
+    private static WrappedMethod entityPlayerInstance = craftPlayer.getMethod("getHandle");
 
     public static <T> T getVanillaItemStack(ItemStack stack) {
         return itemStackInstance.invoke(null, stack);
@@ -49,7 +50,9 @@ public class CraftReflection {
     }
 
     public static <T> T getVanillaBlock(Block block) {
-        return blockInstance.invoke(block);
+        if(ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.V1_8)) {
+            return MinecraftReflection.getBlockData(block);
+        } else return blockInstance.invoke(block);
     }
 
     public static <T> T getVanillaWorld(World world) {
@@ -66,5 +69,9 @@ public class CraftReflection {
 
     public static <T> T getMinecraftServer() {
         return mcServerInstance.invoke(Bukkit.getServer());
+    }
+
+    static {
+
     }
 }

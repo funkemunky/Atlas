@@ -100,11 +100,11 @@ public class BaseBlockPosition extends NMSObject {
         return this.c(var1.getX(), var1.getY(), var1.getZ());
     }
 
-    public Object getAsBaseBlockPosition() {
+    public <T> T getAsBaseBlockPosition() {
         return baseBlockPosConstructor.newInstance(getX(), getY(), getZ());
     }
 
-    public Object getAsBlockPosition() {
+    public <T> T getAsBlockPosition() {
         return blockPosConstructor.newInstance(getX(), getY(), getZ());
     }
 

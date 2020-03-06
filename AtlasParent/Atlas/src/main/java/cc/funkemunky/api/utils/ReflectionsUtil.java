@@ -293,7 +293,6 @@ public class ReflectionsUtil {
     }
 
     public static Object getVanillaBlock(Block block) {
-
         if (!isBukkitVerison("1_7")) {
             Object getType = getBlockData(block);
             return getMethodValue(getMethod(iBlockData, "getBlock"), getType);
@@ -306,12 +305,12 @@ public class ReflectionsUtil {
     public static Object getBlockData(Block block) {
         try {
             if (!isBukkitVerison("1_7")) {
-                Object bPos = blockPosition.getConstructor(int.class, int.class, int.class).newInstance(block.getLocation().getBlockX(), block.getLocation().getBlockY(), block.getLocation().getBlockZ());
+                Object bPos = blockPosition.getConstructor(int.class, int.class, int.class).newInstance(block.getX(), block.getY(), block.getZ());
                 Object world = getWorldHandle(block.getWorld());
                 return getMethodValue(getMethod(worldServer, "getType", blockPosition), world, bPos);
             } else {
                 Object world = getWorldHandle(block.getWorld());
-                return getMethodValue(getMethod(worldServer, "getType", int.class, int.class, int.class), world, block.getLocation().getBlockX(), block.getLocation().getBlockY(), block.getLocation().getBlockZ());
+                return getMethodValue(getMethod(worldServer, "getType", int.class, int.class, int.class), world, block.getX(), block.getY(), block.getZ());
             }
         } catch (Exception e) {
             e.printStackTrace();

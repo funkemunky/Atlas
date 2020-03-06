@@ -82,12 +82,6 @@
             <scope>compile</scope>
         </dependency>
         <dependency>
-            <groupId>com.github.SparklingComet</groupId>
-            <artifactId>java-mojang-api</artifactId>
-            <version>-60d6231d42-1</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
             <groupId>org.github.paperspigot</groupId>
             <artifactId>1.8.8</artifactId>
             <version>1.8.8</version>
