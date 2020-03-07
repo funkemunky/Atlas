@@ -20,13 +20,13 @@ public class CraftReflection {
     public static WrappedClass craftPlayer = Reflections.getCBClass("entity.CraftPlayer");
     public static WrappedClass craftWorld = Reflections.getCBClass("CraftWorld"); //1.7-1.14
     public static WrappedClass craftInventoryPlayer = Reflections.getCBClass("inventory.CraftInventoryPlayer"); //1.7-1.14
-    public static WrappedClass craftServer = Reflections.getCBClass("CraftServer");//1.7-1.14
+    public static WrappedClass craftServer = Reflections.getCBClass("CraftServer"); //1.7-1.14
 
     //Vanilla Instances
     private static WrappedMethod itemStackInstance = craftItemStack.getMethod("asNMSCopy", ItemStack.class); //1.7-1.14
     private static WrappedMethod humanEntityInstance = craftHumanEntity.getMethod("getHandle"); //1.7-1.14
     private static WrappedMethod entityInstance = craftEntity.getMethod("getHandle"); //1.7-1.14
-    private static WrappedMethod blockInstance = craftBlock.getMethodByType(MinecraftReflection.block.getParent(), 0); //1.7-1.14
+    private static WrappedMethod blockInstance = craftBlock.getDeclaredMethodByType(MinecraftReflection.block.getParent(), 0); //1.7-1.14
     private static WrappedMethod worldInstance = craftWorld.getMethod("getHandle"); //1.7-1.14
     private static WrappedMethod bukkitEntity = MinecraftReflection.entity.getMethod("getBukkitEntity"); //1.7-1.14
     private static WrappedMethod getInventory = craftInventoryPlayer.getMethod("getInventory"); //1.7-1.14

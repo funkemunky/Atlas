@@ -9,6 +9,7 @@
 package cc.funkemunky.api.reflections;
 
 import cc.funkemunky.api.reflections.types.WrappedClass;
+import cc.funkemunky.api.tinyprotocol.api.ProtocolVersion;
 import cc.funkemunky.api.utils.objects.QuadFunction;
 import cc.funkemunky.api.utils.objects.TriFunction;
 import lombok.Getter;
@@ -58,6 +59,11 @@ public class Reflections {
         } catch (ClassNotFoundException | NoClassDefFoundError e) {
             throw new NullPointerException("Class" + name + " could not be found!");
         }
+    }
+
+    public static WrappedClass getUtilClass(String name) {
+        return getClass((ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.V1_8)
+                ? "net.minecraft.util." : "") + name);
     }
 
     @SneakyThrows

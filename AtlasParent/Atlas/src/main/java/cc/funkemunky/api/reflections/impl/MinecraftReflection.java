@@ -41,14 +41,15 @@ public class MinecraftReflection {
     public static WrappedClass playerConnection = Reflections.getNMSClass("PlayerConnection");
     public static WrappedClass networkManager = Reflections.getNMSClass("NetworkManager");
     public static WrappedClass serverConnection = Reflections.getNMSClass("ServerConnection");
-    private static WrappedClass gameProfile = Reflections.getClass("com.mojang.authlib.GameProfile");
-    private static WrappedClass propertyMap = Reflections.getClass("com.mojang.authlib.properties.PropertyMap");
+    private static WrappedClass gameProfile = Reflections.getUtilClass("com.mojang.authlib.GameProfile");
+    private static WrappedClass propertyMap = Reflections.getUtilClass("com.mojang.authlib.properties.PropertyMap");
+    private static WrappedClass forwardMultiMap = Reflections.getUtilClass("com.google.common.collect.ForwardingMultimap");
     public static WrappedClass iChatBaseComponent = Reflections.getNMSClass("IChatBaseComponent");
 
     private static WrappedMethod getProfile = CraftReflection.craftPlayer.getMethod("getProfile");
     private static WrappedMethod getProperties = gameProfile.getMethod("getProperties");
-    private static WrappedMethod removeAll = propertyMap.getMethod("removeAll", String.class);
-    private static WrappedMethod putAll = propertyMap.getMethod("putAll", String.class, Collection.class);
+    private static WrappedMethod removeAll = forwardMultiMap.getMethod("removeAll", Object.class);
+    private static WrappedMethod putAll = propertyMap.getMethod("putAll", Object.class, Iterable.class);
     private static WrappedMethod worldGetType;
     //BoundingBoxes
     private static WrappedMethod getCubes;

@@ -133,7 +133,7 @@ public class WrappedClass {
                 return new WrappedMethod(this, method);
             }
         }
-        return null;
+        throw new NullPointerException("Could not find method in " + getParent().getSimpleName() + " with name " + name);
     }
 
     public WrappedMethod getDeclaredMethodByType(Class<?> type, int index) {
@@ -151,7 +151,7 @@ public class WrappedClass {
                 return new WrappedMethod(this, method);
             }
         }
-        throw new NullPointerException("Could not find method with return type " + type.getSimpleName()
+        throw new NullPointerException("Could not find method with return type " + type.getName()
                 + " at index " + index);
     }
 
