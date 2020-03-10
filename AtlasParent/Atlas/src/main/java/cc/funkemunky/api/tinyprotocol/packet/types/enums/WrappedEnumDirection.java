@@ -2,6 +2,7 @@ package cc.funkemunky.api.tinyprotocol.packet.types.enums;
 
 import cc.funkemunky.api.reflections.Reflections;
 import cc.funkemunky.api.reflections.types.WrappedClass;
+import cc.funkemunky.api.tinyprotocol.api.ProtocolVersion;
 import cc.funkemunky.api.tinyprotocol.packet.types.BaseBlockPosition;
 import cc.funkemunky.api.tinyprotocol.packet.types.MathHelper;
 
@@ -217,6 +218,8 @@ public enum WrappedEnumDirection {
     }
 
     static {
-        enumDirection = Reflections.getNMSClass("EnumDirection");
+        if(ProtocolVersion.getGameVersion().isOrAbove(ProtocolVersion.V1_8)) {
+            enumDirection = Reflections.getNMSClass("EnumDirection");
+        }
     }
 }

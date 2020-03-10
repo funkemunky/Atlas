@@ -2,9 +2,9 @@ package cc.funkemunky.api.utils.world.types;
 
 import cc.funkemunky.api.tinyprotocol.api.ProtocolVersion;
 import cc.funkemunky.api.tinyprotocol.packet.types.enums.WrappedEnumParticle;
-import cc.funkemunky.api.utils.KLocation;
 import cc.funkemunky.api.utils.MiscUtils;
 import cc.funkemunky.api.utils.Tuple;
+import cc.funkemunky.api.utils.math.RayTrace;
 import cc.funkemunky.api.utils.world.BlockData;
 import cc.funkemunky.api.utils.world.CollisionBox;
 import org.bukkit.Location;
@@ -71,8 +71,12 @@ public class RayCollision implements CollisionBox {
         this.directionZ = direction.getZ();
     }
 
-    public KLocation getOrigin() {
-        return new KLocation(originX, originY, originZ, 0, 0);
+    public Vector getOrigin() {
+        return new Vector(originX, originY, originZ);
+    }
+
+    public Vector getDirection() {
+        return new Vector(directionX, directionY, directionZ);
     }
 
     @Override
@@ -131,125 +135,89 @@ public class RayCollision implements CollisionBox {
         return true;
     }
 
-    public static double distance(RayCollision ray, SimpleCollisionBox box ) {
+    public static double distance(RayCollision ray, SimpleCollisionBox box) {
         Tuple<Double,Double> pair = new Tuple<>();
         if (intersect(ray,box,pair))
             return pair.one;
         return -1;
     }
 
+    public static double distance(RayCollision ray, SimpleCollisionBox box, boolean exact, double range) {
+        double dist = RayCollision.distance(ray, box);
+
+        if(!exact || dist == -1) return dist;
+
+        RayTrace trace = new RayTrace(ray.getOrigin(), ray.getDirection());
+
+        Vector point = trace.positionOfIntersection(box, Math.max(0, dist - range), 0.01);
+
+        return ray.getOrigin().distance(point);
+    }
+
+    public static double distance(RayCollision ray, SimpleCollisionBox box, boolean exact) {
+        return distance(ray, box, exact, 0.12);
+    }
+
     public static boolean intersect(RayCollision ray, SimpleCollisionBox aab) {
-        double invDirX = 1.0D / ray.directionX;
-        double invDirY = 1.0D / ray.directionY;
-        double invDirZ = 1.0D / ray.directionZ;
-        double tFar;
-        double tNear;
-        if (invDirX >= 0.0D) {
-            tNear = (aab.xMin - ray.originX) * invDirX;
-            tFar = (aab.xMax - ray.originX) * invDirX;
-        } else {
-            tNear = (aab.xMax - ray.originX) * invDirX;
-            tFar = (aab.xMin - ray.originX) * invDirX;
-        }
+        double invDirX = 1.0 / ray.directionX;
+        double invDirY = 1.0 / ray.directionY;
+        double invDirZ = 1.0 / ray.directionZ;
+        Vector lb = aab.min(), rt = aab.max();
 
-        double tymin;
-        double tymax;
-        if (invDirY >= 0.0D) {
-            tymin = (aab.yMin - ray.originY) * invDirY;
-            tymax = (aab.yMax - ray.originY) * invDirY;
-        } else {
-            tymin = (aab.yMax - ray.originY) * invDirY;
-            tymax = (aab.yMin - ray.originY) * invDirY;
-        }
+        double t1 = (lb.getX() - ray.originX) * invDirX;
+        double t2 = (rt.getX() - ray.originX) * invDirX;
+        double t3 = (lb.getY() - ray.originY) * invDirY;
+        double t4 = (rt.getY() - ray.originY) * invDirY;
+        double t5 = (lb.getZ() - ray.originZ) * invDirZ;
+        double t6 = (rt.getZ() - ray.originZ) * invDirZ;
 
-        if (tNear <= tymax && tymin <= tFar) {
-            double tzmin;
-            double tzmax;
-            if (invDirZ >= 0.0D) {
-                tzmin = (aab.zMin - ray.originZ) * invDirZ;
-                tzmax = (aab.zMax - ray.originZ) * invDirZ;
-            } else {
-                tzmin = (aab.zMax - ray.originZ) * invDirZ;
-                tzmax = (aab.zMin - ray.originZ) * invDirZ;
-            }
+        double tmin = Math.max(Math.max(Math.min(t1, t2), Math.min(t3, t4)), Math.min(t5, t6));
+        double tmax = Math.min(Math.min(Math.max(t1, t2), Math.max(t3, t4)), Math.max(t5, t6));
 
-            if (tNear <= tzmax && tzmin <= tFar) {
-                tNear = tymin <= tNear && !Double.isNaN(tNear) ? tNear : tymin;
-                tFar = tymax >= tFar && !Double.isNaN(tFar) ? tFar : tymax;
-                tNear = tzmin > tNear ? tzmin : tNear;
-                tFar = tzmax < tFar ? tzmax : tFar;
-                if (tNear < tFar && tFar >= 0.0D) {
-//                    result.x = tNear;
-//                    result.y = tFar;
-                    return true;
-                } else {
-                    return false;
-                }
-            } else {
-                return false;
-            }
-        } else {
+        if (tmax < 0)
+        {
             return false;
         }
+
+        if (tmin > tmax)
+        {
+            return false;
+        }
+
+        return true;
     }
 
     // Result X = near
     // Result Y = far
     public static boolean intersect(RayCollision ray, SimpleCollisionBox aab, Tuple<Double,Double> result) {
-        double invDirX = 1.0D / ray.directionX;
-        double invDirY = 1.0D / ray.directionY;
-        double invDirZ = 1.0D / ray.directionZ;
-        double tFar;
-        double tNear;
-        if (invDirX >= 0.0D) {
-            tNear = (aab.xMin - ray.originX) * invDirX;
-            tFar = (aab.xMax - ray.originX) * invDirX;
-        } else {
-            tNear = (aab.xMax - ray.originX) * invDirX;
-            tFar = (aab.xMin - ray.originX) * invDirX;
-        }
+        double invDirX = 1.0 / ray.directionX;
+        double invDirY = 1.0 / ray.directionY;
+        double invDirZ = 1.0 / ray.directionZ;
+        Vector lb = aab.min(), rt = aab.max();
 
-        double tymin;
-        double tymax;
-        if (invDirY >= 0.0D) {
-            tymin = (aab.yMin - ray.originY) * invDirY;
-            tymax = (aab.yMax - ray.originY) * invDirY;
-        } else {
-            tymin = (aab.yMax - ray.originY) * invDirY;
-            tymax = (aab.yMin - ray.originY) * invDirY;
-        }
+        double t1 = (lb.getX() - ray.originX) * invDirX;
+        double t2 = (rt.getX() - ray.originX) * invDirX;
+        double t3 = (lb.getY() - ray.originY) * invDirY;
+        double t4 = (rt.getY() - ray.originY) * invDirY;
+        double t5 = (lb.getZ() - ray.originZ) * invDirZ;
+        double t6 = (rt.getZ() - ray.originZ) * invDirZ;
 
-        if (tNear <= tymax && tymin <= tFar) {
-            double tzmin;
-            double tzmax;
-            if (invDirZ >= 0.0D) {
-                tzmin = (aab.zMin - ray.originZ) * invDirZ;
-                tzmax = (aab.zMax - ray.originZ) * invDirZ;
-            } else {
-                tzmin = (aab.zMax - ray.originZ) * invDirZ;
-                tzmax = (aab.zMin - ray.originZ) * invDirZ;
-            }
+        double tmin = Math.max(Math.max(Math.min(t1, t2), Math.min(t3, t4)), Math.min(t5, t6));
+        double tmax = Math.min(Math.min(Math.max(t1, t2), Math.max(t3, t4)), Math.max(t5, t6));
 
-            if (tNear <= tzmax && tzmin <= tFar) {
-                tNear = tymin <= tNear && !Double.isNaN(tNear) ? tNear : tymin;
-                tFar = tymax >= tFar && !Double.isNaN(tFar) ? tFar : tymax;
-                tNear = tzmin > tNear ? tzmin : tNear;
-                tFar = tzmax < tFar ? tzmax : tFar;
-                if (tNear < tFar && tFar >= 0.0D) {
-                    if (result != null) {
-                        result.one = tNear;
-                        result.two = tFar;
-                    }
-                    return true;
-                } else {
-                    return false;
-                }
-            } else {
-                return false;
-            }
-        } else {
+        result.one = tmin;
+        result.two = tmax;
+        if (tmax < 0)
+        {
             return false;
         }
+
+        if (tmin > tmax)
+        {
+            return false;
+        }
+
+        return true;
     }
 
     public Vector collisionPoint(SimpleCollisionBox box) {

@@ -2,6 +2,7 @@ package cc.funkemunky.api.utils.math;
 
 import cc.funkemunky.api.tinyprotocol.api.ProtocolVersion;
 import cc.funkemunky.api.utils.BoundingBox;
+import cc.funkemunky.api.utils.world.types.SimpleCollisionBox;
 import org.bukkit.Effect;
 import org.bukkit.World;
 import org.bukkit.block.Block;
@@ -95,20 +96,20 @@ public class RayTrace {
     }
 
     //bounding blockbox instead of vector
-    public Vector positionOfIntersection(BoundingBox boundingBox, double blocksAway, double accuracy) {
+    public Vector positionOfIntersection(SimpleCollisionBox collisionBox, double blocksAway, double accuracy) {
         List<Vector> positions = traverse(blocksAway, accuracy);
         for (Vector position : positions) {
-            if (intersects(position, boundingBox.getMinimum(), boundingBox.getMaximum())) {
+            if (intersects(position, collisionBox.min(), collisionBox.max())) {
                 return position;
             }
         }
         return null;
     }
 
-    public Vector positionOfIntersection(BoundingBox boundingBox, double skip, double blocksAway, double accuracy) {
+    public Vector positionOfIntersection(SimpleCollisionBox collisionBox, double skip, double blocksAway, double accuracy) {
         List<Vector> positions = traverse(skip, blocksAway, accuracy);
         for (Vector position : positions) {
-            if (intersects(position, boundingBox.getMinimum(), boundingBox.getMaximum())) {
+            if (intersects(position, collisionBox.min(), collisionBox.max())) {
                 return position;
             }
         }
@@ -116,20 +117,20 @@ public class RayTrace {
     }
 
     //bounding blockbox instead of vector
-    public boolean intersects(BoundingBox boundingBox, double blocksAway, double accuracy) {
+    public boolean intersects(SimpleCollisionBox collisionBox, double blocksAway, double accuracy) {
         List<Vector> positions = traverse(blocksAway, accuracy);
         for (Vector position : positions) {
-            if (intersects(position, boundingBox.getMinimum(), boundingBox.getMaximum())) {
+            if (intersects(position, collisionBox.min(), collisionBox.max())) {
                 return true;
             }
         }
         return false;
     }
 
-    public boolean intersects(BoundingBox boundingBox, double skip, double blocksAway, double accuracy) {
+    public boolean intersects(SimpleCollisionBox collisionBox, double skip, double blocksAway, double accuracy) {
         List<Vector> positions = traverse(blocksAway, accuracy);
         for (Vector position : positions) {
-            if (intersects(position, boundingBox.getMinimum(), boundingBox.getMaximum())) {
+            if (intersects(position, collisionBox.min(), collisionBox.max())) {
                 return true;
             }
         }

@@ -157,6 +157,14 @@ public class SimpleCollisionBox implements CollisionBox {
         return vectors;
     }
 
+    public Vector min() {
+        return new Vector(xMin, yMin, zMin);
+    }
+
+    public Vector max() {
+        return new Vector(xMax, yMax, zMax);
+    }
+
     public SimpleCollisionBox addCoord(double x, double y, double z) {
         double d0 = this.xMin;
         double d1 = this.yMin;

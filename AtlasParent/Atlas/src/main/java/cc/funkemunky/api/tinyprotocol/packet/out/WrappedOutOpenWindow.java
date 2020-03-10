@@ -23,8 +23,7 @@ public class WrappedOutOpenWindow extends NMSObject {
 
     private static FieldAccessor<Integer> idField = fetchField(packet, int.class, 0);
     private static FieldAccessor<String> nameField = fetchField(packet, String.class, 0);
-    private static FieldAccessor<Object> chatCompField = fetchField(packet,
-            MinecraftReflection.iChatBaseComponent.getParent(), 0);
+    private static FieldAccessor<Object> chatCompField;
     private static FieldAccessor<Integer> inventorySize = fetchField(packet, int.class, 1);
 
     private int id;
@@ -36,12 +35,20 @@ public class WrappedOutOpenWindow extends NMSObject {
     public void process(Player player, ProtocolVersion version) {
         id = fetch(idField);
         name = fetch(nameField);
-        chatComponent = new WrappedChatMessage(fetch(chatCompField));
+        if(ProtocolVersion.getGameVersion().isOrAbove(ProtocolVersion.V1_8))
+            chatComponent = new WrappedChatMessage(fetch(chatCompField));
         size = fetch(inventorySize);
     }
 
     @Override
     public void updateObject() {
 
+    }
+
+    static {
+        if(ProtocolVersion.getGameVersion().isOrAbove(ProtocolVersion.V1_8)) {
+            fetchField(packet,
+                    MinecraftReflection.iChatBaseComponent.getParent(), 0);
+        }
     }
 }
