@@ -149,6 +149,7 @@ public abstract class Packet {
         public static final String CLOSE_WINDOW = CLIENT + "CloseWindow";
         public static final String TAB_COMPLETE = CLIENT + "TabComplete";
         public static final String CHAT = CLIENT + "Chat";
+        public static final String CREATIVE_SLOT = CLIENT + "SetCreativeSlot";
         public static final String CLIENT_COMMAND = CLIENT + "ClientCommand";
     }
 

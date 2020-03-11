@@ -239,6 +239,7 @@ public abstract class NMSObject {
         public static final String ABILITIES = CLIENT + "Abilities";
         public static final String TAB_COMPLETE = CLIENT + "TabComplete";
         public static final String CHAT = CLIENT + "Chat";
+        public static final String CREATIVE_SLOT = CLIENT + "SetCreativeSlot";
     }
 
     public static class Server {
