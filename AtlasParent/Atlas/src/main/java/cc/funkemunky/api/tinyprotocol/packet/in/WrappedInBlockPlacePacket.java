@@ -32,7 +32,7 @@ public class WrappedInBlockPlacePacket extends NMSObject {
 
     private static BaseBlockPosition a = new BaseBlockPosition(-1,-1,-1);
 
-    private static WrappedClass movingObjectBSObject, blockPlacePacket = Reflections.getNMSClass(packet), enumHandClass;
+    private static WrappedClass movingObjectBSObject, blockPlacePacket, enumHandClass;
 
     // Decoded data
     private WrappedEnumDirection face;
@@ -96,7 +96,8 @@ public class WrappedInBlockPlacePacket extends NMSObject {
     }
 
     static {
-       if(ProtocolVersion.getGameVersion().isOrAbove(ProtocolVersion.V1_9)) {
+        a = new BaseBlockPosition(-1, -1, -1);
+        if(ProtocolVersion.getGameVersion().isOrAbove(ProtocolVersion.V1_9)) {
             blockPlacePacket = Reflections.getNMSClass("PacketPlayInUseItem");
             fieldBlockPosition = blockPlacePacket.getFieldByType(Object.class, 0);
             fieldFace1_9 = blockPlacePacket.getFieldByType(Enum.class, 1);
@@ -105,9 +106,11 @@ public class WrappedInBlockPlacePacket extends NMSObject {
                 fieldVecY = blockPlacePacket.getFieldByType(float.class, 1);
                 fieldVecZ = blockPlacePacket.getFieldByType(float.class, 2);
             }
+
             enumHand = blockPlacePacket.getFieldByType(Enum.class, 0);
             enumHandClass = Reflections.getNMSClass("EnumHand");
         } else if(ProtocolVersion.getGameVersion().isOrAbove(ProtocolVersion.V1_8)) {
+            blockPlacePacket = Reflections.getNMSClass("PacketPlayInBlockPlace");
             fieldBlockPosition = blockPlacePacket.getFieldByType(MinecraftReflection.blockPos.getParent(), 1);
             fieldFace = blockPlacePacket.getFieldByType(int.class, 0);
             fieldItemStack = blockPlacePacket.getFieldByType(MinecraftReflection.itemStack.getParent(), 0);
@@ -115,14 +118,16 @@ public class WrappedInBlockPlacePacket extends NMSObject {
             fieldVecY = blockPlacePacket.getFieldByType(float.class, 1);
             fieldVecZ = blockPlacePacket.getFieldByType(float.class, 2);
         } else {
+            blockPlacePacket = Reflections.getNMSClass("PacketPlayInBlockPlace");
             fieldPosX = blockPlacePacket.getFieldByType(int.class, 0);
             fieldPosY = blockPlacePacket.getFieldByType(int.class, 1);
             fieldPosZ = blockPlacePacket.getFieldByType(int.class, 2);
             fieldFace = blockPlacePacket.getFieldByType(int.class, 3);
-            fieldItemStack = blockPlacePacket.getFieldByType(Object.class, 0);
+            fieldItemStack = blockPlacePacket.getFieldByType(MinecraftReflection.itemStack.getParent(), 0);
             fieldVecX = blockPlacePacket.getFieldByType(float.class, 0);
             fieldVecY = blockPlacePacket.getFieldByType(float.class, 1);
             fieldVecZ = blockPlacePacket.getFieldByType(float.class, 2);
         }
+
     }
 }

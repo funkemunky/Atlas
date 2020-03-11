@@ -24,8 +24,9 @@ public class WrappedOutRespawnPacket extends NMSObject {
 
     private static FieldAccessor<Enum> difficultyAcessor;
     private static FieldAccessor<Enum> gamemodeAccessor;
+    private static FieldAccessor<Object> worldTypeAccessor;
     private static WrappedClass worldTypeClass;
-    private static WrappedField worldTypeField;
+    private static WrappedField worldTypeNameField;
     private static WrappedMethod getTypeWorldType;
 
     //Before 1.13
@@ -62,7 +63,7 @@ public class WrappedOutRespawnPacket extends NMSObject {
         }
         gamemode = WrappedEnumGameMode.fromObject(fetch(gamemodeAccessor));
         difficulty = WrappedEnumDifficulty.fromObject(fetch(difficultyAcessor));
-        worldType = WorldType.getByName(worldTypeField.get(getObject()));
+        worldType = WorldType.getByName(worldTypeNameField.get(fetch(worldTypeAccessor)));
     }
 
     @Override
@@ -84,7 +85,8 @@ public class WrappedOutRespawnPacket extends NMSObject {
         difficultyAcessor = fetchField(packet, Enum.class, 0);
         gamemodeAccessor = fetchField(packet, Enum.class, 1);
         worldTypeClass = Reflections.getNMSClass("WorldType");
-        worldTypeField = worldTypeClass.getFirstFieldByType(String.class);
+        worldTypeAccessor = fetchField(packet, worldTypeClass.getParent(), 0);
+        worldTypeNameField = worldTypeClass.getFirstFieldByType(String.class);
         getTypeWorldType = worldTypeClass.getMethod("getType", String.class);
     }
 }

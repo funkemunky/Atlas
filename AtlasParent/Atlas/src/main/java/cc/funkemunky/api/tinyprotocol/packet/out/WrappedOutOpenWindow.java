@@ -1,6 +1,7 @@
 package cc.funkemunky.api.tinyprotocol.packet.out;
 
 import cc.funkemunky.api.reflections.impl.MinecraftReflection;
+import cc.funkemunky.api.reflections.types.WrappedMethod;
 import cc.funkemunky.api.tinyprotocol.api.NMSObject;
 import cc.funkemunky.api.tinyprotocol.api.ProtocolVersion;
 import cc.funkemunky.api.tinyprotocol.packet.types.WrappedChatMessage;
@@ -23,20 +24,17 @@ public class WrappedOutOpenWindow extends NMSObject {
 
     private static FieldAccessor<Integer> idField = fetchField(packet, int.class, 0);
     private static FieldAccessor<String> nameField = fetchField(packet, String.class, 0);
-    private static FieldAccessor<Object> chatCompField = fetchField(packet,
-            MinecraftReflection.iChatBaseComponent.getParent(), 0);
+    private static WrappedMethod getText = MinecraftReflection.iChatBaseComponent.getMethod("getText");
     private static FieldAccessor<Integer> inventorySize = fetchField(packet, int.class, 1);
 
     private int id;
     private String name;
-    private WrappedChatMessage chatComponent;
     private int size;
 
     @Override
     public void process(Player player, ProtocolVersion version) {
         id = fetch(idField);
         name = fetch(nameField);
-        chatComponent = new WrappedChatMessage(fetch(chatCompField));
         size = fetch(inventorySize);
     }
 

@@ -9,7 +9,7 @@ import org.bukkit.entity.Player;
 @Getter
 public class WrappedOutHeldItemSlot extends NMSObject {
     private static String packet = Server.HELD_ITEM;
-    private FieldAccessor<Integer> slotField = fetchField(packet, int.class, 0);
+    private static FieldAccessor<Integer> slotField = fetchField(packet, int.class, 0);
 
     private int slot;
 

@@ -96,7 +96,7 @@ public class BaseProfiler implements Profiler {
         Timing timing = getTiming(name);
         long time = (System.nanoTime() - timing.lastCall) - (System.nanoTime() - extense);
 
-        timing.average.add(time, ts);
+        timing.average.add(time);
         timing.stdDev = Math.abs(time - timing.average.getAverage());
         timing.total+= time;
         timing.call = time;
@@ -112,7 +112,7 @@ public class BaseProfiler implements Profiler {
         Timing timing = getTiming(name);
         long time = (System.nanoTime() - timing.lastCall) - (System.nanoTime() - extense);
 
-        timing.average.add(time, ts);
+        timing.average.add(time);
         timing.stdDev = Math.abs(time - timing.average.getAverage());
         timing.total+= time;
         timing.call = time;
