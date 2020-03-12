@@ -49,7 +49,11 @@ public class WrappedInTabComplete extends NMSObject {
 
     @Override
     public void updateObject() {
-
+        if(ProtocolVersion.getGameVersion().isOrAbove(ProtocolVersion.V1_9)) {
+            setPacket(packet, message, hasToolTip, blockPosition.getAsBlockPosition());
+        } else if(ProtocolVersion.getGameVersion().isOrAbove(ProtocolVersion.V1_8)) {
+            setPacket(packet, message, blockPosition.getAsBlockPosition());
+        } else setPacket(packet, message);
     }
 
     static {

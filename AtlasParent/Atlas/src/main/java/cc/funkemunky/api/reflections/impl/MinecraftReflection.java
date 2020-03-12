@@ -45,6 +45,7 @@ public class MinecraftReflection {
     private static WrappedClass propertyMap = Reflections.getUtilClass("com.mojang.authlib.properties.PropertyMap");
     private static WrappedClass forwardMultiMap = Reflections.getUtilClass("com.google.common.collect.ForwardingMultimap");
     public static WrappedClass iChatBaseComponent = Reflections.getNMSClass("IChatBaseComponent");
+    public static WrappedClass vec3D = Reflections.getNMSClass("Vec3D");
 
     private static WrappedMethod getProfile = CraftReflection.craftPlayer.getMethod("getProfile");
     private static WrappedMethod getProperties = gameProfile.getMethod("getProperties");

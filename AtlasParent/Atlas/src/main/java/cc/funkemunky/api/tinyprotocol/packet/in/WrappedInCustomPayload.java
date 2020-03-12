@@ -39,7 +39,7 @@ public class WrappedInCustomPayload extends NMSObject {
     private static WrappedField dataField;
 
     //1.8
-    private static WrappedClass wrappedPDS = Reflections.getNMSClass("PacketDataSerializer");
+    private static WrappedClass wrappedPDS;
     private static WrappedField dataSerializer;
 
     //1.13+
@@ -89,7 +89,7 @@ public class WrappedInCustomPayload extends NMSObject {
             dataField = wrapped.getFieldByType(byte.class, 0);
         } else {
             wrappedPDS = Reflections.getNMSClass("PacketDataSerializer");
-            dataSerializer = wrapped.getFieldByType(Object.class, 0);
+            dataSerializer = wrapped.getFieldByType(wrappedPDS.getParent(), 0);
         }
 
         if(ProtocolVersion.getGameVersion().isOrAbove(ProtocolVersion.V1_13)) {

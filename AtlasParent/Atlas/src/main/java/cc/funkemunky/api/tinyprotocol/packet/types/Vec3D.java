@@ -138,6 +138,8 @@ public class Vec3D extends NMSObject {
 
     @Override
     public void updateObject() {
-
+        fieldX.set(getObject(), a);
+        fieldY.set(getObject(), b);
+        fieldZ.set(getObject(), c);
     }
 }

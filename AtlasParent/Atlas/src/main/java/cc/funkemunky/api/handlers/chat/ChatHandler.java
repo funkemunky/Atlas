@@ -9,13 +9,16 @@ import cc.funkemunky.api.utils.Init;
 import lombok.val;
 import org.bukkit.entity.Player;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.function.BiConsumer;
+import java.util.function.Consumer;
+import java.util.function.Supplier;
 
 @Init
 public class ChatHandler implements AtlasListener {
 
     private static List<OnChat> toSortThrough = new ArrayList<>();
+    private static Map<UUID, Consumer<String>> chatChecks = new HashMap<>();
 
     @Listen
     public void onReceive(PacketReceiveEvent event) {
@@ -24,20 +27,31 @@ public class ChatHandler implements AtlasListener {
                     .filter(chat -> chat.player.getUniqueId().equals(event.getPlayer().getUniqueId()))
                     .findFirst();
 
+            WrappedInChatPacket packet = new WrappedInChatPacket(event.getPacket(), event.getPlayer());
             if(optional.isPresent()) {
-                WrappedInChatPacket packet = new WrappedInChatPacket(event.getPacket(), event.getPlayer());
                 OnChat chat = optional.get();
 
                 chat.message.accept(packet.getMessage());
 
                 if(chat.removeOnFirstChat) toSortThrough.remove(chat);
-
             }
+            chatChecks.computeIfPresent(event.getPlayer().getUniqueId(),
+                    (key, consumer) -> {
+                        consumer.accept(packet.getMessage());
+
+                        event.setCancelled(true);
+                        return consumer;
+                    });
         }
     }
 
-    static void remove(Player player) {
+    public static void remove(Player player) {
         toSortThrough.stream().filter(pl -> pl.player.getUniqueId().equals(player.getUniqueId()))
                 .forEach(toSortThrough::remove);
+        chatChecks.remove(player.getUniqueId());
+    }
+
+    public static void onChat(Player player, Consumer<String> consumer) {
+        chatChecks.put(player.getUniqueId(), consumer);
     }
 }

@@ -21,30 +21,30 @@ public class PacketListeners implements AtlasListener {
             case Packet.Client.POSITION:
             case Packet.Client.POSITION_LOOK:
             case Packet.Client.LOOK: {
-                WrappedInFlyingPacket packet = new WrappedInFlyingPacket
-                        (event.getPacket(), event.getPlayer());
+                //WrappedInFlyingPacket packet = new WrappedInFlyingPacket
+                 //       (event.getPacket(), event.getPlayer());
 
-                System.out.println("flying: " + packet.isGround() + ", " + packet.isPos() + ", " + packet.isLook());
+                //System.out.println("flying: " + packet.isGround() + ", " + packet.isPos() + ", " + packet.isLook());
                 break;
             }
             case Packet.Client.STEER_VEHICLE: {
-                WrappedInSteerVehiclePacket packet = new WrappedInSteerVehiclePacket
-                        (event.getPacket(), event.getPlayer());
+                //WrappedInSteerVehiclePacket packet = new WrappedInSteerVehiclePacket
+                //        (event.getPacket(), event.getPlayer());
 
-                System.out.println(event.getType());
+                //System.out.println(event.getType());
                 break;
             }
             case Packet.Client.CUSTOM_PAYLOAD: {
-                WrappedInCustomPayload packet = new WrappedInCustomPayload(event);
+                //WrappedInCustomPayload packet = new WrappedInCustomPayload(event);
 
-                System.out.println(event.getType() + ": " + packet.getTag() + ", " + packet.getLength());
+                //System.out.println(event.getType() + ": " + packet.getTag() + ", " + packet.getLength());
                 break;
             }
             case Packet.Client.ENTITY_ACTION: {
-                WrappedInEntityActionPacket packet = new WrappedInEntityActionPacket
-                        (event.getPacket(), event.getPlayer());
+                //WrappedInEntityActionPacket packet = new WrappedInEntityActionPacket
+                //        (event.getPacket(), event.getPlayer());
 
-                System.out.println(event.getType() + ": " + packet.getAction().name());
+                //System.out.println(event.getType() + ": " + packet.getAction().name());
                 break;
             }
         }

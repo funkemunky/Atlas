@@ -1,5 +1,9 @@
 package cc.funkemunky.api.tinyprotocol.packet.in;
 
+import cc.funkemunky.api.reflections.Reflections;
+import cc.funkemunky.api.reflections.impl.CraftReflection;
+import cc.funkemunky.api.reflections.impl.MinecraftReflection;
+import cc.funkemunky.api.reflections.types.WrappedClass;
 import cc.funkemunky.api.tinyprotocol.api.NMSObject;
 import cc.funkemunky.api.tinyprotocol.api.ProtocolVersion;
 import cc.funkemunky.api.tinyprotocol.reflection.FieldAccessor;
@@ -21,11 +25,11 @@ public class WrappedInWindowClickPacket extends NMSObject {
     // Decoded data
     private int id;
     private short slot;
-    private byte button;
+    private int button;
     private short counter;
     private ClickType action;
     private ItemStack item;
-    private byte mode;
+    private int mode;
 
     public WrappedInWindowClickPacket(Object packet, Player player) {
         super(packet, player);
@@ -35,16 +39,16 @@ public class WrappedInWindowClickPacket extends NMSObject {
     public void process(Player player, ProtocolVersion version) {
         id = fetch(fieldId);
         slot = fetch(fieldSlot).shortValue();
-        byte button = fetch(fieldButton).byteValue();
+        byte button = (byte)(this.button = fetch(fieldButton));
         counter = fetch(fieldAction);
         item = toBukkitStack(fetch(fieldItemStack));
 
         if (ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.V1_9)) {
             FieldAccessor<Integer> fieldShift = fetchField(packet, int.class, 3);
-            mode = fetch(fieldShift).byteValue();
+            mode = fetch(fieldShift);
         } else {
             FieldAccessor<Enum> fieldShift = fetchField(packet, Enum.class, 0);
-            mode = (byte) fetch(fieldShift).ordinal();
+            mode = fetch(fieldShift).ordinal();
         }
 
         if (slot == -1) {
@@ -94,7 +98,11 @@ public class WrappedInWindowClickPacket extends NMSObject {
 
     @Override
     public void updateObject() {
-
+        if(ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.V1_9)) {
+            setPacket(packet, id, slot, button, counter, CraftReflection.getVanillaItemStack(item), mode);
+        } else {
+            setPacket(packet, id, slot, button, counter, CraftReflection.getVanillaItemStack(item));
+        }
     }
 
     public enum ClickType {
@@ -113,6 +121,8 @@ public class WrappedInWindowClickPacket extends NMSObject {
         DRAG,
         UNKNOWN;
 
+        public static WrappedClass clickType = Reflections.getNMSClass("InventoryClickType");
+
         public boolean isKeyboardClick() {
             return this == NUMBER_KEY || this == DROP || this == CONTROL_DROP;
         }
@@ -128,7 +138,6 @@ public class WrappedInWindowClickPacket extends NMSObject {
         public boolean isLeftClick() {
             return this == LEFT || this == SHIFT_LEFT || this == DOUBLE_CLICK || this == CREATIVE;
         }
-
         public boolean isShiftClick() {
             return this == SHIFT_LEFT || this == SHIFT_RIGHT || this == CONTROL_DROP;
         }
