@@ -3,6 +3,7 @@ package cc.funkemunky.api.profiling;
 import cc.funkemunky.api.utils.Tuple;
 import lombok.Getter;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -95,14 +96,13 @@ public class BaseProfiler implements Profiler {
         long extense = System.nanoTime();
         Timing timing = getTiming(name);
         long time = (System.nanoTime() - timing.lastCall) - (System.nanoTime() - extense);
-
         timing.average.add(time);
         timing.stdDev = Math.abs(time - timing.average.getAverage());
         timing.total+= time;
         timing.call = time;
         timing.calls++;
         totalCalls++;
-        lastSample = System.currentTimeMillis();
+        lastSample = ts;
     }
 
     @Override
@@ -118,7 +118,7 @@ public class BaseProfiler implements Profiler {
         timing.call = time;
         timing.calls++;
         totalCalls++;
-        lastSample = System.currentTimeMillis();
+        lastSample = ts;
     }
 
     private Timing getTiming(String name) {

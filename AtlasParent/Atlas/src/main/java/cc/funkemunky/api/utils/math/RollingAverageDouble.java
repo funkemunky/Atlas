@@ -7,7 +7,7 @@ import java.util.Arrays;
 public class RollingAverageDouble {
 
     private final int size;
-    private final double[] array;
+    private double[] array;
 
     private int index;
 
@@ -28,6 +28,12 @@ public class RollingAverageDouble {
         average += value;
         array[index] = value;
         index = (index + 1) % size;
+
+        if(Double.isNaN(average)) {
+            average = 0;
+            array = new double[size];
+            index = 0;
+        }
         //System.out.println(Arrays.stream(array).mapToObj(d -> String.format("%.2f", d)).collect(Collectors.joining(",")));
     }
 
