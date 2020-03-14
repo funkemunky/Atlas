@@ -3,11 +3,11 @@
   <parent>
     <artifactId>atlas-parent</artifactId>
     <groupId>cc.funkemunky.utils</groupId>
-    <version>1.8.2-PRE-1</version>
+    <version>1.8.2-PRE-2</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
   <artifactId>Atlas</artifactId>
-  <version>1.8.2-PRE-1</version>
+  <version>1.8.2-PRE-2</version>
   <scm>
     <connection>scm:svn:http://127.0.0.1/dummy</connection>
     <developerConnection>scm:svn:https://127.0.0.1/dummy</developerConnection>

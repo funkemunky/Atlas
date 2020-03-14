@@ -1,5 +1,7 @@
 package cc.funkemunky.api.tinyprotocol.packet.types;
 
+import cc.funkemunky.api.reflections.impl.MinecraftReflection;
+import cc.funkemunky.api.reflections.types.WrappedConstructor;
 import cc.funkemunky.api.tinyprotocol.api.NMSObject;
 import cc.funkemunky.api.tinyprotocol.reflection.FieldAccessor;
 
@@ -7,6 +9,8 @@ public class Vec3D extends NMSObject {
     private static FieldAccessor<Double> fieldX = fetchField("Vec3D", double.class, 0);
     private static FieldAccessor<Double> fieldY = fetchField("Vec3D", double.class, 1);
     private static FieldAccessor<Double> fieldZ = fetchField("Vec3D", double.class, 2);
+    private static WrappedConstructor vec3dConst = MinecraftReflection.vec3D
+            .getConstructor(double.class, double.class, double.class);
     public final double a;
     public final double b;
     public final double c;
@@ -34,12 +38,12 @@ public class Vec3D extends NMSObject {
         this.a = var1;
         this.b = var3;
         this.c = var5;
-        
-        setPacket(Type.VEC3D, var1, var3, var5);
+
+        setObject(vec3dConst.newInstance(a, b, c));
     }
 
     public Vec3D(BaseBlockPosition var1) {
-        this( var1.getX(),  var1.getY(),  var1.getZ());
+        this(var1.getX(),  var1.getY(),  var1.getZ());
     }
 
     public Vec3D a() {

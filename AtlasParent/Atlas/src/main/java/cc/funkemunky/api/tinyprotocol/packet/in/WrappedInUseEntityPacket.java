@@ -25,7 +25,9 @@ public class WrappedInUseEntityPacket extends NMSObject {
     private static FieldAccessor<Integer> fieldId = fetchField(packet, int.class, 0);
     private static FieldAccessor<Enum> fieldAction = fetchField(packet, Enum.class, 0);
     private static WrappedClass packetClass = Reflections.getNMSClass(packet),
-            enumEntityUseAction = Reflections.getNMSClass("PacketPlayInUseEntity.EnumEntityUseAction");
+            enumEntityUseAction = Reflections.getNMSClass(
+                    (ProtocolVersion.getGameVersion().isAbove(ProtocolVersion.V1_8)
+                            ? "PacketPlayInUseEntity$" : "") + "EnumEntityUseAction");
     private static WrappedField vecField, handField;
 
     private int id;
@@ -52,6 +54,7 @@ public class WrappedInUseEntityPacket extends NMSObject {
                     .getOrDefault(player.getWorld().getUID(), new ArrayList<>());
 
             for (Entity ent : entities) {
+                if(ent == null) continue;
                 if(id == ent.getEntityId()) {
                     cachedEntities.put(id, ent);
                     return ent;
@@ -61,7 +64,9 @@ public class WrappedInUseEntityPacket extends NMSObject {
         });
 
         if(ProtocolVersion.getGameVersion().isOrAbove(ProtocolVersion.V1_8)) {
-            vec = new Vec3D(fetch(vecField));
+            Object vec = fetch(vecField);
+            if(vec != null)
+            this.vec = new Vec3D(vec);
         }
         if(ProtocolVersion.getGameVersion().isOrAbove(ProtocolVersion.V1_9)) {
             enumHand = WrappedEnumHand.getFromVanilla(fetch(handField));
@@ -95,6 +100,7 @@ public class WrappedInUseEntityPacket extends NMSObject {
     static {
         if(ProtocolVersion.getGameVersion().isOrAbove(ProtocolVersion.V1_8)) {
             vecField = packetClass.getFieldByType(MinecraftReflection.vec3D.getParent(), 0);
+        } else if(ProtocolVersion.getGameVersion().isOrAbove(ProtocolVersion.V1_9)) {
             handField = packetClass.getFieldByType(WrappedEnumHand.enumHandClass.getParent(), 0);
         }
     }

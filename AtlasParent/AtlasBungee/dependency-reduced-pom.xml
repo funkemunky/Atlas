@@ -79,7 +79,7 @@
     <dependency>
       <groupId>org.github.bungee</groupId>
       <artifactId>BungeeCord-1.8</artifactId>
-      <version>1.8.2-PRE-1</version>
+      <version>1.8.2-PRE-2</version>
       <scope>provided</scope>
     </dependency>
     <dependency>
