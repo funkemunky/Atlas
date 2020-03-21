@@ -20,17 +20,41 @@ public class DynamicWall implements CollisionFactory {
 
     @Override
     public CollisionBox fetch(ProtocolVersion version, Block b) {
-        ComplexCollisionBox box = new ComplexCollisionBox(new SimpleCollisionBox(min, 0, min, max, 1.5, max));
-        boolean east =  wallConnects(version,b, BlockFace.EAST );
-        boolean north = wallConnects(version,b, BlockFace.NORTH);
-        boolean south = wallConnects(version,b, BlockFace.SOUTH);
-        boolean west =  wallConnects(version,b, BlockFace.WEST );
+        boolean var3 = wallConnects(version, b, BlockFace.NORTH);
+        boolean var4 = wallConnects(version, b, BlockFace.SOUTH);
+        boolean var5 = wallConnects(version, b, BlockFace.WEST);
+        boolean var6 = wallConnects(version, b, BlockFace.EAST);
 
-        if (east) box.add(new SimpleCollisionBox(max, 0, min, 1, 1.5, max));
-        if (west) box.add(new SimpleCollisionBox(0, 0, min, max, 1.5, max));
-        if (north) box.add(new SimpleCollisionBox(min, 0, 0, max, 1.5, min));
-        if (south) box.add(new SimpleCollisionBox(min, 0, max, max, 1.5, 1));
-        return box;
+        double var7 = 0.25;
+        double var8 = 0.75;
+        double var9 = 0.25;
+        double var10 = 0.75;
+
+        if (var3) {
+            var9 = 0.0;
+        }
+
+        if (var4) {
+            var10 = 1.0;
+        }
+
+        if (var5) {
+            var7 = 0.0;
+        }
+
+        if (var6) {
+            var8 = 1.0;
+        }
+
+        if (var3 && var4 && !var5 && !var6) {
+            var7 = 0.3125;
+            var8 = 0.6875;
+        } else if (!var3 && !var4 && var5 && var6) {
+            var9 = 0.3125;
+            var10 = 0.6875;
+        }
+
+        return new SimpleCollisionBox(var7, 0.0, var9, var8, 1.5, var10);
     }
 
 
