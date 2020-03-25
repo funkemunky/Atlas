@@ -19,4 +19,10 @@ public class ConfigDefault<A> {
             return defaultValue;
         }
     }
+
+    public A set(A value) {
+        plugin.getConfig().set(path, value);
+
+        return value;
+    }
 }
