@@ -208,7 +208,7 @@ public enum BlockData {
     }, MiscUtils.match("WATER_LILY")),
 
     _BED(new SimpleCollisionBox(0.0F, 0.0F, 0.0F, 1.0F, 0.5625, 1.0F),
-            Arrays.stream(XMaterial.values()).filter(mat -> mat.name().contains("BED"))
+            Arrays.stream(XMaterial.values()).filter(mat -> mat.name().contains("BED") && !mat.name().contains("ROCK"))
                     .map(BlockData::m)
                     .toArray(Material[]::new)),
 

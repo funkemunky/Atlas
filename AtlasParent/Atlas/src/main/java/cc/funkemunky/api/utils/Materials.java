@@ -64,7 +64,7 @@ public class Materials {
             }
             if(mat.name().contains("WALL")) MATERIAL_FLAGS[mat.ordinal()] |= WALL;
             if(mat.name().contains("PLATE")) MATERIAL_FLAGS[mat.ordinal()] = 0;
-            if(mat.name().contains("BED")) MATERIAL_FLAGS[mat.ordinal()]  |= SLABS;
+            if(mat.name().contains("BED") && !mat.name().contains("ROCK")) MATERIAL_FLAGS[mat.ordinal()]  |= SLABS;
             if(mat.name().contains("ICE")) MATERIAL_FLAGS[mat.ordinal()] |= ICE;
             if(mat.name().contains("CARPET")) MATERIAL_FLAGS[mat.ordinal()] = SOLID;
             if(mat.name().contains("SIGN")) MATERIAL_FLAGS[mat.ordinal()] = 0;
