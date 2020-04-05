@@ -3,7 +3,6 @@ package cc.funkemunky.api.profiling;
 import cc.funkemunky.api.utils.Tuple;
 import lombok.Getter;
 
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 

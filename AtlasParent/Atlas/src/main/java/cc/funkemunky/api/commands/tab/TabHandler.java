@@ -11,10 +11,11 @@ import cc.funkemunky.api.tinyprotocol.packet.in.WrappedInTabComplete;
 import cc.funkemunky.api.tinyprotocol.packet.out.WrappedOutTabComplete;
 import cc.funkemunky.api.tinyprotocol.packet.types.v1_13.DontImportIfNotLatestThanks;
 import cc.funkemunky.api.utils.Init;
+import cc.funkemunky.api.utils.Priority;
 
 import java.util.*;
 
-@Init
+@Init(priority = Priority.HIGH)
 public class TabHandler implements AtlasListener {
 
     public static TabHandler INSTANCE;

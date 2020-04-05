@@ -1,8 +1,6 @@
 package cc.funkemunky.api.profiling;
 
-import cc.funkemunky.api.utils.math.RollingAverage;
 import cc.funkemunky.api.utils.math.RollingAverageDouble;
-import cc.funkemunky.api.utils.math.RollingAverageLong;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor

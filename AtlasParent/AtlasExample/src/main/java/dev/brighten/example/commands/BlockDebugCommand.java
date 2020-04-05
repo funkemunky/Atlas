@@ -11,9 +11,6 @@ import cc.funkemunky.api.utils.menu.button.Button;
 import cc.funkemunky.api.utils.menu.type.impl.PagedMenu;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.util.Vector;
-
-import java.util.UUID;
 
 @Init(commands = true)
 public class BlockDebugCommand {

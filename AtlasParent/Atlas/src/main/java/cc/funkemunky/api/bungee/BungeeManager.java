@@ -59,6 +59,8 @@ public class BungeeManager implements PluginMessageListener {
             //empty
             isBungee = false;
         }
+        if(BungeeAPI.bungee)
+        isBungee = BungeeAPI.bungee;
     }
 
     public void sendData(byte[] data, String out) {

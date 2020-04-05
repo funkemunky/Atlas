@@ -5,12 +5,14 @@ import cc.funkemunky.api.bungee.objects.BungeePlayer;
 import cc.funkemunky.api.utils.Color;
 import cc.funkemunky.api.utils.ConfigSetting;
 import cc.funkemunky.api.utils.Init;
+import lombok.val;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.util.UUID;
 
 
@@ -25,12 +27,17 @@ public class BungeeAPI {
     }
 
     public static void broadcastMessage(String message, String permission) {
-        for (UUID uuid : Atlas.getInstance().getBungeeManager().getBungeePlayers().keySet()) {
-            BungeePlayer player = Atlas.getInstance().getBungeeManager().getBungeePlayers().get(uuid);
+        try {
+            ByteArrayOutputStream stream = new ByteArrayOutputStream();
+            ObjectOutputStream oStream = new ObjectOutputStream(stream);
 
-            if(!player.permissions.contains(permission)) continue;
+            oStream.writeObject("broadcastMsg");
+            oStream.writeObject(message);
+            oStream.writeObject(permission);
 
-            sendMessageToPlayer(player.name, message);
+            Atlas.getInstance().getBungeeManager().sendData(stream.toByteArray(), "atlas:out");
+        } catch(IOException e) {
+            e.printStackTrace();
         }
     }
 
@@ -68,18 +75,16 @@ public class BungeeAPI {
     }
 
     public static void sendMessageToPlayer(String name, String message) {
-        ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        DataOutputStream oStream = new DataOutputStream(stream);
-
         try {
+            ByteArrayOutputStream stream = new ByteArrayOutputStream();
+            ObjectOutputStream oStream = new ObjectOutputStream(stream);
             oStream.writeUTF("Message");
             oStream.writeUTF(name);
             oStream.writeUTF(Color.translate(message));
+            Atlas.getInstance().getBungeeManager().sendData(stream.toByteArray());
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-        Atlas.getInstance().getBungeeManager().sendData(stream.toByteArray());
     }
 
     public static void sendMessageToPlayer(BungeePlayer player, String message) {
@@ -97,16 +102,17 @@ public class BungeeAPI {
     }
 
     public static void sendCommand(String command) {
-        ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        DataOutputStream oStream = new DataOutputStream(stream);
-
         try {
-            oStream.writeUTF("commandBungee");
-            oStream.writeUTF(command);
+            ByteArrayOutputStream stream = new ByteArrayOutputStream();
+            ObjectOutputStream oStream = new ObjectOutputStream(stream);
+            oStream.writeObject("commandBungee");
+            oStream.writeObject(command);
+            val array = stream.toByteArray();
+
+            Atlas.getInstance().getBungeeManager().sendData(array, "atlas:out");
         } catch (IOException e) {
             e.printStackTrace();
         }
-        Atlas.getInstance().getBungeeManager().sendData(stream.toByteArray(), "atlas:out");
     }
 
     public static void kickPlayer(UUID uuid, String reason) {

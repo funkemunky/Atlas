@@ -3,7 +3,6 @@ package cc.funkemunky.api.utils.world.blocks;
 import cc.funkemunky.api.tinyprotocol.api.ProtocolVersion;
 import cc.funkemunky.api.utils.world.CollisionBox;
 import cc.funkemunky.api.utils.world.types.CollisionFactory;
-import cc.funkemunky.api.utils.world.types.ComplexCollisionBox;
 import cc.funkemunky.api.utils.world.types.SimpleCollisionBox;
 import org.bukkit.Material;
 import org.bukkit.block.Block;

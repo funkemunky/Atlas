@@ -5,6 +5,7 @@ import cc.funkemunky.api.utils.world.CollisionBox;
 import cc.funkemunky.api.utils.world.types.CollisionFactory;
 import cc.funkemunky.api.utils.world.types.NoCollisionBox;
 import cc.funkemunky.api.utils.world.types.SimpleCollisionBox;
+import org.bukkit.Bukkit;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.material.Door;
@@ -20,20 +21,26 @@ public class DoorHandler implements CollisionFactory {
             if (state2 instanceof Door) {
                 data = state2.getData();
             }
-            else return NoCollisionBox.INSTANCE;
+            else {
+                Bukkit.broadcastMessage("shit one");
+                return NoCollisionBox.INSTANCE;
+            }
         } else {
             MaterialData state2 = b.getRelative(BlockFace.UP).getState().getData();
             if (state2 instanceof Door) {
                 state = (Door) state2;
             }
-            else return NoCollisionBox.INSTANCE;
+            else {
+                Bukkit.broadcastMessage("shit two");
+                return NoCollisionBox.INSTANCE;
+            }
         }
 
         SimpleCollisionBox box;
         float offset = 0.1875F;
         int direction = (data & 0b11);
         boolean open = (data & 0b100) != 0;
-        boolean hinge = state.getHinge();
+        boolean hinge = (state.getData() & 1) == 1;
 
 
         if (direction == 0) {

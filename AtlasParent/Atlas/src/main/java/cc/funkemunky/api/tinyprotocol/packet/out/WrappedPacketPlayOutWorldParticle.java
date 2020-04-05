@@ -40,7 +40,7 @@ public class WrappedPacketPlayOutWorldParticle extends NMSObject {
         this.data = data;
 
         if (ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.V1_8)) {
-            setPacket(packetPlayOutWorldParticle, type.getName(), x, y, z, xOffset, yOffset, zOffset, speed, amount);
+            setPacket(packetPlayOutWorldParticle, type.getName().toLowerCase(), x, y, z, xOffset, yOffset, zOffset, speed, amount);
         } else if(ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.V1_13)) {
             setPacket(packetPlayOutWorldParticle, type.toNMS(), var2, x, y, z, xOffset, yOffset, zOffset, speed, amount, data);
         } else {

@@ -7,7 +7,7 @@
     <groupId>cc.funkemunky.utils</groupId>
     <artifactId>atlas-parent</artifactId>
     <packaging>pom</packaging>
-    <version>1.8.2-PRE-2</version>
+    <version>1.8.2-PRE-4</version>
 
     <build>
         <plugins>

@@ -17,11 +17,11 @@ public enum WrappedEnumAnimation {
     public static WrappedEnumAnimation fromNMS(Object vanillaObject) {
         Enum vanilla = (Enum) vanillaObject;
 
-        return valueOf(vanilla.name());
+        return valueOf(vanilla.name().toUpperCase());
     }
 
     public Enum toVanilla() {
-        return enumAnimation.getEnum(name());
+        return enumAnimation.getEnum(name().toUpperCase());
     }
 
     static {

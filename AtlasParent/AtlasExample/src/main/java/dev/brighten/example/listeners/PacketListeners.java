@@ -5,10 +5,6 @@ import cc.funkemunky.api.events.Listen;
 import cc.funkemunky.api.events.impl.PacketReceiveEvent;
 import cc.funkemunky.api.events.impl.PacketSendEvent;
 import cc.funkemunky.api.tinyprotocol.api.Packet;
-import cc.funkemunky.api.tinyprotocol.packet.in.WrappedInCustomPayload;
-import cc.funkemunky.api.tinyprotocol.packet.in.WrappedInEntityActionPacket;
-import cc.funkemunky.api.tinyprotocol.packet.in.WrappedInFlyingPacket;
-import cc.funkemunky.api.tinyprotocol.packet.in.WrappedInSteerVehiclePacket;
 import cc.funkemunky.api.utils.Init;
 
 @Init
