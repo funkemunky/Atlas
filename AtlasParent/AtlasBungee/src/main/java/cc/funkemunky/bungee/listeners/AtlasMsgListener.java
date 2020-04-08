@@ -3,9 +3,11 @@ package cc.funkemunky.bungee.listeners;
 import cc.funkemunky.bungee.data.user.User;
 import cc.funkemunky.bungee.utils.Color;
 import cc.funkemunky.bungee.utils.asm.Init;
+import lombok.val;
 import net.md_5.bungee.BungeeCord;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.config.ServerInfo;
+import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.event.PluginMessageEvent;
 import net.md_5.bungee.api.plugin.Listener;
 import net.md_5.bungee.event.EventHandler;
@@ -119,6 +121,15 @@ public class AtlasMsgListener implements Listener {
                         dataOut.writeUTF("mods");
                         dataOut.writeObject(uuid);
                         dataOut.writeObject(user.modData != null ? user.modData.getModsMap() : "");
+
+                        val player = BungeeCord.getInstance().getPlayerByOfflineUUID(uuid);
+
+                        if(user.modData != null) {
+                            System.out.println(player + " mods: ");
+                            user.modData.getModsMap().forEach((key, value) -> {
+                                System.out.println("- " + key + "::" + value);
+                            });
+                        } else System.out.println(player + " mods null.");
 
                         BungeeCord.getInstance().getServers()
                                 .forEach((name, info) -> info.sendData("atlas:in", bOut.toByteArray()));

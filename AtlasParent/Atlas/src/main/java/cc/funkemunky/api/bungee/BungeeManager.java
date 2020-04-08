@@ -64,7 +64,10 @@ public class BungeeManager implements PluginMessageListener {
     }
 
     public void sendData(byte[] data, String out) {
-        Bukkit.getServer().sendPluginMessage(Atlas.getInstance(), out, data);
+        for (Player onlinePlayer : Bukkit.getOnlinePlayers()) {
+            onlinePlayer.sendPluginMessage(Atlas.getInstance(), out, data);
+            break;
+        }
     }
 
     public void sendData(byte[] data) {

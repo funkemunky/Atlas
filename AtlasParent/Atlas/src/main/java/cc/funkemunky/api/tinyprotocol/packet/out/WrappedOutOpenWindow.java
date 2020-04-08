@@ -47,7 +47,7 @@ public class WrappedOutOpenWindow extends NMSObject {
 
     static {
         if(ProtocolVersion.getGameVersion().isOrAbove(ProtocolVersion.V1_8)) {
-            fetchField(packet,
+            chatCompField = fetchField(packet,
                     MinecraftReflection.iChatBaseComponent.getParent(), 0);
         }
     }

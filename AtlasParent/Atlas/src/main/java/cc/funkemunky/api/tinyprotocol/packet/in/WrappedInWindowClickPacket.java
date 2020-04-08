@@ -120,8 +120,6 @@ public class WrappedInWindowClickPacket extends NMSObject {
         DRAG,
         UNKNOWN;
 
-        public static WrappedClass clickType = Reflections.getNMSClass("InventoryClickType");
-
         public boolean isKeyboardClick() {
             return this == NUMBER_KEY || this == DROP || this == CONTROL_DROP;
         }

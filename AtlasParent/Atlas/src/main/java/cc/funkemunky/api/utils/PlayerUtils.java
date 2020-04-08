@@ -96,7 +96,9 @@ public class PlayerUtils {
 
     static {
         try {
-            DEPTH = Enchantment.getByName("DEPTH_STRIDER");
+            if(ProtocolVersion.getGameVersion().isOrAbove(ProtocolVersion.V1_8)) {
+                DEPTH = Enchantment.getByName("DEPTH_STRIDER");
+            }
         } catch(Exception e) {
             DEPTH = null;
         }

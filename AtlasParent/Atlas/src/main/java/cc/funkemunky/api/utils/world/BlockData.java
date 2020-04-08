@@ -58,7 +58,7 @@ public enum BlockData {
 
     _ANVIL((protocol, b) -> {
         BlockState state = b.getState();
-        b.setType(XMaterial.ANVIL.parseMaterial(), true);
+        b.setType(XMaterial.ANVIL.parseMaterial());
         int dir = state.getData().getData() & 0b01;
         CollisionBox box;
         if (dir == 1) {
