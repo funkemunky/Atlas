@@ -6,6 +6,7 @@ import cc.funkemunky.api.tinyprotocol.reflection.FieldAccessor;
 import cc.funkemunky.api.tinyprotocol.reflection.MethodInvoker;
 import cc.funkemunky.api.tinyprotocol.reflection.Reflection;
 import com.google.common.collect.MapMaker;
+import lombok.val;
 import net.minecraft.util.com.mojang.authlib.GameProfile;
 import net.minecraft.util.io.netty.channel.*;
 import org.bukkit.Bukkit;
@@ -366,8 +367,14 @@ public abstract class TinyProtocol1_7 implements AbstractTinyProtocol {
             // Inject our packet interceptor
             if (interceptor == null) {
                 interceptor = new PacketInterceptor();
-                channel.pipeline().addBefore("packet_handler", handlerName, interceptor);
-                uninjectedChannels.remove(channel);
+                val context = channel.pipeline().context("packet_handler");
+                if(context != null) {
+                    channel.pipeline().addBefore("packet_handler", handlerName, interceptor);
+                    uninjectedChannels.remove(channel);
+                } else {
+                    System.out.println("Context was null. Adding channel to injected!");
+                    uninjectedChannels.add(channel);
+                }
             }
 
             return interceptor;

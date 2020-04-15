@@ -4,6 +4,7 @@ import cc.funkemunky.api.reflections.Reflections;
 import cc.funkemunky.api.reflections.types.WrappedClass;
 import cc.funkemunky.api.tinyprotocol.api.ProtocolVersion;
 import cc.funkemunky.api.utils.MiscUtils;
+import cc.funkemunky.api.utils.ReflectionsUtil;
 import cc.funkemunky.api.utils.XMaterial;
 import cc.funkemunky.api.utils.world.blocks.*;
 import cc.funkemunky.api.utils.world.types.*;
@@ -55,6 +56,10 @@ public enum BlockData {
             new SimpleCollisionBox(0, 0, 0, 1, 0.125, 1),                      //base
             new SimpleCollisionBox(0.4375, 0.0, 0.4375, 0.5625, 0.875, 0.5625) //top
     ), XMaterial.BREWING_STAND.parseMaterial()),
+
+    _RAIL((protocol, b) -> ReflectionsUtil.getBlockBoundingBox(b).toCollisionBox(),Arrays.stream(Material.values())
+            .filter(mat -> mat.name().toLowerCase().contains("rail"))
+            .toArray(Material[]::new)),
 
     _ANVIL((protocol, b) -> {
         BlockState state = b.getState();

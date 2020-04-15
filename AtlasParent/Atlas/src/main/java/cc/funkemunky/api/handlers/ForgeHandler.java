@@ -83,7 +83,9 @@ public class ForgeHandler implements Listener, PluginMessageListener {
         if (data[0] == 2)
         {
             ModData modData = getModData(data);
-            mods.put(player, modData);
+            if(modData != null && modData.getMods().size() > 0) {
+                mods.put(player, modData);
+            }
         }
     }
 

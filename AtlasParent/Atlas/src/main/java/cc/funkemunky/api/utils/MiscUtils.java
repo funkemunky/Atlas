@@ -28,6 +28,7 @@ import java.io.OutputStream;
 import java.lang.reflect.Field;
 import java.util.*;
 import java.util.function.Supplier;
+import java.util.stream.Collectors;
 
 public class MiscUtils {
 
@@ -50,6 +51,12 @@ public class MiscUtils {
             i++;
         }
         return -1;
+    }
+
+    public static String injectColor(String string, String color) {
+        String[] split = string.split("");
+
+        return Arrays.stream(split).map(s -> color + s).collect(Collectors.joining());
     }
 
     public static Material getById(int id) {

@@ -140,11 +140,12 @@ public class BungeeManager implements PluginMessageListener {
             } catch (IOException | ClassNotFoundException e) {
                 e.printStackTrace();
             }
-        } else if(channel.equals("atlas:in")) {
+        } else if(channel.equals(atlasIn)) {
             try {
                 ObjectInputStream input = new ObjectInputStream(stream);
 
                 String dataType = input.readUTF();
+                System.out.println("received " + dataType);
                 switch (dataType) {
                     case "mods": {
                         UUID uuid = (UUID) input.readObject();
@@ -154,6 +155,7 @@ public class BungeeManager implements PluginMessageListener {
                             Map<String, String> mods = (Map<String, String>) modsObject;
                             Player pl = Bukkit.getPlayer(uuid);
                             if (pl != null) {
+                                System.out.println("Received mods for " + pl.getName());
                                 ForgeHandler.runBungeeModChecker(pl, mods);
                             }
                         }

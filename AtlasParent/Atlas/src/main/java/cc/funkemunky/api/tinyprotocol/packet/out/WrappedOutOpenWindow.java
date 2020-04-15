@@ -3,6 +3,7 @@ package cc.funkemunky.api.tinyprotocol.packet.out;
 import cc.funkemunky.api.reflections.impl.MinecraftReflection;
 import cc.funkemunky.api.tinyprotocol.api.NMSObject;
 import cc.funkemunky.api.tinyprotocol.api.ProtocolVersion;
+import cc.funkemunky.api.tinyprotocol.packet.types.WrappedChatComponent;
 import cc.funkemunky.api.tinyprotocol.packet.types.WrappedChatMessage;
 import cc.funkemunky.api.tinyprotocol.reflection.FieldAccessor;
 import lombok.Getter;
@@ -28,7 +29,7 @@ public class WrappedOutOpenWindow extends NMSObject {
 
     private int id;
     private String name;
-    private WrappedChatMessage chatComponent;
+    private WrappedChatComponent chatComponent;
     private int size;
 
     @Override
@@ -36,7 +37,7 @@ public class WrappedOutOpenWindow extends NMSObject {
         id = fetch(idField);
         name = fetch(nameField);
         if(ProtocolVersion.getGameVersion().isOrAbove(ProtocolVersion.V1_8))
-            chatComponent = new WrappedChatMessage(fetch(chatCompField));
+            chatComponent = new WrappedChatComponent(fetch(chatCompField));
         size = fetch(inventorySize);
     }
 

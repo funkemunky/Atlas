@@ -21,6 +21,7 @@ public class AtlasMsgListener implements Listener {
 
     public AtlasMsgListener() {
         BungeeCord.getInstance().registerChannel("atlas:out");
+        BungeeCord.getInstance().registerChannel("atlas:in");
     }
 
     @EventHandler
@@ -122,14 +123,17 @@ public class AtlasMsgListener implements Listener {
                         dataOut.writeObject(uuid);
                         dataOut.writeObject(user.modData != null ? user.modData.getModsMap() : "");
 
-                        val player = BungeeCord.getInstance().getPlayerByOfflineUUID(uuid);
+                        ProxiedPlayer player = BungeeCord.getInstance().getPlayer(uuid);
 
+                        if(player != null) {
+                            System.out.println("getting mods of " + player.getName());
+                        }
                         if(user.modData != null) {
-                            System.out.println(player + " mods: ");
+                            System.out.println(uuid.toString() + " mods: ");
                             user.modData.getModsMap().forEach((key, value) -> {
                                 System.out.println("- " + key + "::" + value);
                             });
-                        } else System.out.println(player + " mods null.");
+                        } else System.out.println(uuid.toString() + " mods null.");
 
                         BungeeCord.getInstance().getServers()
                                 .forEach((name, info) -> info.sendData("atlas:in", bOut.toByteArray()));

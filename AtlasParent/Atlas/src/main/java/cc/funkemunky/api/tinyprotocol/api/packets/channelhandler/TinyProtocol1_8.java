@@ -16,6 +16,7 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.MapMaker;
 import com.mojang.authlib.GameProfile;
 import io.netty.channel.*;
+import lombok.val;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -402,8 +403,14 @@ public abstract class TinyProtocol1_8 implements AbstractTinyProtocol {
 			// Inject our packet interceptor
 			if (interceptor == null) {
 				interceptor = new PacketInterceptor();
-				channel.pipeline().addBefore("packet_handler", handlerName, interceptor);
-				uninjectedChannels.remove(channel);
+				val context = channel.pipeline().context("packet_handler");
+				if(context != null) {
+					channel.pipeline().addBefore("packet_handler", handlerName, interceptor);
+					uninjectedChannels.remove(channel);
+				} else {
+					System.out.println("Context was null. Adding channel to injected!");
+					uninjectedChannels.add(channel);
+				}
 			}
 
 			return interceptor;
