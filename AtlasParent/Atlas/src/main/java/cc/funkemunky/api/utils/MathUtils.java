@@ -23,6 +23,23 @@ public class MathUtils {
         return playerMoved(from.toVector(), to.toVector());
     }
 
+    public static byte getByte(int num) {
+        if(num > Byte.MAX_VALUE || num < Byte.MIN_VALUE) {
+            throw new NumberFormatException("Integer " + num + " too large to cast to data format byte!"
+                    + " (max=" + Byte.MAX_VALUE + " min=" + Byte.MIN_VALUE + ")");
+        }
+
+        return (byte) num;
+    }
+
+    public static short getShort(int num) {
+        if(num > Short.MAX_VALUE || num < Short.MIN_VALUE) {
+            throw new NumberFormatException("Integer " + num + " too large to cast to data format short!"
+                    + " (max=" + Short.MAX_VALUE + " min=" + Short.MIN_VALUE + ")");
+        }
+        return (short) num;
+    }
+
     /* Stolen from Bukkit */
     public static Vector getDirection(KLocation loc) {
         Vector vector = new Vector();

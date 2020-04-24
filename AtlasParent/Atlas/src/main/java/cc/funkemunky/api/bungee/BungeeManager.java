@@ -76,16 +76,16 @@ public class BungeeManager implements PluginMessageListener {
 
     public void sendObjects(String server, Object... objects) throws IOException {
         ByteArrayOutputStream output = new ByteArrayOutputStream();
-        DataOutputStream stream = new DataOutputStream(output);
+        ObjectOutputStream stream = new ObjectOutputStream(output);
 
         boolean override  = server.toLowerCase().contains("override");
         if(override) {
-            stream.writeUTF("sendObjects");
-            stream.writeUTF(server);
+            stream.writeObject("sendObjects");
+            stream.writeObject(server);
         } else {
-            stream.writeUTF("Forward");
-            stream.writeUTF(server);
-            stream.writeUTF("Forward");
+            stream.writeObject("Forward");
+            stream.writeObject(server);
+            stream.writeObject("Forward");
         }
 
         ByteArrayOutputStream objectOutput = new ByteArrayOutputStream();

@@ -86,7 +86,7 @@ public class WrappedInCustomPayload extends NMSObject {
     static {
         if(ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.V1_8)) {
             lengthField = wrapped.getFieldByType(int.class, 0);
-            dataField = wrapped.getFieldByType(byte.class, 0);
+            dataField = wrapped.getFieldByType(byte[].class, 0);
         } else {
             wrappedPDS = Reflections.getNMSClass("PacketDataSerializer");
             dataSerializer = wrapped.getFieldByType(wrappedPDS.getParent(), 0);

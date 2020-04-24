@@ -5,6 +5,7 @@ import cc.funkemunky.api.tinyprotocol.api.ProtocolVersion;
 import cc.funkemunky.api.utils.ConfigSetting;
 import cc.funkemunky.api.utils.Init;
 import cc.funkemunky.api.utils.RunUtils;
+import lombok.val;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -125,7 +126,7 @@ public class ForgeHandler implements Listener, PluginMessageListener {
     }
 
     public static ModData getMods(Player player) {
-        return mods.computeIfAbsent(player, key -> {
+        val modData = mods.computeIfAbsent(player, key -> {
             if(Atlas.getInstance().getBungeeManager().isBungee()) {
                 ForgeHandler.INSTANCE.queryBungeeMods(player);
             } else {
@@ -136,6 +137,17 @@ public class ForgeHandler implements Listener, PluginMessageListener {
 
             return null;
         });
+
+        if(mods.containsKey(player) && modData == null) {
+            if(Atlas.getInstance().getBungeeManager().isBungee()) {
+                ForgeHandler.INSTANCE.queryBungeeMods(player);
+            } else {
+                sendFmlPacket(player, (byte) -2, (byte) 0);
+                sendFmlPacket(player, (byte) 0, (byte) 2, (byte) 0, (byte) 0, (byte) 0, (byte) 0);
+                sendFmlPacket(player, (byte) 2, (byte) 0, (byte) 0, (byte) 0, (byte) 0);
+            }
+        }
+        return modData;
     }
 
     public static void runBungeeModChecker(Player player, Map<String, String> modStrings) {

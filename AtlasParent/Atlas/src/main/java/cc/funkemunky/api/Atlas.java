@@ -18,6 +18,7 @@ import cc.funkemunky.api.tinyprotocol.api.TinyProtocolHandler;
 import cc.funkemunky.api.updater.Updater;
 import cc.funkemunky.api.utils.*;
 import cc.funkemunky.api.utils.blockbox.BlockBoxManager;
+import cc.funkemunky.api.utils.objects.RemoteClassLoader;
 import dev.brighten.db.Carbon;
 import lombok.Getter;
 import lombok.Setter;
@@ -115,8 +116,6 @@ public class Atlas extends JavaPlugin {
 
         funkeCommandManager.addCommand(this, new AtlasCommand());
 
-        bungeeManager = new BungeeManager();
-
         MiscUtils.printToConsole(Color.Gray + "Loading other managers and utilities...");
 
         if(metricsEnabled) {
@@ -138,7 +137,7 @@ public class Atlas extends JavaPlugin {
         }
 
         Bukkit.getOnlinePlayers().forEach(player -> TinyProtocolHandler.getInstance().injectPlayer(player));
-
+        bungeeManager = new BungeeManager();
         MiscUtils.printToConsole(Color.Green + "Successfully loaded Atlas and its utilities!");
         done = true;
     }
@@ -243,6 +242,9 @@ public class Atlas extends JavaPlugin {
                 .map(name -> {
                     if(loader != null) {
                         try {
+                            if(loader instanceof RemoteClassLoader) {
+                                return new WrappedClass(((RemoteClassLoader)loader).findClass(name));
+                            } else
                             return new WrappedClass(Class.forName(name, true, loader));
                         } catch (ClassNotFoundException e) {
                             e.printStackTrace();

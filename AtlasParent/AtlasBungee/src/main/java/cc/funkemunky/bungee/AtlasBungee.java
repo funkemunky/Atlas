@@ -8,6 +8,7 @@ import net.md_5.bungee.BungeeCord;
 import net.md_5.bungee.api.plugin.Listener;
 import net.md_5.bungee.api.plugin.Plugin;
 
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -15,12 +16,11 @@ import java.util.concurrent.ScheduledExecutorService;
 public class AtlasBungee extends Plugin {
 
     public static AtlasBungee INSTANCE;
-    public String outChannel = "atlas:in";
+    public String outChannel = "atlas:in", inChannel = "atlas:out";
     public ScheduledExecutorService executorService;
 
     public void onEnable() {
         INSTANCE = this;
-        getProxy().registerChannel(outChannel);
         executorService = Executors.newSingleThreadScheduledExecutor();
 
         initializeScanner(this);
@@ -34,6 +34,13 @@ public class AtlasBungee extends Plugin {
         ClassScanner.scanFile(null, mainClass)
                 .stream()
                 .map(Reflections::getClass)
+                .filter(c -> {
+                    Init ann = c.getAnnotation(Init.class);
+
+                    return ann != null && (ann.requirePlugins().length == 0
+                            || Arrays.stream(ann.requirePlugins())
+                            .allMatch(pl -> getProxy().getPluginManager().getPlugin(pl) != null));
+                })
                 .sorted(Comparator.comparing(c -> c.getAnnotation(Init.class).priority(), Comparator.reverseOrder()))
                 .forEach(c -> {
                     Object obj = c.getParent().equals(mainClass) ? plugin : c.getConstructor().newInstance();

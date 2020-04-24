@@ -1,10 +1,12 @@
 package cc.funkemunky.bungee.listeners;
 
+import cc.funkemunky.bungee.AtlasBungee;
 import cc.funkemunky.bungee.data.user.User;
 import cc.funkemunky.bungee.utils.Color;
 import cc.funkemunky.bungee.utils.asm.Init;
 import lombok.val;
 import net.md_5.bungee.BungeeCord;
+import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.config.ServerInfo;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
@@ -20,12 +22,13 @@ import java.util.UUID;
 public class AtlasMsgListener implements Listener {
 
     public AtlasMsgListener() {
-        BungeeCord.getInstance().registerChannel("atlas:out");
-        BungeeCord.getInstance().registerChannel("atlas:in");
+        ProxyServer.getInstance().registerChannel(AtlasBungee.INSTANCE.outChannel);
+        ProxyServer.getInstance().registerChannel(AtlasBungee.INSTANCE.inChannel);
     }
 
     @EventHandler
     public void onEvent(PluginMessageEvent event) {
+        System.out.println("Received msg: " + event.getTag());
         if(event.getTag().equalsIgnoreCase("atlas:out")) {
             try {
                 ByteArrayInputStream bis = new ByteArrayInputStream(event.getData());
@@ -45,14 +48,14 @@ public class AtlasMsgListener implements Listener {
                         String server = serverField.split("_")[0];
 
                         if(server.equalsIgnoreCase("all")) {
-                            for (ServerInfo info : BungeeCord.getInstance().getServers().values()) {
+                            for (ServerInfo info : ProxyServer.getInstance().getServers().values()) {
                                 info.sendData("atlas:in", event.getData());
                             }
                         } else {
-                            Optional<ServerInfo> infoOptional = BungeeCord.getInstance().getServers().values()
+                            Optional<ServerInfo> infoOptional = ProxyServer.getInstance().getServers().values()
                                     .stream().filter(val -> val.getName().equalsIgnoreCase(server)).findFirst();
 
-                            infoOptional.ifPresent(serverInfo -> serverInfo.sendData("atlas:in", event.getData()));
+                            infoOptional.ifPresent(serverInfo -> serverInfo.sendData("atlas:in", event.getData(), true));
                         }
 
                         break;
@@ -82,7 +85,7 @@ public class AtlasMsgListener implements Listener {
                         output.writeLong(System.currentTimeMillis() - time);
 
                         if(name.equalsIgnoreCase("ALL")) {
-                            BungeeCord.getInstance().getServers()
+                            ProxyServer.getInstance().getServers()
                                     .forEach((sname, info) -> info.sendData("atlas:in", baos.toByteArray()));
                         } else {
                             ServerInfo field;
@@ -108,8 +111,8 @@ public class AtlasMsgListener implements Listener {
                         dataOut.writeInt(user.version);
                         dataOut.writeObject(uuid);
 
-                        BungeeCord.getInstance().getServers()
-                                .forEach((name, info) -> info.sendData("atlas:in", bOut.toByteArray()));
+                        ProxyServer.getInstance().getServers()
+                                .forEach((name, info) -> info.sendData("atlas:in", bOut.toByteArray(), true));
                         break;
                     }
                     case "mods": {
@@ -136,7 +139,9 @@ public class AtlasMsgListener implements Listener {
                         } else System.out.println(uuid.toString() + " mods null.");
 
                         BungeeCord.getInstance().getServers()
-                                .forEach((name, info) -> info.sendData("atlas:in", bOut.toByteArray()));
+                                .forEach((name, info) -> {
+                                    info.sendData(AtlasBungee.INSTANCE.outChannel, bOut.toByteArray(), true);
+                                });
                         break;
                     }
                     case "commandBungee": {
