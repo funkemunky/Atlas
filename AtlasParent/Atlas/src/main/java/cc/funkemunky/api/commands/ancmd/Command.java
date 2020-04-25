@@ -12,6 +12,7 @@ public @interface Command {
     String display() default "";
     boolean playerOnly() default false;
     boolean consoleOnly() default false;
+    boolean async() default false;
     String[] permission() default {};
     String[] tabCompletions() default {}; //Format label::result
     String description() default "";

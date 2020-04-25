@@ -5,7 +5,7 @@
     <parent>
         <artifactId>atlas-parent</artifactId>
         <groupId>cc.funkemunky.utils</groupId>
-        <version>1.8.2-PRE-5</version>
+        <version>1.8.2</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -76,6 +76,7 @@
                 <filtering>true</filtering>
             </resource>
         </resources>
+        <finalName>${project.artifactId}-${project.version}-${release.identifier}-${buildNumber}</finalName>
     </build>
 
     <repositories>

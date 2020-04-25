@@ -7,10 +7,29 @@
     <groupId>cc.funkemunky.utils</groupId>
     <artifactId>atlas-parent</artifactId>
     <packaging>pom</packaging>
-    <version>1.8.2-PRE-5</version>
+    <version>1.8.2</version>
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <release.identifier>SNAPSHOT</release.identifier>
+    </properties>
 
     <build>
         <plugins>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>buildnumber-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>useLastCommittedRevision</id>
+                        <goals>
+                            <goal>create</goal>
+                        </goals>
+                        <configuration>
+                            <useLastCommittedRevision>true</useLastCommittedRevision>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
@@ -28,6 +47,7 @@
                 <filtering>true</filtering>
             </resource>
         </resources>
+        <finalName>${project.artifactId}-${project.version}-${release.identifier}-${buildNumber}</finalName>
     </build>
 
     <modules>

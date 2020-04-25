@@ -74,7 +74,7 @@ public class JoinListener implements Listener {
     @EventHandler
     public void onPME(PluginMessageEvent event) {
         // ModList has ID 2
-        if (event.getData()[0] == 2)
+        if (event.getData().length > 0 && event.getData()[0] == 2)
         {
             UserConnection connection = (UserConnection) event.getSender();
             User user = User.getUser(connection.getUniqueId());

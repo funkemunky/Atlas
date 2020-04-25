@@ -28,7 +28,6 @@ public class AtlasMsgListener implements Listener {
 
     @EventHandler
     public void onEvent(PluginMessageEvent event) {
-        System.out.println("Received msg: " + event.getTag());
         if(event.getTag().equalsIgnoreCase("atlas:out")) {
             try {
                 ByteArrayInputStream bis = new ByteArrayInputStream(event.getData());
@@ -36,7 +35,6 @@ public class AtlasMsgListener implements Listener {
 
                 System.out.println(event.getData().length);
                 String type = (String)inputStream.readObject();
-                System.out.println("type: " + type);
 
                 switch(type) {
                     case "sendObjects": {
@@ -126,22 +124,9 @@ public class AtlasMsgListener implements Listener {
                         dataOut.writeObject(uuid);
                         dataOut.writeObject(user.modData != null ? user.modData.getModsMap() : "");
 
-                        ProxiedPlayer player = BungeeCord.getInstance().getPlayer(uuid);
-
-                        if(player != null) {
-                            System.out.println("getting mods of " + player.getName());
-                        }
-                        if(user.modData != null) {
-                            System.out.println(uuid.toString() + " mods: ");
-                            user.modData.getModsMap().forEach((key, value) -> {
-                                System.out.println("- " + key + "::" + value);
-                            });
-                        } else System.out.println(uuid.toString() + " mods null.");
-
                         BungeeCord.getInstance().getServers()
-                                .forEach((name, info) -> {
-                                    info.sendData(AtlasBungee.INSTANCE.outChannel, bOut.toByteArray(), true);
-                                });
+                                .forEach((name, info) ->
+                                        info.sendData(AtlasBungee.INSTANCE.outChannel, bOut.toByteArray(), true));
                         break;
                     }
                     case "commandBungee": {
