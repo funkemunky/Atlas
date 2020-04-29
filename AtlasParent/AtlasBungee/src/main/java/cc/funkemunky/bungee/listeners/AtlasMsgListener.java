@@ -17,6 +17,7 @@ import net.md_5.bungee.event.EventHandler;
 import java.io.*;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 
 @Init
 public class AtlasMsgListener implements Listener {
@@ -24,6 +25,10 @@ public class AtlasMsgListener implements Listener {
     public AtlasMsgListener() {
         ProxyServer.getInstance().registerChannel(AtlasBungee.INSTANCE.outChannel);
         ProxyServer.getInstance().registerChannel(AtlasBungee.INSTANCE.inChannel);
+        AtlasBungee.INSTANCE.getProxy().getScheduler().schedule(AtlasBungee.INSTANCE, () -> {
+            ProxyServer.getInstance().registerChannel(AtlasBungee.INSTANCE.outChannel);
+            ProxyServer.getInstance().registerChannel(AtlasBungee.INSTANCE.inChannel);
+        }, 6, TimeUnit.SECONDS);
     }
 
     @EventHandler
@@ -110,7 +115,8 @@ public class AtlasMsgListener implements Listener {
                         dataOut.writeObject(uuid);
 
                         ProxyServer.getInstance().getServers()
-                                .forEach((name, info) -> info.sendData("atlas:in", bOut.toByteArray(), true));
+                                .forEach((name, info) -> info.sendData(AtlasBungee.INSTANCE.outChannel,
+                                        bOut.toByteArray(), true));
                         break;
                     }
                     case "mods": {
@@ -124,15 +130,16 @@ public class AtlasMsgListener implements Listener {
                         dataOut.writeObject(uuid);
                         dataOut.writeObject(user.modData != null ? user.modData.getModsMap() : "");
 
-                        BungeeCord.getInstance().getServers()
-                                .forEach((name, info) ->
-                                        info.sendData(AtlasBungee.INSTANCE.outChannel, bOut.toByteArray(), true));
+                        ProxyServer.getInstance().getServers()
+                                .forEach((name, info) -> {
+                                    info.sendData(AtlasBungee.INSTANCE.outChannel, bOut.toByteArray());
+                                });
                         break;
                     }
                     case "commandBungee": {
                         String command = (String) inputStream.readObject();
 
-                        BungeeCord.getInstance().getPluginManager()
+                        ProxyServer.getInstance().getPluginManager()
                                 .dispatchCommand(BungeeCord.getInstance().getConsole(), command);
                         break;
                     }

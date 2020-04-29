@@ -297,6 +297,10 @@ public class SimpleCollisionBox implements CollisionBox {
         return new BoundingBox(new Vector(xMin, yMin, zMin), new Vector(xMax, yMax, zMax));
     }
 
+    public <T> T toAxisAlignedBB() {
+
+    }
+
     public double distance(SimpleCollisionBox box) {
         return Math.hypot(xMax - box.xMax, zMin - box.zMin);
     }

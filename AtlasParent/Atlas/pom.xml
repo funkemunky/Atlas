@@ -61,7 +61,6 @@
                 <filtering>true</filtering>
             </resource>
         </resources>
-        <finalName>${project.artifactId}-${project.version}-${release.identifier}-${buildNumber}</finalName>
     </build>
 
     <repositories>
