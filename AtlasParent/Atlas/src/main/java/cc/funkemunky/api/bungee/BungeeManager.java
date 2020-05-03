@@ -3,14 +3,20 @@ package cc.funkemunky.api.bungee;
 import cc.funkemunky.api.Atlas;
 import cc.funkemunky.api.bungee.events.BungeeReceiveEvent;
 import cc.funkemunky.api.bungee.objects.BungeePlayer;
+import cc.funkemunky.api.events.AtlasListener;
+import cc.funkemunky.api.events.Listen;
+import cc.funkemunky.api.events.impl.PacketReceiveEvent;
 import cc.funkemunky.api.handlers.ForgeHandler;
 import cc.funkemunky.api.reflections.types.WrappedClass;
+import cc.funkemunky.api.tinyprotocol.api.Packet;
+import cc.funkemunky.api.tinyprotocol.packet.in.WrappedInCustomPayload;
 import cc.funkemunky.api.utils.MiscUtils;
 import cc.funkemunky.api.utils.Tuple;
 import lombok.Getter;
 import lombok.val;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.messaging.PluginMessageListener;
 import org.bukkit.scheduler.BukkitTask;
 
@@ -18,7 +24,7 @@ import java.io.*;
 import java.util.*;
 
 @Getter
-public class BungeeManager implements PluginMessageListener {
+public class BungeeManager implements AtlasListener, PluginMessageListener {
     private String channelOut = "BungeeCord", channelIn = "BungeeCord";
     private String atlasIn = "atlas:in", atlasOut = "atlas:out";
     private Map<UUID, BungeePlayer> bungeePlayers = new HashMap<>();
@@ -33,6 +39,7 @@ public class BungeeManager implements PluginMessageListener {
         Bukkit.getMessenger().registerIncomingPluginChannel(Atlas.getInstance(), channelIn, this);
         Bukkit.getMessenger().registerIncomingPluginChannel(Atlas.getInstance(), atlasIn, this);
 
+        Atlas.getInstance().getEventManager().registerListeners(this, Atlas.getInstance());
         /*new BukkitRunnable() {
             public void run() {
                 if(Atlas.getInstance().isDone() && Atlas.getInstance().isEnabled()) {
@@ -103,88 +110,92 @@ public class BungeeManager implements PluginMessageListener {
         sendData(output.toByteArray(), override ? atlasOut : channelOut); //This is where we finally send the data
     }
 
-    @Override
-    public void onPluginMessageReceived(String channel, Player player, byte[] bytes) {
-        ByteArrayInputStream stream = new ByteArrayInputStream(bytes);
-        if(channel.equals("Bungee")) {
-            try {
-                DataInputStream input = new DataInputStream(stream);
+    @Listen
+    public void onPluginMessageReceived(PacketReceiveEvent event) {
+        if(event.getType().equals(Packet.Client.CUSTOM_PAYLOAD)) {
+            WrappedInCustomPayload wrapped = new WrappedInCustomPayload(event.getPacket(), event.getPlayer());
+            byte[] bytes = wrapped.getData();
+            String channel = wrapped.getTag();
+            ByteArrayInputStream stream = new ByteArrayInputStream(bytes);
+            if (channel.equals("Bungee")) {
+                try {
+                    DataInputStream input = new DataInputStream(stream);
 
-                String type = input.readUTF();
+                    String type = input.readUTF();
 
-                switch(type) {
-                    case "Forward": {
-                        byte[] array = new byte[input.readShort()];
-                        input.readFully(array);
+                    switch (type) {
+                        case "Forward": {
+                            byte[] array = new byte[input.readShort()];
+                            input.readFully(array);
 
-                        ObjectInputStream objectInput = new ObjectInputStream(new ByteArrayInputStream(array));
+                            ObjectInputStream objectInput = new ObjectInputStream(new ByteArrayInputStream(array));
 
-                        Object[] objects = new Object[objectInput.readShort()];
+                            Object[] objects = new Object[objectInput.readShort()];
 
-                        for (int i = 0; i < objects.length; i++) {
-                            objects[i] = objectInput.readObject();
-                        }
-
-                        Atlas.getInstance().getEventManager().callEvent(new BungeeReceiveEvent(objects, type));
-                        break;
-                    }
-                    case "GetServers": {
-                        MiscUtils.printToConsole("&7Grabbed servers.");
-                        bungeeServers.clear();
-                        bungeeServers.addAll(Arrays.asList(input.readUTF().split(", ")));
-                        break;
-                    }
-                }
-
-
-            } catch (IOException | ClassNotFoundException e) {
-                e.printStackTrace();
-            }
-        } else if(channel.equals(atlasIn)) {
-            try {
-                ObjectInputStream input = new ObjectInputStream(stream);
-
-                String dataType = input.readUTF();
-                System.out.println("received " + dataType);
-                switch (dataType) {
-                    case "mods": {
-                        UUID uuid = (UUID) input.readObject();
-                        Object modsObject = input.readObject();
-
-                        if (!(modsObject instanceof String)) {
-                            Map<String, String> mods = (Map<String, String>) modsObject;
-                            Player pl = Bukkit.getPlayer(uuid);
-                            if (pl != null) {
-                                System.out.println("Received mods for " + pl.getName());
-                                ForgeHandler.runBungeeModChecker(pl, mods);
+                            for (int i = 0; i < objects.length; i++) {
+                                objects[i] = objectInput.readObject();
                             }
+
+                            Atlas.getInstance().getEventManager().callEvent(new BungeeReceiveEvent(objects, type));
+                            break;
                         }
-                        break;
-                    }
-                    case "sendObjects":
-                        String type = input.readUTF();
-
-                        byte[] array = new byte[input.readShort()];
-                        input.readFully(array);
-
-                        ObjectInputStream objectInput = new ObjectInputStream(new ByteArrayInputStream(array));
-
-                        Object[] objects = new Object[objectInput.readShort()];
-
-                        for (int i = 0; i < objects.length; i++) {
-                            objects[i] = objectInput.readObject();
+                        case "GetServers": {
+                            MiscUtils.printToConsole("&7Grabbed servers.");
+                            bungeeServers.clear();
+                            bungeeServers.addAll(Arrays.asList(input.readUTF().split(", ")));
+                            break;
                         }
-
-                        Atlas.getInstance().getEventManager().callEvent(new BungeeReceiveEvent(objects, type));
-                        break;
-                    case "version": {
-                        boolean success = input.readBoolean();
-                        int version = input.readInt();
-                        UUID uuid = (UUID) input.readObject();
-
-                        versionsMap.put(uuid, new Tuple<>(success, version));
-                        break;
                     }
+
+
+                } catch (IOException | ClassNotFoundException e) {
+                    e.printStackTrace();
+                }
+            } else if (channel.equals(atlasIn)) {
+                try {
+                    ObjectInputStream input = new ObjectInputStream(stream);
+
+                    String dataType = input.readUTF();
+                    System.out.println("received " + dataType);
+                    switch (dataType) {
+                        case "mods": {
+                            UUID uuid = (UUID) input.readObject();
+                            Object modsObject = input.readObject();
+
+                            if (!(modsObject instanceof String)) {
+                                Map<String, String> mods = (Map<String, String>) modsObject;
+                                Player pl = Bukkit.getPlayer(uuid);
+                                if (pl != null) {
+                                    System.out.println("Received mods for " + pl.getName());
+                                    ForgeHandler.runBungeeModChecker(pl, mods);
+                                }
+                            }
+                            break;
+                        }
+                        case "sendObjects":
+                            String type = input.readUTF();
+
+                            byte[] array = new byte[input.readShort()];
+                            input.readFully(array);
+
+                            ObjectInputStream objectInput = new ObjectInputStream(new ByteArrayInputStream(array));
+
+                            Object[] objects = new Object[objectInput.readShort()];
+
+                            for (int i = 0; i < objects.length; i++) {
+                                objects[i] = objectInput.readObject();
+                            }
+
+                            Atlas.getInstance().getEventManager().callEvent(new BungeeReceiveEvent(objects, type));
+                            break;
+                        case "version": {
+                            boolean success = input.readBoolean();
+                            int version = input.readInt();
+                            UUID uuid = (UUID) input.readObject();
+
+                            versionsMap.put(uuid, new Tuple<>(success, version));
+                            break;
+                        }
                     /*case "ping": {
                         String name = input.readUTF();
                         long start = input.readLong();
@@ -195,11 +206,17 @@ public class BungeeManager implements PluginMessageListener {
                         bungeeFromPing = MathUtils.getDelta(bungeePing, bungeeToPing);
                         break;
                     }*/
+                    }
+                } catch (IOException | ClassNotFoundException e) {
+                    e.printStackTrace();
                 }
-            } catch (IOException | ClassNotFoundException e) {
-                e.printStackTrace();
             }
         }
+    }
+
+    @Override
+    public void onPluginMessageReceived(String s, Player player, byte[] bytes) {
+
     }
 
     /*private void runServerCheckTask() {

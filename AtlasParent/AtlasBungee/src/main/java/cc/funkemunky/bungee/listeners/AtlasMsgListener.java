@@ -11,6 +11,7 @@ import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.config.ServerInfo;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.event.PluginMessageEvent;
+import net.md_5.bungee.api.event.ServerConnectedEvent;
 import net.md_5.bungee.api.plugin.Listener;
 import net.md_5.bungee.event.EventHandler;
 
@@ -23,12 +24,8 @@ import java.util.concurrent.TimeUnit;
 public class AtlasMsgListener implements Listener {
 
     public AtlasMsgListener() {
-        ProxyServer.getInstance().registerChannel(AtlasBungee.INSTANCE.outChannel);
-        ProxyServer.getInstance().registerChannel(AtlasBungee.INSTANCE.inChannel);
-        AtlasBungee.INSTANCE.getProxy().getScheduler().schedule(AtlasBungee.INSTANCE, () -> {
-            ProxyServer.getInstance().registerChannel(AtlasBungee.INSTANCE.outChannel);
-            ProxyServer.getInstance().registerChannel(AtlasBungee.INSTANCE.inChannel);
-        }, 6, TimeUnit.SECONDS);
+        BungeeCord.getInstance().registerChannel(AtlasBungee.INSTANCE.outChannel);
+        BungeeCord.getInstance().registerChannel(AtlasBungee.INSTANCE.inChannel);
     }
 
     @EventHandler
@@ -132,7 +129,7 @@ public class AtlasMsgListener implements Listener {
 
                         ProxyServer.getInstance().getServers()
                                 .forEach((name, info) -> {
-                                    info.sendData(AtlasBungee.INSTANCE.outChannel, bOut.toByteArray());
+                                    info.sendData(AtlasBungee.INSTANCE.outChannel, bOut.toByteArray(), true);
                                 });
                         break;
                     }

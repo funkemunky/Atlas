@@ -4,6 +4,7 @@ import cc.funkemunky.api.reflections.impl.MinecraftReflection;
 import cc.funkemunky.api.tinyprotocol.packet.types.enums.WrappedEnumParticle;
 import cc.funkemunky.api.utils.BoundingBox;
 import cc.funkemunky.api.utils.MiscUtils;
+import cc.funkemunky.api.utils.ReflectionsUtil;
 import cc.funkemunky.api.utils.world.CollisionBox;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -297,8 +298,9 @@ public class SimpleCollisionBox implements CollisionBox {
         return new BoundingBox(new Vector(xMin, yMin, zMin), new Vector(xMax, yMax, zMax));
     }
 
+    //TODO Make this perform much better with an updated util.
     public <T> T toAxisAlignedBB() {
-
+        return (T) ReflectionsUtil.newAxisAlignedBB(xMin, yMin, zMin, xMax, yMax, zMax);
     }
 
     public double distance(SimpleCollisionBox box) {

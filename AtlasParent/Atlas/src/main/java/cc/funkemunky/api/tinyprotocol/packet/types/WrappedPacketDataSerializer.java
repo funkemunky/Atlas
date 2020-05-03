@@ -12,9 +12,9 @@ import lombok.Getter;
 @Getter
 public class WrappedPacketDataSerializer extends NMSObject {
 
-    private static WrappedClass wrapper = Reflections.getNMSClass("PacketDataSerializer");
-    private static WrappedMethod readBytesMethod = wrapper.getMethodByType(byte[].class, 0);
-    private static WrappedConstructor byteConst = wrapper.getConstructor(ByteBuf.class);
+    public static WrappedClass vanillaClass = Reflections.getNMSClass("PacketDataSerializer");
+    private static WrappedMethod readBytesMethod = vanillaClass.getMethodByType(byte[].class, 0);
+    private static WrappedConstructor byteConst = vanillaClass.getConstructor(ByteBuf.class);
 
     private byte[] data;
 

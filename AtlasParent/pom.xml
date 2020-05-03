@@ -16,21 +16,6 @@
     <build>
         <plugins>
             <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>buildnumber-maven-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>useLastCommittedRevision</id>
-                        <goals>
-                            <goal>create</goal>
-                        </goals>
-                        <configuration>
-                            <useLastCommittedRevision>true</useLastCommittedRevision>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.7.0</version>
@@ -47,7 +32,6 @@
                 <filtering>true</filtering>
             </resource>
         </resources>
-        <finalName>${project.artifactId}-${project.version}-${release.identifier}-${buildNumber}</finalName>
     </build>
 
     <modules>
