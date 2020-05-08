@@ -39,24 +39,8 @@ public class BungeeManager implements AtlasListener, PluginMessageListener {
         Bukkit.getMessenger().registerIncomingPluginChannel(Atlas.getInstance(), channelIn, this);
         Bukkit.getMessenger().registerIncomingPluginChannel(Atlas.getInstance(), atlasIn, this);
 
+
         Atlas.getInstance().getEventManager().registerListeners(this, Atlas.getInstance());
-        /*new BukkitRunnable() {
-            public void run() {
-                if(Atlas.getInstance().isDone() && Atlas.getInstance().isEnabled()) {
-                    try {
-                        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                        DataOutputStream output = new DataOutputStream(baos);
-                        output.writeUTF("GetServers");
-                        sendData(baos.toByteArray());
-                    } catch (IOException e) {
-                        MiscUtils.printToConsole("&cFailed to check if the server is connected to Bungee!");
-                        e.printStackTrace();
-                    }
-                    this.cancel();
-                    runServerCheckTask();
-                }
-            }
-        }.runTaskTimerAsynchronously(Atlas.getInstance(), 20L, 10L);*/
 
         try {
             val wrappedClass = new WrappedClass(Class.forName("org.spigotmc.SpigotConfig"));
@@ -68,6 +52,20 @@ public class BungeeManager implements AtlasListener, PluginMessageListener {
         }
         if(BungeeAPI.bungee)
         isBungee = BungeeAPI.bungee;
+
+        if(isBungee) {
+            try {
+                ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                ObjectOutputStream oos = new ObjectOutputStream(baos);
+
+                oos.writeUTF("heartbeat");
+                oos.writeUTF("reloadChannels");
+
+                sendData(baos.toByteArray(), atlasOut);
+            } catch(IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     public void sendData(byte[] data, String out) {
@@ -115,6 +113,8 @@ public class BungeeManager implements AtlasListener, PluginMessageListener {
         if(event.getType().equals(Packet.Client.CUSTOM_PAYLOAD)) {
             WrappedInCustomPayload wrapped = new WrappedInCustomPayload(event.getPacket(), event.getPlayer());
             byte[] bytes = wrapped.getData();
+            if(bytes == null || bytes.length <= 0) return;
+
             String channel = wrapped.getTag();
             ByteArrayInputStream stream = new ByteArrayInputStream(bytes);
             if (channel.equals("Bungee")) {
@@ -156,7 +156,6 @@ public class BungeeManager implements AtlasListener, PluginMessageListener {
                     ObjectInputStream input = new ObjectInputStream(stream);
 
                     String dataType = input.readUTF();
-                    System.out.println("received " + dataType);
                     switch (dataType) {
                         case "mods": {
                             UUID uuid = (UUID) input.readObject();

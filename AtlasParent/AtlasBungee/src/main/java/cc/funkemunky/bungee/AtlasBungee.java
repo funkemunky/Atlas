@@ -37,9 +37,18 @@ public class AtlasBungee extends Plugin {
                 .filter(c -> {
                     Init ann = c.getAnnotation(Init.class);
 
-                    return ann != null && (ann.requirePlugins().length == 0
-                            || Arrays.stream(ann.requirePlugins())
-                            .allMatch(pl -> getProxy().getPluginManager().getPlugin(pl) != null));
+                    if(ann == null) return false;
+
+                    if(ann.requirePlugins().length > 0) {
+                        if(ann.requireType() == Init.RequireType.ALL) {
+                            return Arrays.stream(ann.requirePlugins())
+                                    .allMatch(name -> plugin.getProxy().getPluginManager().getPlugin(name) != null);
+                        } else {
+                            return Arrays.stream(ann.requirePlugins())
+                                    .anyMatch(name -> plugin.getProxy().getPluginManager().getPlugin(name) != null);
+                        }
+                    }
+                    return true;
                 })
                 .sorted(Comparator.comparing(c -> c.getAnnotation(Init.class).priority(), Comparator.reverseOrder()))
                 .forEach(c -> {

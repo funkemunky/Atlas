@@ -13,7 +13,8 @@ import lombok.Getter;
 public class WrappedPacketDataSerializer extends NMSObject {
 
     public static WrappedClass vanillaClass = Reflections.getNMSClass("PacketDataSerializer");
-    private static WrappedMethod readBytesMethod = vanillaClass.getMethodByType(byte[].class, 0);
+    private static WrappedMethod readBytesMethod = vanillaClass.getMethod("array");
+    private static WrappedMethod hasArray = vanillaClass.getMethod("hasArray");
     private static WrappedConstructor byteConst = vanillaClass.getConstructor(ByteBuf.class);
 
     private byte[] data;
@@ -21,7 +22,11 @@ public class WrappedPacketDataSerializer extends NMSObject {
     public WrappedPacketDataSerializer(Object object) {
         super(object);
 
+        boolean hasArray = WrappedPacketDataSerializer.hasArray.invoke(object);
+
+        if(hasArray)
         data = readBytesMethod.invoke(object);
+        else data = new byte[0];
     }
 
     @Override

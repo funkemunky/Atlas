@@ -3,6 +3,7 @@ package cc.funkemunky.api.utils.world.types;
 import cc.funkemunky.api.reflections.impl.MinecraftReflection;
 import cc.funkemunky.api.tinyprotocol.packet.types.enums.WrappedEnumParticle;
 import cc.funkemunky.api.utils.BoundingBox;
+import cc.funkemunky.api.utils.MathUtils;
 import cc.funkemunky.api.utils.MiscUtils;
 import cc.funkemunky.api.utils.ReflectionsUtil;
 import cc.funkemunky.api.utils.world.CollisionBox;
@@ -304,6 +305,10 @@ public class SimpleCollisionBox implements CollisionBox {
     }
 
     public double distance(SimpleCollisionBox box) {
-        return Math.hypot(xMax - box.xMax, zMin - box.zMin);
+        double xwidth = (xMax - xMin) / 2, zwidth = (zMax - zMin) / 2;
+        double bxwidth = (box.xMax - box.xMin) / 2, bzwidth = (box.zMax - box.zMin) / 2;
+        double hxz = Math.hypot(xMin - box.xMin, zMin - box.zMin);
+
+        return hxz - (xwidth + zwidth + bxwidth + bzwidth) / 4;
     }
 }

@@ -2,6 +2,7 @@ package cc.funkemunky.api.utils;
 
 import cc.funkemunky.api.Atlas;
 import cc.funkemunky.api.tinyprotocol.api.ProtocolVersion;
+import lombok.val;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -14,6 +15,7 @@ import org.bukkit.material.WoodenStep;
 import org.bukkit.util.Vector;
 
 import java.io.File;
+import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -36,7 +38,7 @@ public class ReflectionsUtil {
     public static Class<?> worldServer = getNMSClass("WorldServer");
     public static Class<?> playerConnection = getNMSClass("PlayerConnection");
     public static Class<?> networkManager = getNMSClass("NetworkManager");
-    public static Class<?> minecraftServer = getNMSClass("MinecraftServer");
+    public static Class<?> minecraftServer = getNMSClass("MinecraftServer"), nmsItemStack = getNMSClass("ItemStack");
     public static Class<?> packet = getNMSClass("Packet");
     public static Class<?> iBlockData = null;
     public static Class<?> iBlockAccess = null;
@@ -120,10 +122,11 @@ public class ReflectionsUtil {
         return getMethodValue(getMethod(getCBClass("inventory.CraftInventoryPlayer"), "getInventory"), player.getInventory());
     }
 
+    private static Field frictionFactorField = getFieldByName(vanillaBlock, "frictionFactor");
     public static float getFriction(Block block) {
         Object blockNMS = getVanillaBlock(block);
 
-        return (float) getFieldValue(getFieldByName(vanillaBlock, "frictionFactor"), blockNMS);
+        return (float) getFieldValue(frictionFactorField, blockNMS);
     }
 
     public static Object getBlockPosition(Location location) {
@@ -277,40 +280,50 @@ public class ReflectionsUtil {
 
         if (ProtocolVersion.getGameVersion().isAbove(ProtocolVersion.V1_8_9)) {
             Object item = getVanillaItem(player.getItemInHand());
-            return (float) getMethodValue(getMethod(getNMSClass("Item"), "getDestroySpeed", getNMSClass("ItemStack"), getNMSClass("IBlockData")), item, getVanillaItemStack(player.getItemInHand()), getBlockData(block));
+            return (float) getMethodValue(getMethod(getNMSClass("Item"), "getDestroySpeed", nmsItemStack, getNMSClass("IBlockData")), item, getVanillaItemStack(player.getItemInHand()), getBlockData(block));
         } else {
             Object item = getVanillaItem(player.getInventory().getItemInHand());
-            return (float) getMethodValue(getMethod(getNMSClass("Item"), "getDestroySpeed", getNMSClass("ItemStack"), getNMSClass("Block")), item, getVanillaItemStack(player.getInventory().getItemInHand()), getVanillaBlock(block));
+            return (float) getMethodValue(getMethod(getNMSClass("Item"), "getDestroySpeed", nmsItemStack, getNMSClass("Block")), item, getVanillaItemStack(player.getInventory().getItemInHand()), getVanillaBlock(block));
         }
     }
-
+    
+    private static Method getItemMethod = getMethod(nmsItemStack, "getItem");
     public static Object getVanillaItem(ItemStack itemStack) {
-        return getMethodValue(getMethod(getNMSClass("ItemStack"), "getItem"), getVanillaItemStack(itemStack));
+        return getMethodValue(getMethod(nmsItemStack, "getItem"), getVanillaItemStack(itemStack));
     }
 
     public static Object getVanillaItemStack(ItemStack itemStack) {
         return getMethodValue(getMethod(getCBClass("inventory.CraftItemStack"), "asNMSCopy", getClass("org.bukkit.inventory.ItemStack")), itemStack, itemStack);
     }
 
+    private static Method getBlockMethod = null,
+            getTypeMethod = null;
     public static Object getVanillaBlock(Block block) {
         if (!isBukkitVerison("1_7")) {
+            if(getBlockMethod == null) getBlockMethod = getMethod(iBlockData, "getBlock");
             Object getType = getBlockData(block);
-            return getMethodValue(getMethod(iBlockData, "getBlock"), getType);
+            return getMethodValue(getBlockMethod, getType);
         } else {
+            if(getTypeMethod == null) getTypeMethod = getMethod(worldServer, "getType", int.class, int.class, int.class);
             Object world = getWorldHandle(block.getWorld());
-            return getMethodValue(getMethod(worldServer, "getType", int.class, int.class, int.class), world, block.getLocation().getBlockX(), block.getLocation().getBlockY(), block.getLocation().getBlockZ());
+            return getMethodValue(getTypeMethod, world, block.getLocation().getBlockX(), block.getLocation().getBlockY(), block.getLocation().getBlockZ());
         }
     }
 
+    private static Constructor blockPosConstructor = null;
+    private static Method getTypeMethod2 = null;
     public static Object getBlockData(Block block) {
         try {
             if (!isBukkitVerison("1_7")) {
-                Object bPos = blockPosition.getConstructor(int.class, int.class, int.class).newInstance(block.getX(), block.getY(), block.getZ());
+                if(blockPosConstructor == null) blockPosConstructor = blockPosition.getConstructor(int.class, int.class, int.class);
+                Object bPos = blockPosConstructor.newInstance(block.getX(), block.getY(), block.getZ());
                 Object world = getWorldHandle(block.getWorld());
-                return getMethodValue(getMethod(worldServer, "getType", blockPosition), world, bPos);
+                if(getTypeMethod2 == null) getTypeMethod2 = getMethod(worldServer, "getType", blockPosition);
+                return getMethodValue(getTypeMethod2, world, bPos);
             } else {
                 Object world = getWorldHandle(block.getWorld());
-                return getMethodValue(getMethod(worldServer, "getType", int.class, int.class, int.class), world, block.getX(), block.getY(), block.getZ());
+                if(getTypeMethod2 == null) getTypeMethod2 = getMethod(worldServer, "getType", int.class, int.class, int.class);
+                return getMethodValue(getTypeMethod2, world, block.getX(), block.getY(), block.getZ());
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -460,8 +473,9 @@ public class ReflectionsUtil {
                 : getMethodValue(getCubes, world, axisAlignedBB));
     }
 
+    private static Method craftWorldHandle = getMethod(CraftWorld, "getHandle");
     public static Object getWorldHandle(org.bukkit.World world) {
-        return getMethodValue(getMethod(CraftWorld, "getHandle"), world);
+        return getMethodValue(craftWorldHandle, world);
     }
 
     public static Field getFirstFieldByType(Class<?> clazz, Class<?> type) {

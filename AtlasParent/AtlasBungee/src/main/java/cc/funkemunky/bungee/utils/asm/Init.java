@@ -9,4 +9,10 @@ public @interface Init {
     boolean commands() default false;
     String[] requirePlugins() default {};
 
+    RequireType requireType() default RequireType.ALL;
+
+    enum RequireType {
+        ALL,
+        ONE
+    }
 }

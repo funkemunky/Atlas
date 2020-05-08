@@ -222,7 +222,10 @@ public class MathUtils {
     }
 
     public static float getAngleDelta(float one, float two) {
-        return getDelta(normalizeAngle(one), normalizeAngle(two));
+        float delta = getDelta(one, two) % 360f;
+
+        if(delta > 180) delta = 360 - delta;
+        return delta;
     }
 
     //Euclid's algorithim

@@ -39,6 +39,18 @@ public class AtlasMsgListener implements Listener {
                 String type = (String)inputStream.readObject();
 
                 switch(type) {
+                    case "heartbeat": {
+                        switch((String)inputStream.readObject()) {
+                            case "reloadChannels": {
+                                BungeeCord.getInstance().unregisterChannel(AtlasBungee.INSTANCE.outChannel);
+                                BungeeCord.getInstance().unregisterChannel(AtlasBungee.INSTANCE.inChannel);
+                                BungeeCord.getInstance().registerChannel(AtlasBungee.INSTANCE.outChannel);
+                                BungeeCord.getInstance().registerChannel(AtlasBungee.INSTANCE.inChannel);
+                                break;
+                            }
+                        }
+                        break;
+                    }
                     case "sendObjects": {
                         String serverField = (String)inputStream.readObject();
 

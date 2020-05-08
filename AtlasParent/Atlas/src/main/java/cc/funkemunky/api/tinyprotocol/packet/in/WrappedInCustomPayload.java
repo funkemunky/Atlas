@@ -58,9 +58,13 @@ public class WrappedInCustomPayload extends NMSObject {
             length = lengthField.get(getObject());
             data = dataField.get(getObject());
         } else {
-            WrappedPacketDataSerializer wpds = new WrappedPacketDataSerializer(dataSerializer.get(getObject()));
+            Object packetData = dataSerializer.get(getObject());
 
-            data = wpds.getData();
+            if(packetData != null) {
+                WrappedPacketDataSerializer wpds = new WrappedPacketDataSerializer((Object) dataSerializer.get(getObject()));
+
+                data = wpds.getData();
+            } else data = new byte[0];
             length = data.length;
 
             if(ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.V1_13)) tag = tagField.get(getObject());

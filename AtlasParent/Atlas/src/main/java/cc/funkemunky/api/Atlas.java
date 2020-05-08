@@ -256,11 +256,17 @@ public class Atlas extends JavaPlugin {
                 })
                 .filter(Objects::nonNull)
                 .filter(c -> {
-                    String[] required = c.getAnnotation(Init.class).requirePlugins();
+                    Init init = c.getAnnotation(Init.class);
+                    String[] required = init.requirePlugins();
 
                     if(required.length > 0) {
-                        return Arrays.stream(required)
-                                .anyMatch(name -> Bukkit.getPluginManager().isPluginEnabled(name));
+                        if(init.requireType() == Init.RequireType.ALL) {
+                            return Arrays.stream(required)
+                                    .allMatch(name -> Bukkit.getPluginManager().isPluginEnabled(name));
+                        } else {
+                            return Arrays.stream(required)
+                                    .anyMatch(name -> Bukkit.getPluginManager().isPluginEnabled(name));
+                        }
                     }
                     return true;
                 })
