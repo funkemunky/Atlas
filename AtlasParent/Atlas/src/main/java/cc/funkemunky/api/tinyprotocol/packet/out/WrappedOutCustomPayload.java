@@ -24,11 +24,19 @@ public class WrappedOutCustomPayload extends NMSObject {
     private String tag;
     private byte[] data;
 
+    //1.13+
+    private static WrappedClass minecraftKeyWrapper;
+    private static WrappedField keyOne, keyTwo;
+
     @Override
     public void process(Player player, ProtocolVersion version) {
-        tag = tagField.get(getObject());
+        if(ProtocolVersion.getGameVersion().isOrAbove(ProtocolVersion.V1_13)) {
+            Object mk = tagField.get(getObject());
+            tag = keyOne.get(mk) + ":" + keyTwo.get(mk);
+        } else tag = tagField.get(getObject());
         if(ProtocolVersion.getGameVersion().isOrAbove(ProtocolVersion.V1_8)) {
             data = new WrappedPacketDataSerializer(dataField.get(getObject())).getData();
+
         } else data = dataField.get(getObject());
     }
 
@@ -38,7 +46,12 @@ public class WrappedOutCustomPayload extends NMSObject {
     }
 
     static {
-        tagField = payloadClass.getFieldByType(String.class, 0);
+        if(ProtocolVersion.getGameVersion().isOrAbove(ProtocolVersion.V1_13)) {
+            minecraftKeyWrapper = Reflections.getNMSClass("MinecraftKey");
+            keyOne = minecraftKeyWrapper.getFieldByType(String.class, 0);
+            keyTwo = minecraftKeyWrapper.getFieldByType(String.class, 1);
+            tagField = payloadClass.getFieldByType(minecraftKeyWrapper.getParent(), 0);
+        } else tagField = payloadClass.getFieldByType(String.class, 0);
         if(ProtocolVersion.getGameVersion().isOrBelow(ProtocolVersion.V1_7_10)) {
             dataField = payloadClass.getFieldByType(byte[].class, 0);
         } else dataField = payloadClass.getFieldByType(WrappedPacketDataSerializer.vanillaClass.getParent(), 0);

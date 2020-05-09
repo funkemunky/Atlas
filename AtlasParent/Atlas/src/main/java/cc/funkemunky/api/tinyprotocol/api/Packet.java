@@ -177,6 +177,7 @@ public abstract class Packet {
         public static final String WORLD_PARTICLE = SERVER + "WorldParticles";
         public static final String COMMANDS = SERVER + "Commands";
         public static final String OPEN_WINDOW = SERVER + "OpenWindow";
+        public static final String ENTITY_EFFECT = SERVER + "EntityEffect";
     }
 
     public static class Login {

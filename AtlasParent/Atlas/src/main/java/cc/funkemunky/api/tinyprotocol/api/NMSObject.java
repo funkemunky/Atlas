@@ -273,6 +273,7 @@ public abstract class NMSObject {
         public static final String RESPAWN = SERVER + "Respawn";
         public static final String COMMANDS = SERVER + "Commands";
         public static final String CLOSE_WINDOW = SERVER + "CloseWindow";
+        public static final String ENTITY_EFFECT = SERVER + "EntityEffect";
     }
 
     public static class Login {

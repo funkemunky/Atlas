@@ -199,6 +199,15 @@ public class MathUtils {
         return squareRoot;
     }
 
+    public static Vector getDirection(double yaw, double pitch) {
+        Vector vector = new Vector();
+        vector.setY(-Math.sin(Math.toRadians(pitch)));
+        double xz = Math.cos(Math.toRadians(pitch));
+        vector.setX(-xz * Math.sin(Math.toRadians(yaw)));
+        vector.setZ(xz * Math.cos(Math.toRadians(yaw)));
+        return vector;
+    }
+
     public static float sqrt(float number) {
         if(number == 0) return 0;
         float t;
