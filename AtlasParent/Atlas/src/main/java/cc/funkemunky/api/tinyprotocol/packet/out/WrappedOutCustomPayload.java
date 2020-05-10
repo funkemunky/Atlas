@@ -18,6 +18,15 @@ public class WrappedOutCustomPayload extends NMSObject {
         super(object, player);
     }
 
+    public WrappedOutCustomPayload(String tag, byte[] data) {
+        setObject(payloadClass.getConstructor().newInstance());
+
+        this.tag = tag;
+        this.data = data;
+
+        updateObject();
+    }
+
     private static WrappedClass payloadClass = Reflections.getNMSClass(Server.CUSTOM_PAYLOAD);
     private static WrappedField tagField, dataField;
 
@@ -42,7 +51,20 @@ public class WrappedOutCustomPayload extends NMSObject {
 
     @Override
     public void updateObject() {
-        //TODO Update object.
+        if(ProtocolVersion.getGameVersion().isOrAbove(ProtocolVersion.V1_8)) {
+            dataField.set(getObject(), new WrappedPacketDataSerializer(data).getObject());
+        } else dataField.set(getObject(), data);
+
+        if(ProtocolVersion.getGameVersion().isOrAbove(ProtocolVersion.V1_13)) {
+            if(tag.contains(":")) {
+                Object mk = tagField.get(getObject());
+                String[] split = tag.split(":");
+                keyOne.set(mk, split[0]);
+                keyTwo.set(mk, split[1]);
+            } else {
+                System.out.println("Tag (" + tag + ") must contain a ':' to be valid.");
+            }
+        } else tagField.set(getObject(), tag);
     }
 
     static {

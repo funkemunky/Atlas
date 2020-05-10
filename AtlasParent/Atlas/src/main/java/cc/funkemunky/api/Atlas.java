@@ -153,7 +153,8 @@ public class Atlas extends JavaPlugin {
         MiscUtils.printToConsole(Color.Gray
                 + "Disabling all plugins that depend on Atlas to prevent any errors...");
         Arrays.stream(Bukkit.getPluginManager().getPlugins())
-                .filter(plugin -> plugin.getDescription().getDepend().contains("Atlas"))
+                .filter(plugin -> plugin.getDescription().getDepend().contains("Atlas")
+                        || plugin.getDescription().getSoftDepend().contains("Atlas"))
                 .forEach(plugin -> MiscUtils.unloadPlugin(plugin.getName()));
         shutdownExecutor();
 
