@@ -49,7 +49,7 @@ public class WrappedOutChatPacket extends NMSObject {
 
     @Override
     public void updateObject() {
-
+        
     }
 
     static {

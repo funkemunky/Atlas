@@ -78,7 +78,7 @@ public class MinecraftReflection {
     private static WrappedField pingField = entityPlayer.getFieldByName("ping");
 
     //Blocks
-    private static WrappedMethod addCBoxes;
+    private static WrappedMethod addCBoxes, bdGetBlock;
     public static WrappedClass blockPos;
     private static WrappedConstructor blockPosConstructor;
     private static WrappedMethod getBlockData;
@@ -302,6 +302,10 @@ public class MinecraftReflection {
         return connectionField.get(entityPlayer);
     }
 
+    public static <T> T getBlockFromBlockData(Object blockData) {
+        return bdGetBlock.invoke(blockData);
+    }
+
     //Can either use Player or EntityPlayer object.
     public static <T> T getNetworkManager(Object player) {
         return connectionNetworkField.get(getPlayerConnection(player));
@@ -356,6 +360,7 @@ public class MinecraftReflection {
                     .getConstructor(double.class, double.class, double.class, double.class, double.class, double.class);
             iBlockData = Reflections.getNMSClass("IBlockData");
             worldGetType = worldServer.getMethod("getType", blockPos.getParent());
+            bdGetBlock = iBlockData.getMethodByType(block.getParent(), 0);
         } else {
             idioticOldStaticConstructorAABB = axisAlignedBB.getMethod("a",
                     double.class, double.class, double.class, double.class, double.class, double.class);

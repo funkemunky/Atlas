@@ -1,5 +1,7 @@
 package cc.funkemunky.api.tinyprotocol.packet.in;
 
+import cc.funkemunky.api.reflections.Reflections;
+import cc.funkemunky.api.reflections.types.WrappedClass;
 import cc.funkemunky.api.tinyprotocol.api.NMSObject;
 import cc.funkemunky.api.tinyprotocol.api.ProtocolVersion;
 import cc.funkemunky.api.tinyprotocol.packet.types.BaseBlockPosition;
@@ -35,7 +37,17 @@ public class WrappedInBlockDigPacket extends NMSObject {
 
     @Override
     public void updateObject() {
-
+        if(ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.V1_8)) {
+            fieldPosX.set(getObject(), position.getX());
+            fieldPosY.set(getObject(), position.getY());
+            fieldPosZ.set(getObject(), position.getZ());
+            face.set(getObject(), direction.ordinal());
+            intAction.set(getObject(), action.ordinal());
+        } else {
+            fieldBlockPosition.set(getObject(), position.getAsBlockPosition());
+            fieldDirection.set(getObject(), direction.toVanilla());
+            fieldDigType.set(getObject(), action.toVanilla());
+        }
     }
 
     @Override
@@ -67,5 +79,21 @@ public class WrappedInBlockDigPacket extends NMSObject {
         DROP_ITEM,
         RELEASE_USE_ITEM,
         SWAP_HELD_ITEMS;
+
+        static WrappedClass epdtClass = null;
+
+        public <T> T toVanilla() {
+            if(epdtClass == null ) return null;
+            return (T) epdtClass.getEnum(toString());
+        }
+
+        static {
+            if(ProtocolVersion.getGameVersion().isOrAbove(ProtocolVersion.V1_8)) {
+                epdtClass = Reflections.getNMSClass(ProtocolVersion.getGameVersion()
+                        .isAbove(ProtocolVersion.V1_8)
+                        ? "EnumPlayerDigType"
+                        : "PacketPlayInBlockDig.EnumPlayerDigType");
+            }
+        }
     }
 }
