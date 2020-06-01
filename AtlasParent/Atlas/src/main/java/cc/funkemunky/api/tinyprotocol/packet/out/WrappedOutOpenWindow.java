@@ -36,8 +36,6 @@ public class WrappedOutOpenWindow extends NMSObject {
     public void process(Player player, ProtocolVersion version) {
         id = fetch(idField);
         name = fetch(nameField);
-        if(ProtocolVersion.getGameVersion().isOrAbove(ProtocolVersion.V1_8))
-            chatComponent = new WrappedChatComponent(fetch(chatCompField));
         size = fetch(inventorySize);
     }
 

@@ -5,7 +5,6 @@ import cc.funkemunky.api.reflections.types.WrappedClass;
 import cc.funkemunky.api.reflections.types.WrappedMethod;
 import cc.funkemunky.api.tinyprotocol.api.ProtocolVersion;
 import org.bukkit.Bukkit;
-import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
@@ -22,7 +21,6 @@ public class CraftReflection {
     public static WrappedClass craftWorld = Reflections.getCBClass("CraftWorld"); //1.7-1.14
     public static WrappedClass craftInventoryPlayer = Reflections.getCBClass("inventory.CraftInventoryPlayer"); //1.7-1.14
     public static WrappedClass craftServer = Reflections.getCBClass("CraftServer"); //1.7-1.14
-    public static WrappedClass craftMagicNumbers = Reflections.getCBClass("util.CraftMagicNumbers");
 
     //Vanilla Instances
     private static WrappedMethod itemStackInstance = craftItemStack.getMethod("asNMSCopy", ItemStack.class); //1.7-1.14
@@ -34,9 +32,6 @@ public class CraftReflection {
     private static WrappedMethod getInventory = craftInventoryPlayer.getMethod("getInventory"); //1.7-1.14
     private static WrappedMethod mcServerInstance = craftServer.getMethod("getServer"); //1.7-1.14
     private static WrappedMethod entityPlayerInstance = craftPlayer.getMethod("getHandle");
-    private static WrappedMethod magicBlockFromMaterial = craftMagicNumbers.getMethod("getBlock", Material.class);
-    private static WrappedMethod magicMaterialBlock = craftMagicNumbers.getMethod("getMaterial",
-            MinecraftReflection.block.getParent());
 
     public static <T> T getVanillaItemStack(ItemStack stack) {
         return itemStackInstance.invoke(null, stack);
@@ -60,10 +55,6 @@ public class CraftReflection {
         } else return blockInstance.invoke(block);
     }
 
-    public static <T> T getVanillaBlock(Material material) {
-        return magicBlockFromMaterial.invoke(null, material);
-    }
-
     public static <T> T getVanillaWorld(World world) {
         return worldInstance.invoke(world);
     }
@@ -80,9 +71,6 @@ public class CraftReflection {
         return mcServerInstance.invoke(Bukkit.getServer());
     }
 
-    public static Material getTypeFromVanillaBlock(Object vanillaBlock) {
-        return magicMaterialBlock.invoke(null, vanillaBlock);
-    }
     static {
 
     }

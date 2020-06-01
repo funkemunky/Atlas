@@ -549,6 +549,7 @@ public abstract class TinyProtocol1_8 implements AbstractTinyProtocol {
 		public void channelRead(ChannelHandlerContext ctx, Object msg) {
 			// Intercept channel
 			final Channel channel = ctx.channel();
+
 			if (PACKET_LOGIN_IN_START.isInstance(msg)) {
 				GameProfile profile = getGameProfile.get(msg);
 				channelLookup.put(profile.getName(), channel);

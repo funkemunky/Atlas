@@ -35,7 +35,7 @@ public class AtlasMsgListener implements Listener {
                 ByteArrayInputStream bis = new ByteArrayInputStream(event.getData());
                 ObjectInputStream inputStream = new ObjectInputStream(bis);
 
-                System.out.println(event.getData().length);
+                //System.out.println(event.getData().length);
                 String type = (String)inputStream.readObject();
 
                 switch(type) {

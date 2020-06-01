@@ -33,7 +33,7 @@ public class WrappedInArmAnimationPacket extends NMSObject {
     @Override
     public void updateObject() {
         if(ProtocolVersion.getGameVersion().isOrAbove(ProtocolVersion.V1_9)) {
-            mainHandField.set(getObject(), enumHand.getEnum(mainHand ? "MAIN_HAND" : "OFF_HAND"));
+            setObject(NMSObject.construct(getObject(), packet, enumHand.getEnum(mainHand ? "MAIN_HAND" : "OFF_HAND")));
         }
     }
 

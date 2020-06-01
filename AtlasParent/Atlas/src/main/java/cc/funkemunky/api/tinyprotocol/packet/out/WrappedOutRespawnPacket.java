@@ -2,6 +2,7 @@ package cc.funkemunky.api.tinyprotocol.packet.out;
 
 import cc.funkemunky.api.reflections.Reflections;
 import cc.funkemunky.api.reflections.types.WrappedClass;
+import cc.funkemunky.api.reflections.types.WrappedConstructor;
 import cc.funkemunky.api.reflections.types.WrappedField;
 import cc.funkemunky.api.reflections.types.WrappedMethod;
 import cc.funkemunky.api.tinyprotocol.api.NMSObject;
@@ -25,9 +26,10 @@ public class WrappedOutRespawnPacket extends NMSObject {
     private static FieldAccessor<Enum> difficultyAcessor;
     private static FieldAccessor<Enum> gamemodeAccessor;
     private static FieldAccessor<Object> worldTypeAccessor;
-    private static WrappedClass worldTypeClass;
+    private static WrappedClass worldTypeClass, respawnClass = Reflections.getNMSClass(packet);
     private static WrappedField worldTypeNameField;
     private static WrappedMethod getTypeWorldType;
+    private static WrappedConstructor emptyConstructor = respawnClass.getConstructor();
 
     //Before 1.13
     private static FieldAccessor<Integer> dimensionAccesor;
@@ -42,6 +44,10 @@ public class WrappedOutRespawnPacket extends NMSObject {
     private WrappedEnumGameMode gamemode;
     private WrappedEnumDifficulty difficulty;
     private WorldType worldType;
+
+    public WrappedOutRespawnPacket() {
+        setObject(emptyConstructor.newInstance());
+    }
 
     public WrappedOutRespawnPacket(int dimension, WrappedEnumGameMode gamemode,
                                    WrappedEnumDifficulty difficulty, WorldType worldType) {
@@ -68,10 +74,12 @@ public class WrappedOutRespawnPacket extends NMSObject {
 
     @Override
     public void updateObject() {
-        setPacket(packet, ProtocolVersion.getGameVersion().isAbove(ProtocolVersion.V1_13)
-                ? dimensionManagerFromId.invoke(dimension) : dimension,
-                difficulty.getObject(), gamemode.getObject(),
-                getTypeWorldType.invoke(null, worldType.getName()));
+        if(ProtocolVersion.getGameVersion().isAbove(ProtocolVersion.V1_13)) {
+            dimensionManagerAcceessor.set(getObject(), dimensionManagerFromId.invoke(dimension));
+        } else dimensionAccesor.set(getObject(), dimension);
+        gamemodeAccessor.set(getObject(), gamemode.getObject());
+        difficultyAcessor.set(getObject(), difficulty.getObject());
+        worldTypeAccessor.set(getObject(), getTypeWorldType.invoke(null, worldType.getName()));
     }
 
     static {

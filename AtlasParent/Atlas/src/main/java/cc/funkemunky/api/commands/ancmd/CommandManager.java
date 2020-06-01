@@ -156,7 +156,9 @@ public class CommandManager implements CommandExecutor {
                 Command command = entry.getMethod().getMethod().getAnnotation(Command.class);
                 Atlas.getInstance().getProfile().start("anCommand:" + cmd.getLabel());
                 Runnable runnable = () -> {
-                    if(command.playerOnly() && !(sender instanceof Player)) {
+                    if(command.opOnly() && !sender.isOp()) {
+                        sender.sendMessage(Color.translate(command.noPermissionMessage()));
+                    } else if(command.playerOnly() && !(sender instanceof Player)) {
                         sender.sendMessage(Color.Red + "This command is for players only!");
                     } else if(command.consoleOnly() && !(sender instanceof ConsoleCommandSender)) {
                         sender.sendMessage(Color.Red + "This command can only be run via terminal.");

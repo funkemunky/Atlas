@@ -40,11 +40,7 @@ public class WrappedInAbilitiesPacket extends NMSObject {
 
     @Override
     public void updateObject() {
-        invulnerableField.set(getObject(), invulnerable);
-        flyingField.set(getObject(), flying);
-        allowedFlightField.set(getObject(), allowedFlight);
-        creativeModeField.set(getObject(), creativeMode);
-        flySpeedField.set(getObject(), flySpeed);
-        walkSpeedField.set(getObject(), walkSpeed);
+        setObject(NMSObject.construct(getObject(),
+                packet, invulnerable, flying, allowedFlight, creativeMode, flySpeed, walkSpeed));
     }
 }
