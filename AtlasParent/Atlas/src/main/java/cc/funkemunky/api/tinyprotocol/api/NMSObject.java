@@ -168,6 +168,14 @@ public abstract class NMSObject {
         return name.substring(name.lastIndexOf(".") + 1);
     }
 
+    public void set(WrappedField field, Object value) {
+        field.set(getObject(), value);
+    }
+
+    public void set(FieldAccessor<?> accessor, Object value) {
+        accessor.set(getObject(), value);
+    }
+
     public void process(Player player, ProtocolVersion version) {
     }
 
@@ -240,6 +248,7 @@ public abstract class NMSObject {
         public static final String TAB_COMPLETE = CLIENT + "TabComplete";
         public static final String CHAT = CLIENT + "Chat";
         public static final String CREATIVE_SLOT = CLIENT + "SetCreativeSlot";
+        public static final String SETTINGS = CLIENT + "Settings";
     }
 
     public static class Server {

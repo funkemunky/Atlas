@@ -90,9 +90,10 @@ public class MiscUtils {
         return total;
     }
 
+    private static WrappedClass materialClass = new WrappedClass(Material.class);
     public static Material match(String material) {
         if(ProtocolVersion.getGameVersion().isOrAbove(ProtocolVersion.V1_13)) {
-            return new WrappedClass(Material.class)
+            return materialClass
                     .getMethod("matchMaterial", String.class, boolean.class)
                     .invoke(null, material, material.contains("LEGACY_"));
         } return Material.getMaterial(material.replace("LEGACY_", ""));
