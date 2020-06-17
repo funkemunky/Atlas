@@ -1,5 +1,9 @@
 package cc.funkemunky.api.tinyprotocol.packet.in;
 
+import cc.funkemunky.api.reflections.Reflections;
+import cc.funkemunky.api.reflections.impl.MinecraftReflection;
+import cc.funkemunky.api.reflections.types.WrappedClass;
+import cc.funkemunky.api.reflections.types.WrappedField;
 import cc.funkemunky.api.tinyprotocol.api.NMSObject;
 import cc.funkemunky.api.tinyprotocol.api.ProtocolVersion;
 import cc.funkemunky.api.tinyprotocol.packet.types.BaseBlockPosition;
@@ -10,18 +14,13 @@ import org.bukkit.entity.Player;
 
 @Getter
 public class WrappedInBlockDigPacket extends NMSObject {
-    private static final String packet = Client.BLOCK_DIG;
+    private static final WrappedClass packet = Reflections.getNMSClass(Client.BLOCK_DIG);
 
-    // Fields
-    private static FieldAccessor<Object> fieldBlockPosition;
-    private static FieldAccessor<Integer> fieldPosX;
-    private static FieldAccessor<Integer> fieldPosY;
-    private static FieldAccessor<Integer> fieldPosZ;
-    private static FieldAccessor<Object> fieldDirection;
-    private static FieldAccessor<Object> fieldDigType;
-    private static FieldAccessor<Integer> face;
-    private static FieldAccessor<Integer> intAction;
+    // 1.8+ Fields
+    private static WrappedField fieldBlockPosition, fieldDirection, fieldDigType;
 
+    // 1.7.10 and below fields
+    private static WrappedField fieldPosX, fieldPosY, fieldPosZ, fieldFace, fieldIntAction;
 
     // Decoded data
     private BaseBlockPosition position;
@@ -35,27 +34,29 @@ public class WrappedInBlockDigPacket extends NMSObject {
 
     @Override
     public void updateObject() {
-
+        if(ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.V1_8)) {
+            set(fieldPosX, position.getX());
+            set(fieldPosY, position.getY());
+            set(fieldPosZ, position.getZ());
+            set(fieldFace, direction.ordinal()); //TODO Test if this causes errors.
+            set(fieldIntAction, action.ordinal()); //TODO Test if this causes errors.
+        } else {
+            set(fieldBlockPosition, position.getObject());
+            set(fieldDirection, direction.toVanilla());
+            set(fieldDigType, action.toVanilla());
+        }
     }
 
     @Override
     public void process(Player player, ProtocolVersion version) {
         if (ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.V1_8)) {
-            fieldPosX = fetchField(packet, int.class, 0);
-            fieldPosY = fetchField(packet, int.class, 1);
-            fieldPosZ = fetchField(packet, int.class, 2);
-            face = fetchField(packet, int.class, 3);
-            intAction = fetchField(packet, int.class, 4);
             position = new BaseBlockPosition(fetch(fieldPosX), fetch(fieldPosY), fetch(fieldPosZ));
-            direction = WrappedEnumDirection.values()[Math.min(fetch(face), 5)];
-            action = EnumPlayerDigType.values()[fetch(intAction)];
-        } else {
-            fieldBlockPosition = fetchField(packet, Object.class, 0);
-            fieldDirection = fetchField(packet, Object.class, 1);
-            fieldDigType = fetchField(packet, Object.class, 2);
+            direction = WrappedEnumDirection.values()[Math.min(fetch(fieldFace), 5)];
+            action = EnumPlayerDigType.values()[(int)fetch(fieldIntAction)];
+        } else if(ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.v1_15)){
             position = new BaseBlockPosition(fetch(fieldBlockPosition));
-            direction = WrappedEnumDirection.values()[((Enum) fetch(fieldDirection)).ordinal()];
-            action = EnumPlayerDigType.values()[((Enum) fetch(fieldDigType)).ordinal()];
+            direction = WrappedEnumDirection.fromVanilla((Enum)fetch(fieldDirection));
+            action = EnumPlayerDigType.fromVanilla(fetch(fieldDigType));
         }
     }
 
@@ -67,5 +68,30 @@ public class WrappedInBlockDigPacket extends NMSObject {
         DROP_ITEM,
         RELEASE_USE_ITEM,
         SWAP_HELD_ITEMS;
+
+        public static WrappedClass classDigType;
+
+        public static EnumPlayerDigType fromVanilla(Enum obj) {
+            return valueOf(obj.name());
+        }
+
+        public <T> T toVanilla() {
+            return (T) classDigType.getEnum(name());
+        }
+    }
+
+    static {
+        if(ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.V1_8)) {
+            fieldPosX = packet.getFieldByType(int.class, 0);
+            fieldPosY = packet.getFieldByType(int.class, 1);
+            fieldPosZ =  packet.getFieldByType(int.class, 2);
+            fieldFace =  packet.getFieldByType(int.class, 3);
+            fieldIntAction =  packet.getFieldByType(int.class, 4);
+        } else {
+            fieldBlockPosition = packet.getFieldByType(MinecraftReflection.blockPos.getParent(), 0);
+            fieldDirection = packet.getFieldByType(WrappedEnumDirection.enumDirection.getParent(), 0);
+            EnumPlayerDigType.classDigType = Reflections.getNMSClass("PacketPlayInBlockDig$EnumPlayerDigType");
+            fieldDigType = packet.getFieldByType(EnumPlayerDigType.classDigType.getParent(), 0);
+        }
     }
 }

@@ -200,9 +200,9 @@ public class SimpleCollisionBox implements CollisionBox {
     public boolean isCollided(CollisionBox other) {
         if (other instanceof SimpleCollisionBox) {
             SimpleCollisionBox box = ((SimpleCollisionBox) other);
-            return box.xMax > this.xMin && box.xMin < this.xMax
-                    && box.yMax > this.yMin && box.yMin < this.yMax
-                    && box.zMax > this.zMin && box.zMin < this.zMax;
+            return box.xMax >= this.xMin && box.xMin <= this.xMax
+                    && box.yMax >= this.yMin && box.yMin <= this.yMax
+                    && box.zMax >= this.zMin && box.zMin <= this.zMax;
         } else {
             return other.isCollided(this);
             // throw new IllegalStateException("Attempted to check collision with " + other.getClass().getSimpleName());

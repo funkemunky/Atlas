@@ -43,7 +43,7 @@ public enum WrappedEnumDirection {
     private final WrappedEnumDirection.EnumAxis k;
     private final WrappedEnumDirection.EnumAxisDirection l;
     private final BaseBlockPosition m;
-    private static WrappedClass enumDirection;
+    public static WrappedClass enumDirection;
 
     private WrappedEnumDirection(int order, int offset, String direction, WrappedEnumDirection.EnumAxisDirection axisDirection, WrappedEnumDirection.EnumAxis axis, BaseBlockPosition offsetPosition) {
         this.i = offset;

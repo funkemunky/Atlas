@@ -6,7 +6,7 @@ import cc.funkemunky.api.tinyprotocol.reflection.FieldAccessor;
 import lombok.Getter;
 import org.bukkit.entity.Player;
 
-
+//TODO Test 1.15
 public class WrappedInAbilitiesPacket extends NMSObject {
     private static final String packet = Client.ABILITIES;
     private static FieldAccessor<Boolean>

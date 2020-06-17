@@ -7,6 +7,7 @@ package cc.funkemunky.api.tinyprotocol.api;
 import cc.funkemunky.api.Atlas;
 import cc.funkemunky.api.events.impl.PacketReceiveEvent;
 import cc.funkemunky.api.events.impl.PacketSendEvent;
+import cc.funkemunky.api.reflections.types.WrappedClass;
 import cc.funkemunky.api.reflections.types.WrappedField;
 import cc.funkemunky.api.tinyprotocol.reflection.FieldAccessor;
 import cc.funkemunky.api.tinyprotocol.reflection.MethodInvoker;
@@ -160,6 +161,14 @@ public abstract class NMSObject {
         return Reflection.getFieldSafe(Reflection.NMS_PREFIX + "." + className, (Class<T>) Reflection.getClass(fieldType), index);
     }
 
+    public static WrappedField fetchField(WrappedClass wrappedClass, Class<?> type, int index) {
+        return wrappedClass.getFieldByType(type, index);
+    }
+
+    public static WrappedField fetchField(WrappedClass wrappedClass, String name) {
+        return wrappedClass.getFieldByName(name);
+    }
+
     /** Updates the vanilla object with the fields set **/
     public abstract void updateObject();
 
@@ -249,6 +258,7 @@ public abstract class NMSObject {
         public static final String CHAT = CLIENT + "Chat";
         public static final String CREATIVE_SLOT = CLIENT + "SetCreativeSlot";
         public static final String SETTINGS = CLIENT + "Settings";
+        public static final String ADVANCEMENTS = CLIENT + "Advancements";
     }
 
     public static class Server {
