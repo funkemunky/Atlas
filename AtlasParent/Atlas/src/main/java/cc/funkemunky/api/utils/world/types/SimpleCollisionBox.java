@@ -68,7 +68,7 @@ public class SimpleCollisionBox implements CollisionBox {
         this(MinecraftReflection.fromAABB(aabb));
     }
 
-    private void sort() {
+    public void sort() {
         double temp = 0;
         if (xMin >= xMax) {
             temp = xMin;
