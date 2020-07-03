@@ -173,6 +173,12 @@
         </dependency>
         <dependency>
             <groupId>org.github.spigot</groupId>
+            <artifactId>1.16.1</artifactId>
+            <version>1.16.1</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.github.spigot</groupId>
             <artifactId>1.9</artifactId>
             <version>1.9</version>
             <scope>provided</scope>
