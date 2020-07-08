@@ -277,12 +277,12 @@ public abstract class NMSObject {
         public static final String ENTITY_DESTROY = SERVER + "EntityDestroy";
 
         public static final String ENTITY = SERVER + "Entity";
-        public static final String REL_POSITION = ENTITY + "$" + SERVER + "EntityMove";
-        public static final String REL_POSITION_LOOK = ENTITY + "$" + SERVER + "EntityMoveLook";
+        public static final String REL_POSITION = ENTITY + "$" + SERVER + "RelEntityMove";
+        public static final String REL_POSITION_LOOK = ENTITY + "$" + SERVER + "RelEntityMoveLook";
         public static final String REL_LOOK = ENTITY + "$" + SERVER + "EntityLook";
-        public static final String LEGACY_REL_POSITION = SERVER + "EntityMove";
+        public static final String LEGACY_REL_POSITION = SERVER + "RelEntityMove";
         public static final String ENTITY_HEAD_ROTATION = SERVER + "EntityHeadRotation";
-        public static final String LEGACY_REL_POSITION_LOOK = SERVER + "EntityMoveLook";
+        public static final String LEGACY_REL_POSITION_LOOK = SERVER + "RelEntityMoveLook";
         public static final String LEGACY_REL_LOOK = SERVER + "EntityLook";
         public static final String ABILITIES = SERVER + "Abilities";
         public static final String OPEN_WINDOW = SERVER + "OpenWindow";

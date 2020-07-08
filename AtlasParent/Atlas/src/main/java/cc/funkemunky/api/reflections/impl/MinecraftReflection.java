@@ -81,7 +81,7 @@ public class MinecraftReflection {
     private static WrappedMethod addCBoxes;
     public static WrappedClass blockPos;
     private static WrappedConstructor blockPosConstructor;
-    private static WrappedMethod getBlockData;
+    private static WrappedMethod getBlockData, getBlock;
     private static WrappedField blockData = block.getFieldByName("blockData");
     private static WrappedField frictionFactor = block.getFieldByName("frictionFactor");
     private static WrappedField strength = block.getFieldByName("strength");
@@ -113,7 +113,7 @@ public class MinecraftReflection {
     }
 
     public static List<BoundingBox> getBlockBox(@Nullable Entity entity, Block block) {
-        Object vanillaBlock = CraftReflection.getVanillaBlock(block);
+        Object vanillaBlock = getBlock(block);
         Object world = CraftReflection.getVanillaWorld(block.getWorld());
 
         //TODO Use increasedHeight if it doesnt get fence or wall boxes properly.
@@ -160,6 +160,17 @@ public class MinecraftReflection {
         return activeItemField.get(humanEntity);
     }
 
+    public static <T> T getBlock(Block block) {
+        if(ProtocolVersion.getGameVersion().isOrAbove(ProtocolVersion.V1_8)) {
+            Object blockData = getBlockData(block);
+
+            return getBlock.invoke(blockData);
+        } else {
+            return worldGetType.invoke(CraftReflection.getVanillaWorld(block.getWorld()),
+                    block.getX(), block.getY(), block.getZ());
+        }
+    }
+
     //Can use either a Bukkit or vanilla object
     public static <T> T getItemFromStack(Object object) {
         Object vanillaStack;
@@ -187,7 +198,7 @@ public class MinecraftReflection {
         Object inventory = CraftReflection.getVanillaInventory(player);
         Object vBlock;
         if(block instanceof Block) {
-            vBlock = CraftReflection.getVanillaBlock((Block)block);
+            vBlock = getBlock((Block)block);
         } else vBlock = block;
 
         return canDestroyMethod.invoke(inventory,
@@ -199,7 +210,7 @@ public class MinecraftReflection {
     public static float getFriction(Object block) {
         Object vBlock;
         if(block instanceof Block) {
-            vBlock = CraftReflection.getVanillaBlock((Block)block);
+            vBlock = getBlock((Block)block);
         } else vBlock = block;
 
         return frictionFactor.get(vBlock);
@@ -213,7 +224,7 @@ public class MinecraftReflection {
     public static float getBlockDurability(Object block) {
         Object vBlock;
         if(block instanceof Block) {
-            vBlock = CraftReflection.getVanillaBlock((Block)block);
+            vBlock = getBlock((Block)block);
         } else vBlock = block;
 
         return strength.get(vBlock);
@@ -349,12 +360,13 @@ public class MinecraftReflection {
 
     static {
         if(ProtocolVersion.getGameVersion().isAbove(ProtocolVersion.V1_7_10)) {
+            iBlockData = Reflections.getNMSClass("IBlockData");
             blockPos = Reflections.getNMSClass("BlockPosition");
+            getBlock = iBlockData.getMethod("getBlock");
             blockPosConstructor = blockPos.getConstructor(int.class, int.class, int.class);
             getBlockData = block.getMethod("getBlockData");
             aabbConstructor = axisAlignedBB
                     .getConstructor(double.class, double.class, double.class, double.class, double.class, double.class);
-            iBlockData = Reflections.getNMSClass("IBlockData");
             worldGetType = worldServer.getMethod("getType", blockPos.getParent());
         } else {
             idioticOldStaticConstructorAABB = axisAlignedBB.getMethod("a",
