@@ -33,6 +33,7 @@ import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.plugin.java.PluginClassLoader;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.io.File;
@@ -49,7 +50,6 @@ public class Atlas extends JavaPlugin {
     private BlockBoxManager blockBoxManager;
     private ScheduledExecutorService schedular;
     private ConsoleCommandSender consoleSender;
-    private CommandManager commandManager;
     private FunkeCommandManager funkeCommandManager;
     private Updater updater;
     private BaseProfiler profile;
@@ -66,6 +66,7 @@ public class Atlas extends JavaPlugin {
     private File file;
     private Map<UUID, List<Entity>> entities = Collections.synchronizedMap(new HashMap<>());
     private Map<Location, Block> blocksMap = new ConcurrentHashMap<>();
+    private Map<String, CommandManager> pluginCommandManagers = new HashMap<>();
 
     @ConfigSetting(path = "updater", name = "autoDownload")
     private static boolean autoDownload = false;
@@ -100,7 +101,6 @@ public class Atlas extends JavaPlugin {
 
         MiscUtils.printToConsole(Color.Gray + "Loading utilities and managers...");
         blockBoxManager = new BlockBoxManager();
-        commandManager = new CommandManager(this);
         funkeCommandManager = new FunkeCommandManager();
 
         updater = new Updater();
@@ -148,7 +148,7 @@ public class Atlas extends JavaPlugin {
         Bukkit.getScheduler().cancelTasks(this);
 
         eventManager.clearAllRegistered();
-        getCommandManager().unregisterCommands();
+        getCommandManager(this).unregisterCommands();
 
         MiscUtils.printToConsole(Color.Gray
                 + "Disabling all plugins that depend on Atlas to prevent any errors...");
@@ -165,6 +165,16 @@ public class Atlas extends JavaPlugin {
     private void shutdownExecutor() {
         service.shutdown();
         schedular.shutdown();
+    }
+
+    public CommandManager getCommandManager(Plugin plugin) {
+        return pluginCommandManagers.computeIfAbsent(plugin.getName(), key -> {
+            CommandManager cm = new CommandManager(plugin);
+
+            pluginCommandManagers.put(key, cm);
+
+            return cm;
+        });
     }
 
     private void runTasks() {
@@ -293,7 +303,7 @@ public class Atlas extends JavaPlugin {
                     if(loadCommands && annotation.commands()) {
                         MiscUtils.printToConsole("&7Registering commands in class &e"
                                 + c.getParent().getSimpleName() + "&7...");
-                        Atlas.getInstance().getCommandManager().registerCommands(obj);
+                        Atlas.getInstance().getCommandManager(plugin).registerCommands(obj);
                     }
 
                     c.getMethods(method -> method.getMethod().isAnnotationPresent(Invoke.class))

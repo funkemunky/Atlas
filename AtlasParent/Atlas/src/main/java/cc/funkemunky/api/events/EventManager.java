@@ -43,7 +43,7 @@ public class EventManager {
 
     public void unregisterAll(Plugin plugin) {
         listenerMethods.stream()
-                .filter(lm -> lm.plugin.equals(plugin))
+                .filter(lm -> lm.plugin.getName().equals(plugin.getName()))
                 .forEach(listenerMethods::remove);
     }
 

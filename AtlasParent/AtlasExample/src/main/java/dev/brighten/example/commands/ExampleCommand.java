@@ -31,8 +31,8 @@ public class ExampleCommand {
     @Command(name = "example", description = "an example command", display = "example",
             usage = "/<command>", permission = "atlas.command.example", aliases = "atlasexample")
     public void onCommand(CommandAdapter cmd) {
-        Atlas.getInstance().getCommandManager().runHelpMessage(cmd, cmd.getSender(),
-                Atlas.getInstance().getCommandManager().getDefaultScheme());
+        Atlas.getInstance().getCommandManager(Atlas.getInstance()).runHelpMessage(cmd, cmd.getSender(),
+                Atlas.getInstance().getCommandManager(Atlas.getInstance()).getDefaultScheme());
     }
 
     @Command(name = "example.execute", description = "execute a test message",

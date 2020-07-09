@@ -9,6 +9,7 @@ import lombok.val;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.server.PluginDisableEvent;
 import org.bukkit.event.server.PluginEnableEvent;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -30,6 +31,15 @@ public class PluginLoaderHandler implements Listener {
             loadedPlugins.add(event.getPlugin());
 
             loadPlugin(event.getPlugin());
+        }
+    }
+
+    @EventHandler
+    public void onEvent(PluginDisableEvent event) {
+        if(loadedPlugins.contains(event.getPlugin())) {
+            val description = event.getPlugin().getDescription();
+            MiscUtils.printToConsole("&7Plugin &f" + description.getName() + " &7is being unloaded.");
+            loadedPlugins.remove(event.getPlugin());
         }
     }
 
