@@ -200,6 +200,8 @@ public class SimpleCollisionBox implements CollisionBox {
     public boolean isCollided(CollisionBox other) {
         if (other instanceof SimpleCollisionBox) {
             SimpleCollisionBox box = ((SimpleCollisionBox) other);
+            box.sort();
+            sort();
             return box.xMax >= this.xMin && box.xMin <= this.xMax
                     && box.yMax >= this.yMin && box.yMin <= this.yMax
                     && box.zMax >= this.zMin && box.zMin <= this.zMax;

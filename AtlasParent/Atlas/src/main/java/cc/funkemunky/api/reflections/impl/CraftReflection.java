@@ -50,11 +50,7 @@ public class CraftReflection {
     }
 
     public static <T> T getVanillaBlock(Block block) {
-        if(ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.V1_8)) {
-            return MinecraftReflection.getBlockData(block);
-        } else {
-            return blockInstance.invoke(block);
-        }
+        return blockInstance.invoke(block);
     }
 
     public static <T> T getVanillaWorld(World world) {

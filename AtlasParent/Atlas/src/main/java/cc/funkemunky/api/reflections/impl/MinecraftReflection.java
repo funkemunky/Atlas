@@ -7,14 +7,17 @@ import cc.funkemunky.api.reflections.types.WrappedField;
 import cc.funkemunky.api.reflections.types.WrappedMethod;
 import cc.funkemunky.api.tinyprotocol.api.ProtocolVersion;
 import cc.funkemunky.api.tinyprotocol.packet.types.BaseBlockPosition;
+import cc.funkemunky.api.tinyprotocol.packet.types.Vec3D;
 import cc.funkemunky.api.tinyprotocol.packet.types.enums.WrappedEnumAnimation;
 import cc.funkemunky.api.utils.BoundingBox;
+import cc.funkemunky.api.utils.Materials;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.util.Vector;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
@@ -330,7 +333,23 @@ public class MinecraftReflection {
         new WrappedClass(channel.getClass()).getMethod("close").invoke(channel);
     }
 
-    //1.13 Method
+    private static WrappedMethod fluidMethod, getFlowMethod;
+
+    public static Vec3D getBlockFlow(Block block) {
+        if(Materials.checkFlag(block.getType(), Materials.LIQUID)) {
+            Object world = CraftReflection.getVanillaWorld(block.getWorld());
+            BaseBlockPosition pos = new BaseBlockPosition(block.getX(), block.getY(), block.getZ());
+            if(ProtocolVersion.getGameVersion().isOrBelow(ProtocolVersion.V1_13)) {
+                Object vanillaBlock = CraftReflection.getVanillaBlock(block);
+
+                return new Vec3D((Object)getFlowMethod.invoke(vanillaBlock, world, pos.getAsBlockPosition()));
+            } else {
+                Object fluid = fluidMethod.invoke(world, pos.getAsBlockPosition());
+
+                return new Vec3D((Object)getFlowMethod.invoke(fluid, world, pos.getAsBlockPosition()));
+            }
+        } else return new Vec3D(0,0,0);
+    }
 
 
     public static <T> T toAABB(BoundingBox box) {
@@ -384,10 +403,13 @@ public class MinecraftReflection {
                 addCBoxes = block.getMethod("a", world.getParent(), blockPos.getParent(), iBlockData.getParent(),
                         axisAlignedBB.getParent(), List.class, entity.getParent());
             }
+
+            getFlowMethod = Reflections.getNMSClass("BlockFluids").getDeclaredMethodByType(vec3D.getParent(), 0);
         } else if(ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.V1_13)) {
             getCubes = world.getMethod("getCubes", entity.getParent(), axisAlignedBB.getParent());
             addCBoxes = block.getMethod("a", world.getParent(), blockPos.getParent(), iBlockData.getParent(),
                     axisAlignedBB.getParent(), List.class, entity.getParent());
+            getFlowMethod = Reflections.getNMSClass("BlockFluids").getDeclaredMethodByType(vec3D.getParent(), 0);
         } else {
             worldReader = Reflections.getNMSClass("IWorldReader");
             //1.13 and 1.13.1 returns just VoxelShape while 1.13.2+ returns a Stream<VoxelShape>
@@ -395,6 +417,8 @@ public class MinecraftReflection {
                     double.class, double.class, double.class);
             voxelShape = Reflections.getNMSClass("VoxelShape");
             getCubesFromVoxelShape = voxelShape.getMethodByType(List.class, 0);
+            fluidMethod = world.getMethod("getFluidIfLoaded");
+            getFlowMethod = Reflections.getNMSClass("Fluid").getMethodByType(vec3D.getParent(), 0);
         }
 
         if(ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.V1_9)) {
