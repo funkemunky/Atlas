@@ -40,6 +40,13 @@ public class PluginLoaderHandler implements Listener {
             val description = event.getPlugin().getDescription();
             MiscUtils.printToConsole("&7Plugin &f" + description.getName() + " &7is being unloaded.");
             loadedPlugins.remove(event.getPlugin());
+
+            Atlas.getInstance().getPluginCommandManagers().computeIfPresent(description.getName(), (key, obj) -> {
+                obj.unregisterCommands();
+
+                Atlas.getInstance().getPluginCommandManagers().remove(key);
+                return null;
+            });
         }
     }
 

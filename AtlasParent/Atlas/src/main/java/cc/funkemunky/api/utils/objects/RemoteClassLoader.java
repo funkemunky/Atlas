@@ -1,9 +1,10 @@
 package cc.funkemunky.api.utils.objects;
 
-import cc.funkemunky.api.Atlas;
-
 import java.io.*;
-import java.util.*;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 

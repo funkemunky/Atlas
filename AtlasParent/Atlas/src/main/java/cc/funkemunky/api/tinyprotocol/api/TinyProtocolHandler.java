@@ -9,7 +9,6 @@ import cc.funkemunky.api.tinyprotocol.api.packets.AbstractTinyProtocol;
 import cc.funkemunky.api.tinyprotocol.api.packets.channelhandler.TinyProtocol1_7;
 import cc.funkemunky.api.tinyprotocol.api.packets.channelhandler.TinyProtocol1_8;
 import lombok.Getter;
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import java.net.SocketAddress;
@@ -24,6 +23,8 @@ public class TinyProtocolHandler {
     public boolean paused = false;
 
     public static Map<UUID, Integer> bungeeVersionCache = new HashMap<>();
+    @Getter
+    private PacketProcessor packetProcessor;
 
     public TinyProtocolHandler() {
         // 1.8+ and 1.7 NMS have different class paths for their libraries used. This is why we have to separate the two.
@@ -64,6 +65,8 @@ public class TinyProtocolHandler {
                 return self.onPacketInAsync(sender, packet);
             }
         };
+
+        packetProcessor = new PacketProcessor();
     }
 
     // Purely for making the code cleaner

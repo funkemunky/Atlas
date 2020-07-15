@@ -3,7 +3,6 @@ package cc.funkemunky.api.reflections.impl;
 import cc.funkemunky.api.reflections.Reflections;
 import cc.funkemunky.api.reflections.types.WrappedClass;
 import cc.funkemunky.api.reflections.types.WrappedMethod;
-import cc.funkemunky.api.tinyprotocol.api.ProtocolVersion;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.block.Block;

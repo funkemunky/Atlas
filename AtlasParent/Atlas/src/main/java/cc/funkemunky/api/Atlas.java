@@ -33,7 +33,6 @@ import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.plugin.java.PluginClassLoader;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.io.File;
@@ -149,6 +148,8 @@ public class Atlas extends JavaPlugin {
 
         eventManager.clearAllRegistered();
         getCommandManager(this).unregisterCommands();
+
+        tinyProtocolHandler.getPacketProcessor().shutdown();
 
         MiscUtils.printToConsole(Color.Gray
                 + "Disabling all plugins that depend on Atlas to prevent any errors...");
