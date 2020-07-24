@@ -342,6 +342,9 @@ public class MathUtils {
         if (places < 0) {
             throw new IllegalArgumentException();
         }
+
+        if(Double.isNaN(value) || Double.isInfinite(value)) return value;
+
         BigDecimal bd = new BigDecimal(value);
         bd = bd.setScale(places, RoundingMode.HALF_UP);
         return bd.doubleValue();
