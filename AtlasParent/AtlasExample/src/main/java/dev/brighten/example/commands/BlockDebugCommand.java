@@ -18,11 +18,11 @@ public class BlockDebugCommand {
     @Command(name = "setblock", description = "Set a block.", playerOnly = true)
     public void onCommand(CommandAdapter cmd) {
         cmd.getSender().sendMessage(Color.Green + "Type the coordinates to set. Type \"cancel\" to cancel.");
-        ChatHandler.onChat(cmd.getPlayer(), message -> {
+        ChatHandler.onChat(cmd.getPlayer(), false, (chat, message) -> {
             switch(message.toLowerCase()) {
                 case "cancel":
                 case "stop": {
-                    ChatHandler.remove(cmd.getPlayer());
+                    ChatHandler.remove(cmd.getPlayer(), chat);
                     cmd.getSender().sendMessage(Color.Red + "Canceled");
                     break;
                 }

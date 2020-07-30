@@ -5,51 +5,80 @@ import cc.funkemunky.api.events.Listen;
 import cc.funkemunky.api.events.impl.PacketReceiveEvent;
 import cc.funkemunky.api.tinyprotocol.api.Packet;
 import cc.funkemunky.api.tinyprotocol.packet.in.WrappedInChatPacket;
+import cc.funkemunky.api.utils.Color;
 import cc.funkemunky.api.utils.Init;
 import lombok.val;
+import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.entity.Player;
 
 import java.util.*;
+import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
 @Init
 public class ChatHandler implements AtlasListener {
 
-    private static List<OnChat> toSortThrough = new ArrayList<>();
-    private static Map<UUID, Consumer<String>> chatChecks = new HashMap<>();
+    private final static Map<UUID, List<OnChat>> chatListeners = Collections.synchronizedMap(new HashMap<>());
 
     @Listen
     public void onReceive(PacketReceiveEvent event) {
         if(event.getType().equals(Packet.Client.CHAT)) {
-            val optional = toSortThrough.stream()
-                    .filter(chat -> chat.player.getUniqueId().equals(event.getPlayer().getUniqueId()))
-                    .findFirst();
-
             WrappedInChatPacket packet = new WrappedInChatPacket(event.getPacket(), event.getPlayer());
-            if(optional.isPresent()) {
-                OnChat chat = optional.get();
 
-                chat.message.accept(packet.getMessage());
-
-                if(chat.removeOnFirstChat) toSortThrough.remove(chat);
-            }
-            chatChecks.computeIfPresent(event.getPlayer().getUniqueId(),
-                    (key, consumer) -> {
-                        consumer.accept(packet.getMessage());
-
-                        event.setCancelled(true);
-                        return consumer;
+            synchronized (chatListeners) {
+                chatListeners.computeIfPresent(event.getPlayer().getUniqueId(), (key, chats) -> {
+                    chats.forEach(chat -> {
+                        chat.message.accept(chat, packet.getMessage());
+                        if(chat.removeOnFirstChat) chats.remove(chat);
                     });
+
+                    event.setCancelled(true);
+
+                    //Removing player from map if theres nothing else to listen to.
+                    return chats.size() > 0 ? chats : null;
+                });
+            }
         }
     }
 
-    public static void remove(Player player) {
-        toSortThrough.stream().filter(pl -> pl.player.getUniqueId().equals(player.getUniqueId()))
-                .forEach(toSortThrough::remove);
-        chatChecks.remove(player.getUniqueId());
+    public static void removeAll(Player player) {
+        removeAll(player.getUniqueId());
     }
 
-    public static void onChat(Player player, Consumer<String> consumer) {
-        chatChecks.put(player.getUniqueId(), consumer);
+    public static void removeAll(UUID uuid) {
+        synchronized (chatListeners) {
+            chatListeners.remove(uuid);
+        }
+    }
+
+    public static void remove(UUID uuid, OnChat chat) {
+        if(!chatListeners.containsKey(uuid)) return;
+        synchronized (chatListeners) {
+            chatListeners.compute(uuid, (key, chats) -> {
+                if(chats != null) {
+                    chats.remove(chat);
+                    if(chats.size() == 0) chats = null;
+                }
+
+                return chats;
+            });
+        }
+    }
+
+    public static void remove(Player player, OnChat chat) {
+        remove(player.getUniqueId(), chat);
+    }
+
+    public static void onChat(Player player, boolean removeOnFirstChat, BiConsumer<OnChat, String> consumer) {
+        OnChat chat = new OnChat(player, consumer, removeOnFirstChat);
+
+        synchronized (chatListeners) {
+            chatListeners.compute(player.getUniqueId(), (key, chats) -> {
+                if(chats == null) chats = new ArrayList<>();
+                chats.add(chat);
+
+                return chats;
+            });
+        }
     }
 }
