@@ -130,7 +130,7 @@ public class Atlas extends JavaPlugin {
             if(autoDownload) {
                 MiscUtils.printToConsole(Color.Gray + "Downloading new version...");
                 updater.downloadNewVersion();
-                MiscUtils.printToConsole(Color.Green + "Atlas v" + updater.getVersion()
+                MiscUtils.printToConsole(Color.Green + "Atlas v" + updater.getLatestUpdate()
                         + " has been downloaded. Please restart/reload your server to import it.");
             }
         }
