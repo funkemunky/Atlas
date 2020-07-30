@@ -20,7 +20,6 @@ public class UpdateArgument extends FunkeArgument {
         super(command, "update", "update <check, download> [args]", "manage updates for Atlas.", "atlas.update");
 
         addTabComplete(2, "check", "download", "update");
-        addTabComplete(3, "confirm,!check,2");
     }
 
     @Override
