@@ -105,13 +105,7 @@ public class ChatBuilder {
     }
 
     private List<TextComponent> getCurrentComps() {
-        return textComponents.computeIfAbsent(MathUtils.getByte(currentLine), key -> {
-            List<TextComponent> list = new ArrayList<>();
-
-            textComponents.put(MathUtils.getByte(currentLine), list);
-
-            return list;
-        });
+        return textComponents.computeIfAbsent(MathUtils.getByte(currentLine), key -> new ArrayList<>());
     }
     public ChatBuilder sendToPlayer(Player player) {
         return this;

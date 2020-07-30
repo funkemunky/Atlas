@@ -28,11 +28,9 @@ public class EntityData {
                 Object ventity = CraftReflection.getEntity(entity);
 
                 //We cast this as a float since the fields are floats.
-                val box = new SimpleCollisionBox(new Vector(), (float)fieldSize.get(ventity),
-                        (float)fieldLength.get(ventity));
 
-                entityBounds.put(type, box);
-                return box;
+                return new SimpleCollisionBox(new Vector(), (float)fieldSize.get(ventity),
+                        (float)fieldLength.get(ventity));
             }).copy();
         } else {
             Object ventity = CraftReflection.getEntity(entity);

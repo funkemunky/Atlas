@@ -54,10 +54,7 @@ public class WrappedInUseEntityPacket extends NMSObject {
 
             for (Entity ent : entities) {
                 if(ent == null) continue;
-                if(id == ent.getEntityId()) {
-                    cachedEntities.put(id, ent);
-                    return ent;
-                }
+                if(id == ent.getEntityId()) return ent;
             }
             return null;
         });

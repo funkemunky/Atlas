@@ -118,12 +118,8 @@ public abstract class NMSObject {
                 constructors.put(packet, c);
             }
 
-            Object p = obj != null ? obj : constructors.computeIfAbsent(packet, key -> {
-                Class<?> clazz = Reflection.getMinecraftClass(key);
-
-                constructors.put(key, clazz);
-                return clazz;
-            }).newInstance();
+            Object p = obj != null ? obj : constructors
+                    .computeIfAbsent(packet, Reflection::getMinecraftClass).newInstance();
             Field[] fields = c.getDeclaredFields();
             int failed = 0;
             for (int i = 0; i < args.length; i++) {

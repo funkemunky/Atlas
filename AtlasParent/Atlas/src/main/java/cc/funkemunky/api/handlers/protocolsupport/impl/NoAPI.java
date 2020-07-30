@@ -16,11 +16,7 @@ public class NoAPI implements Protocol {
                 .getHostAddress().substring(1), shit -> {
             if(Atlas.getInstance().getBungeeManager().isBungee()) {
                 int version = TinyProtocolHandler.bungeeVersionCache
-                        .computeIfAbsent(player.getUniqueId(), key -> {
-                            int bv = BungeeAPI.getPlayerVersion(player);
-                            TinyProtocolHandler.bungeeVersionCache.put(key, bv);
-                            return bv;
-                        });
+                        .computeIfAbsent(player.getUniqueId(), key -> BungeeAPI.getPlayerVersion(player));
 
                 if(version != -1) return ProtocolVersion.getVersion(version).getVersion();
             }

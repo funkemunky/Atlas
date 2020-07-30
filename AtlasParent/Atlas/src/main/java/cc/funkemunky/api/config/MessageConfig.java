@@ -53,11 +53,9 @@ public class MessageConfig {
     }
 
     public String msg(String key, String def) {
-        return Color.translate(messages.computeIfAbsent(key, stringKey -> {
-            messages.put(stringKey, def);
-            save();
-            return def;
-        }));
+        String string = Color.translate(messages.computeIfAbsent(key, stringKey -> def));
+        save();
+        return string;
     }
 
     //Returns true if the check failed.

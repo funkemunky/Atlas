@@ -123,12 +123,6 @@ public class BaseProfiler implements Profiler {
     }
 
     private Timing getTiming(String name) {
-        return timingsMap.computeIfAbsent(name, key -> {
-           Timing timing = new Timing(key);
-
-           timingsMap.put(key, timing);
-
-           return timing;
-        });
+        return timingsMap.computeIfAbsent(name, Timing::new);
     }
 }

@@ -43,8 +43,6 @@ public class PluginLoaderHandler implements Listener {
 
             Atlas.getInstance().getPluginCommandManagers().computeIfPresent(description.getName(), (key, obj) -> {
                 obj.unregisterCommands();
-
-                Atlas.getInstance().getPluginCommandManagers().remove(key);
                 return null;
             });
         }

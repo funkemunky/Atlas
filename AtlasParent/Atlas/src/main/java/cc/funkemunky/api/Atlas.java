@@ -169,13 +169,7 @@ public class Atlas extends JavaPlugin {
     }
 
     public CommandManager getCommandManager(Plugin plugin) {
-        return pluginCommandManagers.computeIfAbsent(plugin.getName(), key -> {
-            CommandManager cm = new CommandManager(plugin);
-
-            pluginCommandManagers.put(key, cm);
-
-            return cm;
-        });
+        return pluginCommandManagers.computeIfAbsent(plugin.getName(), key -> new CommandManager(plugin));
     }
 
     private void runTasks() {
@@ -372,7 +366,7 @@ public class Atlas extends JavaPlugin {
                     e.printStackTrace();
                 }
             } else {
-                RunUtils.task(() -> blocksMap.put(key, key.getBlock()));
+                return BlockUtils.getBlock(location);
             }
             return null;
         });
