@@ -25,7 +25,7 @@ public class PluginLoaderHandler implements Listener {
     @EventHandler(priority = EventPriority.HIGH)
     public void onEvent(PluginEnableEvent event) {
         val description = event.getPlugin().getDescription();
-        if(description.getDepend().contains("Atlas")) {
+        if(description.getDepend().contains("Atlas") || description.getSoftDepend().contains("Atlas")) {
             MiscUtils.printToConsole("&7Plugin &f" + description.getName() + " &7has been detected!");
             loadedPlugins.add(event.getPlugin());
 
