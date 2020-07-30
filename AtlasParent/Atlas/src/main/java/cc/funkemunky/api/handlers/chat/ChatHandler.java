@@ -25,18 +25,21 @@ public class ChatHandler implements AtlasListener {
         if(event.getType().equals(Packet.Client.CHAT)) {
             WrappedInChatPacket packet = new WrappedInChatPacket(event.getPacket(), event.getPlayer());
 
-            synchronized (chatListeners) {
-                chatListeners.computeIfPresent(event.getPlayer().getUniqueId(), (key, chats) -> {
-                    chats.forEach(chat -> {
-                        chat.message.accept(chat, packet.getMessage());
-                        if(chat.removeOnFirstChat) chats.remove(chat);
+            if(chatListeners.size() > 0) {
+                synchronized (chatListeners) {
+                    chatListeners.computeIfPresent(event.getPlayer().getUniqueId(), (key, chats) -> {
+                        List<OnChat> returnChats = new ArrayList<>(chats);
+                        returnChats.forEach(chat -> {
+                            chat.message.accept(chat, packet.getMessage());
+                            if (chat.removeOnFirstChat) returnChats.remove(chat);
+                        });
+
+                        event.setCancelled(true);
+
+                        //Removing player from map if theres nothing else to listen to.
+                        return returnChats.size() > 0 ? returnChats : null;
                     });
-
-                    event.setCancelled(true);
-
-                    //Removing player from map if theres nothing else to listen to.
-                    return chats.size() > 0 ? chats : null;
-                });
+                }
             }
         }
     }

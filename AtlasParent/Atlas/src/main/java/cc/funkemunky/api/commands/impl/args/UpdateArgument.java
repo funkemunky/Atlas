@@ -36,6 +36,8 @@ public class UpdateArgument extends FunkeArgument {
                             + Atlas.getInstance().getUpdater().getLatestUpdate()));
                     sender.sendMessage(Color.translate("&eLatest Release Date:"));
                     sender.sendMessage(Color.White + Atlas.getInstance().getUpdater().getReleaseDate());
+                    sender.sendMessage(Color.Yellow + "View update:");
+                    sender.sendMessage(Color.White + Atlas.getInstance().getUpdater().getViewLink());
                     sender.sendMessage(Color.translate("&eCurrent Version: &f"
                             + Atlas.getInstance().getUpdater().getCurrentUpdate()));
                     sender.sendMessage("");
@@ -52,7 +54,7 @@ public class UpdateArgument extends FunkeArgument {
                 case "update": {
                     if(sender instanceof Player) {
                         Player player = (Player) sender;
-                        player.sendMessage(Color.Green + "You need to confirm this decision by typing "
+                        player.sendMessage(Color.Gray + "You need to confirm this decision by typing "
                                 + Color.Yellow + "'download' " + Color.Gray + "in chat or " + Color.Yellow
                                 + "'cancel' " + Color.Gray +  "to cancel!");
                         ChatHandler.onChat(player, false, (chat, message) -> {
@@ -68,41 +70,42 @@ public class UpdateArgument extends FunkeArgument {
                                         //Downloads the latest version from git.
                                         Atlas.getInstance().getUpdater().downloadNewVersion();
                                         // The server needs restarting or reloading to prevent any errors from hiccups when reloading.
-                                        sender.sendMessage(Color.Green
-                                                + "Downloaded! Would you like to reload Atlas? " +
-                                                "Type 'yes' to reload or anything to cancel");
+                                        sender.sendMessage(Color.translate("&7Downloaded! Would you like to " +
+                                                "reload Atlas? Type &e'yes' &7to reload or anything else to cancel"));
                                     });
                                     ChatHandler.remove(player, chat);
                                     ChatHandler.onChat(player, true, (chat2, message2) -> {
-                                        if(message2.toLowerCase().contains("yes")) {
-                                            player.sendMessage(Color.Red + "Reloading...");
-                                            player.sendMessage(Color.Gray + "Grabbing plugins using Atlas...");
-                                            List<String> atlasPlugins = Atlas.getInstance().getPluginLoaderHandler()
-                                                    .getLoadedPlugins().stream()
-                                                    .map(Plugin::getName).collect(Collectors.toList());
+                                        Atlas.getInstance().getSchedular().execute(() -> {
+                                            if(message2.toLowerCase().contains("yes")) {
+                                                player.sendMessage(Color.Red + "Reloading...");
+                                                player.sendMessage(Color.Gray + "Grabbing plugins using Atlas...");
+                                                List<String> atlasPlugins = Atlas.getInstance().getPluginLoaderHandler()
+                                                        .getLoadedPlugins().stream()
+                                                        .map(Plugin::getName).collect(Collectors.toList());
 
-                                            player.sendMessage(Color.Gray + "Unloading dependant plugins...");
-                                            for (int i = atlasPlugins.size() - 1; i > 0; --i) {
-                                                String pl = atlasPlugins.get(i);
-                                                player.sendMessage(Color.Gray + "Unloading " + pl + "...");
-                                                MiscUtils.unloadPlugin(pl);
-                                            }
+                                                player.sendMessage(Color.Gray + "Unloading dependant plugins...");
+                                                for (int i = atlasPlugins.size() - 1; i > 0; --i) {
+                                                    String pl = atlasPlugins.get(i);
+                                                    player.sendMessage(Color.Gray + "Unloading " + pl + "...");
+                                                    MiscUtils.unloadPlugin(pl);
+                                                }
 
-                                            player.sendMessage(Color.Gray + "Unloading Atlas...");
-                                            MiscUtils.unloadPlugin("Atlas");
+                                                player.sendMessage(Color.Gray + "Unloading Atlas...");
+                                                MiscUtils.unloadPlugin("Atlas");
 
-                                            player.sendMessage(Color.Gray + "Loading Atlas...");
-                                            MiscUtils.loadPlugin("Atlas");
+                                                player.sendMessage(Color.Gray + "Loading Atlas...");
+                                                MiscUtils.loadPlugin("Atlas");
 
-                                            player.sendMessage(Color.Gray + "Loading dependant plugins...");
-                                            for (String pl : atlasPlugins) {
-                                                player.sendMessage(Color.Gray + "Loading " + pl + "...");
-                                                MiscUtils.loadPlugin(pl);
-                                            }
+                                                player.sendMessage(Color.Gray + "Loading dependant plugins...");
+                                                for (String pl : atlasPlugins) {
+                                                    player.sendMessage(Color.Gray + "Loading " + pl + "...");
+                                                    MiscUtils.loadPlugin(pl);
+                                                }
 
-                                            player.sendMessage(Color.Green + "Completed reload! " +
-                                                    "Now running updated Atlas version.");
-                                        } else player.sendMessage(Color.Red + "Restart server to run updated Atlas.");
+                                                player.sendMessage(Color.Green + "Completed reload! " +
+                                                        "Now running updated Atlas version.");
+                                            } else player.sendMessage(Color.Red + "Restart server to run updated Atlas.");
+                                        });
                                     });
                                     break;
                                 }
