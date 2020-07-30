@@ -44,7 +44,7 @@ public class Updater {
 
     private String[] readFromUpdaterPastebin() {
         try {
-            URL url = new URL("https://pastebin.com/raw/fX2Ebkpz");
+            URL url = new URL("https://pastebin.com/raw/Q7akn6Gw");
             URLConnection connection = url.openConnection();
 
             BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
