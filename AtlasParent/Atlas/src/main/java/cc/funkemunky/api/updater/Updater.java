@@ -13,7 +13,7 @@ import java.nio.file.StandardCopyOption;
 
 @Getter
 public class Updater {
-    private int update = -1, currentUpdate = 62;
+    private int update = -1, currentUpdate = 63;
     private String version, downloadLink;
     private File pluginLocation;
     private boolean importantUpdate = true;
@@ -44,7 +44,7 @@ public class Updater {
 
     private String[] readFromUpdaterPastebin() {
         try {
-            URL url = new URL("https://pastebin.com/raw/fX2Ebkpz");
+            URL url = new URL("https://pastebin.com/raw/Q7akn6Gw");
             URLConnection connection = url.openConnection();
 
             BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
