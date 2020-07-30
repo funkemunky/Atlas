@@ -1012,9 +1012,6 @@ public enum XMaterial {
                 }
             }
 
-            if(mat != null) {
-                cachedParse.put(key, mat);
-            }
             return mat;
         });
     }

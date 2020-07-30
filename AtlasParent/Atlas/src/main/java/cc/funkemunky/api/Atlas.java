@@ -361,7 +361,7 @@ public class Atlas extends JavaPlugin {
                     e.printStackTrace();
                 }
             } else {
-                RunUtils.task(() -> blocksMap.put(key, key.getBlock()));
+                return BlockUtils.getBlock(location);
             }
             return null;
         });

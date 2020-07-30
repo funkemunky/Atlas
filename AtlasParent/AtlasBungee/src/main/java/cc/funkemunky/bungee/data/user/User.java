@@ -30,11 +30,6 @@ public class User {
     }
 
     public static User getUser(UUID uuid) {
-        return users.computeIfAbsent(uuid, key -> {
-           User user = new User(key);
-
-           users.put(key, user);
-           return user;
-        });
+        return users.computeIfAbsent(uuid, User::new);
     }
 }
