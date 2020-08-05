@@ -18,6 +18,7 @@ import java.util.Map;
 @NoArgsConstructor
 @Getter
 @Setter
+@Deprecated
 public abstract class Packet {
     private static Map<String, Class<?>> constructors = new HashMap<>();
     private Object packet;
@@ -107,7 +108,8 @@ public abstract class Packet {
     }
 
     public static class Type {
-        public static final String WATCHABLE_OBJECT = (Reflection.VERSION.startsWith("v1_7") || Reflection.VERSION.startsWith("v1_8_R1")) ? "WatchableObject" : "DataWatcher$WatchableObject";
+        public static final String WATCHABLE_OBJECT = (Reflection.VERSION.startsWith("v1_7")
+                || Reflection.VERSION.startsWith("v1_8_R1")) ? "WatchableObject" : "DataWatcher$WatchableObject";
         public static final String BASEBLOCKPOSITION = "BaseBlockPosition";
         public static final String ITEMSTACK = Reflection.NMS_PREFIX + ".ItemStack";
         public static final String ENTITY = Reflection.NMS_PREFIX + ".Entity";
@@ -180,6 +182,13 @@ public abstract class Packet {
         public static final String COMMANDS = SERVER + "Commands";
         public static final String OPEN_WINDOW = SERVER + "OpenWindow";
         public static final String ENTITY_EFFECT = SERVER + "EntityEffect";
+        public static final String ENTITY = SERVER + "Entity";
+        public static final String REL_POSITION = ENTITY + "$" + SERVER + "RelEntityMove";
+        public static final String REL_POSITION_LOOK = ENTITY + "$" + SERVER + "RelEntityMoveLook";
+        public static final String REL_LOOK = ENTITY + "$" + SERVER + "EntityLook";
+        public static final String LEGACY_REL_POSITION = SERVER + "RelEntityMove";
+        public static final String LEGACY_REL_POSITION_LOOK = SERVER + "RelEntityMoveLook";
+        public static final String LEGACY_REL_LOOK = SERVER + "EntityLook";
     }
 
     public static class Login {

@@ -14,6 +14,7 @@ import cc.funkemunky.api.reflections.Reflections;
 import cc.funkemunky.api.reflections.impl.BukkitReflection;
 import cc.funkemunky.api.reflections.impl.MinecraftReflection;
 import cc.funkemunky.api.reflections.types.WrappedClass;
+import cc.funkemunky.api.tinyprotocol.api.PacketProcessor;
 import cc.funkemunky.api.tinyprotocol.api.TinyProtocolHandler;
 import cc.funkemunky.api.updater.Updater;
 import cc.funkemunky.api.utils.*;
@@ -56,6 +57,7 @@ public class Atlas extends JavaPlugin {
     private TinyProtocolHandler tinyProtocolHandler;
     private int currentThread = 0;
     private long profileStart;
+    private PacketProcessor packetProcessor;
     private EventManager eventManager;
     private int currentTicks;
     private PluginLoaderHandler pluginLoaderHandler;
@@ -94,6 +96,9 @@ public class Atlas extends JavaPlugin {
 
         pluginLoaderHandler = new PluginLoaderHandler();
         tinyProtocolHandler =  new TinyProtocolHandler();
+        MiscUtils.printToConsole("&7Loading packet system...");
+        packetProcessor = new PacketProcessor();
+        Bukkit.getPluginManager().registerEvents(packetProcessor, this);
 
         profileStart = System.currentTimeMillis();
         profile = new BaseProfiler();
@@ -151,12 +156,18 @@ public class Atlas extends JavaPlugin {
 
         tinyProtocolHandler.getPacketProcessor().shutdown();
 
-        MiscUtils.printToConsole(Color.Gray
+        MiscUtils.printToConsole(Color.Red
                 + "Disabling all plugins that depend on Atlas to prevent any errors...");
         Arrays.stream(Bukkit.getPluginManager().getPlugins())
                 .filter(plugin -> plugin.getDescription().getDepend().contains("Atlas")
                         || plugin.getDescription().getSoftDepend().contains("Atlas"))
-                .forEach(plugin -> MiscUtils.unloadPlugin(plugin.getName()));
+                .forEach(plugin -> {
+                    MiscUtils.printToConsole("&7Unregistering &a" + plugin.getName() + "&7...");
+                    getCommandManager(plugin).unregisterCommands();
+                    Atlas.getInstance().getEventManager().unregisterAll(plugin);
+                    MiscUtils.printToConsole("&7Unloading &a" + plugin.getName() + "&7...");
+                    MiscUtils.unloadPlugin(plugin.getName());
+                });
         shutdownExecutor();
 
         MiscUtils.printToConsole(Color.Red + "Completed shutdown process.");

@@ -9,6 +9,7 @@
 package cc.funkemunky.api.reflections;
 
 import cc.funkemunky.api.reflections.types.WrappedClass;
+import cc.funkemunky.api.tinyprotocol.api.PacketType;
 import cc.funkemunky.api.tinyprotocol.api.ProtocolVersion;
 import cc.funkemunky.api.utils.objects.QuadFunction;
 import cc.funkemunky.api.utils.objects.TriFunction;
@@ -51,6 +52,18 @@ public class Reflections {
 
     public static WrappedClass getNMSClass(String name) {
         return getClass(netMinecraftServerString + name);
+    }
+
+    public static WrappedClass getNMSClass(PacketType.Client client) {
+        return getClass(netMinecraftServerString + client.vanillaName);
+    }
+
+    public static WrappedClass getNMSClass(PacketType.Server server) {
+        return getClass(netMinecraftServerString + server.vanillaName);
+    }
+
+    public static WrappedClass getNMSClass(PacketType.Login login) {
+        return getClass(netMinecraftServerString + login.vanillaName);
     }
 
     public static WrappedClass getClass(String name) {

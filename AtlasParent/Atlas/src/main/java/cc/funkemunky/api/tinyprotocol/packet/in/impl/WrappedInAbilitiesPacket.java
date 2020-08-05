@@ -1,14 +1,16 @@
-package cc.funkemunky.api.tinyprotocol.packet.in;
+package cc.funkemunky.api.tinyprotocol.packet.in.impl;
 
 import cc.funkemunky.api.tinyprotocol.api.NMSObject;
+import cc.funkemunky.api.tinyprotocol.api.PacketType;
 import cc.funkemunky.api.tinyprotocol.api.ProtocolVersion;
+import cc.funkemunky.api.tinyprotocol.packet.in.ClientPacket;
 import cc.funkemunky.api.tinyprotocol.reflection.FieldAccessor;
 import lombok.Getter;
 import org.bukkit.entity.Player;
 
 //TODO Test 1.15
-public class WrappedInAbilitiesPacket extends NMSObject {
-    private static final String packet = Client.ABILITIES;
+public class WrappedInAbilitiesPacket extends ClientPacket {
+    private static final String packet = PacketType.Client.ABILITIES.vanillaName;
     private static FieldAccessor<Boolean>
             invulnerableField = fetchField(packet, boolean.class, 0),
             flyingField = fetchField(packet, boolean.class, 1),
@@ -40,7 +42,16 @@ public class WrappedInAbilitiesPacket extends NMSObject {
 
     @Override
     public void updateObject() {
-        setObject(NMSObject.construct(getObject(),
-                packet, invulnerable, flying, allowedFlight, creativeMode, flySpeed, walkSpeed));
+        set(invulnerableField, invulnerable);
+        set(flyingField, flying);
+        set(allowedFlightField, allowedFlight);
+        set(creativeModeField, creativeMode);
+        set(flySpeedField, flySpeed);
+        set(walkSpeedField, walkSpeed);
+    }
+
+    @Override
+    public PacketType.Client getType() {
+        return PacketType.Client.ABILITIES;
     }
 }

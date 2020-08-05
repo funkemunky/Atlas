@@ -84,7 +84,7 @@ public class CommandManager implements CommandExecutor {
     public void unregisterCommands(Plugin plugin) {
         commands.keySet().stream().filter(key -> commands.get(key).getPlugin().getName().equals(plugin.getName())).forEach(key -> {
 
-            val split = key.split(".");
+            val split = key.split("\\.");
 
             val name = split[0];
 

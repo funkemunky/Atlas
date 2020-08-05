@@ -6,7 +6,7 @@
  * The patches are licensed under MIT. Original credit goes to Kristian.
  */
 
-package cc.funkemunky.api.tinyprotocol.api.packets.channelhandler;
+package cc.funkemunky.api.tinyprotocol.api.packets.legacy;
 
 import cc.funkemunky.api.tinyprotocol.api.packets.AbstractTinyProtocol;
 import cc.funkemunky.api.tinyprotocol.reflection.FieldAccessor;

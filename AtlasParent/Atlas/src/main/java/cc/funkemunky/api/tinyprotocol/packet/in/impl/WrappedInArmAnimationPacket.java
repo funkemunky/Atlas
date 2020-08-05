@@ -1,17 +1,18 @@
-package cc.funkemunky.api.tinyprotocol.packet.in;
+package cc.funkemunky.api.tinyprotocol.packet.in.impl;
 
 import cc.funkemunky.api.reflections.Reflections;
 import cc.funkemunky.api.reflections.types.WrappedClass;
 import cc.funkemunky.api.reflections.types.WrappedField;
 import cc.funkemunky.api.tinyprotocol.api.NMSObject;
+import cc.funkemunky.api.tinyprotocol.api.PacketType;
 import cc.funkemunky.api.tinyprotocol.api.ProtocolVersion;
+import cc.funkemunky.api.tinyprotocol.packet.in.ClientPacket;
 import lombok.Getter;
 import org.bukkit.entity.Player;
 
 @Getter
 //TODO Test 1.15
-public class WrappedInArmAnimationPacket extends NMSObject {
-    private static final String packet = Client.ARM_ANIMATION;
+public class WrappedInArmAnimationPacket extends ClientPacket {
 
     public WrappedInArmAnimationPacket(Object object, Player player) {
         super(object, player);
@@ -19,7 +20,7 @@ public class WrappedInArmAnimationPacket extends NMSObject {
 
     public boolean mainHand;
 
-    private static WrappedClass enumHand, armAnimation;
+    private static WrappedClass enumHand, armAnimation = Reflections.getNMSClass(PacketType.Client.ARM_ANIMATION);
     private static WrappedField mainHandField;
 
     @Override
@@ -34,12 +35,16 @@ public class WrappedInArmAnimationPacket extends NMSObject {
     @Override
     public void updateObject() {
         if(ProtocolVersion.getGameVersion().isOrAbove(ProtocolVersion.V1_9)) {
-            setObject(NMSObject.construct(getObject(), packet, enumHand.getEnum(mainHand ? "MAIN_HAND" : "OFF_HAND")));
+            set(mainHandField, enumHand.getEnum(mainHand ? "MAIN_HAND" : "OFF_HAND"));
         }
     }
 
+    @Override
+    public PacketType.Client getType() {
+        return PacketType.Client.ARM_ANIMATION;
+    }
+
     static {
-        armAnimation = Reflections.getNMSClass(packet);
         if(ProtocolVersion.getGameVersion().isOrAbove(ProtocolVersion.V1_9)) {
             enumHand = Reflections.getNMSClass("EnumHand");
             mainHandField = armAnimation.getFieldByType(Enum.class, 0);

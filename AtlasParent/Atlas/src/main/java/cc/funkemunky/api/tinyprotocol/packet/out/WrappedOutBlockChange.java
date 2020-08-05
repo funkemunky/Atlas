@@ -41,6 +41,10 @@ public class WrappedOutBlockChange extends NMSObject {
         super(packet);
     }
 
+    public WrappedOutBlockChange(Object object, Player player) {
+        super(object, player);
+    }
+
     public WrappedOutBlockChange(Block block) {
         if(ProtocolVersion.getGameVersion().isAbove(ProtocolVersion.V1_7_10)) {
             setPacket(packet, block.getX(), block.getY(), block.getZ(), ReflectionsUtil.getWorldHandle(block.getWorld()));

@@ -1,4 +1,4 @@
-package cc.funkemunky.api.tinyprotocol.api.packets.channelhandler;
+package cc.funkemunky.api.tinyprotocol.api.packets.legacy;
 
 import cc.funkemunky.api.Atlas;
 import cc.funkemunky.api.tinyprotocol.api.packets.AbstractTinyProtocol;

@@ -1,17 +1,18 @@
-package cc.funkemunky.api.tinyprotocol.packet.in;
+package cc.funkemunky.api.tinyprotocol.packet.in.impl;
 
 import cc.funkemunky.api.reflections.Reflections;
 import cc.funkemunky.api.reflections.types.WrappedClass;
 import cc.funkemunky.api.reflections.types.WrappedField;
 import cc.funkemunky.api.tinyprotocol.api.NMSObject;
+import cc.funkemunky.api.tinyprotocol.api.Packet;
+import cc.funkemunky.api.tinyprotocol.api.PacketType;
 import cc.funkemunky.api.tinyprotocol.api.ProtocolVersion;
+import cc.funkemunky.api.tinyprotocol.packet.in.ClientPacket;
 import org.bukkit.entity.Player;
 
-public class WrappedInBlockPlace1_9 extends NMSObject {
+public class WrappedInBlockPlace1_9 extends ClientPacket {
 
-    private static final String packet = Client.BLOCK_PLACE_1_9;
-
-    private static WrappedClass blockPlace = Reflections.getNMSClass(packet), enumHandClass;
+    private static WrappedClass blockPlace = Reflections.getNMSClass(PacketType.Client.BLOCK_PLACE), enumHandClass;
     private static WrappedField enumHand, timeStampField;
 
     public WrappedInBlockPlace1_9(Object object, Player player) {
@@ -31,9 +32,13 @@ public class WrappedInBlockPlace1_9 extends NMSObject {
 
     @Override
     public void updateObject() {
-        setObject(NMSObject.construct(getObject(), packet, mainHand
-                ? enumHandClass.getEnum("MAIN_HAND") : enumHandClass.getEnum("OFF_HAND"),
-                timeStamp));
+        set(enumHand, mainHand ? enumHandClass.getEnum("MAIN_HAND") : enumHandClass.getEnum("OFF_HAND"));
+        set(timeStampField, timeStamp);
+    }
+
+    @Override
+    public PacketType.Client getType() {
+        return PacketType.Client.BLOCK_PLACE;
     }
 
     static {
