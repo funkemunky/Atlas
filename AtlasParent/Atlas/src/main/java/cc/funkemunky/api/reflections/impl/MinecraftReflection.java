@@ -42,7 +42,7 @@ public class MinecraftReflection {
     public static WrappedClass playerConnection = Reflections.getNMSClass("PlayerConnection");
     public static WrappedClass networkManager = Reflections.getNMSClass("NetworkManager");
     public static WrappedClass serverConnection = Reflections.getNMSClass("ServerConnection");
-    private static WrappedClass gameProfile = Reflections.getUtilClass("com.mojang.authlib.GameProfile");
+    public static WrappedClass gameProfile = Reflections.getUtilClass("com.mojang.authlib.GameProfile");
     private static WrappedClass propertyMap = Reflections.getUtilClass("com.mojang.authlib.properties.PropertyMap");
     private static WrappedClass forwardMultiMap = Reflections.getUtilClass("com.google.common.collect.ForwardingMultimap");
     public static WrappedClass iChatBaseComponent = Reflections.getNMSClass("IChatBaseComponent");
