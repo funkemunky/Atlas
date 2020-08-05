@@ -171,6 +171,13 @@ public abstract class Packet {
         public static final String ENTITY_VELOCITY = SERVER + "EntityVelocity";
         public static final String ENTITY_DESTROY = SERVER + "EntityDestroy";
         public static final String ENTITY_HEAD_ROTATION = SERVER + "EntityHeadRotation";
+        public static final String ENTITY = SERVER + "Entity";
+        public static final String REL_POSITION = ENTITY + "$" + SERVER + "RelEntityMove";
+        public static final String REL_POSITION_LOOK = ENTITY + "$" + SERVER + "RelEntityMoveLook";
+        public static final String REL_LOOK = ENTITY + "$" + SERVER + "EntityLook";
+        public static final String LEGACY_REL_POSITION = SERVER + "RelEntityMove";
+        public static final String LEGACY_REL_POSITION_LOOK = SERVER + "RelEntityMoveLook";
+        public static final String LEGACY_REL_LOOK = SERVER + "EntityLook";
         public static final String BLOCK_CHANGE = SERVER + "BlockChange";
         public static final String CLOSE_WINDOW = SERVER + "CloseWindow";
         public static final String HELD_ITEM = SERVER + "HeldItemSlot";
