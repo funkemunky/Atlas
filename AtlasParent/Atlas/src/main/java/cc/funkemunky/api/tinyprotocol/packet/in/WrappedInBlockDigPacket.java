@@ -1,20 +1,19 @@
-package cc.funkemunky.api.tinyprotocol.packet.in.impl;
+package cc.funkemunky.api.tinyprotocol.packet.in;
 
 import cc.funkemunky.api.reflections.Reflections;
 import cc.funkemunky.api.reflections.impl.MinecraftReflection;
 import cc.funkemunky.api.reflections.types.WrappedClass;
 import cc.funkemunky.api.reflections.types.WrappedField;
-import cc.funkemunky.api.tinyprotocol.api.PacketType;
+import cc.funkemunky.api.tinyprotocol.api.NMSObject;
 import cc.funkemunky.api.tinyprotocol.api.ProtocolVersion;
-import cc.funkemunky.api.tinyprotocol.packet.in.ClientPacket;
 import cc.funkemunky.api.tinyprotocol.packet.types.BaseBlockPosition;
 import cc.funkemunky.api.tinyprotocol.packet.types.enums.WrappedEnumDirection;
 import lombok.Getter;
 import org.bukkit.entity.Player;
 
 @Getter
-public class WrappedInBlockDigPacket extends ClientPacket {
-    private static final WrappedClass packet = Reflections.getNMSClass(PacketType.Client.BLOCK_DIG);
+public class WrappedInBlockDigPacket extends NMSObject {
+    private static final WrappedClass packet = Reflections.getNMSClass(Client.BLOCK_DIG);
 
     // 1.8+ Fields
     private static WrappedField fieldBlockPosition, fieldDirection, fieldDigType;
@@ -48,11 +47,6 @@ public class WrappedInBlockDigPacket extends ClientPacket {
     }
 
     @Override
-    public PacketType.Client getType() {
-        return PacketType.Client.BLOCK_DIG;
-    }
-
-    @Override
     public void process(Player player, ProtocolVersion version) {
         if (ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.V1_8)) {
             position = new BaseBlockPosition(fetch(fieldPosX), fetch(fieldPosY), fetch(fieldPosZ));
@@ -60,7 +54,7 @@ public class WrappedInBlockDigPacket extends ClientPacket {
             action = EnumPlayerDigType.values()[(int)fetch(fieldIntAction)];
         } else if(ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.v1_15)){
             position = new BaseBlockPosition(fetch(fieldBlockPosition));
-            direction = WrappedEnumDirection.fromVanilla(fetch(fieldDirection));
+            direction = WrappedEnumDirection.fromVanilla((Enum)fetch(fieldDirection));
             action = EnumPlayerDigType.fromVanilla(fetch(fieldDigType));
         }
     }

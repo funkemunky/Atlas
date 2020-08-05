@@ -10,10 +10,10 @@ import org.bukkit.entity.Player;
 
 public class WrappedHandshakingInSetProtocol extends NMSObject {
     private static WrappedClass packet = Reflections.getNMSClass(Login.HANDSHAKE);
-
     public WrappedHandshakingInSetProtocol(Object object) {
         super(object);
     }
+
     public int a, port;
     public String hostname;
     public WrappedEnumProtocol enumProtocol;

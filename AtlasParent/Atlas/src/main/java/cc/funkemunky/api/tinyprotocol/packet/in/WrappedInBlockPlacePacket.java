@@ -1,4 +1,4 @@
-package cc.funkemunky.api.tinyprotocol.packet.in.impl;
+package cc.funkemunky.api.tinyprotocol.packet.in;
 
 import cc.funkemunky.api.reflections.Reflections;
 import cc.funkemunky.api.reflections.impl.CraftReflection;
@@ -6,9 +6,7 @@ import cc.funkemunky.api.reflections.impl.MinecraftReflection;
 import cc.funkemunky.api.reflections.types.WrappedClass;
 import cc.funkemunky.api.reflections.types.WrappedField;
 import cc.funkemunky.api.tinyprotocol.api.NMSObject;
-import cc.funkemunky.api.tinyprotocol.api.PacketType;
 import cc.funkemunky.api.tinyprotocol.api.ProtocolVersion;
-import cc.funkemunky.api.tinyprotocol.packet.in.ClientPacket;
 import cc.funkemunky.api.tinyprotocol.packet.types.BaseBlockPosition;
 import cc.funkemunky.api.tinyprotocol.packet.types.enums.WrappedEnumDirection;
 import lombok.Getter;
@@ -17,7 +15,7 @@ import org.bukkit.inventory.ItemStack;
 
 @Getter
 //TODO Test 1.15
-public class WrappedInBlockPlacePacket extends ClientPacket {
+public class WrappedInBlockPlacePacket extends NMSObject {
     private static final String packet = Client.BLOCK_PLACE;
 
     // Fields
@@ -102,11 +100,6 @@ public class WrappedInBlockPlacePacket extends ClientPacket {
             setObject(NMSObject.construct(getObject(), packet, position.getX(), position.getY(), position.getZ(),
                     CraftReflection.getVanillaItemStack(itemStack), vecX, vecY, vecZ));
         }
-    }
-
-    @Override
-    public PacketType.Client getType() {
-        return PacketType.Client.USE_ITEM;
     }
 
     static {
