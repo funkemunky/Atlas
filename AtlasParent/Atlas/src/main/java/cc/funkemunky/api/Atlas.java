@@ -149,8 +149,6 @@ public class Atlas extends JavaPlugin {
         eventManager.clearAllRegistered();
         getCommandManager(this).unregisterCommands();
 
-        tinyProtocolHandler.getPacketProcessor().shutdown();
-
         MiscUtils.printToConsole(Color.Gray
                 + "Disabling all plugins that depend on Atlas to prevent any errors...");
         Arrays.stream(Bukkit.getPluginManager().getPlugins())
