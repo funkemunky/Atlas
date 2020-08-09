@@ -6,8 +6,10 @@ import cc.funkemunky.api.reflections.types.WrappedField;
 import cc.funkemunky.api.tinyprotocol.api.NMSObject;
 import cc.funkemunky.api.tinyprotocol.api.ProtocolVersion;
 import cc.funkemunky.api.tinyprotocol.packet.types.MathHelper;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
+import java.util.Optional;
 import java.util.UUID;
 
 //TODO Add the ability to use this wrapper to spawn a fake entity and implement other field support.
@@ -19,9 +21,10 @@ public class WrappedOutSpawnEntityLivingPacket extends NMSObject {
 
     private static WrappedClass packet = Reflections.getNMSClass(Server.SPAWN_ENTITY_LIVING);
 
+    public Optional<Entity> entity = Optional.empty();
     public int entityId, type;
     public UUID uuid; //1.9+ only
-    public double x, y, z;
+    public double x, y, z; //an integer versions below 1.9
     public int yaw, pitch, headPitch;
     public byte velocityX, velocityY, velocityZ;
 
@@ -33,10 +36,14 @@ public class WrappedOutSpawnEntityLivingPacket extends NMSObject {
 
         entityId = fetch(fieldEntityId);
 
+        //if this packet is being sent to this player, the entity will be in the same world.
+        entity = player.getWorld().getEntities().stream().filter(ent -> ent.getEntityId() == entityId).findFirst();
         if(ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.V1_9)) {
             x = (int)fetch(fieldX) / 32.;
             y = (int)fetch(fieldY) / 32.;
             z = (int)fetch(fieldZ) / 32.;
+
+            entity.ifPresent(value -> uuid = value.getUniqueId());
         } else {
             x = fetch(fieldX);
             y = fetch(fieldY);
@@ -76,21 +83,21 @@ public class WrappedOutSpawnEntityLivingPacket extends NMSObject {
 
     static {
         fieldEntityId = fetchField(packet, int.class, 0);
-
+        fieldType = fetchField(packet, int.class, 1);
         if(ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.V1_9)) {
-            fieldX = fetchField(packet, int.class, 1);
-            fieldY = fetchField(packet, int.class, 2);
-            fieldZ = fetchField(packet, int.class, 3);
-            fieldYaw = fetchField(packet, int.class, 4);
-            fieldPitch = fetchField(packet, int.class, 5);
-            fieldHeadPitch = fetchField(packet, int.class, 6);
+            fieldX = fetchField(packet, int.class, 2);
+            fieldY = fetchField(packet, int.class, 3);
+            fieldZ = fetchField(packet, int.class, 4);
+            fieldYaw = fetchField(packet, int.class, 5);
+            fieldPitch = fetchField(packet, int.class, 6);
+            fieldHeadPitch = fetchField(packet, int.class, 7);
         } else {
             fieldX = fetchField(packet, double.class, 0);
             fieldY = fetchField(packet, double.class, 1);
             fieldZ = fetchField(packet, double.class, 2);
-            fieldYaw = fetchField(packet, int.class, 1);
-            fieldPitch = fetchField(packet, int.class, 2);
-            fieldHeadPitch = fetchField(packet, int.class, 3);
+            fieldYaw = fetchField(packet, int.class, 2);
+            fieldPitch = fetchField(packet, int.class, 3);
+            fieldHeadPitch = fetchField(packet, int.class, 4);
             fieldUuid = fetchField(packet, UUID.class, 0);
         }
         fieldVelocityX = fetchField(packet, byte.class, 0);

@@ -47,6 +47,9 @@ public class WrappedOutVelocityPacket extends NMSObject {
 
     @Override
     public void updateObject() {
-
+        set(fieldId, id);
+        set(fieldX, (int)(x * 8000.));
+        set(fieldY, (int)(y * 8000.));
+        set(fieldZ, (int)(z * 8000.));
     }
 }
