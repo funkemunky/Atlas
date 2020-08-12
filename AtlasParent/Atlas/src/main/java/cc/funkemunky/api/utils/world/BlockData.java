@@ -105,7 +105,7 @@ public enum BlockData {
             XMaterial.WITHER_SKELETON_WALL_SKULL.parseMaterial(), XMaterial.WITHER_SKELETON_SKULL.parseMaterial()),
 
     _DOOR(new DoorHandler(), Arrays.stream(Material.values())
-            .filter(mat -> mat.name().contains("DOOR"))
+            .filter(mat -> mat.name().contains("DOOR") && !mat.name().contains("TRAP"))
             .toArray(Material[]::new)),
 
     _HOPPER(new HopperBounding(), XMaterial.HOPPER.parseMaterial()),
