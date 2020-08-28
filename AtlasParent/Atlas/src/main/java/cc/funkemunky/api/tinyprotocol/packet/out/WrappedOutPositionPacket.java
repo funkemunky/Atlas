@@ -77,10 +77,10 @@ public class WrappedOutPositionPacket extends NMSObject {
                 flags.add(EnumPlayerTeleportFlags.Z);
             }
             if((flagByte & 0x08) == 0x08) {
-                flags.add(EnumPlayerTeleportFlags.X_ROT);
+                flags.add(EnumPlayerTeleportFlags.Y_ROT);
             }
             if((flagByte & 0x10) == 0x10) {
-                flags.add(EnumPlayerTeleportFlags.Y_ROT);
+                flags.add(EnumPlayerTeleportFlags.X_ROT);
             }
         } else {
             Set<Enum> vflags = fetch(fieldFlags);
