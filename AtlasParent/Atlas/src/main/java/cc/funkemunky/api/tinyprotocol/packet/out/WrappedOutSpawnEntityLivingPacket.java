@@ -1,5 +1,6 @@
 package cc.funkemunky.api.tinyprotocol.packet.out;
 
+import cc.funkemunky.api.Atlas;
 import cc.funkemunky.api.reflections.Reflections;
 import cc.funkemunky.api.reflections.types.WrappedClass;
 import cc.funkemunky.api.reflections.types.WrappedField;
@@ -37,7 +38,8 @@ public class WrappedOutSpawnEntityLivingPacket extends NMSObject {
         entityId = fetch(fieldEntityId);
 
         //if this packet is being sent to this player, the entity will be in the same world.
-        entity = player.getWorld().getEntities().stream().filter(ent -> ent.getEntityId() == entityId).findFirst();
+        Optional.ofNullable(Atlas.getInstance().getEntityIds().get(entityId))
+                .ifPresent(uuid -> entity = Optional.ofNullable(Atlas.getInstance().getEntities().get(uuid)));
         if(ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.V1_9)) {
             x = (int)fetch(fieldX) / 32.;
             y = (int)fetch(fieldY) / 32.;

@@ -63,7 +63,8 @@ public class Atlas extends JavaPlugin {
     private boolean done;
     private ExecutorService service;
     private File file;
-    private Map<UUID, List<Entity>> entities = Collections.synchronizedMap(new HashMap<>());
+    private final Map<UUID, Entity> entities = Collections.synchronizedMap(new HashMap<>());
+    private final Map<Integer, UUID> entityIds = Collections.synchronizedMap(new HashMap<>());
     private Map<Location, Block> blocksMap = new ConcurrentHashMap<>();
     private Map<String, CommandManager> pluginCommandManagers = new HashMap<>();
 
@@ -185,17 +186,18 @@ public class Atlas extends JavaPlugin {
             getSchedular().scheduleAtFixedRate(this::runTickEvent, 50L, 50L, TimeUnit.MILLISECONDS);
         }
 
-        //Setting up map
-        for (World world : Bukkit.getWorlds()) {
-            entities.put(world.getUID(), new ArrayList<>());
-        }
-
         RunUtils.taskTimer(() -> {
-            for (World world : Bukkit.getWorlds()) {
-                entities.remove(world.getUID());
-                entities
-                        .put(world.getUID(),
-                                Collections.synchronizedList(new ArrayList<>(world.getEntities())));
+            synchronized (entities) {
+                for (World world : Bukkit.getWorlds()) {
+                    for (Entity entity : world.getEntities()) {
+                       entities.put(entity.getUniqueId(), entity);
+                    }
+                }
+                entities.keySet().parallelStream().filter(uuid -> entities.get(uuid) == null)
+                        .sequential().forEach(entities::remove);
+            }
+            synchronized (entityIds) {
+                entities.forEach((id, entity) -> entityIds.put(entity.getEntityId(), entity.getUniqueId()));
             }
         }, 2L, 5L);
 
