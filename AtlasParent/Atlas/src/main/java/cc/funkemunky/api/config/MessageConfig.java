@@ -53,8 +53,9 @@ public class MessageConfig {
     }
 
     public String msg(String key, String def) {
+        boolean contains = messages.containsKey(key);
         String string = Color.translate(messages.computeIfAbsent(key, stringKey -> def));
-        save();
+        if(!contains) save();
         return string;
     }
 
