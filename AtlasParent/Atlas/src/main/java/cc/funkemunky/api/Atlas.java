@@ -49,7 +49,6 @@ public class Atlas extends JavaPlugin {
     private BlockBoxManager blockBoxManager;
     private ScheduledExecutorService schedular;
     private ConsoleCommandSender consoleSender;
-    private CommandManager commandManager;
     private FunkeCommandManager funkeCommandManager;
     private Updater updater;
     private BaseProfiler profile;
@@ -64,8 +63,10 @@ public class Atlas extends JavaPlugin {
     private boolean done;
     private ExecutorService service;
     private File file;
-    private Map<UUID, List<Entity>> entities = Collections.synchronizedMap(new HashMap<>());
+    private final Map<UUID, Entity> entities = Collections.synchronizedMap(new HashMap<>());
+    private final Map<Integer, UUID> entityIds = Collections.synchronizedMap(new HashMap<>());
     private Map<Location, Block> blocksMap = new ConcurrentHashMap<>();
+    private Map<String, CommandManager> pluginCommandManagers = new HashMap<>();
 
     @ConfigSetting(path = "updater", name = "autoDownload")
     private static boolean autoDownload = false;
@@ -100,7 +101,6 @@ public class Atlas extends JavaPlugin {
 
         MiscUtils.printToConsole(Color.Gray + "Loading utilities and managers...");
         blockBoxManager = new BlockBoxManager();
-        commandManager = new CommandManager(this);
         funkeCommandManager = new FunkeCommandManager();
 
         updater = new Updater();
@@ -131,7 +131,7 @@ public class Atlas extends JavaPlugin {
             if(autoDownload) {
                 MiscUtils.printToConsole(Color.Gray + "Downloading new version...");
                 updater.downloadNewVersion();
-                MiscUtils.printToConsole(Color.Green + "Atlas v" + updater.getVersion()
+                MiscUtils.printToConsole(Color.Green + "Atlas v" + updater.getLatestUpdate()
                         + " has been downloaded. Please restart/reload your server to import it.");
             }
         }
@@ -148,7 +148,7 @@ public class Atlas extends JavaPlugin {
         Bukkit.getScheduler().cancelTasks(this);
 
         eventManager.clearAllRegistered();
-        getCommandManager().unregisterCommands();
+        getCommandManager(this).unregisterCommands();
 
         MiscUtils.printToConsole(Color.Gray
                 + "Disabling all plugins that depend on Atlas to prevent any errors...");
@@ -167,6 +167,10 @@ public class Atlas extends JavaPlugin {
         schedular.shutdown();
     }
 
+    public CommandManager getCommandManager(Plugin plugin) {
+        return pluginCommandManagers.computeIfAbsent(plugin.getName(), key -> new CommandManager(plugin));
+    }
+
     private void runTasks() {
         //This allows us to use ticks for intervalTime comparisons to allow for more parallel calculations to actual
         //Minecraft and it also has the added benefit of being lighter than using System.currentTimeMillis.
@@ -182,17 +186,18 @@ public class Atlas extends JavaPlugin {
             getSchedular().scheduleAtFixedRate(this::runTickEvent, 50L, 50L, TimeUnit.MILLISECONDS);
         }
 
-        //Setting up map
-        for (World world : Bukkit.getWorlds()) {
-            entities.put(world.getUID(), new ArrayList<>());
-        }
-
         RunUtils.taskTimer(() -> {
-            for (World world : Bukkit.getWorlds()) {
-                entities.remove(world.getUID());
-                entities
-                        .put(world.getUID(),
-                                Collections.synchronizedList(new ArrayList<>(world.getEntities())));
+            synchronized (entities) {
+                for (World world : Bukkit.getWorlds()) {
+                    for (Entity entity : world.getEntities()) {
+                       entities.put(entity.getUniqueId(), entity);
+                    }
+                }
+                entities.keySet().parallelStream().filter(uuid -> entities.get(uuid) == null)
+                        .sequential().forEach(entities::remove);
+            }
+            synchronized (entityIds) {
+                entities.forEach((id, entity) -> entityIds.put(entity.getEntityId(), entity.getUniqueId()));
             }
         }, 2L, 5L);
 
@@ -293,7 +298,7 @@ public class Atlas extends JavaPlugin {
                     if(loadCommands && annotation.commands()) {
                         MiscUtils.printToConsole("&7Registering commands in class &e"
                                 + c.getParent().getSimpleName() + "&7...");
-                        Atlas.getInstance().getCommandManager().registerCommands(obj);
+                        Atlas.getInstance().getCommandManager(plugin).registerCommands(obj);
                     }
 
                     c.getMethods(method -> method.getMethod().isAnnotationPresent(Invoke.class))
@@ -361,7 +366,7 @@ public class Atlas extends JavaPlugin {
                     e.printStackTrace();
                 }
             } else {
-                RunUtils.task(() -> blocksMap.put(key, key.getBlock()));
+                return BlockUtils.getBlock(location);
             }
             return null;
         });

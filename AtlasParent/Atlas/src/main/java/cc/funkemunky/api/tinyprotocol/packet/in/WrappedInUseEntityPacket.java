@@ -35,8 +35,6 @@ public class WrappedInUseEntityPacket extends NMSObject {
     private Vec3D vec;
     private WrappedEnumHand enumHand;
 
-    private static Map<Integer, Entity> cachedEntities = new HashMap<>();
-
     public WrappedInUseEntityPacket(Object packet, Player player) {
         super(packet, player);
     }
@@ -48,19 +46,8 @@ public class WrappedInUseEntityPacket extends NMSObject {
         action = fieldAct == null ? EnumEntityUseAction.INTERACT_AT : EnumEntityUseAction.valueOf(fieldAct.name());
 
         //We cache the entities so we dont have to loop every single packet for the same entity.
-        entity = cachedEntities.computeIfAbsent(id, key -> {
-            List<Entity> entities = Atlas.getInstance().getEntities()
-                    .getOrDefault(player.getWorld().getUID(), new ArrayList<>());
-
-            for (Entity ent : entities) {
-                if(ent == null) continue;
-                if(id == ent.getEntityId()) {
-                    cachedEntities.put(id, ent);
-                    return ent;
-                }
-            }
-            return null;
-        });
+        Optional.ofNullable(Atlas.getInstance().getEntityIds().get(id))
+                .ifPresent(uuid -> entity = Atlas.getInstance().getEntities().get(uuid));
 
         if(ProtocolVersion.getGameVersion().isOrAbove(ProtocolVersion.V1_8)) {
             Object vec = fetch(vecField);

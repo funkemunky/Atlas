@@ -7,8 +7,10 @@ import cc.funkemunky.api.reflections.types.WrappedField;
 import cc.funkemunky.api.reflections.types.WrappedMethod;
 import cc.funkemunky.api.tinyprotocol.api.ProtocolVersion;
 import cc.funkemunky.api.tinyprotocol.packet.types.BaseBlockPosition;
+import cc.funkemunky.api.tinyprotocol.packet.types.Vec3D;
 import cc.funkemunky.api.tinyprotocol.packet.types.enums.WrappedEnumAnimation;
 import cc.funkemunky.api.utils.BoundingBox;
+import cc.funkemunky.api.utils.Materials;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
@@ -40,7 +42,7 @@ public class MinecraftReflection {
     public static WrappedClass playerConnection = Reflections.getNMSClass("PlayerConnection");
     public static WrappedClass networkManager = Reflections.getNMSClass("NetworkManager");
     public static WrappedClass serverConnection = Reflections.getNMSClass("ServerConnection");
-    private static WrappedClass gameProfile = Reflections.getUtilClass("com.mojang.authlib.GameProfile");
+    public static WrappedClass gameProfile = Reflections.getUtilClass("com.mojang.authlib.GameProfile");
     private static WrappedClass propertyMap = Reflections.getUtilClass("com.mojang.authlib.properties.PropertyMap");
     private static WrappedClass forwardMultiMap = Reflections.getUtilClass("com.google.common.collect.ForwardingMultimap");
     public static WrappedClass iChatBaseComponent = Reflections.getNMSClass("IChatBaseComponent");
@@ -81,7 +83,7 @@ public class MinecraftReflection {
     private static WrappedMethod addCBoxes;
     public static WrappedClass blockPos;
     private static WrappedConstructor blockPosConstructor;
-    private static WrappedMethod getBlockData;
+    private static WrappedMethod getBlockData, getBlock;
     private static WrappedField blockData = block.getFieldByName("blockData");
     private static WrappedField frictionFactor = block.getFieldByName("frictionFactor");
     private static WrappedField strength = block.getFieldByName("strength");
@@ -113,7 +115,7 @@ public class MinecraftReflection {
     }
 
     public static List<BoundingBox> getBlockBox(@Nullable Entity entity, Block block) {
-        Object vanillaBlock = CraftReflection.getVanillaBlock(block);
+        Object vanillaBlock = getBlock(block);
         Object world = CraftReflection.getVanillaWorld(block.getWorld());
 
         //TODO Use increasedHeight if it doesnt get fence or wall boxes properly.
@@ -160,6 +162,17 @@ public class MinecraftReflection {
         return activeItemField.get(humanEntity);
     }
 
+    public static <T> T getBlock(Block block) {
+        if(ProtocolVersion.getGameVersion().isOrAbove(ProtocolVersion.V1_8)) {
+            Object blockData = getBlockData(block);
+
+            return getBlock.invoke(blockData);
+        } else {
+            return worldGetType.invoke(CraftReflection.getVanillaWorld(block.getWorld()),
+                    block.getX(), block.getY(), block.getZ());
+        }
+    }
+
     //Can use either a Bukkit or vanilla object
     public static <T> T getItemFromStack(Object object) {
         Object vanillaStack;
@@ -187,7 +200,7 @@ public class MinecraftReflection {
         Object inventory = CraftReflection.getVanillaInventory(player);
         Object vBlock;
         if(block instanceof Block) {
-            vBlock = CraftReflection.getVanillaBlock((Block)block);
+            vBlock = getBlock((Block)block);
         } else vBlock = block;
 
         return canDestroyMethod.invoke(inventory,
@@ -199,7 +212,7 @@ public class MinecraftReflection {
     public static float getFriction(Object block) {
         Object vBlock;
         if(block instanceof Block) {
-            vBlock = CraftReflection.getVanillaBlock((Block)block);
+            vBlock = getBlock((Block)block);
         } else vBlock = block;
 
         return frictionFactor.get(vBlock);
@@ -213,7 +226,7 @@ public class MinecraftReflection {
     public static float getBlockDurability(Object block) {
         Object vBlock;
         if(block instanceof Block) {
-            vBlock = CraftReflection.getVanillaBlock((Block)block);
+            vBlock = getBlock((Block)block);
         } else vBlock = block;
 
         return strength.get(vBlock);
@@ -319,7 +332,23 @@ public class MinecraftReflection {
         new WrappedClass(channel.getClass()).getMethod("close").invoke(channel);
     }
 
-    //1.13 Method
+    private static WrappedMethod fluidMethod, getFlowMethod;
+
+    public static Vec3D getBlockFlow(Block block) {
+        if(Materials.checkFlag(block.getType(), Materials.LIQUID)) {
+            Object world = CraftReflection.getVanillaWorld(block.getWorld());
+            BaseBlockPosition pos = new BaseBlockPosition(block.getX(), block.getY(), block.getZ());
+            if(ProtocolVersion.getGameVersion().isOrBelow(ProtocolVersion.V1_13)) {
+                Object vanillaBlock = CraftReflection.getVanillaBlock(block);
+
+                return new Vec3D((Object)getFlowMethod.invoke(vanillaBlock, world, pos.getAsBlockPosition()));
+            } else {
+                Object fluid = fluidMethod.invoke(world, pos.getAsBlockPosition());
+
+                return new Vec3D((Object)getFlowMethod.invoke(fluid, world, pos.getAsBlockPosition()));
+            }
+        } else return new Vec3D(0,0,0);
+    }
 
 
     public static <T> T toAABB(BoundingBox box) {
@@ -349,12 +378,13 @@ public class MinecraftReflection {
 
     static {
         if(ProtocolVersion.getGameVersion().isAbove(ProtocolVersion.V1_7_10)) {
+            iBlockData = Reflections.getNMSClass("IBlockData");
             blockPos = Reflections.getNMSClass("BlockPosition");
+            getBlock = iBlockData.getMethod("getBlock");
             blockPosConstructor = blockPos.getConstructor(int.class, int.class, int.class);
             getBlockData = block.getMethod("getBlockData");
             aabbConstructor = axisAlignedBB
                     .getConstructor(double.class, double.class, double.class, double.class, double.class, double.class);
-            iBlockData = Reflections.getNMSClass("IBlockData");
             worldGetType = worldServer.getMethod("getType", blockPos.getParent());
         } else {
             idioticOldStaticConstructorAABB = axisAlignedBB.getMethod("a",
@@ -372,10 +402,13 @@ public class MinecraftReflection {
                 addCBoxes = block.getMethod("a", world.getParent(), blockPos.getParent(), iBlockData.getParent(),
                         axisAlignedBB.getParent(), List.class, entity.getParent());
             }
+
+            getFlowMethod = Reflections.getNMSClass("BlockFluids").getDeclaredMethodByType(vec3D.getParent(), 0);
         } else if(ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.V1_13)) {
             getCubes = world.getMethod("getCubes", entity.getParent(), axisAlignedBB.getParent());
             addCBoxes = block.getMethod("a", world.getParent(), blockPos.getParent(), iBlockData.getParent(),
                     axisAlignedBB.getParent(), List.class, entity.getParent());
+            getFlowMethod = Reflections.getNMSClass("BlockFluids").getDeclaredMethodByType(vec3D.getParent(), 0);
         } else {
             worldReader = Reflections.getNMSClass("IWorldReader");
             //1.13 and 1.13.1 returns just VoxelShape while 1.13.2+ returns a Stream<VoxelShape>
@@ -383,6 +416,8 @@ public class MinecraftReflection {
                     double.class, double.class, double.class);
             voxelShape = Reflections.getNMSClass("VoxelShape");
             getCubesFromVoxelShape = voxelShape.getMethodByType(List.class, 0);
+            fluidMethod = world.getMethod("getFluidIfLoaded");
+            getFlowMethod = Reflections.getNMSClass("Fluid").getMethodByType(vec3D.getParent(), 0);
         }
 
         if(ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.V1_9)) {

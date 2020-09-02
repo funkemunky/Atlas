@@ -2,21 +2,25 @@ package cc.funkemunky.api.updater;
 
 import cc.funkemunky.api.Atlas;
 import cc.funkemunky.api.utils.ConfigSetting;
+import dev.brighten.db.utils.json.JSONException;
+import dev.brighten.db.utils.json.JSONObject;
+import dev.brighten.db.utils.json.JsonReader;
 import lombok.Getter;
 
 import java.io.*;
 import java.net.URL;
-import java.net.URLConnection;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 
 @Getter
 public class Updater {
-    private int update = -1, currentUpdate = 62;
-    private String version, downloadLink;
+    private String downloadLink = "N/A";
+    private String viewLink = "N/A";
+    private String releaseDate = "N/A";
+    private final String currentUpdate = Atlas.getInstance().getDescription().getVersion();
+    private String latestUpdate = "N/A";
     private File pluginLocation;
-    private boolean importantUpdate = true;
 
     @ConfigSetting(path = "updater")
     private static boolean checkForUpdates = true;
@@ -27,44 +31,23 @@ public class Updater {
 
     public void runUpdateCheck() {
         if(checkForUpdates) {
-            String[] toSort = readFromUpdaterPastebin();
+            try {
+                JSONObject object = JsonReader
+                        .readJsonFromUrl("https://api.github.com/repos/funkemunky/Atlas/releases/latest");
 
-            if(toSort.length > 0) {
-                update = Integer.parseInt(toSort[0]);
-                version = toSort[1];
-                downloadLink = toSort[2];
-                importantUpdate = Boolean.parseBoolean(toSort[3]);
-            } else {
-                version = downloadLink = "N/A";
+                latestUpdate = object.getString("tag_name");
+                viewLink = object.getString("html_url");
+                releaseDate = object.getString("published_at");
+                downloadLink = object.getJSONArray("assets").getJSONObject(0)
+                        .getString("browser_download_url");
+            } catch (IOException | JSONException e) {
+                e.printStackTrace();
             }
-        } else {
-            version = Atlas.getInstance().getDescription().getVersion();
         }
-    }
-
-    private String[] readFromUpdaterPastebin() {
-        try {
-            URL url = new URL("https://pastebin.com/raw/fX2Ebkpz");
-            URLConnection connection = url.openConnection();
-
-            BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-
-            String line = reader.readLine();
-
-            if(line != null) return line.split(";");
-        } catch(Exception e) {
-            e.printStackTrace();
-        }
-
-        return new String[0];
     }
 
     public boolean needsToUpdate() {
-        return update > currentUpdate;
-    }
-
-    public boolean needsToUpdateIfImportant() {
-        return importantUpdate && update > currentUpdate;
+        return !currentUpdate.equals(latestUpdate);
     }
 
     public void downloadNewVersion() {

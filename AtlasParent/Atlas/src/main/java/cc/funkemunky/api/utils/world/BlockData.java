@@ -48,7 +48,7 @@ public enum BlockData {
         return new SimpleCollisionBox(0,0,0,1.,1.,1.);
     }, XMaterial.VINE.parseMaterial()),
 
-    _LIQUID(new SimpleCollisionBox(0, 0, 0, 1, 0.9, 1),
+    _LIQUID(new SimpleCollisionBox(0, 0, 0, 1f, 0.9f, 1f),
             XMaterial.WATER.parseMaterial(), XMaterial.LAVA.parseMaterial(),
             MiscUtils.match("STATIONARY_LAVA"), MiscUtils.match("STATIONARY_WATER")),
 

@@ -38,6 +38,7 @@ public class BaseProfiler implements Profiler {
         long extense = System.nanoTime();
         StackTraceElement stack = Thread.currentThread().getStackTrace()[2];
         stop(stack.getMethodName(), extense);
+        totalCalls++;
     }
 
     @Override
@@ -56,7 +57,8 @@ public class BaseProfiler implements Profiler {
                 for (String key : timingsMap.keySet()) {
                     Timing timing = timingsMap.get(key);
 
-                    toReturn.put(key, new Tuple<>(timing.calls, timing.total / (double)timing.calls));
+                    toReturn.put(key, new Tuple<>(timing.calls, timing.average.getAverage()
+                            * (timing.calls / (double)totalCalls)));
                 }
                 break;
             }

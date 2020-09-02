@@ -107,8 +107,10 @@ public abstract class Packet {
     }
 
     public static class Type {
-        public static final String WATCHABLE_OBJECT = (Reflection.VERSION.startsWith("v1_7") || Reflection.VERSION.startsWith("v1_8_R1")) ? "WatchableObject" : "DataWatcher$WatchableObject";
-        public static final String BASEBLOCKPOSITION = "BaseBlockPosition";
+        public static final String WATCHABLE_OBJECT = Reflection.NMS_PREFIX
+                + (ProtocolVersion.getGameVersion().isOrBelow(ProtocolVersion.V1_8)
+                ? ".WatchableObject" : ".DataWatcher$WatchableObject");
+        public static final String BASEBLOCKPOSITION = Reflection.NMS_PREFIX + "BaseBlockPosition";
         public static final String ITEMSTACK = Reflection.NMS_PREFIX + ".ItemStack";
         public static final String ENTITY = Reflection.NMS_PREFIX + ".Entity";
         public static final String DATAWATCHER = Reflection.NMS_PREFIX + ".DataWatcher";
@@ -116,6 +118,7 @@ public abstract class Packet {
         public static final String CRAFTITEMSTACK = Reflection.OBC_PREFIX + ".inventory.CraftItemStack";
         public static final String GAMEPROFILE = "com.mojang.authlib.GameProfile";
         public static final String PROPERTYMAP = "com.mojang.authlib.PropertyMap";
+        public static final String CHUNKCOORDINTPAIR = Reflection.NMS_PREFIX + ".ChunkCoordInPair";
     }
 
     public static class Client {
@@ -171,6 +174,13 @@ public abstract class Packet {
         public static final String ENTITY_VELOCITY = SERVER + "EntityVelocity";
         public static final String ENTITY_DESTROY = SERVER + "EntityDestroy";
         public static final String ENTITY_HEAD_ROTATION = SERVER + "EntityHeadRotation";
+        public static final String ENTITY = SERVER + "Entity";
+        public static final String REL_POSITION = ENTITY + "$" + SERVER + "RelEntityMove";
+        public static final String REL_POSITION_LOOK = ENTITY + "$" + SERVER + "RelEntityMoveLook";
+        public static final String REL_LOOK = ENTITY + "$" + SERVER + "EntityLook";
+        public static final String LEGACY_REL_POSITION = SERVER + "RelEntityMove";
+        public static final String LEGACY_REL_POSITION_LOOK = SERVER + "RelEntityMoveLook";
+        public static final String LEGACY_REL_LOOK = SERVER + "EntityLook";
         public static final String BLOCK_CHANGE = SERVER + "BlockChange";
         public static final String CLOSE_WINDOW = SERVER + "CloseWindow";
         public static final String HELD_ITEM = SERVER + "HeldItemSlot";
@@ -180,6 +190,7 @@ public abstract class Packet {
         public static final String COMMANDS = SERVER + "Commands";
         public static final String OPEN_WINDOW = SERVER + "OpenWindow";
         public static final String ENTITY_EFFECT = SERVER + "EntityEffect";
+        public static final String MULTI_BLOCK_CHANGE = SERVER + "MultiBlockChange";
     }
 
     public static class Login {

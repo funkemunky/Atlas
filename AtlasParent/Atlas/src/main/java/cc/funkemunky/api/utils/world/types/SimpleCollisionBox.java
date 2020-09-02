@@ -3,7 +3,6 @@ package cc.funkemunky.api.utils.world.types;
 import cc.funkemunky.api.reflections.impl.MinecraftReflection;
 import cc.funkemunky.api.tinyprotocol.packet.types.enums.WrappedEnumParticle;
 import cc.funkemunky.api.utils.BoundingBox;
-import cc.funkemunky.api.utils.MathUtils;
 import cc.funkemunky.api.utils.MiscUtils;
 import cc.funkemunky.api.utils.ReflectionsUtil;
 import cc.funkemunky.api.utils.world.CollisionBox;
@@ -68,7 +67,7 @@ public class SimpleCollisionBox implements CollisionBox {
         this(MinecraftReflection.fromAABB(aabb));
     }
 
-    private void sort() {
+    public void sort() {
         double temp = 0;
         if (xMin >= xMax) {
             temp = xMin;
@@ -200,6 +199,8 @@ public class SimpleCollisionBox implements CollisionBox {
     public boolean isCollided(CollisionBox other) {
         if (other instanceof SimpleCollisionBox) {
             SimpleCollisionBox box = ((SimpleCollisionBox) other);
+            box.sort();
+            sort();
             return box.xMax >= this.xMin && box.xMin <= this.xMax
                     && box.yMax >= this.yMin && box.yMin <= this.yMax
                     && box.zMax >= this.zMin && box.zMin <= this.zMax;

@@ -7,18 +7,14 @@ import cc.funkemunky.api.utils.Color;
 import cc.funkemunky.api.utils.Init;
 import cc.funkemunky.api.utils.MiscUtils;
 import cc.funkemunky.api.utils.Tuple;
-import dev.brighten.db.utils.Pair;
 import lombok.val;
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.TextComponent;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 
-import javax.naming.Name;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -31,8 +27,8 @@ public class ExampleCommand {
     @Command(name = "example", description = "an example command", display = "example",
             usage = "/<command>", permission = "atlas.command.example", aliases = "atlasexample")
     public void onCommand(CommandAdapter cmd) {
-        Atlas.getInstance().getCommandManager().runHelpMessage(cmd, cmd.getSender(),
-                Atlas.getInstance().getCommandManager().getDefaultScheme());
+        Atlas.getInstance().getCommandManager(Atlas.getInstance()).runHelpMessage(cmd, cmd.getSender(),
+                Atlas.getInstance().getCommandManager(Atlas.getInstance()).getDefaultScheme());
     }
 
     @Command(name = "example.execute", description = "execute a test message",

@@ -60,7 +60,7 @@ public class FunkeFile {
         readFile();
     }
 
-    public void clear() {
+    public synchronized void clear() {
         this.lines.clear();
         if(file.delete()) {
             try {
@@ -72,11 +72,11 @@ public class FunkeFile {
 
     }
 
-    public void addLine(String line) {
+    public synchronized void addLine(String line) {
         this.lines.add(line);
     }
 
-    public void write() {
+    public synchronized void write() {
         try {
             FileWriter fw = new FileWriter(this.file, false);
             BufferedWriter bw = new BufferedWriter(fw);
@@ -91,7 +91,7 @@ public class FunkeFile {
         }
     }
 
-    public void readFile() {
+    public synchronized void readFile() {
         this.lines.clear();
         try {
             FileReader fr = new FileReader(this.file);
