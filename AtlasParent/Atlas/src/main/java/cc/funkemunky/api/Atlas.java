@@ -63,8 +63,8 @@ public class Atlas extends JavaPlugin {
     private boolean done;
     private ExecutorService service;
     private File file;
-    private final Map<UUID, Entity> entities = Collections.synchronizedMap(new HashMap<>());
-    private final Map<Integer, UUID> entityIds = Collections.synchronizedMap(new HashMap<>());
+    private final Map<UUID, Entity> entities = new ConcurrentHashMap<>();
+    private final Map<Integer, UUID> entityIds = new ConcurrentHashMap<>();
     private Map<Location, Block> blocksMap = new ConcurrentHashMap<>();
     private Map<String, CommandManager> pluginCommandManagers = new HashMap<>();
 
