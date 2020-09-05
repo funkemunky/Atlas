@@ -1,0 +1,6 @@
+name: Atlas
+main: cc.funkemunky.api.Atlas
+version: ${project.version}
+author: funkemunky
+commands:
+  atlas:

@@ -1,0 +1,5 @@
+name: AtlasBungee
+main: cc.funkemunky.bungee.AtlasBungee
+version: ${project.version}
+author: funkemunky
+softdepend: [RedisBungee]
