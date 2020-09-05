@@ -38,3 +38,6 @@ AtlasParent/AtlasBungee/target/**
 AtlasParent/**/buildNumber.properties
 AtlasParent/AtlasBungee/buildNumber.properties
 AtlasParent/AtlasBungee/buildNumber.properties
+
+**/dependency-reduced-pom.xml
+**/**/dependency-reduced-pom.xml
