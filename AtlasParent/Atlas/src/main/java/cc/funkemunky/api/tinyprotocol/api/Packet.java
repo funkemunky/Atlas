@@ -118,7 +118,6 @@ public abstract class Packet {
         public static final String CRAFTITEMSTACK = Reflection.OBC_PREFIX + ".inventory.CraftItemStack";
         public static final String GAMEPROFILE = "com.mojang.authlib.GameProfile";
         public static final String PROPERTYMAP = "com.mojang.authlib.PropertyMap";
-        public static final String CHUNKCOORDINTPAIR = Reflection.NMS_PREFIX + ".ChunkCoordInPair";
     }
 
     public static class Client {
@@ -190,7 +189,6 @@ public abstract class Packet {
         public static final String COMMANDS = SERVER + "Commands";
         public static final String OPEN_WINDOW = SERVER + "OpenWindow";
         public static final String ENTITY_EFFECT = SERVER + "EntityEffect";
-        public static final String MULTI_BLOCK_CHANGE = SERVER + "MultiBlockChange";
     }
 
     public static class Login {
