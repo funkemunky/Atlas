@@ -7,7 +7,6 @@ import org.bukkit.craftbukkit.v1_9_R2.entity.CraftPlayer;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 
-@Deprecated
 public class BlockBox1_9_R2 implements BlockBox {
 
     @Override

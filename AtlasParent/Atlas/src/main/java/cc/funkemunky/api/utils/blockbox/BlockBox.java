@@ -4,7 +4,6 @@ import org.bukkit.Location;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 
-@Deprecated
 public interface BlockBox {
 
     boolean isChunkLoaded(Location loc);
