@@ -1,5 +1,6 @@
 package cc.funkemunky.api.reflections.impl;
 
+import cc.funkemunky.api.Atlas;
 import cc.funkemunky.api.reflections.Reflections;
 import cc.funkemunky.api.reflections.types.WrappedClass;
 import cc.funkemunky.api.reflections.types.WrappedConstructor;
@@ -11,6 +12,7 @@ import cc.funkemunky.api.tinyprotocol.packet.types.Vec3D;
 import cc.funkemunky.api.tinyprotocol.packet.types.enums.WrappedEnumAnimation;
 import cc.funkemunky.api.utils.BoundingBox;
 import cc.funkemunky.api.utils.Materials;
+import cc.funkemunky.api.utils.MiscUtils;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
@@ -21,6 +23,7 @@ import org.bukkit.inventory.ItemStack;
 import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 public class MinecraftReflection {
@@ -29,7 +32,8 @@ public class MinecraftReflection {
     public static WrappedClass entityHuman = Reflections.getNMSClass("EntityHuman");
     public static WrappedClass entityLiving = Reflections.getNMSClass("EntityLiving");
     public static WrappedClass block = Reflections.getNMSClass("Block");
-    public static WrappedClass iBlockData;
+    public static WrappedClass iBlockData, blockBase,
+            chunkProviderServer = Reflections.getNMSClass("ChunkProviderServer");
     public static WrappedClass itemClass = Reflections.getNMSClass("Item");
     public static WrappedClass world = Reflections.getNMSClass("World");
     public static WrappedClass worldServer = Reflections.getNMSClass("WorldServer");
@@ -85,11 +89,12 @@ public class MinecraftReflection {
     private static WrappedConstructor blockPosConstructor;
     private static WrappedMethod getBlockData, getBlock;
     private static WrappedField blockData = block.getFieldByName("blockData");
-    private static WrappedField frictionFactor = block.getFieldByName("frictionFactor");
+    private static WrappedField frictionFactor;
     private static WrappedField strength = block.getFieldByName("strength");
-    private static WrappedField chunkProvider = MinecraftReflection.world
-            .getFieldByType(Reflections.getNMSClass("IChunkProvider").getParent(), 0);
-    private static WrappedField chunksList = Reflections.getNMSClass("ChunkProviderServer")
+    private static WrappedField chunkProvider = MinecraftReflection.worldServer
+            .getFieldByType(Reflections.getNMSClass(ProtocolVersion.getGameVersion()
+                    .isBelow(ProtocolVersion.v1_16) ? "IChunkProvider" : "ChunkProviderServer").getParent(), 0);
+    private static WrappedField chunksList = chunkProviderServer
             .getFieldByName("chunks");
 
     //Entity Player fields
@@ -197,15 +202,26 @@ public class MinecraftReflection {
 
     /* Checks if the player is able to destroy a block. Input can be NMS Block or Bukkit Block */
     public static boolean canDestroyBlock(Player player, Object block) {
-        Object inventory = CraftReflection.getVanillaInventory(player);
-        Object vBlock;
-        if(block instanceof Block) {
-            vBlock = getBlock((Block)block);
-        } else vBlock = block;
+        if(ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.v1_16)) {
+            Object inventory = CraftReflection.getVanillaInventory(player);
+            Object vBlock;
+            if(block instanceof Block) {
+                vBlock = getBlock((Block)block);
+            } else vBlock = block;
 
-        return canDestroyMethod.invoke(inventory,
-                ProtocolVersion.getGameVersion().isAbove(ProtocolVersion.V1_8_9)
-                        ? blockData.get(vBlock) : vBlock);
+            return canDestroyMethod.invoke(inventory,
+                    ProtocolVersion.getGameVersion().isAbove(ProtocolVersion.V1_8_9)
+                            ? blockData.get(vBlock) : vBlock);
+        } else {
+            Object vanillaItem = CraftReflection.getVanillaItemStack(player.getItemInHand());
+
+            Object vBlock;
+            if(block instanceof Block) {
+                vBlock = getBlock((Block)block);
+            } else vBlock = block;
+
+            return canDestroyMethod.invoke(vanillaItem, getBlockData(vBlock));
+        }
     }
 
     /* Gets the friction of a block. Input can be NMS Block or Bukkit Block. */
@@ -260,7 +276,9 @@ public class MinecraftReflection {
                     .map(MinecraftReflection::fromAABB)
                     .collect(Collectors.toList());
         } else {
-            Object voxelShape = getCubes.invoke(vWorld, null, box.toAxisAlignedBB(), 0D, 0D, 0D);
+            Object voxelShape = ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.v1_16)
+                    ? getCubes.invoke(vWorld, null, box.toAxisAlignedBB(), 0D, 0D, 0D)
+                    : getCubes.invoke(vWorld, null, box.toAxisAlignedBB(), (Predicate<Object>)obj -> true);
 
             if(ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.V1_13_2)) {
                 List<Object> aabbs = getCubesFromVoxelShape.invoke(voxelShape);
@@ -342,12 +360,13 @@ public class MinecraftReflection {
                 Object vanillaBlock = CraftReflection.getVanillaBlock(block);
 
                 return new Vec3D((Object)getFlowMethod.invoke(vanillaBlock, world, pos.getAsBlockPosition()));
-            } else {
+            } else if(Atlas.getInstance().getBlockBoxManager().getBlockBox().isChunkLoaded(block.getLocation())) {
                 Object fluid = fluidMethod.invoke(world, pos.getAsBlockPosition());
 
                 return new Vec3D((Object)getFlowMethod.invoke(fluid, world, pos.getAsBlockPosition()));
             }
-        } else return new Vec3D(0,0,0);
+        }
+        return new Vec3D(0,0,0);
     }
 
 
@@ -412,12 +431,18 @@ public class MinecraftReflection {
         } else {
             worldReader = Reflections.getNMSClass("IWorldReader");
             //1.13 and 1.13.1 returns just VoxelShape while 1.13.2+ returns a Stream<VoxelShape>
-            getCubes = worldReader.getMethod("a", entity.getParent(), axisAlignedBB.getParent(),
-                    double.class, double.class, double.class);
+            getCubes = ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.v1_16) ?
+                    worldReader.getMethod("a", entity.getParent(), axisAlignedBB.getParent(),
+                    double.class, double.class, double.class)
+                    : world.getMethod("c", entity.getParent(), axisAlignedBB.getParent(), Predicate.class);
             voxelShape = Reflections.getNMSClass("VoxelShape");
             getCubesFromVoxelShape = voxelShape.getMethodByType(List.class, 0);
-            fluidMethod = world.getMethod("getFluidIfLoaded");
+            fluidMethod = world.getMethod("getFluid", blockPos.getParent());
             getFlowMethod = Reflections.getNMSClass("Fluid").getMethodByType(vec3D.getParent(), 0);
+        }
+
+        if(ProtocolVersion.getGameVersion().isOrAbove(ProtocolVersion.v1_16)) {
+            blockBase = Reflections.getNMSClass("BlockBase");
         }
 
         if(ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.V1_9)) {
@@ -430,8 +455,12 @@ public class MinecraftReflection {
         } catch(Exception e) {
             e.printStackTrace();
         }
-        canDestroyMethod = playerInventory.getMethod("b",
+        canDestroyMethod = ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.v1_16)
+                ? playerInventory.getMethod("b",
                 ProtocolVersion.getGameVersion().isAbove(ProtocolVersion.V1_8_9)
-                        ? iBlockData.getParent() : block.getParent());
+                        ? iBlockData.getParent() : block.getParent())
+                : itemStack.getMethod("canDestroySpecialBlock", iBlockData.getParent());
+        frictionFactor = (ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.v1_16)
+                ? block : blockBase).getFieldByName("frictionFactor");
     }
 }

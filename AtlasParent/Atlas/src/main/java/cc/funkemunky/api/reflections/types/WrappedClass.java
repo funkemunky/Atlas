@@ -30,6 +30,7 @@ public class WrappedClass {
 
     public WrappedField getFieldByName(String name) {
         Field tempField = null;
+
         for (Field field : this.parent.getDeclaredFields()) {
             if (field.getName().equals(name)) {
                 tempField = field;
@@ -40,6 +41,7 @@ public class WrappedClass {
             tempField.setAccessible(true);
             return new WrappedField(this, tempField);
         }
+
         return null;
     }
 
@@ -186,7 +188,7 @@ public class WrappedClass {
     }
 
     public List<WrappedField> getFields(boolean noStatic, boolean noFinal) {
-        return Arrays.stream(parent.getFields())
+        return Arrays.stream(parent.getDeclaredFields())
                 .filter(field ->
                         (!noFinal || !Modifier.isFinal(field.getModifiers())
                                 && (!noStatic || !Modifier.isStatic(field.getModifiers()))))

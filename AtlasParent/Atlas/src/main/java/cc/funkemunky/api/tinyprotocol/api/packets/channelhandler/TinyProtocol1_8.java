@@ -55,7 +55,6 @@ public abstract class TinyProtocol1_8 implements AbstractTinyProtocol {
 	private static final Class<Object> serverConnectionClass = Reflection.getUntypedClass("{nms}.ServerConnection");
 	private static final FieldAccessor<Object> getMinecraftServer = Reflection.getField("{obc}.CraftServer", minecraftServerClass, 0);
 	private static final FieldAccessor<Object> getServerConnection = Reflection.getField(minecraftServerClass, serverConnectionClass, 0);
-	private static final MethodInvoker getNetworkMarkers = Reflection.getTypedMethod(serverConnectionClass, null, List.class, serverConnectionClass);
 
 	// Packets we have to intercept
 	private static final Class<?> PACKET_SET_PROTOCOL = Reflection.getMinecraftClass("PacketHandshakingInSetProtocol");
@@ -75,7 +74,7 @@ public abstract class TinyProtocol1_8 implements AbstractTinyProtocol {
 	private Set<Channel> uninjectedChannels = Collections.newSetFromMap(new MapMaker().weakKeys().<Channel, Boolean>makeMap());
 
 	// List of network markers
-	private List<Object> networkManagers;
+	private final List<Object> networkManagers = new ArrayList<>();
 
 	// Injected channel handlers
 	private List<Channel> serverChannels = Lists.newArrayList();
@@ -217,7 +216,7 @@ public abstract class TinyProtocol1_8 implements AbstractTinyProtocol {
 	@SuppressWarnings("unchecked")
 	private void registerChannelHandler() {
 		Object mcServer = getMinecraftServer.get(Bukkit.getServer());
-		Object serverConnection = null;
+		Object serverConnection = getServerConnection.get(mcServer);
 		boolean looking = true;
 
 		// We need to synchronize against this list
@@ -232,7 +231,6 @@ public abstract class TinyProtocol1_8 implements AbstractTinyProtocol {
 			}
 		}
 
-		networkManagers = (List<Object>) getNetworkMarkers.invoke(null, serverConnection);
 		createServerChannelHandler();
 
 		// Find the correct list, or implicitly throw an exception

@@ -8,6 +8,7 @@ import cc.funkemunky.api.tinyprotocol.reflection.Reflection;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
+//Protocol Version numbers: https://wiki.vg/Protocol_version_numbers
 @Getter
 @AllArgsConstructor
 public enum ProtocolVersion {
@@ -37,6 +38,9 @@ public enum ProtocolVersion {
     v1_15(573, "v1_15_R1"),
     v1_15_1(575, "v1_15_R1"),
     v1_15_2(578, "v1_15_R1"),
+    v1_16(735, "v1_16_R1"),
+    v1_16_1(736, "v1_16_R1"),
+    v1_16_2(751, "v1_16_R2"),
     UNKNOWN(-1, "UNKNOWN");
 
     @Getter

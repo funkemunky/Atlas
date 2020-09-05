@@ -23,7 +23,7 @@ public class DontImportIfNotLatestThanks {
     public DontImportIfNotLatestThanks() {
         commandDispatcher =
                 MinecraftReflection.minecraftServer
-                        .getFieldByName("commandDispatcher")
+                        .getFieldByType(commandDispatcherClass.getParent(), 0)
                         .get(CraftReflection.getMinecraftServer());
 
         bukkitDispatcher = commandDispatcherClass.getFieldByType(CommandDispatcher.class, 0)
