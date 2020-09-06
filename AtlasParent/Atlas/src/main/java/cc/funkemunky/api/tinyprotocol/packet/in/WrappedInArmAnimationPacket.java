@@ -9,7 +9,6 @@ import lombok.Getter;
 import org.bukkit.entity.Player;
 
 @Getter
-//TODO Test 1.15
 public class WrappedInArmAnimationPacket extends NMSObject {
     private static final String packet = Client.ARM_ANIMATION;
 
@@ -42,7 +41,7 @@ public class WrappedInArmAnimationPacket extends NMSObject {
         armAnimation = Reflections.getNMSClass(packet);
         if(ProtocolVersion.getGameVersion().isOrAbove(ProtocolVersion.V1_9)) {
             enumHand = Reflections.getNMSClass("EnumHand");
-            mainHandField = armAnimation.getFieldByType(Enum.class, 0);
+            mainHandField = armAnimation.getFieldByType(enumHand.getParent(), 0);
         }
     }
 }

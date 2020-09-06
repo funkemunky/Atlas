@@ -83,7 +83,9 @@ public class WrappedInSettingsPacket extends NMSObject {
         HIDDEN(2, "options.chat.visibility.hidden");
 
         static WrappedClass chatVisibilityClass = Reflections.getNMSClass(ProtocolVersion.getGameVersion()
-                .isOrBelow(ProtocolVersion.V1_7_10) ? "EnumChatVisibility" : "EntityHuman$EnumChatVisibility");
+                .isOrBelow(ProtocolVersion.V1_7_10)
+                || ProtocolVersion.getGameVersion().isOrAbove(ProtocolVersion.V1_14)
+                ? "EnumChatVisibility" : "EntityHuman$EnumChatVisibility");
 
         private final int id;
         private final String path;

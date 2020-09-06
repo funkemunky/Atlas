@@ -104,12 +104,14 @@ public class WrappedInBlockPlacePacket extends NMSObject {
 
     static {
         if (ProtocolVersion.getGameVersion().isOrAbove(ProtocolVersion.v1_15)) {
+            blockPlacePacket = Reflections.getNMSClass("PacketPlayInUseItem");
             movingObjectBSObject = Reflections.getNMSClass("MovingObjectPositionBlock");
             fieldMovingObjectBS = blockPlacePacket.getFieldByType(movingObjectBSObject.getParent(), 0);
             fieldFace1_9 = movingObjectBSObject.getFieldByType(WrappedEnumDirection.enumDirection.getParent(), 0);
             fieldBlockPosition = movingObjectBSObject.getFieldByType(MinecraftReflection.blockPos.getParent(), 0);
             fieldMissed = movingObjectBSObject.getFieldByType(boolean.class, 0);
-            enumHand = blockPlacePacket.getFieldByType(Enum.class, 0);
+            enumHandClass = Reflections.getNMSClass("EnumHand");
+            enumHand = blockPlacePacket.getFieldByType(enumHandClass.getParent(), 0);
         } else if (ProtocolVersion.getGameVersion().isOrAbove(ProtocolVersion.V1_9)) {
             blockPlacePacket = Reflections.getNMSClass("PacketPlayInUseItem");
             fieldBlockPosition = blockPlacePacket.getFieldByType(Object.class, 0);
