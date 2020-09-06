@@ -52,9 +52,9 @@ public class WrappedInBlockDigPacket extends NMSObject {
             position = new BaseBlockPosition(fetch(fieldPosX), fetch(fieldPosY), fetch(fieldPosZ));
             direction = WrappedEnumDirection.values()[Math.min(fetch(fieldFace), 5)];
             action = EnumPlayerDigType.values()[(int)fetch(fieldIntAction)];
-        } else if(ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.v1_15)){
+        } else {
             position = new BaseBlockPosition(fetch(fieldBlockPosition));
-            direction = WrappedEnumDirection.fromVanilla((Enum)fetch(fieldDirection));
+            direction = WrappedEnumDirection.fromVanilla(fetch(fieldDirection));
             action = EnumPlayerDigType.fromVanilla(fetch(fieldDigType));
         }
     }

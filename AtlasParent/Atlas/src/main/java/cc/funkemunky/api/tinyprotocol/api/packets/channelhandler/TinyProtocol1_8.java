@@ -55,7 +55,6 @@ public abstract class TinyProtocol1_8 implements AbstractTinyProtocol {
 	private static final Class<Object> serverConnectionClass = Reflection.getUntypedClass("{nms}.ServerConnection");
 	private static final FieldAccessor<Object> getMinecraftServer = Reflection.getField("{obc}.CraftServer", minecraftServerClass, 0);
 	private static final FieldAccessor<Object> getServerConnection = Reflection.getField(minecraftServerClass, serverConnectionClass, 0);
-	private static final MethodInvoker getNetworkMarkers = Reflection.getTypedMethod(serverConnectionClass, null, List.class, serverConnectionClass);
 
 	// Packets we have to intercept
 	private static final Class<?> PACKET_SET_PROTOCOL = Reflection.getMinecraftClass("PacketHandshakingInSetProtocol");
@@ -143,12 +142,9 @@ public abstract class TinyProtocol1_8 implements AbstractTinyProtocol {
 			@Override
 			protected void initChannel(Channel channel) throws Exception {
 				try {
-					// This can take a while, so we need to stop the main thread from interfering
-					synchronized (networkManagers) {
-						// Stop injecting channels
-						if (!closed) {
-							channel.eventLoop().submit(() -> injectChannelInternal(channel));
-						}
+					// Stop injecting channels
+					if (!closed) {
+						channel.eventLoop().submit(() -> injectChannelInternal(channel));
 					}
 				} catch (Exception e) {
 					plugin.getLogger().log(Level.SEVERE, "Cannot inject incomming channel " + channel, e);
@@ -233,7 +229,6 @@ public abstract class TinyProtocol1_8 implements AbstractTinyProtocol {
 		}
 
 		// We need to synchronize against this list
-		networkManagers = (List<Object>) getNetworkMarkers.invoke(null, serverConnection);
 		createServerChannelHandler();
 
 		// Find the correct list, or implicitly throw an exception

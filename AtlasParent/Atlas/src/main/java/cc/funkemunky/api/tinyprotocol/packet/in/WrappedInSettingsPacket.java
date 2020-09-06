@@ -5,6 +5,7 @@ import cc.funkemunky.api.reflections.types.WrappedClass;
 import cc.funkemunky.api.reflections.types.WrappedField;
 import cc.funkemunky.api.tinyprotocol.api.NMSObject;
 import cc.funkemunky.api.tinyprotocol.api.ProtocolVersion;
+import cc.funkemunky.api.tinyprotocol.packet.types.WrappedEnumMainHand;
 import cc.funkemunky.api.tinyprotocol.packet.types.enums.WrappedEnumHand;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -33,7 +34,7 @@ public class WrappedInSettingsPacket extends NMSObject {
     //1.8+ only
     public int displayedSkinParts;
     //1.9+ only
-    public WrappedEnumHand hand = WrappedEnumHand.MAIN_HAND;
+    public WrappedEnumMainHand hand = WrappedEnumMainHand.RIGHT;
 
     public WrappedInSettingsPacket(Object object, Player player) {
         super(object, player);
@@ -53,7 +54,7 @@ public class WrappedInSettingsPacket extends NMSObject {
         } else {
             displayedSkinParts = fetch(fieldSkinParts);
             if(ProtocolVersion.getGameVersion().isAbove(ProtocolVersion.V1_8_9))
-                hand = WrappedEnumHand.getFromVanilla(fetch(fieldMainHand));
+                hand = WrappedEnumMainHand.fromVanilla(fetch(fieldMainHand));
         }
     }
 
@@ -71,7 +72,7 @@ public class WrappedInSettingsPacket extends NMSObject {
         } else {
             set(fieldSkinParts, displayedSkinParts);
             if(ProtocolVersion.getGameVersion().isAbove(ProtocolVersion.V1_8_9))
-                set(fieldMainHand, hand.toEnumHand());
+                set(fieldMainHand, hand.toVanilla());
         }
     }
 
@@ -115,7 +116,7 @@ public class WrappedInSettingsPacket extends NMSObject {
             fieldSkinParts = packet.getFieldByType(int.class, 1);
 
             if(ProtocolVersion.getGameVersion().isAbove(ProtocolVersion.V1_8_9))
-                fieldMainHand = packet.getFieldByType(WrappedEnumHand.enumHandClass.getParent(), 0);
+                fieldMainHand = packet.getFieldByType(WrappedEnumMainHand.vanillaClass.getParent(), 0);
         }
     }
 }

@@ -86,7 +86,8 @@ public class WrappedInUseEntityPacket extends NMSObject {
     static {
         if(ProtocolVersion.getGameVersion().isOrAbove(ProtocolVersion.V1_8)) {
             vecField = packetClass.getFieldByType(MinecraftReflection.vec3D.getParent(), 0);
-        } else if(ProtocolVersion.getGameVersion().isOrAbove(ProtocolVersion.V1_9)) {
+        }
+        if(ProtocolVersion.getGameVersion().isOrAbove(ProtocolVersion.V1_9)) {
             handField = packetClass.getFieldByType(WrappedEnumHand.enumHandClass.getParent(), 0);
         }
     }

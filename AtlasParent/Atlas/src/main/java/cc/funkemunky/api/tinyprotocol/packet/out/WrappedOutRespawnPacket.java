@@ -69,7 +69,9 @@ public class WrappedOutRespawnPacket extends NMSObject {
         }
         gamemode = WrappedEnumGameMode.fromObject(fetch(gamemodeAccessor));
         difficulty = WrappedEnumDifficulty.fromObject(fetch(difficultyAcessor));
-        worldType = WorldType.getByName(worldTypeNameField.get(fetch(worldTypeAccessor)));
+        if(ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.v1_16)) {
+            worldType = WorldType.getByName(worldTypeNameField.get(fetch(worldTypeAccessor)));
+        } else worldType = fetch(worldTypeNameField) ? WorldType.NORMAL : WorldType.FLAT;
     }
 
     @Override
@@ -92,9 +94,13 @@ public class WrappedOutRespawnPacket extends NMSObject {
 
         difficultyAcessor = fetchField(packet, Enum.class, 0);
         gamemodeAccessor = fetchField(packet, Enum.class, 1);
-        worldTypeClass = Reflections.getNMSClass("WorldType");
-        worldTypeAccessor = fetchField(packet, worldTypeClass.getParent(), 0);
-        worldTypeNameField = worldTypeClass.getFirstFieldByType(String.class);
-        getTypeWorldType = worldTypeClass.getMethod("getType", String.class);
+        if(ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.v1_16)) {
+            worldTypeClass = Reflections.getNMSClass("WorldType");
+            worldTypeAccessor = fetchField(packet, worldTypeClass.getParent(), 0);
+            worldTypeNameField = worldTypeClass.getFirstFieldByType(String.class);
+            getTypeWorldType = worldTypeClass.getMethod("getType", String.class);
+        } else {
+            worldTypeNameField = respawnClass.getFieldByType(boolean.class, 1);
+        }
     }
 }

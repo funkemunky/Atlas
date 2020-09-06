@@ -3,6 +3,7 @@ package cc.funkemunky.api.commands.ancmd;
 import cc.funkemunky.api.Atlas;
 import cc.funkemunky.api.commands.tab.TabHandler;
 import cc.funkemunky.api.reflections.types.WrappedClass;
+import cc.funkemunky.api.reflections.types.WrappedField;
 import cc.funkemunky.api.reflections.types.WrappedMethod;
 import cc.funkemunky.api.tinyprotocol.api.ProtocolVersion;
 import cc.funkemunky.api.tinyprotocol.packet.types.v1_13.DontImportIfNotLatestThanks;
@@ -106,6 +107,9 @@ public class CommandManager implements CommandExecutor {
         commands.clear();
     }
 
+    private static WrappedClass scmClass = new WrappedClass(SimpleCommandMap.class);
+    private static WrappedField fieldKnownCommands = scmClass.getFieldByType(Map.class, 0);
+
     public void unregisterCommand(String name) {
         registered.stream()
                 .filter(cmd -> cmd.getName().equalsIgnoreCase(name) || cmd.getLabel().equalsIgnoreCase(name))
@@ -115,19 +119,9 @@ public class CommandManager implements CommandExecutor {
                 });
     }
 
-    private Object getPrivateField(Object object, String field)throws SecurityException,
-            NoSuchFieldException, IllegalArgumentException, IllegalAccessException {
-        Class<?> clazz = object.getClass();
-        Field objectField = clazz.getDeclaredField(field);
-        objectField.setAccessible(true);
-        Object result = objectField.get(object);
-        objectField.setAccessible(false);
-        return result;
-    }
-
     public void unregisterBukkitCommand(org.bukkit.command.Command cmd) {
         try {
-            Object map = getPrivateField(getMap(), "knownCommands");
+            Object map = fieldKnownCommands.get(getMap());
             @SuppressWarnings("unchecked")
             HashMap<String, Command> knownCommands = (HashMap<String, Command>) map;
             knownCommands.remove(cmd.getName());
