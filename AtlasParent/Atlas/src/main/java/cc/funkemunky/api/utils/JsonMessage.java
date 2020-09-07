@@ -1,5 +1,8 @@
 package cc.funkemunky.api.utils;
 
+import cc.funkemunky.api.tinyprotocol.api.TinyProtocolHandler;
+import cc.funkemunky.api.tinyprotocol.packet.out.WrappedOutChatPacket;
+import cc.funkemunky.api.tinyprotocol.packet.types.WrappedChatMessageType;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -28,26 +31,13 @@ public class JsonMessage {
 
     public void sendToPlayer(Player player) {
         try {
-            Object base;
-            Constructor titleConstructor = ReflectionsUtil.getNMSClass("PacketPlayOutChat").getConstructor(ReflectionsUtil.getNMSClass("IChatBaseComponent"));
-            base = ReflectionsUtil.isBukkitVerison("1_7") || ReflectionsUtil.isBukkitVerison("1_8_R1") ? ReflectionsUtil.getNMSClass("ChatSerializer").getMethod("a", String.class).invoke(null, this.getFormattedMessage()) : ReflectionsUtil.getNMSClass("IChatBaseComponent").getDeclaredClasses()[0].getMethod("a", String.class).invoke(null, this.getFormattedMessage());
-            Object packet = titleConstructor.newInstance(base);
-            this.sendPacket(player, packet);
+            WrappedOutChatPacket packet = new WrappedOutChatPacket(this.getFormattedMessage(), WrappedChatMessageType.SYSTEM);
+
+            TinyProtocolHandler.sendPacket(player, packet);
         } catch (Exception e1) {
             e1.printStackTrace();
         }
     }
-
-    private void sendPacket(Player player, Object packet) {
-        try {
-            Object handle = player.getClass().getMethod("getHandle", new Class[0]).invoke(player);
-            Object playerConnection = handle.getClass().getField("playerConnection").get(handle);
-            playerConnection.getClass().getMethod("sendPacket", ReflectionsUtil.getNMSClass("Packet")).invoke(playerConnection, packet);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
     private Class<?> getCBClass(String name) {
         String version = Bukkit.getServer().getClass().getPackage().getName().split("\\.")[3];
         try {

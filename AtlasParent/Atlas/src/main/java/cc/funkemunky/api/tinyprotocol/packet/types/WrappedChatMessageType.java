@@ -24,15 +24,10 @@ public enum WrappedChatMessageType {
     }
 
     public <T> T toNMS() {
-        if(ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.V1_12)) {
-            return (T)(Byte)getTypeAsByte();
-        } else {
-            return chatMsgConst.newInstance(getTypeAsByte());
-        }
+        return (T) chatMsgTypeClass.getEnum(name());
     }
 
     private static WrappedClass chatMsgTypeClass;
-    private static WrappedConstructor chatMsgConst;
     private static WrappedField chatMsgByteField;
 
     public static WrappedChatMessageType fromNMS(Object object) {
@@ -53,8 +48,7 @@ public enum WrappedChatMessageType {
     static {
         if(ProtocolVersion.getGameVersion().isOrAbove(ProtocolVersion.V1_12)) {
             chatMsgTypeClass = Reflections.getNMSClass("ChatMessageType");
-            chatMsgTypeClass.getConstructor(byte.class);
-            chatMsgTypeClass.getFieldByType(byte.class, 0);
+            chatMsgByteField = chatMsgTypeClass.getFieldByType(byte.class, 0);
         }
     }
 }

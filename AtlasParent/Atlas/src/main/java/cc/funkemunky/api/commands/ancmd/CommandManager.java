@@ -149,7 +149,33 @@ public class CommandManager implements CommandExecutor {
 
                 Command command = entry.getMethod().getMethod().getAnnotation(Command.class);
                 Atlas.getInstance().getProfile().start("anCommand:" + cmd.getLabel());
-                Runnable runnable = () -> {
+
+                if(command.async()) {
+                    Atlas.getInstance().getService().execute(() -> {
+                        if(command.opOnly() && !sender.isOp()) {
+                            sender.sendMessage(Color.translate(command.noPermissionMessage()));
+                        } else if(command.playerOnly() && !(sender instanceof Player)) {
+                            sender.sendMessage(Color.Red + "This command is for players only!");
+                        } else if(command.consoleOnly() && !(sender instanceof ConsoleCommandSender)) {
+                            sender.sendMessage(Color.Red + "This command can only be run via terminal.");
+                        } else {
+                            int subCommand = bufferString.split("\\.").length - 1;
+                            String[] modArgs = IntStream.range(0, args.length - subCommand).mapToObj(i -> args[i + subCommand]).toArray(String[]::new);
+
+                            String labelFinal = IntStream.range(0, subCommand).mapToObj(x -> " " + args[x]).collect(Collectors.joining("", label, ""));
+                            if(command.permission().length == 0 || Arrays.stream(command.permission()).anyMatch(sender::hasPermission)) {
+                                CommandAdapter adapter = new CommandAdapter(sender, cmd, sender instanceof Player ? (Player) sender : null, labelFinal, command, modArgs);
+                                try {
+                                    entry.getMethod().invoke(entry.getObject(), adapter);
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
+                            } else {
+                                sender.sendMessage(Color.translate(command.noPermissionMessage()));
+                            }
+                        }
+                    });
+                } else {
                     if(command.opOnly() && !sender.isOp()) {
                         sender.sendMessage(Color.translate(command.noPermissionMessage()));
                     } else if(command.playerOnly() && !(sender instanceof Player)) {
@@ -172,10 +198,7 @@ public class CommandManager implements CommandExecutor {
                             sender.sendMessage(Color.translate(command.noPermissionMessage()));
                         }
                     }
-                };
-
-                if(command.async()) Atlas.getInstance().getService().execute(runnable);
-                else runnable.run();
+                }
 
                 Atlas.getInstance().getProfile().stop("anCommand:" + cmd.getLabel());
                 break;

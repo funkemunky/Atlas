@@ -6,13 +6,19 @@ import cc.funkemunky.api.reflections.types.WrappedField;
 import cc.funkemunky.api.reflections.types.WrappedMethod;
 import cc.funkemunky.api.tinyprotocol.api.NMSObject;
 import cc.funkemunky.api.tinyprotocol.api.ProtocolVersion;
+import cc.funkemunky.api.tinyprotocol.packet.types.WrappedChatComponent;
+import cc.funkemunky.api.tinyprotocol.packet.types.WrappedChatMessage;
 import cc.funkemunky.api.tinyprotocol.packet.types.WrappedChatMessageType;
 import lombok.Getter;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+
+import java.util.UUID;
 
 @Getter
 public class WrappedOutChatPacket extends NMSObject {
     private final static String packet = Server.CHAT;
+    public static UUID b = new UUID(0L, 0L);
 
     public WrappedOutChatPacket(Object packetObj, Player player) {
         super(packetObj, player);
@@ -20,7 +26,9 @@ public class WrappedOutChatPacket extends NMSObject {
 
     //Constructor (ichatbase, chattype);
     public WrappedOutChatPacket(String message, WrappedChatMessageType type) {
+        if(ProtocolVersion.getGameVersion().isOrBelow(ProtocolVersion.v1_15_2))
         setPacket(packet, stcToComponent.invoke(null, message), type.toNMS());
+        else setPacket(packet, new WrappedChatMessage(message).getObject(), type.toNMS(), b);
     }
 
     //Saving your fingers from the most common use for using this wrapper.
@@ -33,7 +41,7 @@ public class WrappedOutChatPacket extends NMSObject {
     private static WrappedClass chatSerialClass = Reflections.getNMSClass("IChatBaseComponent$ChatSerializer");
     private static WrappedMethod stcToComponent = chatSerialClass.getMethod("a", String.class);
     private static WrappedMethod getTextMethod = chatBaseComp.getMethod("getText");
-    private static WrappedField chatTypeField;
+    private static WrappedField chatTypeField, chatCompField;
 
     private String message;
     private WrappedChatMessageType chatType;
@@ -60,5 +68,6 @@ public class WrappedOutChatPacket extends NMSObject {
         } else {
             chatTypeField = outChatClass.getFieldByType(int.class, 0);
         }
+        chatCompField = outChatClass.getFieldByType(chatBaseComp.getParent(), 0);
     }
 }
