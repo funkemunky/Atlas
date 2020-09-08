@@ -2,6 +2,7 @@ package cc.funkemunky.api.tinyprotocol.packet.types;
 
 import cc.funkemunky.api.reflections.Reflections;
 import cc.funkemunky.api.reflections.types.WrappedClass;
+import cc.funkemunky.api.tinyprotocol.api.ProtocolVersion;
 
 public enum WrappedEnumMainHand {
     LEFT(new WrappedChatMessage("options.mainHand.left")),
@@ -30,6 +31,7 @@ public enum WrappedEnumMainHand {
     }
 
     static {
+        if(ProtocolVersion.getGameVersion().isAbove(ProtocolVersion.V1_8_9))
         vanillaClass = Reflections.getNMSClass("EnumMainHand");
     }
 }
