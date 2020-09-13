@@ -268,10 +268,26 @@ public class Atlas extends JavaPlugin {
                     if(required.length > 0) {
                         if(init.requireType() == Init.RequireType.ALL) {
                             return Arrays.stream(required)
-                                    .allMatch(name -> Bukkit.getPluginManager().isPluginEnabled(name));
+                                    .allMatch(name -> {
+                                        if(name.contains("||")) {
+                                            return Arrays.stream(name.split("\\|\\|"))
+                                                    .anyMatch(n2 -> Bukkit.getPluginManager().isPluginEnabled(n2));
+                                        } else if(name.contains("&&")) {
+                                            return Arrays.stream(name.split("\\|\\|"))
+                                                    .allMatch(n2 -> Bukkit.getPluginManager().isPluginEnabled(n2));
+                                        } else return Bukkit.getPluginManager().isPluginEnabled(name);
+                                    });
                         } else {
                             return Arrays.stream(required)
-                                    .anyMatch(name -> Bukkit.getPluginManager().isPluginEnabled(name));
+                                    .anyMatch(name -> {
+                                        if(name.contains("||")) {
+                                            return Arrays.stream(name.split("\\|\\|"))
+                                                    .anyMatch(n2 -> Bukkit.getPluginManager().isPluginEnabled(n2));
+                                        } else if(name.contains("&&")) {
+                                            return Arrays.stream(name.split("\\|\\|"))
+                                                    .allMatch(n2 -> Bukkit.getPluginManager().isPluginEnabled(n2));
+                                        } else return Bukkit.getPluginManager().isPluginEnabled(name);
+                                    });
                         }
                     }
                     return true;

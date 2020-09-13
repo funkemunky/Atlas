@@ -16,6 +16,7 @@ public class Button {
     private boolean moveable;
     @Setter
     private ItemStack stack;
+    @Setter
     private ClickAction consumer;
 
     public Button(boolean moveable, @NonNull ItemStack stack, ClickAction consumer) {
