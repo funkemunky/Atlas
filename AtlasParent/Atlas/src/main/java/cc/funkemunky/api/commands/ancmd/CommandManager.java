@@ -136,7 +136,15 @@ public class CommandManager implements CommandExecutor {
     }
 
     @Override
-    public boolean onCommand(CommandSender sender, org.bukkit.command.Command cmd, String label, String[] args) {
+    public boolean onCommand(CommandSender sender, org.bukkit.command.Command cmd, String label, String[] argsArray) {
+        List<String> argsList = new ArrayList<>();
+        String[] args;
+        if(label.contains(":")) {
+            val splitLabel = (label.replace(label.split(":")[0] + ":", "")).split(":");
+            argsList.addAll(Arrays.asList(splitLabel));
+            argsList.addAll(Arrays.asList(argsArray));
+            args = argsList.toArray(new String[0]);
+        } else args = argsArray;
         for(int arg = args.length; arg >= 0 ; arg--) {
             StringBuffer buffer = new StringBuffer();
             buffer.append(label.toLowerCase());
