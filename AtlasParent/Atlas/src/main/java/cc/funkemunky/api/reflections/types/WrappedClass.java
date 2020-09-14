@@ -92,11 +92,16 @@ public class WrappedClass {
     }
 
     public WrappedField getFieldByType(Class<?> type, int index) {
-        for (Field field : this.parent.getDeclaredFields()) {
-            if (field.getType().equals(type) && index-- <= 0) {
-                return new WrappedField(this, field);
+        Class<?> clazz = this.parent;
+
+        do {
+            for (Field field : clazz.getDeclaredFields()) {
+                if (field.getType().equals(type) && index-- <= 0) {
+                    return new WrappedField(this, field);
+                }
             }
-        }
+            clazz = this.parent.getSuperclass();
+        } while(clazz != null);
         throw new NullPointerException("Could not find field with type " + type.getSimpleName() + " at index " + index);
     }
 

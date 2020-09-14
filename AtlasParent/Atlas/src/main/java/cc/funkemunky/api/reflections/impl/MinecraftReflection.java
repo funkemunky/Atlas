@@ -91,7 +91,7 @@ public class MinecraftReflection {
     private static WrappedField blockData = block.getFieldByName("blockData");
     private static WrappedField frictionFactor;
     private static WrappedField strength = block.getFieldByName("strength");
-    private static WrappedField chunkProvider = MinecraftReflection.world
+    private static WrappedField chunkProvider = MinecraftReflection.worldServer
             .getFieldByType(Reflections.getNMSClass(ProtocolVersion.getGameVersion()
                     .isBelow(ProtocolVersion.v1_16) ? "IChunkProvider" : "ChunkProviderServer").getParent(), 0);
     private static WrappedField chunksList = chunkProviderServer

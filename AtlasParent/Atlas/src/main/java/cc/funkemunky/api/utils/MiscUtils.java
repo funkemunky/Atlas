@@ -8,6 +8,8 @@ import cc.funkemunky.api.tinyprotocol.packet.out.WrappedPacketPlayOutWorldPartic
 import cc.funkemunky.api.tinyprotocol.packet.types.enums.WrappedEnumParticle;
 import cc.funkemunky.api.utils.world.types.RayCollision;
 import cc.funkemunky.api.utils.world.types.SimpleCollisionBox;
+import net.md_5.bungee.api.chat.BaseComponent;
+import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.command.PluginCommand;
@@ -51,6 +53,14 @@ public class MiscUtils {
             i++;
         }
         return -1;
+    }
+
+    public static BaseComponent[] toComponentArray(TextComponent message) {
+        List<BaseComponent> components = new ArrayList<>();
+
+        components.add(message);
+        components.addAll(message.getExtra());
+        return components.toArray(new BaseComponent[0]);
     }
 
     public static String injectColor(String string, String color) {

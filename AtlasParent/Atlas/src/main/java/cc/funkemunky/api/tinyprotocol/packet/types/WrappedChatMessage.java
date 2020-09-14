@@ -23,8 +23,13 @@ public class WrappedChatMessage extends NMSObject {
         this.chatMessage = chatMessage;
         this.objects = object;
 
-        setObject(chatMessageClass.getConstructorAtIndex(ProtocolVersion.getGameVersion()
-                .isBelow(ProtocolVersion.v1_16) ? 0 : 1).newInstance(chatMessage, object));
+        if(ProtocolVersion.getGameVersion().isOrAbove(ProtocolVersion.v1_16)) {
+            if(object.length > 0)
+            setObject(chatMessageClass.getConstructorAtIndex(1).newInstance(chatMessage, new Object[]{object}));
+            else setObject(chatMessageClass.getConstructorAtIndex(0).newInstance(chatMessage));
+        } else {
+            setObject(chatMessageClass.getConstructorAtIndex(0).newInstance(chatMessage, new Object[]{object}));
+        }
     }
 
     public WrappedChatMessage(String chatMessage) {

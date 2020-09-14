@@ -3,6 +3,9 @@ package cc.funkemunky.api.utils;
 import cc.funkemunky.api.tinyprotocol.api.TinyProtocolHandler;
 import cc.funkemunky.api.tinyprotocol.packet.out.WrappedOutChatPacket;
 import cc.funkemunky.api.tinyprotocol.packet.types.WrappedChatMessageType;
+import net.md_5.bungee.api.chat.TextComponent;
+import net.md_5.bungee.chat.ComponentSerializer;
+import net.md_5.bungee.chat.TextComponentSerializer;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -31,20 +34,13 @@ public class JsonMessage {
 
     public void sendToPlayer(Player player) {
         try {
-            WrappedOutChatPacket packet = new WrappedOutChatPacket(this.getFormattedMessage(), WrappedChatMessageType.SYSTEM);
+            WrappedOutChatPacket packet = new WrappedOutChatPacket(
+                    new TextComponent(ComponentSerializer.parse(this.getFormattedMessage())),
+                    WrappedChatMessageType.SYSTEM);
 
             TinyProtocolHandler.sendPacket(player, packet);
         } catch (Exception e1) {
             e1.printStackTrace();
-        }
-    }
-    private Class<?> getCBClass(String name) {
-        String version = Bukkit.getServer().getClass().getPackage().getName().split("\\.")[3];
-        try {
-            return Class.forName("org.bukkit.craftbukkit." + version + "." + name);
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-            return null;
         }
     }
 
