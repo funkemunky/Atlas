@@ -5,9 +5,11 @@ import lombok.val;
 import net.minecraft.server.v1_16_R2.GenericAttributes;
 import net.minecraft.server.v1_16_R2.World;
 import org.bukkit.Location;
+import org.bukkit.craftbukkit.v1_15_R1.entity.CraftEntity;
 import org.bukkit.craftbukkit.v1_16_R2.CraftWorld;
 import org.bukkit.craftbukkit.v1_16_R2.entity.CraftLivingEntity;
 import org.bukkit.craftbukkit.v1_16_R2.entity.CraftPlayer;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 
@@ -31,5 +33,15 @@ public class BlockBox1_16_R2 implements BlockBox {
         val attribute = ((CraftPlayer)player).getHandle()
                 .getAttributeInstance(GenericAttributes.MOVEMENT_SPEED);
         return (float) (attribute != null ? attribute.getValue() : 0);
+    }
+
+    @Override
+    public float getWidth(Entity entity) {
+        return (float) ((CraftEntity)entity).getWidth();
+    }
+
+    @Override
+    public float getHeight(Entity entity) {
+        return (float) ((CraftEntity)entity).getHeight();
     }
 }

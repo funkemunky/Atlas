@@ -31,16 +31,21 @@ public class WrappedClass {
     public WrappedField getFieldByName(String name) {
         Field tempField = null;
 
-        for (Field field : this.parent.getDeclaredFields()) {
-            if (field.getName().equals(name)) {
-                tempField = field;
-                break;
+        Class<?> clazz = this.parent;
+
+        do {
+            for (Field field : this.parent.getDeclaredFields()) {
+                if (field.getName().equals(name)) {
+                    tempField = field;
+                    break;
+                }
             }
-        }
-        if (tempField != null) {
-            tempField.setAccessible(true);
-            return new WrappedField(this, tempField);
-        }
+            if (tempField != null) {
+                tempField.setAccessible(true);
+                return new WrappedField(this, tempField);
+            }
+            clazz = this.parent.getSuperclass();
+        } while(clazz != null);
 
         return null;
     }

@@ -1,5 +1,6 @@
 package cc.funkemunky.api.utils.world;
 
+import cc.funkemunky.api.Atlas;
 import cc.funkemunky.api.reflections.Reflections;
 import cc.funkemunky.api.reflections.impl.CraftReflection;
 import cc.funkemunky.api.reflections.types.WrappedClass;
@@ -23,21 +24,19 @@ public class EntityData {
     private static WrappedField fieldWidth, fieldLength, fieldSize;
 
     public static CollisionBox bounds(Entity entity) {
-        if(ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.V1_14)) {
-            return entityBounds.computeIfAbsent(entity.getType(), type -> {
+        return entityBounds.computeIfAbsent(entity.getType(), type -> {
+            if(ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.V1_14)) {
                 Object ventity = CraftReflection.getEntity(entity);
 
                 //We cast this as a float since the fields are floats.
 
                 return new SimpleCollisionBox(new Vector(), (float)fieldWidth.get(ventity),
                         (float)fieldLength.get(ventity));
-            }).copy();
-        } else {
-            Object ventity = CraftReflection.getEntity(entity);
-            Object size = fieldSize.get(ventity);
-            //We cast this as a float since the fields are floats.
-            return new SimpleCollisionBox(new Vector(), (float)fieldWidth.get(size), (float)fieldLength.get(size));
-        }
+            } else {
+                val blockBox = Atlas.getInstance().getBlockBoxManager().getBlockBox();
+                return new SimpleCollisionBox(new Vector(), blockBox.getWidth(entity), blockBox.getHeight(entity));
+            }
+        }).copy();
     }
 
     public static CollisionBox getEntityBox(Location location, Entity entity) {
