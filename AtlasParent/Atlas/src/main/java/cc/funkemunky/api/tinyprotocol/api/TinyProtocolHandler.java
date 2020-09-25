@@ -40,12 +40,12 @@ public class TinyProtocolHandler {
 
             @Override
             public Object onReceive(Player receiver, Object packet) {
-                return self.onPacketOutAsync(receiver, packet);
+                return self.onPacketInAsync(receiver, packet);
             }
 
             @Override
             public Object onSend(Player sender, Object packet) {
-                return self.onPacketInAsync(sender, packet);
+                return self.onPacketOutAsync(sender, packet);
             }
         } : new ChannelNew() {
             @Override
@@ -55,12 +55,12 @@ public class TinyProtocolHandler {
 
             @Override
             public Object onReceive(Player receiver, Object packet) {
-                return self.onPacketOutAsync(receiver, packet);
+                return self.onPacketInAsync(receiver, packet);
             }
 
             @Override
             public Object onSend(Player sender, Object packet) {
-                return self.onPacketInAsync(sender, packet);
+                return self.onPacketOutAsync(sender, packet);
             }
         };
     }

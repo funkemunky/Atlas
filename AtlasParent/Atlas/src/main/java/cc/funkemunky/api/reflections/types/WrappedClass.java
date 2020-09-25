@@ -101,11 +101,16 @@ public class WrappedClass {
 
         do {
             for (Field field : clazz.getDeclaredFields()) {
-                if (field.getType().equals(type) && index-- <= 0) {
+                if (type.isAssignableFrom(field.getType()) && index-- <= 0) {
                     return new WrappedField(this, field);
                 }
             }
-            clazz = this.parent.getSuperclass();
+            try {
+                if(this.parent.getSuperclass().equals(clazz)) clazz = null; //Fixes infinite looping with java.lang.Object
+                else clazz = this.parent.getSuperclass();
+            } catch(Exception e) {
+                clazz = null;
+            }
         } while(clazz != null);
         throw new NullPointerException("Could not find field with type " + type.getSimpleName() + " at index " + index);
     }

@@ -18,16 +18,16 @@ import java.util.stream.Collectors;
 
 @Getter
 public class EventManager {
-    private final Map<Class<? extends AtlasEvent>, List<ListenerMethod>>
+    private final Map<String, List<ListenerMethod>>
             listenerMethods = Collections.synchronizedMap(new HashMap<>());
-    private final Map<Class<? extends AtlasEvent>, List<Pair<String, Consumer<AtlasEvent>>>>
+    private final Map<String, List<Pair<String, Consumer<AtlasEvent>>>>
             events = Collections.synchronizedMap(new HashMap<>());
 
     public boolean paused = false;
 
     public void registerListener(Method method, AtlasListener listener, Plugin plugin) throws ListenParamaterException {
-        if (method.getParameterTypes().length == 1) {
-            if (method.getParameterTypes()[0].getSuperclass().equals(AtlasEvent.class)) {
+        if (method.getParameterTypes().length >= 1) {
+            if (AtlasEvent.class.isAssignableFrom(method.getParameterTypes()[0])) {
                 Listen listen = method.getAnnotation(Listen.class);
                 ListenerMethod lm = new ListenerMethod(plugin, method, listener, listen.priority());
 
@@ -36,7 +36,7 @@ public class EventManager {
                 }
 
                 synchronized (listenerMethods) {
-                    listenerMethods.compute((Class<? extends AtlasEvent>) method.getParameterTypes()[0],
+                    listenerMethods.compute(method.getParameterTypes()[0].getSimpleName(),
                             (eventClass, methods) -> {
                         List<ListenerMethod> list = methods == null ? new ArrayList<>() : new ArrayList<>(methods);
 
@@ -125,7 +125,7 @@ public class EventManager {
         public String build(Consumer<T> consumer) {
             String id = plugin.getName() + "-@-" + UUID.randomUUID();
             synchronized (events) {
-                events.compute(clazz, (key, list) -> {
+                events.compute(clazz.getSimpleName(), (key, list) -> {
                     List<Pair<String, Consumer<AtlasEvent>>> methods = list == null
                             ? new ArrayList<>() : new ArrayList<>(list);
 
@@ -165,7 +165,7 @@ public class EventManager {
             Atlas.getInstance().getProfile().start("event:" + name);
 
             if (!lambdaOnly) {
-                listenerMethods.computeIfPresent(event.getClass(), (eventClass, list) -> {
+                listenerMethods.computeIfPresent(name, (eventClass, list) -> {
                     if (event instanceof Cancellable) {
                         Cancellable cancellable = (Cancellable) event;
                         for (ListenerMethod lm : list) {
@@ -182,7 +182,7 @@ public class EventManager {
                 });
             }
 
-            events.computeIfPresent(event.getClass(), (eventClass, consumerList) -> {
+            events.computeIfPresent(name, (eventClass, consumerList) -> {
                 for (Pair<String, Consumer<AtlasEvent>> atlasEventConsumer : consumerList) {
                     atlasEventConsumer.value.accept(event);
                 }

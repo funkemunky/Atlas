@@ -40,40 +40,42 @@ public class ChannelOld extends ChannelListener {
     private ChannelInitializer<Channel> hackyRegister, channelRegister;
 
     public ChannelOld() {
-        List<ChannelFuture> futures = fieldFutureList.get(MinecraftReflection.getServerConnection());
+        Atlas.getInstance().getService().execute(() -> {
+            List<ChannelFuture> futures = fieldFutureList.get(MinecraftReflection.getServerConnection());
 
-        channelRegister = new ChannelInitializer<Channel>() {
+            channelRegister = new ChannelInitializer<Channel>() {
 
-            @Override
-            protected void initChannel(Channel channel) {
-                Atlas.getInstance().getService().execute(() -> inject(channel));
-            }
+                @Override
+                protected void initChannel(Channel channel) {
+                    Atlas.getInstance().getService().execute(() -> inject(channel));
+                }
 
-        };
+            };
 
-        hackyRegister = new ChannelInitializer<Channel>() {
-            @Override
-            protected void initChannel(Channel channel) {
-                channel.pipeline().addLast(channelRegister);
-            }
-        };
+            hackyRegister = new ChannelInitializer<Channel>() {
+                @Override
+                protected void initChannel(Channel channel) {
+                    channel.pipeline().addLast(channelRegister);
+                }
+            };
 
-        serverRegisterHandler = new ChannelInboundHandlerAdapter() {
+            serverRegisterHandler = new ChannelInboundHandlerAdapter() {
 
-            @Override
-            public void channelRead(ChannelHandlerContext ctx, Object msg)  {
-                Channel channel = (Channel) msg;
-                channel.pipeline().addFirst(hackyRegister);
-                ctx.fireChannelRead(msg);
-            }
-        };
+                @Override
+                public void channelRead(ChannelHandlerContext ctx, Object msg)  {
+                    Channel channel = (Channel) msg;
+                    channel.pipeline().addFirst(hackyRegister);
+                    ctx.fireChannelRead(msg);
+                }
+            };
 
-        futures.forEach(future -> {
-            Channel channel = future.channel();
+            futures.forEach(future -> {
+                Channel channel = future.channel();
 
-            channel.pipeline().addFirst(serverRegisterHandler);
+                channel.pipeline().addFirst(serverRegisterHandler);
 
-            MiscUtils.printToConsole("Injected server channel " + channel.toString());
+                MiscUtils.printToConsole("Injected server channel " + channel.toString());
+            });
         });
     }
 

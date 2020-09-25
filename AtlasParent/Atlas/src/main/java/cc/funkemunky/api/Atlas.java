@@ -15,6 +15,7 @@ import cc.funkemunky.api.reflections.impl.BukkitReflection;
 import cc.funkemunky.api.reflections.impl.MinecraftReflection;
 import cc.funkemunky.api.reflections.types.WrappedClass;
 import cc.funkemunky.api.tinyprotocol.api.TinyProtocolHandler;
+import cc.funkemunky.api.tinyprotocol.api.channel.ChannelListener;
 import cc.funkemunky.api.updater.Updater;
 import cc.funkemunky.api.utils.*;
 import cc.funkemunky.api.utils.blockbox.BlockBoxManager;
@@ -90,10 +91,16 @@ public class Atlas extends JavaPlugin {
         MiscUtils.printToConsole(Color.Gray + "Firing up the thread turbines...");
         service = Executors.newFixedThreadPool(2);
         schedular = Executors.newSingleThreadScheduledExecutor();
+
+        MiscUtils.printToConsole(Color.Gray + "Loading event manager...");
         eventManager = new EventManager();
+
+        MiscUtils.printToConsole(Color.Gray + "Loading Carbon database API...");
         Carbon.setup();
 
+        MiscUtils.printToConsole(Color.Gray + "Loading plugin loader handler...");
         pluginLoaderHandler = new PluginLoaderHandler();
+        MiscUtils.printToConsole(Color.Gray + "Loading packet system...");
         tinyProtocolHandler =  new TinyProtocolHandler();
 
         profileStart = System.currentTimeMillis();
@@ -143,6 +150,7 @@ public class Atlas extends JavaPlugin {
     }
 
     public void onDisable() {
+        ChannelListener.serverStopped = true;
         MiscUtils.printToConsole(Color.Gray + "Unloading all Atlas hooks...");
         HandlerList.unregisterAll(this);
         Bukkit.getScheduler().cancelTasks(this);

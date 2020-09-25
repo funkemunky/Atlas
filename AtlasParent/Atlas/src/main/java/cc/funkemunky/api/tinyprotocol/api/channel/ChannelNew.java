@@ -37,13 +37,18 @@ public class ChannelNew extends ChannelListener {
 	private static final FieldAccessor<Enum> protocolType = Reflection.getField(PACKET_SET_PROTOCOL, Enum.class, 0); */
 
     public ChannelNew() {
+        System.out.println("Running executor for server registering...");
+        System.out.println("Running registration...");
         List<ChannelFuture> futures = fieldFutureList.get(MinecraftReflection.getServerConnection());
-
         channelRegister = new ChannelInitializer<Channel>() {
 
             @Override
             protected void initChannel(Channel channel) {
-                Atlas.getInstance().getService().execute(() -> inject(channel));
+                try {
+                    inject(channel);
+                } catch(Exception e) {
+                    System.out.println("Error injecting into channel " + channel.toString());
+                }
             }
 
         };
@@ -95,11 +100,13 @@ public class ChannelNew extends ChannelListener {
     @Override
     public void inject(Player player) {
         if(serverStopped) return;
-        Atlas.getInstance().getService().execute(() -> {
-            Channel channel = getChannel(player);
+        Channel channel = getChannel(player);
 
-            if(channel == null) return;
+        if(channel == null) return;
 
+
+        System.out.println(player.getName() + " injected");
+        channel.eventLoop().execute(() -> {
             Listen listen = (Listen) channel.pipeline().get(handle);
 
             if(listen == null) {
@@ -116,7 +123,7 @@ public class ChannelNew extends ChannelListener {
     public void inject(Channel channel) {
         if(serverStopped) return;
 
-        Atlas.getInstance().getService().execute(() -> {
+        channel.eventLoop().execute(() -> {
             Listen listen = (Listen) channel.pipeline().get(handle);
 
             if(listen == null) {
