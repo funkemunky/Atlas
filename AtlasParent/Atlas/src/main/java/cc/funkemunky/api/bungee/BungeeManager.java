@@ -48,10 +48,9 @@ public class BungeeManager implements AtlasListener, PluginMessageListener {
             isBungee = wrappedClass.getFieldByName("bungee").get(null);
         } catch(ClassNotFoundException e) {
             //empty
-            isBungee = false;
+            if(BungeeAPI.bungee)
+                isBungee = BungeeAPI.bungee;
         }
-        if(BungeeAPI.bungee)
-        isBungee = BungeeAPI.bungee;
 
         if(isBungee) {
             try {

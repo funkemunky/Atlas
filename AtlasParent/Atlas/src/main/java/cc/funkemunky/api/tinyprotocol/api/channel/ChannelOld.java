@@ -15,6 +15,7 @@ import net.minecraft.util.io.netty.channel.ChannelHandlerContext;
 import net.minecraft.util.io.netty.channel.ChannelPromise;
 import lombok.RequiredArgsConstructor;
 import org.bukkit.entity.Player;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import java.lang.reflect.Method;
 import java.net.SocketAddress;
@@ -40,43 +41,46 @@ public class ChannelOld extends ChannelListener {
     private ChannelInitializer<Channel> hackyRegister, channelRegister;
 
     public ChannelOld() {
-        Atlas.getInstance().getService().execute(() -> {
-            List<ChannelFuture> futures = fieldFutureList.get(MinecraftReflection.getServerConnection());
+        List<ChannelFuture> futures = fieldFutureList.get(MinecraftReflection.getServerConnection());
 
-            channelRegister = new ChannelInitializer<Channel>() {
+        channelRegister = new ChannelInitializer<Channel>() {
 
-                @Override
-                protected void initChannel(Channel channel) {
-                    Atlas.getInstance().getService().execute(() -> inject(channel));
-                }
+            @Override
+            protected void initChannel(Channel channel) {
+                Atlas.getInstance().getService().execute(() -> inject(channel));
+            }
 
-            };
+        };
 
-            hackyRegister = new ChannelInitializer<Channel>() {
-                @Override
-                protected void initChannel(Channel channel) {
-                    channel.pipeline().addLast(channelRegister);
-                }
-            };
+        hackyRegister = new ChannelInitializer<Channel>() {
+            @Override
+            protected void initChannel(Channel channel) {
+                channel.pipeline().addLast(channelRegister);
+            }
+        };
 
-            serverRegisterHandler = new ChannelInboundHandlerAdapter() {
+        serverRegisterHandler = new ChannelInboundHandlerAdapter() {
 
-                @Override
-                public void channelRead(ChannelHandlerContext ctx, Object msg)  {
-                    Channel channel = (Channel) msg;
-                    channel.pipeline().addFirst(hackyRegister);
-                    ctx.fireChannelRead(msg);
-                }
-            };
+            @Override
+            public void channelRead(ChannelHandlerContext ctx, Object msg)  {
+                Channel channel = (Channel) msg;
+                channel.pipeline().addFirst(hackyRegister);
+                ctx.fireChannelRead(msg);
+            }
+        };
 
-            futures.forEach(future -> {
-                Channel channel = future.channel();
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                futures.forEach(future -> {
+                    Channel channel = future.channel();
 
-                channel.pipeline().addFirst(serverRegisterHandler);
+                    channel.pipeline().addFirst(serverRegisterHandler);
 
-                MiscUtils.printToConsole("Injected server channel " + channel.toString());
-            });
-        });
+                    MiscUtils.printToConsole("Injected server channel " + channel.toString());
+                });
+            }
+        }.runTask(Atlas.getInstance());
     }
 
     @Override
@@ -187,15 +191,15 @@ public class ChannelOld extends ChannelListener {
 
             if(player != null) {
                 object = onReceive(player, object);
-
-                if (classPacketSetProtocol.getParent().isInstance(o)) {
-                    String protocol = ((Enum)fieldProtocolType.get(o)).name();
-                    if (protocol.equalsIgnoreCase("LOGIN")) {
-                        int id = fieldProtocolId.get(o);
-                        versionCache.put(context.channel(), id);
-                    }
-                }
             } else object = onHandshake(context.channel().remoteAddress(), o);object = onReceive(player, object);
+
+            if (classPacketSetProtocol.getParent().isInstance(o)) {
+                String protocol = ((Enum)fieldProtocolType.get(o)).name();
+                if (protocol.equalsIgnoreCase("LOGIN")) {
+                    int id = fieldProtocolId.get(o);
+                    versionCache.put(context.channel(), id);
+                }
+            }
 
             if(object != null) {
                 super.channelRead(context, object);

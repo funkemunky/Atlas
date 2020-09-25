@@ -6,9 +6,11 @@ import cc.funkemunky.api.reflections.impl.MinecraftReflection;
 import cc.funkemunky.api.reflections.types.WrappedClass;
 import cc.funkemunky.api.reflections.types.WrappedField;
 import cc.funkemunky.api.utils.MiscUtils;
+import com.mojang.authlib.GameProfile;
 import io.netty.channel.*;
 import lombok.RequiredArgsConstructor;
 import org.bukkit.entity.Player;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import java.lang.reflect.Method;
 import java.net.SocketAddress;
@@ -19,16 +21,18 @@ import java.util.WeakHashMap;
 
 public class ChannelNew extends ChannelListener {
 
-    private final Map<Player, Channel> channelCache = new WeakHashMap<>();
+    private final Map<String, Channel> channelCache = new WeakHashMap<>();
     private final Map<Channel, Integer> versionCache = new HashMap<>();
     private static final WrappedClass classPacketSetProtocol
-            = Reflections.getNMSClass("PacketHandshakingInSetProtocol");
+            = Reflections.getNMSClass("PacketHandshakingInSetProtocol"),
+            classLoginStart = Reflections.getNMSClass("PacketLoginInStart");
 
     //TODO Check if this is the case for all versions cause Mojang mightve done something dumb in between.
     private static final WrappedField fieldFutureList = MinecraftReflection.serverConnection
             .getFieldByType(List.class, 0);
     private static final WrappedField fieldProtocolId = classPacketSetProtocol.getFieldByType(int.class, 0),
-            fieldProtocolType = classPacketSetProtocol.getFieldByType(Enum.class, 0);
+            fieldProtocolType = classPacketSetProtocol.getFieldByType(Enum.class, 0),
+            fieldGameProfile = classLoginStart.getFieldByType(GameProfile.class, 0);
 
     private ChannelInboundHandlerAdapter serverRegisterHandler;
     private ChannelInitializer<Channel> hackyRegister, channelRegister;
@@ -70,13 +74,18 @@ public class ChannelNew extends ChannelListener {
             }
         };
 
-        futures.forEach(future -> {
-            Channel channel = future.channel();
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                futures.forEach(future -> {
+                    Channel channel = future.channel();
 
-            channel.pipeline().addFirst(serverRegisterHandler);
+                    channel.pipeline().addFirst(serverRegisterHandler);
 
-            MiscUtils.printToConsole("Injected server channel " + channel.toString());
-        });
+                    MiscUtils.printToConsole("Injected server channel " + channel.toString());
+                });
+            }
+        }.runTask(Atlas.getInstance());
     }
 
     @Override
@@ -105,7 +114,6 @@ public class ChannelNew extends ChannelListener {
         if(channel == null) return;
 
 
-        System.out.println(player.getName() + " injected");
         channel.eventLoop().execute(() -> {
             Listen listen = (Listen) channel.pipeline().get(handle);
 
@@ -163,8 +171,9 @@ public class ChannelNew extends ChannelListener {
     }
 
     private Channel getChannel(Player player) {
-        return channelCache.compute(player, (key, channel) -> {
+        return channelCache.compute(player.getName(), (key, channel) -> {
            if(channel == null) {
+               System.out.println(player.getName() + " injected");
                return MinecraftReflection.getChannel(player);
            }
            return channel;
@@ -193,14 +202,21 @@ public class ChannelNew extends ChannelListener {
             if(player != null) {
                 object = onReceive(player, object);
 
-                if (classPacketSetProtocol.getParent().isInstance(o)) {
-                    String protocol = ((Enum)fieldProtocolType.get(o)).name();
-                    if (protocol.equalsIgnoreCase("LOGIN")) {
-                        int id = fieldProtocolId.get(o);
-                        versionCache.put(context.channel(), id);
-                    }
-                }
             } else object = onHandshake(context.channel().remoteAddress(), o);
+
+            if(classLoginStart.getParent().isInstance(o)) {
+                GameProfile profile = fieldGameProfile.get(o);
+
+                System.out.println("profile: " + profile.getName());
+                channelCache.put(profile.getName(), context.channel());
+            } else if (classPacketSetProtocol.getParent().isInstance(o)) {
+                String protocol = ((Enum)fieldProtocolType.get(o)).name();
+                if (protocol.equalsIgnoreCase("LOGIN")) {
+                    int id = fieldProtocolId.get(o);
+                    System.out.println("version " + id);
+                    versionCache.put(context.channel(), id);
+                }
+            }
 
             if(object != null) {
                 super.channelRead(context, object);
