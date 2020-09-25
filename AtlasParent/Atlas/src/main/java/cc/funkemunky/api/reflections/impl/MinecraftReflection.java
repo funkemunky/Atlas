@@ -70,7 +70,9 @@ public class MinecraftReflection {
     private static WrappedField entityBoundingBox = entity.getFirstFieldByType(axisAlignedBB.getParent());
 
     //ItemStack methods and fields
-    private static WrappedMethod enumAnimationStack;
+    private static WrappedMethod enumAnimationStack, methodGetServerConnection = minecraftServer
+            .getMethodByType(serverConnection.getParent(), ProtocolVersion.getGameVersion()
+                    .isBelow(ProtocolVersion.V1_13) ? 1 : 0);
     private static WrappedField activeItemField;
     private static WrappedMethod getItemMethod = itemStack.getMethod("getItem");
     private static WrappedMethod getAnimationMethod = itemClass.getMethodByType(enumAnimation.getParent(), 0);
@@ -246,6 +248,10 @@ public class MinecraftReflection {
         } else vBlock = block;
 
         return strength.get(vBlock);
+    }
+
+    public static <T> T getServerConnection() {
+        return methodGetServerConnection.invoke(CraftReflection.getMinecraftServer());
     }
 
     //Argument can either be org.bukkit.block.Block or vanilla Block.

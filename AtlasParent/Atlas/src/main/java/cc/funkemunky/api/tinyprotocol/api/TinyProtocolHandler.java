@@ -5,9 +5,9 @@ import cc.funkemunky.api.events.impl.PacketLoginEvent;
 import cc.funkemunky.api.events.impl.PacketReceiveEvent;
 import cc.funkemunky.api.events.impl.PacketSendEvent;
 import cc.funkemunky.api.handlers.protocolsupport.ProtocolAPI;
-import cc.funkemunky.api.tinyprotocol.api.packets.AbstractTinyProtocol;
-import cc.funkemunky.api.tinyprotocol.api.packets.channelhandler.TinyProtocol1_7;
-import cc.funkemunky.api.tinyprotocol.api.packets.channelhandler.TinyProtocol1_8;
+import cc.funkemunky.api.tinyprotocol.api.channel.ChannelListener;
+import cc.funkemunky.api.tinyprotocol.api.channel.ChannelNew;
+import cc.funkemunky.api.tinyprotocol.api.channel.ChannelOld;
 import lombok.Getter;
 import org.bukkit.entity.Player;
 
@@ -18,7 +18,7 @@ import java.util.UUID;
 
 public class TinyProtocolHandler {
     @Getter
-    private static AbstractTinyProtocol instance;
+    private static ChannelListener instance;
 
     public boolean paused = false;
 
@@ -32,34 +32,34 @@ public class TinyProtocolHandler {
         // 1.8+ and 1.7 NMS have different class paths for their libraries used. This is why we have to separate the two.
         // These feed the packets asynchronously, before Minecraft processes it, into our own methods to process and be used as an API.
         instance = ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.V1_8) ?
-                new TinyProtocol1_7(Atlas.getInstance()) {
+                new ChannelOld() {
             @Override
             public Object onHandshake(SocketAddress address, Object packet) {
                 return self.onHandshake(address, packet);
             }
 
             @Override
-            public Object onPacketOutAsync(Player receiver, Object packet) {
+            public Object onReceive(Player receiver, Object packet) {
                 return self.onPacketOutAsync(receiver, packet);
             }
 
             @Override
-            public Object onPacketInAsync(Player sender, Object packet) {
+            public Object onSend(Player sender, Object packet) {
                 return self.onPacketInAsync(sender, packet);
             }
-        } : new TinyProtocol1_8(Atlas.getInstance()) {
+        } : new ChannelNew() {
             @Override
             public Object onHandshake(SocketAddress address, Object packet) {
                 return self.onHandshake(address, packet);
             }
 
             @Override
-            public Object onPacketOutAsync(Player receiver, Object packet) {
+            public Object onReceive(Player receiver, Object packet) {
                 return self.onPacketOutAsync(receiver, packet);
             }
 
             @Override
-            public Object onPacketInAsync(Player sender, Object packet) {
+            public Object onSend(Player sender, Object packet) {
                 return self.onPacketInAsync(sender, packet);
             }
         };
@@ -89,7 +89,7 @@ public class TinyProtocolHandler {
 
             //EventManager.callEvent(new cc.funkemunky.api.event.custom.PacketSendEvent(sender, packet, packetName));
 
-            Atlas.getInstance().getEventManager().callEvent(event);
+            Atlas.getInstance().getEventManager().callEvent(event, false);
             return !event.isCancelled() ? event.getPacket() : null;
         } else return packet;
     }
@@ -114,7 +114,7 @@ public class TinyProtocolHandler {
 
             PacketReceiveEvent event = new PacketReceiveEvent(sender, packet, packetName);
 
-            Atlas.getInstance().getEventManager().callEvent(event);
+            Atlas.getInstance().getEventManager().callEvent(event, false);
 
             return !event.isCancelled() ? event.getPacket() : null;
         } return packet;
@@ -127,7 +127,7 @@ public class TinyProtocolHandler {
 
         PacketLoginEvent event = new PacketLoginEvent(address, packet, packetName);
 
-        Atlas.getInstance().getEventManager().callEvent(event);
+        Atlas.getInstance().getEventManager().callEvent(event, false);
 
         return !event.isCancelled() ? event.getPacket() : null;
     }

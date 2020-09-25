@@ -136,7 +136,7 @@ public class Atlas extends JavaPlugin {
             }
         }
 
-        Bukkit.getOnlinePlayers().forEach(player -> TinyProtocolHandler.getInstance().injectPlayer(player));
+        Bukkit.getOnlinePlayers().forEach(player -> TinyProtocolHandler.getInstance().inject(player));
         bungeeManager = new BungeeManager();
         MiscUtils.printToConsole(Color.Green + "Successfully loaded Atlas and its utilities!");
         done = true;
