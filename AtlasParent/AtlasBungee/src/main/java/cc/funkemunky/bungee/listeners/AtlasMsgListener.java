@@ -8,11 +8,13 @@ import net.md_5.bungee.BungeeCord;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.config.ServerInfo;
+import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.event.PluginMessageEvent;
 import net.md_5.bungee.api.plugin.Listener;
 import net.md_5.bungee.event.EventHandler;
 
 import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -26,6 +28,17 @@ public class AtlasMsgListener implements Listener {
 
     @EventHandler
     public void onEvent(PluginMessageEvent event) {
+        if(event.getTag().equalsIgnoreCase("MC|Brand")
+                || event.getTag().equalsIgnoreCase("minecraft:brand")) {
+            if(event.getSender() instanceof ProxiedPlayer) {
+                String brand = new String(event.getData(), StandardCharsets.UTF_8);
+
+                ProxiedPlayer player = (ProxiedPlayer) event.getSender();
+                User user = User.getUser(player.getUniqueId());
+                user.brand = brand;
+                user.legacy = !event.getTag().contains(":");
+            }
+        }
         if(event.getTag().equalsIgnoreCase("atlas:out")) {
             try {
                 ByteArrayInputStream bis = new ByteArrayInputStream(event.getData());
@@ -118,6 +131,8 @@ public class AtlasMsgListener implements Listener {
                         dataOut.writeBoolean(true);
                         dataOut.writeInt(user.version);
                         dataOut.writeObject(uuid);
+                        dataOut.writeUTF(user.brand);
+                        dataOut.writeBoolean(user.legacy);
 
                         ProxyServer.getInstance().getServers()
                                 .forEach((name, info) -> info.sendData(AtlasBungee.INSTANCE.outChannel,

@@ -16,6 +16,8 @@ public class User {
     public final UUID uuid;
     private ProxiedPlayer player;
     public int version;
+    public String brand;
+    public boolean legacy;
 
     public User(UUID uuid) {
         this.uuid = uuid;

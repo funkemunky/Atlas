@@ -141,12 +141,18 @@ public class MinecraftReflection {
                     block.getX(), block.getY(), block.getZ(),
                     box.toAxisAlignedBB(), aabbs,
                     entity != null ? CraftReflection.getEntity(entity) : null); //Entity is always null for these
-        } else if(ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.V1_13)) {
+        } else if(ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.V1_12)) {
             BaseBlockPosition blockPos = new BaseBlockPosition(block.getX(), block.getY(), block.getZ());
             Object blockData = getBlockData.invoke(vanillaBlock);
 
             addCBoxes.invoke(vanillaBlock, world, blockPos.getAsBlockPosition(), blockData,
                     box.toAxisAlignedBB(), aabbs, entity != null ? CraftReflection.getEntity(entity) : null); //Entity is always null for these
+        } else if(ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.V1_13)) {
+            BaseBlockPosition blockPos = new BaseBlockPosition(block.getX(), block.getY(), block.getZ());
+            Object blockData = getBlockData.invoke(vanillaBlock);
+
+            addCBoxes.invoke(vanillaBlock, blockData, world, blockPos.getAsBlockPosition(),
+                    box.toAxisAlignedBB(), aabbs, entity != null ? CraftReflection.getEntity(entity) : null, true); //Entity is always null for these
         }
 
         return aabbs.stream().map(MinecraftReflection::fromAABB).collect(Collectors.toList());
@@ -431,8 +437,8 @@ public class MinecraftReflection {
             getFlowMethod = Reflections.getNMSClass("BlockFluids").getDeclaredMethodByType(vec3D.getParent(), 0);
         } else if(ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.V1_13)) {
             getCubes = world.getMethod("getCubes", entity.getParent(), axisAlignedBB.getParent());
-            addCBoxes = block.getMethod("a", world.getParent(), blockPos.getParent(), iBlockData.getParent(),
-                    axisAlignedBB.getParent(), List.class, entity.getParent());
+            addCBoxes = block.getMethod("a", iBlockData.getParent(), world.getParent(), blockPos.getParent(),
+                    axisAlignedBB.getParent(), List.class, entity.getParent(), boolean.class);
             getFlowMethod = Reflections.getNMSClass("BlockFluids").getDeclaredMethodByType(vec3D.getParent(), 0);
         } else {
             worldReader = Reflections.getNMSClass("IWorldReader");

@@ -2,6 +2,7 @@ package cc.funkemunky.api.bungee;
 
 import cc.funkemunky.api.Atlas;
 import cc.funkemunky.api.bungee.objects.BungeePlayer;
+import cc.funkemunky.api.bungee.objects.Version;
 import cc.funkemunky.api.utils.Color;
 import cc.funkemunky.api.utils.ConfigSetting;
 import cc.funkemunky.api.utils.Init;
@@ -9,10 +10,7 @@ import lombok.val;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
-import java.io.ByteArrayOutputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
-import java.io.ObjectOutputStream;
+import java.io.*;
 import java.util.UUID;
 
 
@@ -74,6 +72,19 @@ public class BungeeAPI {
         Atlas.getInstance().getBungeeManager().sendData(stream.toByteArray());
     }
 
+    public static void requestVersionFromBungee(UUID uuid) {
+         try {
+             ByteArrayOutputStream stream = new ByteArrayOutputStream();
+             ObjectOutputStream dataOutput = new ObjectOutputStream(stream);
+             dataOutput.writeUTF("version");
+             dataOutput.writeObject(uuid);
+
+             Atlas.getInstance().getBungeeManager().sendData(stream.toByteArray());
+         } catch(IOException e) {
+             e.printStackTrace();
+         }
+    }
+
     public static void sendMessageToPlayer(String name, String message) {
         try {
             ByteArrayOutputStream stream = new ByteArrayOutputStream();
@@ -91,14 +102,22 @@ public class BungeeAPI {
         sendMessageToPlayer(player.name, message);
     }
 
+    @Deprecated
     public static int getPlayerVersion(Player player) {
         if(player == null) return -1;
 
         if(Atlas.getInstance().getBungeeManager().getVersionsMap().containsKey(player.getUniqueId())) {
-            return Atlas.getInstance().getBungeeManager().getVersionsMap().get(player.getUniqueId()).two;
+            return Atlas.getInstance().getBungeeManager().getVersionsMap().get(player.getUniqueId()).version;
         }
 
         return -1;
+    }
+
+    public static Version getVersion(UUID uuid) {
+        return Atlas.getInstance().getBungeeManager().getVersionsMap().computeIfAbsent(uuid, key -> {
+            requestVersionFromBungee(uuid);
+            return null;
+        });
     }
 
     public static void sendCommand(String command) {

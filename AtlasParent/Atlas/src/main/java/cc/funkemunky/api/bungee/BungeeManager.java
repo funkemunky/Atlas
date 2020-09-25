@@ -3,6 +3,7 @@ package cc.funkemunky.api.bungee;
 import cc.funkemunky.api.Atlas;
 import cc.funkemunky.api.bungee.events.BungeeReceiveEvent;
 import cc.funkemunky.api.bungee.objects.BungeePlayer;
+import cc.funkemunky.api.bungee.objects.Version;
 import cc.funkemunky.api.events.AtlasListener;
 import cc.funkemunky.api.events.Listen;
 import cc.funkemunky.api.events.impl.PacketReceiveEvent;
@@ -27,7 +28,7 @@ public class BungeeManager implements AtlasListener, PluginMessageListener {
     private String channelOut = "BungeeCord", channelIn = "BungeeCord";
     private String atlasIn = "atlas:in", atlasOut = "atlas:out";
     private Map<UUID, BungeePlayer> bungeePlayers = new HashMap<>();
-    private Map<UUID, Tuple<Boolean, Integer>> versionsMap = new HashMap<>();
+    private Map<UUID, Version> versionsMap = new HashMap<>();
     private boolean isBungee;
     private List<String> bungeeServers = Collections.synchronizedList(new ArrayList<>());
     private BukkitTask serverCheckTask;
@@ -190,8 +191,10 @@ public class BungeeManager implements AtlasListener, PluginMessageListener {
                             boolean success = input.readBoolean();
                             int version = input.readInt();
                             UUID uuid = (UUID) input.readObject();
+                            String brand = (String) input.readObject();
+                            boolean legacy = input.readBoolean();
 
-                            versionsMap.put(uuid, new Tuple<>(success, version));
+                            if(success) versionsMap.put(uuid, new Version(version, brand, legacy));
                             break;
                         }
                     /*case "ping": {

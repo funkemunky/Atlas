@@ -43,13 +43,14 @@ public class JoinListener implements Listener {
         ProxiedPlayer player = event.getPlayer();
 
         BungeeCord.getInstance().getScheduler().schedule(AtlasBungee.INSTANCE, () -> {
+            User user = User.getUser(event.getPlayer().getUniqueId());
             if(!isForgeSupport) {
-                sendFmlPacket(player, (byte) -2, (byte) 0);
-                sendFmlPacket(player, (byte) 0, (byte) 2, (byte) 0, (byte) 0, (byte) 0, (byte) 0);
-                sendFmlPacket(player, (byte) 2, (byte) 0, (byte) 0, (byte) 0, (byte) 0);
+                if(user.brand.toLowerCase().contains("fml") || user.brand.toLowerCase().contains("forge")) {
+                    sendFmlPacket(user, (byte) -2, (byte) 0);
+                    sendFmlPacket(user, (byte) 0, (byte) 2, (byte) 0, (byte) 0, (byte) 0, (byte) 0);
+                    sendFmlPacket(user, (byte) 2, (byte) 0, (byte) 0, (byte) 0, (byte) 0);
+                }
             } else if(event.getPlayer().isForgeUser()) {
-                User user = User.getUser(event.getPlayer().getUniqueId());
-
                 if(user != null) {
                     user.modData = new ModData(event.getPlayer().getModList());
                 }
@@ -86,12 +87,12 @@ public class JoinListener implements Listener {
     /**
      * Sends a packet through the FML|HS channel
      *
-     * @param player The player to send the packet to
+     * @param user The player to send the packet to
      * @param data The data to send with the packet
      */
-    private static void sendFmlPacket(ProxiedPlayer player, byte... data)
+    private static void sendFmlPacket(User user, byte... data)
     {
-        player.sendData("FML|HS", data);
+        user.getPlayer().sendData(user.legacy ? "FML|HS" : "fml:hs", data);
     }
 
     private ModData getModData(byte[] data)
