@@ -83,6 +83,8 @@ public class ChannelNew extends ChannelListener {
                     channel.pipeline().addFirst(serverRegisterHandler);
 
                     MiscUtils.printToConsole("Injected server channel " + channel.toString());
+
+                    ChannelListener.registered = true;
                 });
             }
         }.runTask(Atlas.getInstance());
@@ -91,17 +93,6 @@ public class ChannelNew extends ChannelListener {
     @Override
     public int getProtocolVersion(Player player) {
         Channel channel = getChannel(player);
-
-        //Dumb way of checking of ViaVersion is enabled.
-        try {
-            Class<?> Via = Class.forName("us.myles.ViaVersion.api.Via");
-            Class<?> clazzViaAPI = Class.forName("us.myles.ViaVersion.api.ViaAPI");
-            Object ViaAPI = Via.getMethod("getAPI").invoke(null);
-            Method getPlayerVersion = clazzViaAPI.getMethod("getPlayerVersion", Object.class);
-            return (int) getPlayerVersion.invoke(ViaAPI, player);
-        } catch (Throwable e) {
-
-        }
 
         return versionCache.getOrDefault(channel, -1);
     }
@@ -112,7 +103,6 @@ public class ChannelNew extends ChannelListener {
         Channel channel = getChannel(player);
 
         if(channel == null) return;
-
 
         channel.eventLoop().execute(() -> {
             Listen listen = (Listen) channel.pipeline().get(handle);
@@ -150,6 +140,9 @@ public class ChannelNew extends ChannelListener {
         Channel channel = getChannel(player);
 
         unject(channel);
+
+        channelCache.remove(player.getName());
+        versionCache.remove(channel);
     }
 
     public void unject(Channel channel) {
@@ -173,7 +166,6 @@ public class ChannelNew extends ChannelListener {
     private Channel getChannel(Player player) {
         return channelCache.compute(player.getName(), (key, channel) -> {
            if(channel == null) {
-               System.out.println(player.getName() + " injected");
                return MinecraftReflection.getChannel(player);
            }
            return channel;
@@ -207,13 +199,11 @@ public class ChannelNew extends ChannelListener {
             if(classLoginStart.getParent().isInstance(o)) {
                 GameProfile profile = fieldGameProfile.get(o);
 
-                System.out.println("profile: " + profile.getName());
                 channelCache.put(profile.getName(), context.channel());
             } else if (classPacketSetProtocol.getParent().isInstance(o)) {
                 String protocol = ((Enum)fieldProtocolType.get(o)).name();
                 if (protocol.equalsIgnoreCase("LOGIN")) {
                     int id = fieldProtocolId.get(o);
-                    System.out.println("version " + id);
                     versionCache.put(context.channel(), id);
                 }
             }

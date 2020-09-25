@@ -78,6 +78,8 @@ public class ChannelOld extends ChannelListener {
                     channel.pipeline().addFirst(serverRegisterHandler);
 
                     MiscUtils.printToConsole("Injected server channel " + channel.toString());
+
+                    ChannelListener.registered = true;
                 });
             }
         }.runTask(Atlas.getInstance());
@@ -86,17 +88,6 @@ public class ChannelOld extends ChannelListener {
     @Override
     public int getProtocolVersion(Player player) {
         Channel channel = getChannel(player);
-
-        //Dumb way of checking of ViaVersion is enabled.
-        try {
-            Class<?> Via = Class.forName("us.myles.ViaVersion.api.Via");
-            Class<?> clazzViaAPI = Class.forName("us.myles.ViaVersion.api.ViaAPI");
-            Object ViaAPI = Via.getMethod("getAPI").invoke(null);
-            Method getPlayerVersion = clazzViaAPI.getMethod("getPlayerVersion", Object.class);
-            return (int) getPlayerVersion.invoke(ViaAPI, player);
-        } catch (Throwable e) {
-
-        }
 
         return versionCache.getOrDefault(channel, -1);
     }

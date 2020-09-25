@@ -12,15 +12,12 @@ public class NoAPI implements Protocol {
 
     @Override
     public int getPlayerVersion(Player player) {
-        return ProtocolAPI.classInstance.protocolVersionByIP.computeIfAbsent(player.getAddress().getAddress()
-                .getHostAddress().substring(1), shit -> {
-            if(Atlas.getInstance().getBungeeManager().isBungee()) {
-                int version = TinyProtocolHandler.bungeeVersionCache
-                        .computeIfAbsent(player.getUniqueId(), key -> BungeeAPI.getPlayerVersion(player));
+        if(Atlas.getInstance().getBungeeManager().isBungee()) {
+            int version = TinyProtocolHandler.bungeeVersionCache
+                    .computeIfAbsent(player.getUniqueId(), key -> BungeeAPI.getPlayerVersion(player));
 
-                if(version != -1) return ProtocolVersion.getVersion(version).getVersion();
-            }
-            return TinyProtocolHandler.getInstance().getProtocolVersion(player);
-        });
+            if(version != -1) return ProtocolVersion.getVersion(version).getVersion();
+        }
+        return TinyProtocolHandler.getInstance().getProtocolVersion(player);
     }
 }

@@ -7,7 +7,7 @@ import java.util.concurrent.Executors;
 
 public abstract class ChannelListener {
 
-    public static boolean serverStopped = false;
+    public static boolean serverStopped = false, registered;
     public static String handle = "custom_packet_listener";
 
     public abstract void inject(Player player);
