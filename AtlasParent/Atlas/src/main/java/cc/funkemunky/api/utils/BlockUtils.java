@@ -13,8 +13,7 @@ import java.util.Map;
 
 public class BlockUtils {
 
-    public static Map<Material, BoundingBox> collisionBoundingBoxes = new HashMap<>();;
-    public static Map<Integer, BlockBounds> blockBounds = new HashMap<>();
+    public static Map<Material, BoundingBox> collisionBoundingBoxes = new HashMap<>();
 
     public static Block getBlock(Location location) {
         if (Atlas.getInstance().getBlockBoxManager().getBlockBox().isChunkLoaded(location)) {
@@ -25,7 +24,11 @@ public class BlockUtils {
     }
 
     public static boolean isSolid(Block block) {
-        int type = block.getType().getId();
+        return isSolid(block.getType());
+    }
+
+    public static boolean isSolid(Material material) {
+        int type = material.getId();
 
         switch (type) {
             case 1:

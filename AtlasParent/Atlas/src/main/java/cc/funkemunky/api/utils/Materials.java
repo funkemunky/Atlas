@@ -20,7 +20,8 @@ public class Materials {
         for (int i = 0; i < MATERIAL_FLAGS.length; i++) {
             Material material = Material.values()[i];
 
-            if (material.isSolid()) {
+            //We use the one in BlockUtils also since we can't trust Material to include everything.
+            if (material.isSolid() || BlockUtils.isSolid(material)) {
                 MATERIAL_FLAGS[i] |= SOLID;
             }
             if (material.name().endsWith("_STAIRS")) {
