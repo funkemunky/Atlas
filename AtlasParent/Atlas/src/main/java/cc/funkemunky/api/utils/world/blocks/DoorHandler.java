@@ -22,7 +22,6 @@ public class DoorHandler implements CollisionFactory {
                 data = state2.getData();
             }
             else {
-                Bukkit.broadcastMessage("shit one");
                 return NoCollisionBox.INSTANCE;
             }
         } else {
@@ -31,7 +30,6 @@ public class DoorHandler implements CollisionFactory {
                 state = (Door) state2;
             }
             else {
-                Bukkit.broadcastMessage("shit two");
                 return NoCollisionBox.INSTANCE;
             }
         }
