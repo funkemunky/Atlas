@@ -1,113 +1,89 @@
 package cc.funkemunky.api.utils.msg;
 
-import cc.funkemunky.api.utils.Color;
-import cc.funkemunky.api.utils.MathUtils;
-import cc.funkemunky.api.utils.exceptions.InvalidObjectException;
-import cc.funkemunky.api.utils.exceptions.impl.ColorFormatException;
-import lombok.SneakyThrows;
-import lombok.val;
 import net.md_5.bungee.api.ChatColor;
-import net.md_5.bungee.api.chat.ClickEvent;
-import net.md_5.bungee.api.chat.HoverEvent;
-import net.md_5.bungee.api.chat.TextComponent;
-import org.bukkit.entity.Player;
+import net.md_5.bungee.api.chat.*;
 
-import java.util.*;
-
-//TODO ChatBuilder base on TextComponent
 public class ChatBuilder {
 
-    public Map<Byte, List<TextComponent>> textComponents = new HashMap<>();
+    private ComponentBuilder componentBuilder;
 
-    private int currentLine = 1;
-    private int addedMin, addedMax;
-    public ChatBuilder() {
-        textComponents.put(MathUtils.getByte(1), new ArrayList<>());
+    public ChatBuilder(String text) {
+        componentBuilder = new ComponentBuilder(text);
+
+        //componentBuilder.color()
+        //componentBuilder.append(String, FormatRetention);
     }
 
-    public ChatBuilder addText(String text) {
-        String[] splitColors = text.split("&");
-
-        for (String splitColor : splitColors) {
-            TextComponent component = new TextComponent(splitColor.substring(1));
-
-            component.setColor(ChatColor.getByChar(splitColor.charAt(0)));
-            List<TextComponent> components = getCurrentComps();
-
-            components.add(component);
-            textComponents.put(MathUtils.getByte(currentLine), components);
-        }
+    public ChatBuilder text(String text) {
+        componentBuilder.append(text, ComponentBuilder.FormatRetention.ALL);
         return this;
     }
 
-    public ChatBuilder addText(TextComponent... component) {
-        List<TextComponent> components = getCurrentComps();
+    public ChatBuilder color(String color) {
+        String[] colors = color.split("\u00A7");
 
-        components.addAll(Arrays.asList(component));
-
-        textComponents.put(MathUtils.getByte(currentLine), components);
-
-        return this;
-    }
-
-    @SneakyThrows
-    public ChatBuilder addText(String color, String string, Object... events) {
-        List<TextComponent> components = getCurrentComps();
-
-        TextComponent component = new TextComponent(string);
-
-        for (Object obj : events) {
-            if(obj instanceof HoverEvent) {
-                HoverEvent event = (HoverEvent) obj;
-
-                component.setHoverEvent(event);
-            } else if(obj instanceof ClickEvent) {
-                ClickEvent event = (ClickEvent) obj;
-
-                component.setClickEvent(event);
-            } else {
-                throw new InvalidObjectException(obj, HoverEvent.class, ClickEvent.class);
+        for (String s : colors) {
+            if(s.length() > 1) continue;
+            switch(s.toCharArray()[0]) {
+                case 'l':
+                    componentBuilder.bold(true);
+                    break;
+                case 'k':
+                    componentBuilder.obfuscated(true);
+                    break;
+                case 'm':
+                    componentBuilder.strikethrough(true);
+                    break;
+                case 'n':
+                    componentBuilder.underlined(true);
+                    break;
+                case 'o':
+                    componentBuilder.italic(true);
+                    break;
+                case 'r':
+                    componentBuilder.reset();
+                    break;
+                default:
+                    componentBuilder.color(ChatColor.getByChar(s.toCharArray()[0]));
+                    break;
             }
         }
 
-        val translated = Color.translate(color);
-        boolean bold = translated.contains(Color.Bold),
-                italic = translated.contains(Color.Italics),
-                underline = translated.contains(Color.Underline),
-                strikeThru = translated.contains(Color.Strikethrough);
+        return this;
+    }
 
-        String finalized = color.replace(Color.Bold, "")
-                .replace(Color.Italics, "")
-                .replace(Color.Underline, "")
-                .replace(Color.Strikethrough, "");
-
-        if(finalized.length() != 2)
-            throw new ColorFormatException("Color string was not length 2 (length=" + finalized.length() + ").");
-
-        component.setBold(bold);
-        component.setItalic(italic);
-        component.setUnderlined(underline);
-        component.setStrikethrough(strikeThru);
-
-        components.add(component);
+    public ChatBuilder event(HoverEvent.Action action, BaseComponent... message) {
+        componentBuilder.event(new HoverEvent(action, message));
 
         return this;
     }
 
-    public ChatBuilder newLine() {
-        textComponents.put(MathUtils.getByte(++currentLine), new ArrayList<>());
+    public ChatBuilder event(HoverEvent.Action action, TextComponent component) {
+        return event(action, TextComponent.fromLegacyText(TextComponent.toLegacyText(component)));
+    }
+
+    public ChatBuilder event(HoverEvent.Action action, String string) {
+        return event(action, TextComponent.fromLegacyText(string));
+    }
+
+    public ChatBuilder event(ClickEvent.Action action, String value) {
+        componentBuilder.event(new ClickEvent(action, value));
+        return this;
+    }
+
+    public ChatBuilder reset() {
+        componentBuilder.reset();
 
         return this;
     }
 
-    private void update(List<TextComponent> components) {
-        textComponents.put(MathUtils.getByte(currentLine), components);
+    /* STATICS */
+    public static ChatBuilder create() {
+        return new ChatBuilder("");
     }
 
-    private List<TextComponent> getCurrentComps() {
-        return textComponents.computeIfAbsent(MathUtils.getByte(currentLine), key -> new ArrayList<>());
+    public static ChatBuilder create(String text) {
+        return new ChatBuilder(text);
     }
-    public ChatBuilder sendToPlayer(Player player) {
-        return this;
-    }
+    /* END STATICS */
 }
