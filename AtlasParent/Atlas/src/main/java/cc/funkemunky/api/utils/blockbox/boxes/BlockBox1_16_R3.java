@@ -2,18 +2,18 @@ package cc.funkemunky.api.utils.blockbox.boxes;
 
 import cc.funkemunky.api.utils.blockbox.BlockBox;
 import lombok.val;
-import net.minecraft.server.v1_16_R2.GenericAttributes;
-import net.minecraft.server.v1_16_R2.World;
+import net.minecraft.server.v1_16_R3.GenericAttributes;
+import net.minecraft.server.v1_16_R3.World;
 import org.bukkit.Location;
-import org.bukkit.craftbukkit.v1_16_R2.entity.CraftEntity;
-import org.bukkit.craftbukkit.v1_16_R2.CraftWorld;
-import org.bukkit.craftbukkit.v1_16_R2.entity.CraftLivingEntity;
-import org.bukkit.craftbukkit.v1_16_R2.entity.CraftPlayer;
+import org.bukkit.craftbukkit.v1_16_R3.entity.CraftEntity;
+import org.bukkit.craftbukkit.v1_16_R3.CraftWorld;
+import org.bukkit.craftbukkit.v1_16_R3.entity.CraftLivingEntity;
+import org.bukkit.craftbukkit.v1_16_R3.entity.CraftPlayer;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 
-public class BlockBox1_16_R2 implements BlockBox {
+public class BlockBox1_16_R3 implements BlockBox {
 
     @Override
     public boolean isChunkLoaded(Location loc) {

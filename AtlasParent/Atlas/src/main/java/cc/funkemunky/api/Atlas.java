@@ -200,35 +200,6 @@ public class Atlas extends JavaPlugin {
                 entities.forEach((id, entity) -> entityIds.put(entity.getEntityId(), entity.getUniqueId()));
             }
         }, 2L, 5L);
-
-        //This allows us to cache the blocks to improve the performance of getting blocks.
-        schedular.scheduleAtFixedRate(() -> {
-            profile.start("task::chunkLoader");
-            for(World world : Bukkit.getWorlds()) {
-                Object provider = MinecraftReflection.getChunkProvider(world);
-                List<Chunk> vChunks = MinecraftReflection.getVanillaChunks(provider)
-                        .parallelStream()
-                        .map(BukkitReflection::getChunkFromVanilla)
-                        .collect(Collectors.toList());
-
-                List<Block> blocksList = Collections.synchronizedList(new ArrayList<>());
-                vChunks.parallelStream().forEach(chunk -> {
-                    for(int y = 0 ; y < world.getMaxHeight() ; y++) {
-                        //The << is a reverse of what is needed to get chunk from loc.
-                        int x = chunk.getX() << 4, z = chunk.getZ() << 4;
-                        Block block = chunk.getBlock(x & 15, y, z & 15);
-
-                        blocksList.add(block);
-                    }
-                });
-
-                for (Block block : blocksList) {
-                    blocksMap.put(block.getLocation(), block);
-                }
-                blocksList.clear(); //Clearing to save the java gc from this monster.
-            }
-            profile.stop("task::chunkLoader");
-        }, 10L, 60L, TimeUnit.SECONDS);
     }
     private void runTickEvent() {
         service.execute(() -> {

@@ -22,6 +22,7 @@ import org.bukkit.inventory.ItemStack;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
@@ -90,12 +91,10 @@ public class MinecraftReflection {
     private static WrappedMethod getBlockData, getBlock;
     private static WrappedField blockData = block.getFieldByName("blockData");
     private static WrappedField frictionFactor;
-    private static WrappedField strength = block.getFieldByName("strength");
+    private static WrappedField strength;
     private static WrappedField chunkProvider = MinecraftReflection.worldServer
             .getFieldByType(Reflections.getNMSClass(ProtocolVersion.getGameVersion()
                     .isBelow(ProtocolVersion.v1_16) ? "IChunkProvider" : "ChunkProviderServer").getParent(), 0);
-    private static WrappedField chunksList = chunkProviderServer
-            .getFieldByName("chunks");
 
     //Entity Player fields
     private static WrappedField connectionField = entityPlayer.getFieldByName("playerConnection");
@@ -397,8 +396,10 @@ public class MinecraftReflection {
         return chunkProvider.get(vanillaWorld);
     }
 
-    public static <T> List<T> getVanillaChunks(Object provider) {
-        return chunksList.get(provider);
+    public static <T> List<T> getVanillaChunks(World world) {
+        return Arrays.stream(world.getLoadedChunks())
+                .map(c -> (T) CraftReflection.getVanillaChunk(c))
+                .collect(Collectors.toList());
     }
 
     static {
@@ -468,5 +469,7 @@ public class MinecraftReflection {
                 : itemStack.getMethod("canDestroySpecialBlock", iBlockData.getParent());
         frictionFactor = (ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.v1_16)
                 ? block : blockBase).getFieldByName("frictionFactor");
+        strength = ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.v1_16)
+                ? block.getFieldByName("strength") : blockBase.getFieldByName("durability");
     }
 }

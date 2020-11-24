@@ -21,7 +21,7 @@ public class Materials {
             Material material = Material.values()[i];
 
             //We use the one in BlockUtils also since we can't trust Material to include everything.
-            if (material.isSolid() || BlockUtils.isSolid(material)) {
+            if (material.isSolid()) {
                 MATERIAL_FLAGS[i] |= SOLID;
             }
             if (material.name().endsWith("_STAIRS")) {
@@ -77,6 +77,7 @@ public class Materials {
     }
 
     private Materials() {
+
     }
 
     public static boolean checkFlag(Material material, int flag) {

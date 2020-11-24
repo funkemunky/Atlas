@@ -4,6 +4,7 @@ import cc.funkemunky.api.reflections.Reflections;
 import cc.funkemunky.api.reflections.types.WrappedClass;
 import cc.funkemunky.api.reflections.types.WrappedMethod;
 import org.bukkit.Bukkit;
+import org.bukkit.Chunk;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
@@ -19,7 +20,8 @@ public class CraftReflection {
     public static WrappedClass craftPlayer = Reflections.getCBClass("entity.CraftPlayer");
     public static WrappedClass craftWorld = Reflections.getCBClass("CraftWorld"); //1.7-1.14
     public static WrappedClass craftInventoryPlayer = Reflections.getCBClass("inventory.CraftInventoryPlayer"); //1.7-1.14
-    public static WrappedClass craftServer = Reflections.getCBClass("CraftServer"); //1.7-1.14
+    public static WrappedClass craftServer = Reflections.getCBClass("CraftServer"); //1.7-1.14\
+    public static WrappedClass craftChunk = Reflections.getCBClass("CraftChunk");
 
     //Vanilla Instances
     private static WrappedMethod itemStackInstance = craftItemStack.getMethod("asNMSCopy", ItemStack.class); //1.7-1.14
@@ -31,6 +33,7 @@ public class CraftReflection {
     private static WrappedMethod getInventory = craftInventoryPlayer.getMethod("getInventory"); //1.7-1.14
     private static WrappedMethod mcServerInstance = craftServer.getMethod("getServer"); //1.7-1.14
     private static WrappedMethod entityPlayerInstance = craftPlayer.getMethod("getHandle");
+    private static WrappedMethod chunkInstance = craftChunk.getMethod("getHandle");
 
     public static <T> T getVanillaItemStack(ItemStack stack) {
         return itemStackInstance.invoke(null, stack);
@@ -68,7 +71,7 @@ public class CraftReflection {
         return mcServerInstance.invoke(Bukkit.getServer());
     }
 
-    static {
-
+    public static <T> T getVanillaChunk(Chunk chunk) {
+        return chunkInstance.invoke(chunk);
     }
 }

@@ -1,6 +1,8 @@
 package cc.funkemunky.api.utils.blockbox;
 
+import cc.funkemunky.api.utils.world.CollisionBox;
 import org.bukkit.Location;
+import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;

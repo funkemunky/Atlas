@@ -44,8 +44,13 @@ public class WrappedClass {
                 tempField.setAccessible(true);
                 return new WrappedField(this, tempField);
             }
-            clazz = this.parent.getSuperclass();
-        } while(clazz != null);
+
+            if(clazz.equals(this.parent.getSuperclass())) {
+                clazz = null;
+            } else clazz = this.parent.getSuperclass();
+
+            System.out.println(clazz.getName());
+        }  while(clazz != null && !clazz.getName().contains("Object"));
 
         return null;
     }
@@ -105,8 +110,12 @@ public class WrappedClass {
                     return new WrappedField(this, field);
                 }
             }
-            clazz = this.parent.getSuperclass();
-        } while(clazz != null);
+
+            if(clazz.equals(this.parent.getSuperclass())) {
+                clazz = null;
+            } else clazz = this.parent.getSuperclass();
+
+        } while(clazz != null && !clazz.getName().contains("Object"));
         throw new NullPointerException("Could not find field with type " + type.getSimpleName() + " at index " + index);
     }
 
