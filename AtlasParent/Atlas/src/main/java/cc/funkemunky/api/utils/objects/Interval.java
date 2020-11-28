@@ -52,7 +52,7 @@ public class Interval extends LinkedList<Double> {
     }
 
     public boolean add(double x) {
-        if (size() > max) {
+        if (size() == max) {
             removeLast();
         }
         addFirst(x);
