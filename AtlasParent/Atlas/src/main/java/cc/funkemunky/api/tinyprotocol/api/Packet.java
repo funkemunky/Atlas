@@ -173,6 +173,7 @@ public abstract class Packet {
         public static final String ENTITY_VELOCITY = SERVER + "EntityVelocity";
         public static final String ENTITY_DESTROY = SERVER + "EntityDestroy";
         public static final String ENTITY_HEAD_ROTATION = SERVER + "EntityHeadRotation";
+        public static final String ENTITY_TELEPORT = SERVER + "EntityTeleport";
         public static final String ENTITY = SERVER + "Entity";
         public static final String REL_POSITION = ENTITY + "$" + SERVER + "RelEntityMove";
         public static final String REL_POSITION_LOOK = ENTITY + "$" + SERVER + "RelEntityMoveLook";
