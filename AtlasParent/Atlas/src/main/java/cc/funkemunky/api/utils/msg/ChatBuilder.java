@@ -7,15 +7,15 @@ public class ChatBuilder {
 
     private ComponentBuilder componentBuilder;
 
-    public ChatBuilder(String text) {
-        componentBuilder = new ComponentBuilder(text);
+    public ChatBuilder(String text, Object... objects) {
+        componentBuilder = new ComponentBuilder(String.format(text, objects));
 
         //componentBuilder.color()
         //componentBuilder.append(String, FormatRetention);
     }
 
-    public ChatBuilder text(String text) {
-        componentBuilder.append(text, ComponentBuilder.FormatRetention.ALL);
+    public ChatBuilder text(String text, Object... objects) {
+        componentBuilder.append(String.format(text, objects), ComponentBuilder.FormatRetention.ALL);
         return this;
     }
 
@@ -23,7 +23,7 @@ public class ChatBuilder {
         String[] colors = color.split("\u00A7");
 
         for (String s : colors) {
-            if(s.length() > 1) continue;
+            if(s.length() < 1) continue;
             switch(s.toCharArray()[0]) {
                 case 'l':
                     componentBuilder.bold(true);
@@ -77,13 +77,17 @@ public class ChatBuilder {
         return this;
     }
 
+    public BaseComponent[] build() {
+        return componentBuilder.create();
+    }
+
     /* STATICS */
     public static ChatBuilder create() {
         return new ChatBuilder("");
     }
 
-    public static ChatBuilder create(String text) {
-        return new ChatBuilder(text);
+    public static ChatBuilder create(String text, Object... objects) {
+        return new ChatBuilder(text, objects);
     }
     /* END STATICS */
 }
