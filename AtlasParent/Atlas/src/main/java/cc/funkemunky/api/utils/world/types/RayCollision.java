@@ -93,6 +93,22 @@ public class RayCollision implements CollisionBox {
     }
 
     @Override
+    public boolean isIntersected(CollisionBox other) {
+        if(other instanceof RayCollision) {
+            return false; //not supported yet
+        } else if(other instanceof SimpleCollisionBox) {
+            SimpleCollisionBox box = (SimpleCollisionBox) other;
+
+            return intersect(this, box);
+        } else {
+            List<SimpleCollisionBox> boxes = new ArrayList<>();
+
+            other.downCast(boxes);
+            return boxes.stream().anyMatch(box -> intersect(this, box));
+        }
+    }
+
+    @Override
     public void draw(WrappedEnumParticle particle, Collection<? extends Player> players) {
         MiscUtils.drawRay(this,particle, players);
     }

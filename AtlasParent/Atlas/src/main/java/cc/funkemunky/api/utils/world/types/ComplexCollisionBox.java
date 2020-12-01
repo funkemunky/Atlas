@@ -25,6 +25,11 @@ public class ComplexCollisionBox implements CollisionBox {
         return boxes.stream().anyMatch(box -> box.isCollided(other));
     }
 
+    @Override
+    public boolean isIntersected(CollisionBox other) {
+        return boxes.stream().anyMatch(box -> box.isIntersected(other));
+    }
+
     public void draw(WrappedEnumParticle particle, Collection<? extends Player> players) {
         for (CollisionBox b : boxes)
             b.draw(particle,players);

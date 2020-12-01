@@ -31,6 +31,11 @@ public class DynamicCollisionBox implements CollisionBox {
     }
 
     @Override
+    public boolean isIntersected(CollisionBox other) {
+        return box.fetch(version, block).offset(x, y, z).isIntersected(other);
+    }
+
+    @Override
     public void draw(WrappedEnumParticle particle, Collection<? extends Player> players) {
         box.fetch(version, block).offset(x,y,z).draw(particle,players);
     }

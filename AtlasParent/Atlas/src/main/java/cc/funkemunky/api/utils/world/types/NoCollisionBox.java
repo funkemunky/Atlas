@@ -19,6 +19,11 @@ public class NoCollisionBox implements CollisionBox {
     }
 
     @Override
+    public boolean isIntersected(CollisionBox other) {
+        return false;
+    }
+
+    @Override
     public CollisionBox offset(double x, double y, double z) {
         return this;
     }

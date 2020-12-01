@@ -9,6 +9,7 @@ import java.util.List;
 
 public interface CollisionBox {
     boolean isCollided(CollisionBox other);
+    boolean isIntersected(CollisionBox other);
     void draw(WrappedEnumParticle particle, Collection<? extends Player> players);
     CollisionBox copy();
     CollisionBox offset(double x, double y, double z);

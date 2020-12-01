@@ -208,7 +208,23 @@ public class SimpleCollisionBox implements CollisionBox {
             return other.isCollided(this);
             // throw new IllegalStateException("Attempted to check collision with " + other.getClass().getSimpleName());
         }
-    }   /**
+    }
+
+    @Override
+    public boolean isIntersected(CollisionBox other) {
+        if(other instanceof SimpleCollisionBox) {
+            SimpleCollisionBox box = (SimpleCollisionBox) other;
+            box.sort();
+            sort();
+            return box.xMax > this.xMin && box.xMin < this.xMax
+                    && box.yMax > this.yMin && box.yMin < this.yMax
+                    && box.zMax > this.zMin && box.zMin < this.zMax;
+        } else {
+            return other.isIntersected(this);
+        }
+    }
+
+    /**
      * if instance and the argument bounding boxes overlap in the Y and Z dimensions, calculate the offset between them
      * in the X dimension.  return var2 if the bounding boxes do not overlap or if var2 is closer to 0 then the
      * calculated offset.  Otherwise return the calculated offset.
