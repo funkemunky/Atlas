@@ -13,6 +13,7 @@ import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
+import org.bukkit.block.Chest;
 import org.bukkit.material.Cake;
 import org.bukkit.material.Gate;
 import org.bukkit.material.MaterialData;
@@ -194,9 +195,28 @@ public enum BlockData {
             .map(BlockData::m)
             .toArray(Material[]::new)),
 
-    _CHEST(new SimpleCollisionBox(0, 0, 0, 1, 1 - 0.125, 1).expand(-0.125, 0, -0.125),
+    _CHEST((protocol, b) -> {
+        if (b.getRelative(BlockFace.NORTH).getType().name().contains("CHEST")) {
+            return new SimpleCollisionBox(0.0625F, 0.0F, 0.0F,
+                    0.9375F, 0.875F, 0.9375F);
+        } else if (b.getRelative(BlockFace.SOUTH).getType().name().contains("CHEST")) {
+            return new SimpleCollisionBox(0.0625F, 0.0F, 0.0625F,
+                    0.9375F, 0.875F, 1.0F);
+        } else if (b.getRelative(BlockFace.WEST).getType().name().contains("CHEST")) {
+            return new SimpleCollisionBox(0.0F, 0.0F, 0.0625F,
+                    0.9375F, 0.875F, 0.9375F);
+        } else if (b.getRelative(BlockFace.EAST).getType().name().contains("CHEST")) {
+            return new SimpleCollisionBox(0.0625F, 0.0F, 0.0625F,
+                    1.0F, 0.875F, 0.9375F);
+        } else {
+            return new SimpleCollisionBox(
+                    0.0625F, 0.0F, 0.0625F, 0.9375F, 0.875F, 0.9375F);
+        }
+    },
             XMaterial.CHEST.parseMaterial(), 
-            XMaterial.TRAPPED_CHEST.parseMaterial(), 
+            XMaterial.TRAPPED_CHEST.parseMaterial()),
+    _ENDERCHEST(new SimpleCollisionBox(0.0625F, 0.0F, 0.0625F,
+            0.9375F, 0.875F, 0.9375F),
             XMaterial.ENDER_CHEST.parseMaterial()),
     _ETABLE(new SimpleCollisionBox(0, 0, 0, 1, 1 - 0.25, 1),
             MiscUtils.match("ENCHANTMENT_TABLE")),
