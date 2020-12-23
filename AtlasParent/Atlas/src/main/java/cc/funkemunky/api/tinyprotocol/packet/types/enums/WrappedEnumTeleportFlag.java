@@ -16,7 +16,7 @@ public enum WrappedEnumTeleportFlag {
     X_ROT(4);
 
     private int f;
-    private static final WrappedClass enumTeleportFlag = Reflections.getNMSClass("EnumTeleportFlag");
+    private static final WrappedClass enumTeleportFlag = Reflections.getNMSClass("PacketPlayOutPosition$EnumPlayerTeleportFlags");
 
     WrappedEnumTeleportFlag(int var3) {
         this.f = var3;

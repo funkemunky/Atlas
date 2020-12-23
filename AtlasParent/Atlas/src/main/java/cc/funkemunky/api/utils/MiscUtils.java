@@ -454,6 +454,10 @@ public class MiscUtils {
         return null;
     }
 
+    public static void printToConsole(String string, Object... objects) {
+        Atlas.getInstance().getConsoleSender().sendMessage(Color.translate(String.format(string, objects)));
+    }
+
     public static void printToConsole(String string) {
         Atlas.getInstance().getConsoleSender().sendMessage(Color.translate(string));
     }

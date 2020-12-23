@@ -17,15 +17,13 @@ import cc.funkemunky.api.reflections.types.WrappedClass;
 import cc.funkemunky.api.tinyprotocol.api.TinyProtocolHandler;
 import cc.funkemunky.api.updater.Updater;
 import cc.funkemunky.api.utils.*;
+import cc.funkemunky.api.utils.Color;
 import cc.funkemunky.api.utils.blockbox.BlockBoxManager;
 import cc.funkemunky.api.utils.objects.RemoteClassLoader;
 import dev.brighten.db.Carbon;
 import lombok.Getter;
 import lombok.Setter;
-import org.bukkit.Bukkit;
-import org.bukkit.Chunk;
-import org.bukkit.Location;
-import org.bukkit.World;
+import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Entity;
@@ -86,6 +84,9 @@ public class Atlas extends JavaPlugin {
         consoleSender = Bukkit.getConsoleSender();
 
         MiscUtils.printToConsole(Color.Red + "Loading Atlas...");
+        Arrays.stream(Material.values()).filter(m -> m.getId() != m.ordinal())
+                .forEach(m -> MiscUtils.printToConsole("&7ID %s doesn't equal (id=%s, o=%s)",
+                        m.name(), m.getId(), m.ordinal()));
 
         MiscUtils.printToConsole(Color.Gray + "Firing up the thread turbines...");
         service = Executors.newFixedThreadPool(2);

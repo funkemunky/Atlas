@@ -34,7 +34,7 @@ public class DynamicFence implements CollisionFactory {
     }
 
     static boolean isBlacklisted(Material m) {
-        switch(m.getId()) {
+        switch(m.ordinal()) {
             case 138:
             case 280:
             case 86:

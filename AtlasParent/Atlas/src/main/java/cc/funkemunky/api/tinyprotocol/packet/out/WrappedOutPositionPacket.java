@@ -21,12 +21,12 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @Getter
-@NoArgsConstructor
 public class WrappedOutPositionPacket extends NMSObject {
     private static final String packet = Server.POSITION;
 
     private static WrappedClass packetClass = Reflections.getNMSClass(packet);
     private static WrappedField fieldFlags;
+    private static final WrappedClass enumTeleportFlag = Reflections.getNMSClass("PacketPlayOutPosition$EnumPlayerTeleportFlags");
 
     // Fields
     private static FieldAccessor<Double> fieldX = fetchField(packet, double.class, 0);
@@ -34,30 +34,42 @@ public class WrappedOutPositionPacket extends NMSObject {
     private static FieldAccessor<Double> fieldZ = fetchField(packet, double.class, 2);
     private static FieldAccessor<Float> fieldYaw = fetchField(packet, float.class, 0);
     private static FieldAccessor<Float> fieldPitch = fetchField(packet, float.class, 1);
+    private static WrappedField fieldTeleportAwait;
 
     // Decoded data
     private double x, y, z;
     private float yaw, pitch;
-    private Set<EnumPlayerTeleportFlags> flags = new HashSet<>();
+    private int teleportAwait = 0;
+    private Set<EnumPlayerTeleportFlags> flags;
+
+    public WrappedOutPositionPacket() {
+        this.flags = new HashSet<>();
+    }
 
     public WrappedOutPositionPacket(Object packet, Player player) {
         super(packet, player);
     }
 
-    public WrappedOutPositionPacket(Location location, int teleportAwait, @Nullable  WrappedEnumTeleportFlag... flags) {
-        if(ProtocolVersion.getGameVersion().isAbove(ProtocolVersion.V1_9)) {
-            setPacket(packet, location.getX(), location.getY(), location.getZ(), location.getYaw(), location.getPitch(), flags != null ? Arrays.stream(flags).map(WrappedEnumTeleportFlag::getObject).collect(Collectors.toSet()) : new HashSet<>(), teleportAwait);
-        } else if(ProtocolVersion.getGameVersion().isAbove(ProtocolVersion.V1_7_10)) {
-            setPacket(packet, location.getX(), location.getY(), location.getZ(), location.getYaw(), location.getPitch(), flags != null ? Arrays.stream(flags).map(WrappedEnumTeleportFlag::getObject).collect(Collectors.toSet()) : new HashSet<>());
-        } else setPacket(packet, location.getX(), location.getY(), location.getZ(), location.getYaw(), location.getPitch(), flags != null);
+    public WrappedOutPositionPacket(Location location, int teleportAwait, EnumPlayerTeleportFlags... flags) {
+        setObject(packetClass.getConstructor().newInstance());
+        this.x = location.getX();
+        this.y = location.getY();
+        this.z = location.getZ();
+        this.yaw = location.getYaw();
+        this.pitch = location.getPitch();
+        this.teleportAwait = teleportAwait;
+        this.flags = Arrays.stream(flags).collect(Collectors.toSet());
+
+        updateObject();
     }
 
-    public WrappedOutPositionPacket(Location location, @Nullable WrappedEnumTeleportFlag... flags) {
+    public WrappedOutPositionPacket(Location location, EnumPlayerTeleportFlags... flags) {
         this(location, 0, flags);
     }
 
     @Override
     public void process(Player player, ProtocolVersion version) {
+        if(flags == null) this.flags = new HashSet<>();
         x = fetch(fieldX);
         y = fetch(fieldY);
         z = fetch(fieldZ);
@@ -86,14 +98,58 @@ public class WrappedOutPositionPacket extends NMSObject {
             Set<Enum> vflags = fetch(fieldFlags);
 
             for (Enum vflag : vflags) {
-                flags.add(EnumPlayerTeleportFlags.valueOf(vflag.name()));
+                flags
+                        .add(
+                                EnumPlayerTeleportFlags
+                                .valueOf(
+                                        vflag.name()));
+            }
+
+            if(ProtocolVersion.getGameVersion().isOrAbove(ProtocolVersion.V1_9)) {
+                teleportAwait = fetch(fieldTeleportAwait);
             }
         }
     }
 
     @Override
     public void updateObject() {
+        set(fieldX, x);
+        set(fieldY, y);
+        set(fieldZ, z);
+        set(fieldYaw, yaw);
+        set(fieldPitch, pitch);
 
+        if(ProtocolVersion.getGameVersion().isOrAbove(ProtocolVersion.V1_8)) {
+            set(fieldFlags, flags.stream().map(f -> enumTeleportFlag.getEnum(f.name()))
+                    .collect(Collectors.toSet()));
+
+            if(ProtocolVersion.getGameVersion().isOrAbove(ProtocolVersion.V1_9)) {
+                set(fieldTeleportAwait, teleportAwait);
+            }
+        } else {
+            byte flagByte = 0;
+
+            for (EnumPlayerTeleportFlags flag : flags) {
+                switch(flag) {
+                    case X:
+                        flagByte|= 0x01;
+                        break;
+                    case Y:
+                        flagByte|= 0x02;
+                        break;
+                    case Z:
+                        flagByte|= 0x04;
+                        break;
+                    case Y_ROT:
+                        flagByte|= 0x08;
+                        break;
+                    case X_ROT:
+                        flagByte|= 0x10;
+                        break;
+                }
+            }
+            set(fieldFlags, flagByte);
+        }
     }
 
     private List<Integer> toOrdinal(Set<Enum> enums) {
@@ -107,6 +163,10 @@ public class WrappedOutPositionPacket extends NMSObject {
             fieldFlags = packetClass.getFieldByType(byte.class, 0);
         } else {
             fieldFlags = packetClass.getFieldByType(Set.class, 0);
+
+            if(ProtocolVersion.getGameVersion().isOrAbove(ProtocolVersion.V1_9)) {
+                fieldTeleportAwait = fetchField(packetClass, int.class, 0);
+            }
         }
     }
 

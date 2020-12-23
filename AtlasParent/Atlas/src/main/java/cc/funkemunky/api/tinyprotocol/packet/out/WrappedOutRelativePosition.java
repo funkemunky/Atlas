@@ -6,6 +6,7 @@ import cc.funkemunky.api.reflections.types.WrappedField;
 import cc.funkemunky.api.tinyprotocol.api.NMSObject;
 import cc.funkemunky.api.tinyprotocol.api.ProtocolVersion;
 import cc.funkemunky.api.tinyprotocol.reflection.FieldAccessor;
+import cc.funkemunky.api.utils.MathHelper;
 import lombok.Getter;
 import org.bukkit.entity.Player;
 
@@ -14,15 +15,6 @@ import java.util.List;
 @Getter
 public class WrappedOutRelativePosition extends NMSObject {
     private static final String packet = Server.ENTITY;
-
-    // Fields
-    /*private static FieldAccessor<Integer> fieldId = fetchField(packet, int.class, 0);
-    private static FieldAccessor<Byte> fieldX = fetchField(packet, byte.class, 0);
-    private static FieldAccessor<Byte> fieldY = fetchField(packet, byte.class, 1);
-    private static FieldAccessor<Byte> fieldZ = fetchField(packet, byte.class, 2);
-    private static FieldAccessor<Byte> fieldYaw = fetchField(packet, byte.class, 0);
-    private static FieldAccessor<Byte> fieldPitch = fetchField(packet, byte.class, 1);
-    private static FieldAccessor<Boolean> fieldGround = fetchField(packet, boolean.class, 0);*/
 
     private static WrappedClass packetClass = Reflections.getNMSClass(packet);
     private static WrappedField fieldId, fieldX, fieldY, fieldZ, fieldYaw, fieldPitch, fieldGround;
@@ -59,7 +51,6 @@ public class WrappedOutRelativePosition extends NMSObject {
         return fetch(fieldX);
     }
 
-
     public <T> T getY() {
         return fetch(fieldY);
     }
@@ -74,6 +65,47 @@ public class WrappedOutRelativePosition extends NMSObject {
 
     public <T> T getPitch() {
         return fetch(fieldPitch);
+    }
+
+    public void setX(double x) {
+        if(ProtocolVersion.getGameVersion().isOrAbove(ProtocolVersion.V1_9)) {
+            set(fieldX, MathHelper.floor_double_long(x * 4096));
+        } else {
+            set(fieldX, (byte)MathHelper.floor_double(x * 32));
+        }
+    }
+
+    public void setY(double y) {
+        if(ProtocolVersion.getGameVersion().isOrAbove(ProtocolVersion.V1_9)) {
+            set(fieldY, MathHelper.floor_double_long(y * 4096));
+        } else {
+            set(fieldY, (byte)MathHelper.floor_double(y * 32));
+        }
+    }
+
+
+    public void setZ(double z) {
+        if(ProtocolVersion.getGameVersion().isOrAbove(ProtocolVersion.V1_9)) {
+            set(fieldZ, MathHelper.floor_double_long(z * 4096));
+        } else {
+            set(fieldZ, (byte)MathHelper.floor_double(z * 32));
+        }
+    }
+
+    public void setYaw(float yaw) {
+        if(ProtocolVersion.getGameVersion().isOrAbove(ProtocolVersion.V1_9)) {
+            set(fieldYaw, MathHelper.floor_double(yaw * 256.0F / 360.0F));
+        } else {
+            set(fieldYaw, (byte)MathHelper.floor_double(yaw * 256.0F / 360.0F));
+        }
+    }
+
+    public void setPitch(float pitch) {
+        if(ProtocolVersion.getGameVersion().isOrAbove(ProtocolVersion.V1_9)) {
+            set(fieldPitch, MathHelper.floor_double(pitch * 256.0F / 360.0F));
+        } else {
+            set(fieldPitch, (byte)MathHelper.floor_double(pitch * 256.0F / 360.0F));
+        }
     }
 
 
