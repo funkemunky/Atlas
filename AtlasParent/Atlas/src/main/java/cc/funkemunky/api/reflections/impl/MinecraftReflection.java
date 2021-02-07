@@ -326,7 +326,9 @@ public class MinecraftReflection {
         } else {
             Object blockPos = new BaseBlockPosition(block.getX(), block.getY(), block.getZ()).getAsBlockPosition();
             Object blockData = getBlockData(vanillaBlock);
-            Object axisAlignedBB =  methodBlockCollisionBox.invoke(vanillaBlock, blockData, vanillaWorld, blockPos);
+            Object axisAlignedBB = ProtocolVersion.getGameVersion().isOrAbove(ProtocolVersion.V1_9)
+                    ? methodBlockCollisionBox.invoke(vanillaBlock, blockData, vanillaWorld, blockPos)
+                    : methodBlockCollisionBox.invoke(vanillaBlock, vanillaWorld, blockPos, blockData);
 
             if(axisAlignedBB != null) {
                 return new SimpleCollisionBox(axisAlignedBB);
@@ -459,18 +461,23 @@ public class MinecraftReflection {
             } else {
                 addCBoxes = block.getMethod("a", world.getParent(), blockPos.getParent(), iBlockData.getParent(),
                         axisAlignedBB.getParent(), List.class, entity.getParent());
-                methodBlockCollisionBox = block
-                        .getMethod("a", iBlockData.getParent(), world.getParent(), blockPos.getParent());
+                if(ProtocolVersion.getGameVersion().isOrAbove(ProtocolVersion.V1_9)) {
+                    methodBlockCollisionBox = block
+                            .getMethod("a", iBlockData.getParent(), world.getParent(), blockPos.getParent());
+                } else methodBlockCollisionBox = block
+                        .getMethod("a", world.getParent(), blockPos.getParent(), iBlockData.getParent());
             }
 
-            getFlowMethod = Reflections.getNMSClass("BlockFluids").getDeclaredMethodByType(vec3D.getParent(), 0);
+            getFlowMethod = Reflections.getNMSClass("BlockFluids")
+                    .getDeclaredMethodByType(vec3D.getParent(), 0);
         } else if(ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.V1_13)) {
             getCubes = world.getMethod("getCubes", entity.getParent(), axisAlignedBB.getParent());
             addCBoxes = block.getMethod("a", iBlockData.getParent(), world.getParent(), blockPos.getParent(),
                     axisAlignedBB.getParent(), List.class, entity.getParent(), boolean.class);
             methodBlockCollisionBox = block
                     .getMethod("a", iBlockData.getParent(), world.getParent(), blockPos.getParent());
-            getFlowMethod = Reflections.getNMSClass("BlockFluids").getDeclaredMethodByType(vec3D.getParent(), 0);
+            getFlowMethod = Reflections.getNMSClass("BlockFluids")
+                    .getDeclaredMethodByType(vec3D.getParent(), 0);
         } else {
             classBlockInfo = ProtocolVersion.getGameVersion().isOrAbove(ProtocolVersion.v1_16)
                     ? Reflections.getNMSClass("BlockBase$Info") : Reflections.getNMSClass("Block$Info");

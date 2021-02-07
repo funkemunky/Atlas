@@ -64,11 +64,18 @@ public class BlockUtils {
             Object blockData = MinecraftReflection.getBlockData(vanillaBlock);
             Object vanillaWorld = CraftReflection.getVanillaWorld(Bukkit.getWorlds().get(0));
             Object blockPos = new BaseBlockPosition(0, 0, 0).getAsBlockPosition();
-            return new WrappedClass(vanillaBlock.getClass()).getMethod("a",
+            WrappedClass blockClass = new WrappedClass(vanillaBlock.getClass());
+            return (ProtocolVersion.getGameVersion().isOrAbove(ProtocolVersion.V1_9)
+                    ? blockClass.getMethod("a",
                     MinecraftReflection.iBlockData.getParent(),
                     MinecraftReflection.world.getParent(),
                     MinecraftReflection.blockPos.getParent())
-                    .invoke(vanillaBlock, blockData, vanillaWorld, blockPos) != null;
+                    .invoke(vanillaBlock, blockData, vanillaWorld, blockPos)
+                    : blockClass.getMethod("a",
+                    MinecraftReflection.world.getParent(),
+                    MinecraftReflection.blockPos.getParent(),
+                    MinecraftReflection.iBlockData.getParent())
+                    .invoke(vanillaBlock, vanillaWorld, blockPos, blockData)) != null;
         }
         Object vanillaBlock = CraftReflection.getVanillaBlock(material);
 
