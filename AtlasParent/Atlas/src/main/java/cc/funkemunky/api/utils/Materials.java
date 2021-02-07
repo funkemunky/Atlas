@@ -21,7 +21,7 @@ public class Materials {
             Material material = Material.values()[i];
 
             //We use the one in BlockUtils also since we can't trust Material to include everything.
-            if (material.isSolid()) {
+            if (BlockUtils.blocksMovement(material)) {
                 MATERIAL_FLAGS[i] |= SOLID;
             }
             if (material.name().endsWith("_STAIRS")) {
@@ -59,6 +59,7 @@ public class Materials {
         MATERIAL_FLAGS[XMaterial.LADDER.parseMaterial().ordinal()] |= LADDER | SOLID;
         MATERIAL_FLAGS[XMaterial.VINE.parseMaterial().ordinal()] |= LADDER | SOLID;
         for (Material mat : Material.values()) {
+            if(!mat.isBlock()) continue;
             if (mat.name().contains("FENCE")) {
                 if(!mat.name().contains("GATE")) MATERIAL_FLAGS[mat.ordinal()] |= FENCE | WALL;
                 else MATERIAL_FLAGS[mat.ordinal()] |= WALL;

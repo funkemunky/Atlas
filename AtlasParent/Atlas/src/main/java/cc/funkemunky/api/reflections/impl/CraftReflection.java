@@ -3,8 +3,10 @@ package cc.funkemunky.api.reflections.impl;
 import cc.funkemunky.api.reflections.Reflections;
 import cc.funkemunky.api.reflections.types.WrappedClass;
 import cc.funkemunky.api.reflections.types.WrappedMethod;
+import cc.funkemunky.api.tinyprotocol.api.ProtocolVersion;
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
+import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
@@ -22,6 +24,7 @@ public class CraftReflection {
     public static WrappedClass craftInventoryPlayer = Reflections.getCBClass("inventory.CraftInventoryPlayer"); //1.7-1.14
     public static WrappedClass craftServer = Reflections.getCBClass("CraftServer"); //1.7-1.14\
     public static WrappedClass craftChunk = Reflections.getCBClass("CraftChunk");
+    public static WrappedClass craftMagicNumbers = Reflections.getCBClass("util.CraftMagicNumbers");
 
     //Vanilla Instances
     private static WrappedMethod itemStackInstance = craftItemStack.getMethod("asNMSCopy", ItemStack.class); //1.7-1.14
@@ -34,6 +37,9 @@ public class CraftReflection {
     private static WrappedMethod mcServerInstance = craftServer.getMethod("getServer"); //1.7-1.14
     private static WrappedMethod entityPlayerInstance = craftPlayer.getMethod("getHandle");
     private static WrappedMethod chunkInstance = craftChunk.getMethod("getHandle");
+    private static WrappedMethod methodGetBlockFromMaterial = ProtocolVersion.getGameVersion()
+            .isOrAbove(ProtocolVersion.V1_13) ? craftMagicNumbers.getMethod("getBlock", Material.class)
+            : craftMagicNumbers.getMethod("getBlock", int.class);
 
     public static <T> T getVanillaItemStack(ItemStack stack) {
         return itemStackInstance.invoke(null, stack);
@@ -73,5 +79,13 @@ public class CraftReflection {
 
     public static <T> T getVanillaChunk(Chunk chunk) {
         return chunkInstance.invoke(chunk);
+    }
+
+    public static <T> T getVanillaBlock(Material material) {
+        if(ProtocolVersion.getGameVersion().isOrAbove(ProtocolVersion.V1_13)) {
+            return methodGetBlockFromMaterial.invoke(null, material);
+        } else {
+            return methodGetBlockFromMaterial.invoke(null, material.getId());
+        }
     }
 }

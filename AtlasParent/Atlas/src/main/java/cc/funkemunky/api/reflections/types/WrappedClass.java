@@ -8,6 +8,7 @@
  */
 package cc.funkemunky.api.reflections.types;
 
+import cc.funkemunky.api.utils.MiscUtils;
 import lombok.Getter;
 import lombok.val;
 
@@ -95,6 +96,16 @@ public class WrappedClass {
 
     public boolean isAnnotationPresent(Class<? extends Annotation> annClass) {
         return parent.isAnnotationPresent(annClass);
+    }
+
+    public boolean hasMethod(String name, Class<?>... args) {
+        for (Method declaredMethod : parent.getDeclaredMethods()) {
+            if(declaredMethod.getName().equals(name)
+                    && Arrays.equals(args, declaredMethod.getParameterTypes()))
+                return true;
+        }
+
+        return false;
     }
 
     public <T> T getAnnotation(Class<T> annClass) {

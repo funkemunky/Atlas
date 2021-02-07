@@ -1,7 +1,16 @@
 package cc.funkemunky.api.utils;
 
 import cc.funkemunky.api.Atlas;
+import cc.funkemunky.api.handlers.protocolsupport.Protocol;
+import cc.funkemunky.api.reflections.Reflections;
+import cc.funkemunky.api.reflections.impl.CraftReflection;
+import cc.funkemunky.api.reflections.impl.MinecraftReflection;
+import cc.funkemunky.api.reflections.types.WrappedClass;
+import cc.funkemunky.api.reflections.types.WrappedField;
 import cc.funkemunky.api.tinyprotocol.api.ProtocolVersion;
+import cc.funkemunky.api.tinyprotocol.packet.types.BaseBlockPosition;
+import cc.funkemunky.api.utils.world.types.NoCollisionBox;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -21,6 +30,49 @@ public class BlockUtils {
         } else {
             return null;
         }
+    }
+
+    private static WrappedField fieldBlocksMovement;
+    public static boolean blocksMovement(Block block) {
+        if(ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.V1_13)) {
+            Object vanillaBlock = CraftReflection.getVanillaBlock(block);
+
+            WrappedClass blockClass = new WrappedClass(vanillaBlock.getClass());
+
+            if(blockClass.hasMethod("a", MinecraftReflection.iBlockData.getParent(),
+                    MinecraftReflection.world.getParent(),
+                    MinecraftReflection.blockPos.getParent())) {
+                Object blockData = MinecraftReflection.getBlockData(vanillaBlock);
+                Object vanillaWorld = CraftReflection.getVanillaWorld(block.getWorld());
+                Object blockPos = new BaseBlockPosition(block.getX(), block.getY(), block.getZ()).getAsBlockPosition();
+                return new WrappedClass(vanillaBlock.getClass()).getMethod("a",
+                        MinecraftReflection.iBlockData.getParent(),
+                        MinecraftReflection.world.getParent(),
+                        MinecraftReflection.blockPos.getParent())
+                        .invoke(vanillaBlock, blockData, vanillaWorld, blockPos) != null;
+            } else return !(MinecraftReflection.getCollisionBox(block) instanceof NoCollisionBox);
+        }
+        Object vanillaBlock = CraftReflection.getVanillaBlock(block);
+
+        return fieldBlocksMovement.get(vanillaBlock);
+    }
+
+    public static boolean blocksMovement(Material material) {
+        if(ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.V1_13)) {
+            Object vanillaBlock = CraftReflection.getVanillaBlock(material);
+
+            Object blockData = MinecraftReflection.getBlockData(vanillaBlock);
+            Object vanillaWorld = CraftReflection.getVanillaWorld(Bukkit.getWorlds().get(0));
+            Object blockPos = new BaseBlockPosition(0, 0, 0).getAsBlockPosition();
+            return new WrappedClass(vanillaBlock.getClass()).getMethod("a",
+                    MinecraftReflection.iBlockData.getParent(),
+                    MinecraftReflection.world.getParent(),
+                    MinecraftReflection.blockPos.getParent())
+                    .invoke(vanillaBlock, blockData, vanillaWorld, blockPos) != null;
+        }
+        Object vanillaBlock = CraftReflection.getVanillaBlock(material);
+
+        return fieldBlocksMovement.get(vanillaBlock);
     }
 
     public static boolean isSolid(Block block) {
@@ -420,6 +472,10 @@ public class BlockUtils {
 
     static {
         setupCollisionBB();
+
+        if(ProtocolVersion.getGameVersion().isOrAbove(ProtocolVersion.V1_13)) {
+            fieldBlocksMovement = MinecraftReflection.classBlockInfo.getFieldByType(boolean.class, 0);
+        }
     }
 }
 

@@ -10,9 +10,14 @@ import cc.funkemunky.api.tinyprotocol.api.ProtocolVersion;
 import cc.funkemunky.api.tinyprotocol.packet.types.BaseBlockPosition;
 import cc.funkemunky.api.tinyprotocol.packet.types.Vec3D;
 import cc.funkemunky.api.tinyprotocol.packet.types.enums.WrappedEnumAnimation;
+import cc.funkemunky.api.tinyprotocol.reflection.Reflection;
 import cc.funkemunky.api.utils.BoundingBox;
 import cc.funkemunky.api.utils.Materials;
 import cc.funkemunky.api.utils.MiscUtils;
+import cc.funkemunky.api.utils.exceptions.Validate;
+import cc.funkemunky.api.utils.world.CollisionBox;
+import cc.funkemunky.api.utils.world.types.NoCollisionBox;
+import cc.funkemunky.api.utils.world.types.SimpleCollisionBox;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
@@ -42,6 +47,7 @@ public class MinecraftReflection {
     public static WrappedClass itemStack = Reflections.getNMSClass("ItemStack");
     public static WrappedClass enumAnimation = Reflections.getNMSClass("EnumAnimation");
     public static WrappedClass chunk = Reflections.getNMSClass("Chunk");
+    public static WrappedClass classBlockInfo;
     public static WrappedClass minecraftServer = Reflections.getNMSClass("MinecraftServer");
     public static WrappedClass entityPlayer = Reflections.getNMSClass("EntityPlayer");
     public static WrappedClass playerConnection = Reflections.getNMSClass("PlayerConnection");
@@ -67,7 +73,7 @@ public class MinecraftReflection {
     private static WrappedField eBB = axisAlignedBB.getFieldByName("e");
     private static WrappedField fBB = axisAlignedBB.getFieldByName("f");
     private static WrappedConstructor aabbConstructor;
-    private static WrappedMethod idioticOldStaticConstructorAABB;
+    private static WrappedMethod idioticOldStaticConstructorAABB, methodBlockCollisionBox;
     private static WrappedField entityBoundingBox = entity.getFirstFieldByType(axisAlignedBB.getParent());
 
     //ItemStack methods and fields
@@ -304,6 +310,30 @@ public class MinecraftReflection {
         return boxes;
     }
 
+    public static CollisionBox getCollisionBox(Block block) {
+        Validate.isTrue(ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.V1_13));
+
+        Object vanillaBlock = CraftReflection.getVanillaBlock(block);
+        Object vanillaWorld = CraftReflection.getVanillaWorld(block.getWorld());
+
+        if(ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.V1_8)) {
+            Object axisAlignedBB = methodBlockCollisionBox
+                    .invoke(vanillaBlock, vanillaWorld, block.getX(), block.getY(), block.getZ());
+
+            if(axisAlignedBB != null) {
+                return new SimpleCollisionBox(axisAlignedBB);
+            } else return NoCollisionBox.INSTANCE;
+        } else {
+            Object blockPos = new BaseBlockPosition(block.getX(), block.getY(), block.getZ()).getAsBlockPosition();
+            Object blockData = getBlockData(vanillaBlock);
+            Object axisAlignedBB =  methodBlockCollisionBox.invoke(vanillaBlock, blockData, vanillaWorld, blockPos);
+
+            if(axisAlignedBB != null) {
+                return new SimpleCollisionBox(axisAlignedBB);
+            } else return NoCollisionBox.INSTANCE;
+        }
+    }
+
     public static Thread getMainThread(Object minecraftServer) {
         return primaryThread.get(minecraftServer);
     }
@@ -424,9 +454,13 @@ public class MinecraftReflection {
                 //1.7.10 does not have the BlockPosition object yet.
                 addCBoxes = block.getMethod("a", world.getParent(), int.class, int.class, int.class,
                         axisAlignedBB.getParent(), List.class, entity.getParent());
+                methodBlockCollisionBox = block
+                        .getMethod("a", world.getParent(), int.class, int.class, int.class);
             } else {
                 addCBoxes = block.getMethod("a", world.getParent(), blockPos.getParent(), iBlockData.getParent(),
                         axisAlignedBB.getParent(), List.class, entity.getParent());
+                methodBlockCollisionBox = block
+                        .getMethod("a", iBlockData.getParent(), world.getParent(), blockPos.getParent());
             }
 
             getFlowMethod = Reflections.getNMSClass("BlockFluids").getDeclaredMethodByType(vec3D.getParent(), 0);
@@ -434,8 +468,12 @@ public class MinecraftReflection {
             getCubes = world.getMethod("getCubes", entity.getParent(), axisAlignedBB.getParent());
             addCBoxes = block.getMethod("a", iBlockData.getParent(), world.getParent(), blockPos.getParent(),
                     axisAlignedBB.getParent(), List.class, entity.getParent(), boolean.class);
+            methodBlockCollisionBox = block
+                    .getMethod("a", iBlockData.getParent(), world.getParent(), blockPos.getParent());
             getFlowMethod = Reflections.getNMSClass("BlockFluids").getDeclaredMethodByType(vec3D.getParent(), 0);
         } else {
+            classBlockInfo = ProtocolVersion.getGameVersion().isOrAbove(ProtocolVersion.v1_16)
+                    ? Reflections.getNMSClass("BlockBase$Info") : Reflections.getNMSClass("Block$Info");
             worldReader = Reflections.getNMSClass("IWorldReader");
             //1.13 and 1.13.1 returns just VoxelShape while 1.13.2+ returns a Stream<VoxelShape>
             getCubes = ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.v1_16) ?
