@@ -12,9 +12,9 @@ public class Materials {
     public static final int SLABS  = 0b00000000000000000000000010000;
     public static final int WATER  = 0b00000000000000000000000100000;
     public static final int LAVA   = 0b00000000000000000000001000000;
-    public static final int LIQUID = 0b00000000000000000000001100000;
-    public static final int ICE    = 0b00000000000000000000010000000;
-    public static final int FENCE  = 0b00000000000000000000100000000;
+    public static final int LIQUID = 0b00000000000000000000010000000;
+    public static final int ICE    = 0b00000000000000000000100000000;
+    public static final int FENCE  = 0b00000000000000000001000000000;
 
     static {
         for (int i = 0; i < MATERIAL_FLAGS.length; i++) {

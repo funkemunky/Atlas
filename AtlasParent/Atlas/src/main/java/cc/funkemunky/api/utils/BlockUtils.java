@@ -34,48 +34,12 @@ public class BlockUtils {
 
     private static WrappedField fieldBlocksMovement;
     public static boolean blocksMovement(Block block) {
-        if(ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.V1_13)) {
-            Object vanillaBlock = CraftReflection.getVanillaBlock(block);
-
-            WrappedClass blockClass = new WrappedClass(vanillaBlock.getClass());
-
-            if(blockClass.hasMethod("a", MinecraftReflection.iBlockData.getParent(),
-                    MinecraftReflection.world.getParent(),
-                    MinecraftReflection.blockPos.getParent())) {
-                Object blockData = MinecraftReflection.getBlockData(vanillaBlock);
-                Object vanillaWorld = CraftReflection.getVanillaWorld(block.getWorld());
-                Object blockPos = new BaseBlockPosition(block.getX(), block.getY(), block.getZ()).getAsBlockPosition();
-                return new WrappedClass(vanillaBlock.getClass()).getMethod("a",
-                        MinecraftReflection.iBlockData.getParent(),
-                        MinecraftReflection.world.getParent(),
-                        MinecraftReflection.blockPos.getParent())
-                        .invoke(vanillaBlock, blockData, vanillaWorld, blockPos) != null;
-            } else return !(MinecraftReflection.getCollisionBox(block) instanceof NoCollisionBox);
-        }
-        Object vanillaBlock = CraftReflection.getVanillaBlock(block);
-
-        return fieldBlocksMovement.get(vanillaBlock);
+        return blocksMovement(block.getType());
     }
 
     public static boolean blocksMovement(Material material) {
         if(ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.V1_13)) {
-            Object vanillaBlock = CraftReflection.getVanillaBlock(material);
-
-            Object blockData = MinecraftReflection.getBlockData(vanillaBlock);
-            Object vanillaWorld = CraftReflection.getVanillaWorld(Bukkit.getWorlds().get(0));
-            Object blockPos = new BaseBlockPosition(0, 0, 0).getAsBlockPosition();
-            WrappedClass blockClass = new WrappedClass(vanillaBlock.getClass());
-            return (ProtocolVersion.getGameVersion().isOrAbove(ProtocolVersion.V1_9)
-                    ? blockClass.getMethod("a",
-                    MinecraftReflection.iBlockData.getParent(),
-                    MinecraftReflection.world.getParent(),
-                    MinecraftReflection.blockPos.getParent())
-                    .invoke(vanillaBlock, blockData, vanillaWorld, blockPos)
-                    : blockClass.getMethod("a",
-                    MinecraftReflection.world.getParent(),
-                    MinecraftReflection.blockPos.getParent(),
-                    MinecraftReflection.iBlockData.getParent())
-                    .invoke(vanillaBlock, vanillaWorld, blockPos, blockData)) != null;
+            return material.isSolid();
         }
         Object vanillaBlock = CraftReflection.getVanillaBlock(material);
 
