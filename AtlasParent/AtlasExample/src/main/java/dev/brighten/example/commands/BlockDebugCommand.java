@@ -15,7 +15,7 @@ import org.bukkit.Material;
 @Init(commands = true)
 public class BlockDebugCommand {
 
-    @Command(name = "setblock", description = "Set a block.", playerOnly = true)
+    @Command(name = "setblock", aliases = "asetblock", description = "Set a block.", playerOnly = true)
     public void onCommand(CommandAdapter cmd) {
         cmd.getSender().sendMessage(Color.Green + "Type the coordinates to set. Type \"cancel\" to cancel.");
         ChatHandler.onChat(cmd.getPlayer(), false, (chat, message) -> {

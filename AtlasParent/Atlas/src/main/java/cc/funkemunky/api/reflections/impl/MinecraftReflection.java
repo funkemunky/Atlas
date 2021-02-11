@@ -89,6 +89,8 @@ public class MinecraftReflection {
     private static WrappedMethod getCubesFromVoxelShape;
 
     private static WrappedField pingField = entityPlayer.getFieldByName("ping");
+    private static WrappedMethod itemStackAsBukkitCopy = CraftReflection.craftItemStack
+            .getMethod("asBukkitCopy", itemStack.getParent());
 
     //Blocks
     private static WrappedMethod addCBoxes;
@@ -406,6 +408,9 @@ public class MinecraftReflection {
         return new Vec3D(0,0,0);
     }
 
+    public static ItemStack toBukkitItemStack(Object vanillaItemStack) {
+        return itemStackAsBukkitCopy.invoke(null, vanillaItemStack);
+    }
 
     public static <T> T toAABB(BoundingBox box) {
         if(ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.V1_8)) {

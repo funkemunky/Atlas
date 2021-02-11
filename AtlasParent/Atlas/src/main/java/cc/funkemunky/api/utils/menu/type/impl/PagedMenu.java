@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.IntStream;
 
 public class PagedMenu implements Menu {
@@ -110,12 +111,13 @@ public class PagedMenu implements Menu {
             buildInventory(false);
         }));
         holder.getInventory().setItem(dimension.getSize() - 4, next);
+        AtomicInteger index = new AtomicInteger(0);
         IntStream.range(Math.min(contents.size(), size * (currentPage - 1)),
                 Math.min(contents.size(), size * currentPage))
                 .forEach(i -> {
                     Button button = contents.get(i);
                     if (button != null) {
-                        holder.getInventory().setItem(i - 54 * (currentPage - 1), button.getStack());
+                        holder.getInventory().setItem(index.getAndIncrement(), button.getStack());
                     }
                 });
 

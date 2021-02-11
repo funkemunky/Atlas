@@ -2,6 +2,7 @@ package cc.funkemunky.api.tinyprotocol.packet.out;
 
 import cc.funkemunky.api.reflections.Reflections;
 import cc.funkemunky.api.reflections.types.WrappedClass;
+import cc.funkemunky.api.reflections.types.WrappedConstructor;
 import cc.funkemunky.api.reflections.types.WrappedField;
 import cc.funkemunky.api.tinyprotocol.api.NMSObject;
 import cc.funkemunky.api.tinyprotocol.api.Packet;
@@ -13,11 +14,29 @@ public class WrappedOutEntityTeleportPacket extends NMSObject {
 
     private static WrappedField fieldEntityId, fieldX, fieldY, fieldZ, fieldYaw, fieldPitch, fieldOnGround;
     private static WrappedClass classEntityTeleport = Reflections.getNMSClass(Packet.Server.ENTITY_TELEPORT);
+    private static WrappedConstructor emptyConstructor = classEntityTeleport.getConstructor();
 
     public int entityId;
     public double x, y, z;
     public float yaw, pitch;
     public boolean onGround;
+
+    public WrappedOutEntityTeleportPacket(Object object, Player player) {
+        super(object, player);
+    }
+
+    public WrappedOutEntityTeleportPacket(int entityId, double x, double y, double z, float yaw, float pitch,
+                                          boolean onGround) {
+        setObject(emptyConstructor.newInstance());
+        this.entityId = entityId;
+        this.x = x;
+        this.y = y;
+        this.z = z;
+        this.yaw = yaw;
+        this.pitch = pitch;
+        this.onGround = onGround;
+        updateObject();
+    }
 
     @Override
     public void process(Player player, ProtocolVersion version) {
