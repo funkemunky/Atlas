@@ -9,6 +9,7 @@ import org.bukkit.plugin.Plugin;
 
 import java.util.List;
 
+@Deprecated
 public class SpigotCommand extends org.bukkit.command.Command {
 
     private Plugin owningPlugin;

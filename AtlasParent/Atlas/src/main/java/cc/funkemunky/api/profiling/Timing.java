@@ -1,6 +1,6 @@
 package cc.funkemunky.api.profiling;
 
-import cc.funkemunky.api.utils.math.RollingAverageDouble;
+import cc.funkemunky.api.utils.math.SimpleAverage;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
@@ -9,5 +9,5 @@ public class Timing {
     public int calls;
     public long call, total, lastCall;
     public double stdDev;
-    public RollingAverageDouble average = new RollingAverageDouble(40, 0);
+    public SimpleAverage average = new SimpleAverage(300, 0);
 }

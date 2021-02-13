@@ -14,12 +14,15 @@ import cc.funkemunky.api.reflections.Reflections;
 import cc.funkemunky.api.reflections.impl.BukkitReflection;
 import cc.funkemunky.api.reflections.impl.MinecraftReflection;
 import cc.funkemunky.api.reflections.types.WrappedClass;
+import cc.funkemunky.api.tinyprotocol.api.ProtocolVersion;
 import cc.funkemunky.api.tinyprotocol.api.TinyProtocolHandler;
 import cc.funkemunky.api.updater.Updater;
 import cc.funkemunky.api.utils.*;
 import cc.funkemunky.api.utils.Color;
 import cc.funkemunky.api.utils.blockbox.BlockBoxManager;
 import cc.funkemunky.api.utils.objects.RemoteClassLoader;
+import co.aikar.commands.BaseCommand;
+import co.aikar.commands.BukkitCommandManager;
 import dev.brighten.db.Carbon;
 import lombok.Getter;
 import lombok.Setter;
@@ -65,6 +68,7 @@ public class Atlas extends JavaPlugin {
     private final Map<Integer, UUID> entityIds = new ConcurrentHashMap<>();
     private Map<Location, Block> blocksMap = new ConcurrentHashMap<>();
     private Map<String, CommandManager> pluginCommandManagers = new HashMap<>();
+    private Map<String, BukkitCommandManager> bukkitCommandManagers = new HashMap<>();
 
     @ConfigSetting(path = "updater", name = "autoDownload")
     private static boolean autoDownload = false;
@@ -168,8 +172,13 @@ public class Atlas extends JavaPlugin {
         schedular.shutdown();
     }
 
+    @Deprecated
     public CommandManager getCommandManager(Plugin plugin) {
         return pluginCommandManagers.computeIfAbsent(plugin.getName(), key -> new CommandManager(plugin));
+    }
+
+    public BukkitCommandManager getBukkitCommandManager(Plugin plugin) {
+        return bukkitCommandManagers.computeIfAbsent(plugin.getName(), key -> new BukkitCommandManager(plugin));
     }
 
     private void runTasks() {
@@ -235,6 +244,9 @@ public class Atlas extends JavaPlugin {
                 .filter(Objects::nonNull)
                 .filter(c -> {
                     Init init = c.getAnnotation(Init.class);
+                    //If the current version is 1.8, but the required version is 1.9, this will return false.
+                    if(ProtocolVersion.getGameVersion().isBelow(init.requireProtocolVersion())) return false;
+
                     String[] required = init.requirePlugins();
 
                     if(required.length > 0) {
@@ -287,6 +299,12 @@ public class Atlas extends JavaPlugin {
                         MiscUtils.printToConsole("&7Registering commands in class &e"
                                 + c.getParent().getSimpleName() + "&7...");
                         Atlas.getInstance().getCommandManager(plugin).registerCommands(obj);
+                    }
+
+                    if(obj instanceof BaseCommand) {
+                        MiscUtils.printToConsole("&7Found BaseCommand for class &e"
+                                + c.getParent().getSimpleName() + "&7! Registering commands...");
+                        getBukkitCommandManager(plugin).registerCommand((BaseCommand)obj);
                     }
 
                     c.getMethods(method -> method.getMethod().isAnnotationPresent(Invoke.class))

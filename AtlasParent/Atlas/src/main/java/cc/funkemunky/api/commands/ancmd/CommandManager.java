@@ -29,6 +29,7 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 @Getter
+@Deprecated
 public class CommandManager implements CommandExecutor {
     private Map<String, CommandRegister> commands = new ConcurrentHashMap<>();
     private Plugin plugin;

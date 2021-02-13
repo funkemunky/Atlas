@@ -20,6 +20,7 @@ import java.util.List;
 
 @Getter
 @Setter
+@Deprecated
 public abstract class FunkeCommand
         implements CommandExecutor, TabCompleter {
     private static FunkeCommand instance;

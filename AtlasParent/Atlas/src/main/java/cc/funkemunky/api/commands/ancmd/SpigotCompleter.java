@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@Deprecated
 public class SpigotCompleter implements TabCompleter {
 
     private Map<String, List<String>> completers = new HashMap<>();

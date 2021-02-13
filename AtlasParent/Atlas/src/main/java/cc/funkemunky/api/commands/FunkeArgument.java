@@ -9,6 +9,7 @@ import java.util.*;
 
 @Getter
 @Setter
+@Deprecated
 public abstract class FunkeArgument {
     private FunkeCommand parent;
     private String name, display, description;

@@ -16,6 +16,7 @@ import cc.funkemunky.api.utils.Priority;
 import java.util.*;
 
 @Init(priority = Priority.HIGH)
+@Deprecated
 public class TabHandler implements AtlasListener {
 
     public static TabHandler INSTANCE;

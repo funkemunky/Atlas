@@ -1,14 +1,16 @@
 package cc.funkemunky.api.profiling;
 
+import cc.funkemunky.api.utils.MathHelper;
 import cc.funkemunky.api.utils.Tuple;
 import lombok.Getter;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
 public class BaseProfiler implements Profiler {
     @Getter
-    private Map<String, Timing> timingsMap = new HashMap<>();
+    private final Map<String, Timing> timingsMap = new HashMap<>();
     public long lastSample = 0, lastReset;
     public int totalCalls = 0;
     public long start = 0;
@@ -52,10 +54,11 @@ public class BaseProfiler implements Profiler {
     @Override
     public Map<String, Tuple<Integer, Double>> results(ResultsType type) {
         Map<String, Tuple<Integer, Double>> toReturn = new HashMap<>();
+        Map<String, Timing> currentResults = new HashMap<>(timingsMap);
         switch(type) {
             case TOTAL: {
-                for (String key : timingsMap.keySet()) {
-                    Timing timing = timingsMap.get(key);
+                for (String key : currentResults.keySet()) {
+                    Timing timing = currentResults.get(key);
 
                     toReturn.put(key, new Tuple<>(timing.calls, timing.average.getAverage()
                             * (timing.calls / (double)totalCalls)));
@@ -63,24 +66,35 @@ public class BaseProfiler implements Profiler {
                 break;
             }
             case AVERAGE: {
-                for(String key : timingsMap.keySet()) {
-                    Timing timing = timingsMap.get(key);
+                for(String key : currentResults.keySet()) {
+                    Timing timing = currentResults.get(key);
 
                     toReturn.put(key, new Tuple<>(timing.calls, timing.average.getAverage()));
                 }
                 break;
             }
             case SAMPLES: {
-                for(String key : timingsMap.keySet()) {
-                    Timing timing = timingsMap.get(key);
+                for(String key : currentResults.keySet()) {
+                    Timing timing = currentResults.get(key);
 
                     toReturn.put(key, new Tuple<>(timing.calls, (double)timing.call));
                 }
                 break;
             }
+            case TICK: {
+                int ticks = MathHelper.ceiling_double_int((System.currentTimeMillis() - start) / 20.);
+
+                for (String key : currentResults.keySet()) {
+                    Timing timing = currentResults.get(key);
+
+                    toReturn.put(key, new Tuple<>(timing.calls, timing.average.getAverage()
+                            / Math.min(1, timing.calls / (double)ticks)));
+                }
+                break;
+            }
             default: {
-                for (String key : timingsMap.keySet()) {
-                    Timing timing = timingsMap.get(key);
+                for (String key : currentResults.keySet()) {
+                    Timing timing = currentResults.get(key);
 
                     toReturn.put(key, new Tuple<>(timing.calls, timing.total / (double)timing.calls));
                 }
