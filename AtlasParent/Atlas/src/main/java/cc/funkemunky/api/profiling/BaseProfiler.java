@@ -82,13 +82,12 @@ public class BaseProfiler implements Profiler {
                 break;
             }
             case TICK: {
-                int ticks = MathHelper.ceiling_double_int((System.currentTimeMillis() - start) / 20.);
+                int ticks = MathHelper.ceiling_double_int((System.currentTimeMillis() - start) / 50.);
 
                 for (String key : currentResults.keySet()) {
                     Timing timing = currentResults.get(key);
 
-                    toReturn.put(key, new Tuple<>(timing.calls, timing.average.getAverage()
-                            / Math.min(1, timing.calls / (double)ticks)));
+                    toReturn.put(key, new Tuple<>(timing.calls, timing.total / (double)ticks));
                 }
                 break;
             }

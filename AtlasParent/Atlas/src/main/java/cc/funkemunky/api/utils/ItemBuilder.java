@@ -90,7 +90,7 @@ public class ItemBuilder {
         ItemMeta meta = is.getItemMeta();
         List<String> lore = meta.getLore();
         if (lore == null) {
-            lore = new ArrayList<String>();
+            lore = new ArrayList<>();
         }
         lore.add(name);
         meta.setLore(lore);
@@ -100,7 +100,9 @@ public class ItemBuilder {
 
     public ItemBuilder lore(String... lore) {
         ItemMeta meta = is.getItemMeta();
-        List<String> lores = Arrays.stream(lore).map(s -> ChatColor.translateAlternateColorCodes('&', s)).collect(Collectors.toList());
+        List<String> lores = Arrays.stream(lore)
+                .map(s -> ChatColor.translateAlternateColorCodes('&', s))
+                .collect(Collectors.toList());
         meta.setLore(lores);
         is.setItemMeta(meta);
         return this;
