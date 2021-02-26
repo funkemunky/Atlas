@@ -68,7 +68,9 @@ public class WrappedOutRelativePosition extends NMSObject {
     }
 
     public void setX(double x) {
-        if(ProtocolVersion.getGameVersion().isOrAbove(ProtocolVersion.V1_9)) {
+        if(ProtocolVersion.getGameVersion().isOrAbove(ProtocolVersion.V1_14)) {
+            set(fieldX, (short) MathHelper.floor_double(x * 4096.0D));
+        } else if(ProtocolVersion.getGameVersion().isOrAbove(ProtocolVersion.V1_9)) {
             set(fieldX, MathHelper.floor_double_long(x * 4096));
         } else {
             set(fieldX, (byte)MathHelper.floor_double(x * 32));
@@ -76,7 +78,9 @@ public class WrappedOutRelativePosition extends NMSObject {
     }
 
     public void setY(double y) {
-        if(ProtocolVersion.getGameVersion().isOrAbove(ProtocolVersion.V1_9)) {
+        if(ProtocolVersion.getGameVersion().isOrAbove(ProtocolVersion.V1_14)) {
+            set(fieldY, (short) MathHelper.floor_double(y * 4096.0D));
+        } else if(ProtocolVersion.getGameVersion().isOrAbove(ProtocolVersion.V1_9)) {
             set(fieldY, MathHelper.floor_double_long(y * 4096));
         } else {
             set(fieldY, (byte)MathHelper.floor_double(y * 32));
@@ -85,7 +89,9 @@ public class WrappedOutRelativePosition extends NMSObject {
 
 
     public void setZ(double z) {
-        if(ProtocolVersion.getGameVersion().isOrAbove(ProtocolVersion.V1_9)) {
+        if(ProtocolVersion.getGameVersion().isOrAbove(ProtocolVersion.V1_14)) {
+            set(fieldZ, (short) MathHelper.floor_double(z * 4096.0D));
+        } else if(ProtocolVersion.getGameVersion().isOrAbove(ProtocolVersion.V1_9)) {
             set(fieldZ, MathHelper.floor_double_long(z * 4096));
         } else {
             set(fieldZ, (byte)MathHelper.floor_double(z * 32));

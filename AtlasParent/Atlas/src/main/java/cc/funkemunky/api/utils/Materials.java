@@ -21,7 +21,7 @@ public class Materials {
             Material material = Material.values()[i];
 
             //We use the one in BlockUtils also since we can't trust Material to include everything.
-            if (BlockUtils.blocksMovement(material)) {
+            if (material.isSolid()) {
                 MATERIAL_FLAGS[i] |= SOLID;
             }
             if (material.name().endsWith("_STAIRS")) {

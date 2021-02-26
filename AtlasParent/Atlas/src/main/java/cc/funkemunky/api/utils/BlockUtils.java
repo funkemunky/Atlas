@@ -38,12 +38,22 @@ public class BlockUtils {
     }
 
     public static boolean blocksMovement(Material material) {
-        if(ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.V1_13)) {
-            return material.isSolid();
-        }
-        Object vanillaBlock = CraftReflection.getVanillaBlock(material);
+        return material.isSolid();
+    }
 
-        return fieldBlocksMovement.get(vanillaBlock);
+    public static float getFriction(XMaterial material) {
+        switch(material) {
+            case SLIME_BLOCK:
+                return 0.8f;
+            case ICE:
+            case PACKED_ICE:
+            case FROSTED_ICE:
+                return 0.98f;
+            case BLUE_ICE:
+                return 0.989f;
+            default:
+                return 0.6f;
+        }
     }
 
     public static boolean isSolid(Block block) {

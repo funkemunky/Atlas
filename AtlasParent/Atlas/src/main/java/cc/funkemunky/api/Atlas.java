@@ -39,6 +39,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 import java.io.File;
 import java.util.*;
 import java.util.concurrent.*;
+import java.util.logging.Level;
 import java.util.stream.Collectors;
 
 @Getter
@@ -82,15 +83,15 @@ public class Atlas extends JavaPlugin {
     @ConfigSetting(path = "ticking", name = "runAsync")
     private static boolean runAsync = false;
 
+    @ConfigSetting(name = "debug")
+    public static boolean debugMode = false;
+
     public void onEnable() {
         instance = this;
         saveDefaultConfig();
         consoleSender = Bukkit.getConsoleSender();
 
         MiscUtils.printToConsole(Color.Red + "Loading Atlas...");
-        Arrays.stream(Material.values()).filter(m -> m.getId() != m.ordinal())
-                .forEach(m -> MiscUtils.printToConsole("&7ID %s doesn't equal (id=%s, o=%s)",
-                        m.name(), m.getId(), m.ordinal()));
 
         MiscUtils.printToConsole(Color.Gray + "Firing up the thread turbines...");
         service = Executors.newFixedThreadPool(2);
@@ -279,6 +280,7 @@ public class Atlas extends JavaPlugin {
                 .sorted(Comparator.comparing(c ->
                         c.getAnnotation(Init.class).priority().getPriority(), Comparator.reverseOrder()))
                 .forEach(c -> {
+                    if(debugMode) getLogger().log(Level.INFO, "Working on class " + c.getParent().getSimpleName());
                     Object obj = c.getParent().equals(mainClass) ? plugin : c.getConstructor().newInstance();
                     Init annotation = c.getAnnotation(Init.class);
 
