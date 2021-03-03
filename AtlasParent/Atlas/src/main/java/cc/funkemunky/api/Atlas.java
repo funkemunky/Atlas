@@ -292,7 +292,7 @@ public class Atlas extends JavaPlugin {
                         }
                         if(obj instanceof Listener) {
                             Bukkit.getPluginManager().registerEvents((Listener)obj, plugin);
-                            MiscUtils.printToConsole("&7Registered Atlas listener &e"
+                            MiscUtils.printToConsole("&7Registered Bukkit listener &e"
                                     + c.getParent().getSimpleName() + "&7.");
                         }
                     }
