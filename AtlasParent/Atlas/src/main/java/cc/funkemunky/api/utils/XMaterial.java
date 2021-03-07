@@ -26,7 +26,9 @@ package cc.funkemunky.api.utils;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public enum XMaterial {
@@ -915,18 +917,18 @@ public enum XMaterial {
     private static Map<XMaterial, Material> cachedParse = new HashMap<>();
 
     public static XMaterial requestXMaterial(String name, byte data){
-        if(cachedSearch.containsKey(name.toUpperCase()+","+data)){
-            return cachedSearch.get(name.toUpperCase()+","+data);
-        }
-        for(XMaterial mat:XMaterial.values()){
-            for(String test:mat.names){
-                if(name.toUpperCase().equals(test) && ((byte)mat.data) == data){
-                    cachedSearch.put(test+","+data,mat);
-                    return mat;
+        return cachedSearch.compute(name + "," + data, (key, result) -> {
+            if(result == null) {
+                for (XMaterial value : XMaterial.values()) {
+                    for (String test : value.names) {
+                        if(name.equals(test) && ((byte)value.data) == data) {
+                            return value;
+                        }
+                    }
                 }
             }
-        }
-        return null;
+            return result;
+        });
     }
    
     public boolean isSameMaterial(ItemStack comp){
