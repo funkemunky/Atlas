@@ -23,6 +23,7 @@
 
 package cc.funkemunky.api.utils;
 
+import cc.funkemunky.api.tinyprotocol.api.ProtocolVersion;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
@@ -909,8 +910,7 @@ public enum XMaterial {
         return new ItemStack(mat,1,(byte) data);
     }
     public static boolean isNewVersion(){
-        Material mat = Material.getMaterial("RED_WOOL");
-        return mat != null;
+        return ProtocolVersion.getGameVersion().isOrAbove(ProtocolVersion.V1_13);
     }
    
     private static Map<String, XMaterial> cachedSearch = new HashMap<>();
