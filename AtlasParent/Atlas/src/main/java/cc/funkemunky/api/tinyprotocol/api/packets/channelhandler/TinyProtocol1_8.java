@@ -41,6 +41,7 @@ import java.util.logging.Level;
  *
  * @author Kristian
  */
+@Deprecated
 public abstract class TinyProtocol1_8 implements AbstractTinyProtocol {
 	private static final AtomicInteger ID = new AtomicInteger(0);
 
@@ -101,38 +102,6 @@ public abstract class TinyProtocol1_8 implements AbstractTinyProtocol {
 
 		// Compute handler name
 		this.handlerName = getHandlerName();
-
-		// Prepare existing players
-		registerBukkitEvents();
-
-		try {
-			System.out.println("Attempting to inject into netty");
-			registerChannelHandler();
-			registerPlayers(plugin);
-		} catch (IllegalArgumentException ex) {
-			// Damn you, late bind
-			plugin.getLogger().info("Attempting to delay injection.");
-
-			new BukkitRunnable() {
-				@Override
-				public void run() {
-					registerChannelHandler();
-					registerPlayers(plugin);
-					plugin.getLogger().info("Injection complete.");
-				}
-			}.runTask(plugin);
-		}
-
-		/*Object ms = CraftReflection.getMinecraftServer();
-
-		val scMethod = MinecraftReflection.minecraftServer
-				.getMethodByType(MinecraftReflection.serverConnection.getParent(), 0);
-
-		serverConnection = scMethod.invoke(ms);
-
-		gList = MinecraftReflection.serverConnection.getFieldByType(List.class, 0).get(serverConnection);
-
-		gList.forEach(future -> future.channel().pipeline().addLast(new MessageDecoder()));*/
 	}
 
 	private void createServerChannelHandler() {
@@ -207,7 +176,8 @@ public abstract class TinyProtocol1_8 implements AbstractTinyProtocol {
 
 		};
 
-		plugin.getServer().getPluginManager().registerEvents(listener, plugin);
+		//Since this is now deprecated, we'll just comment this out so nothing runs.
+		//plugin.getServer().getPluginManager().registerEvents(listener, plugin);
 	}
 
 	@SuppressWarnings("unchecked")
