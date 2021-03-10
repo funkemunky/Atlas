@@ -59,7 +59,10 @@ public class MinecraftReflection {
     public static WrappedClass iChatBaseComponent = Reflections.getNMSClass("IChatBaseComponent");
     public static WrappedClass vec3D = Reflections.getNMSClass("Vec3D");
 
-    private static WrappedMethod getProfile = CraftReflection.craftPlayer.getMethod("getProfile");
+    private static WrappedMethod getProfile = CraftReflection.craftPlayer.getMethod("getProfile"),
+            methodGetServerConnection = minecraftServer
+            .getMethodByType(serverConnection.getParent(), ProtocolVersion.getGameVersion()
+                    .isBelow(ProtocolVersion.V1_13) ? 1 : 0);
     private static WrappedMethod getProperties = gameProfile.getMethod("getProperties");
     private static WrappedMethod removeAll = forwardMultiMap.getMethod("removeAll", Object.class);
     private static WrappedMethod putAll = propertyMap.getMethod("putAll", Object.class, Iterable.class);
@@ -249,6 +252,10 @@ public class MinecraftReflection {
 
     public static int getPing(Player player) {
         return pingField.get(CraftReflection.getEntityPlayer(player));
+    }
+
+    public static <T> T getServerConnection() {
+        return methodGetServerConnection.invoke(CraftReflection.getMinecraftServer());
     }
 
     /* Gets the amount of mining required to break a block. Input can be NMS Block or Bukkit Block. */
