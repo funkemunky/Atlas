@@ -104,7 +104,7 @@ public class Atlas extends JavaPlugin {
 
         pluginLoaderHandler = new PluginLoaderHandler();
         tinyProtocolHandler =  new TinyProtocolHandler();
-        packetHandler = new PacketHandler();
+        //packetHandler = new PacketHandler();
 
         profileStart = System.currentTimeMillis();
         profile = new BaseProfiler();

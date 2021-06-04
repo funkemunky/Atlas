@@ -94,6 +94,8 @@ public abstract class TinyProtocol1_7 implements AbstractTinyProtocol {
 
         // Compute handler name
         this.handlerName = getHandlerName();
+
+        registerBukkitEvents();
     }
 
     private void createServerChannelHandler() {

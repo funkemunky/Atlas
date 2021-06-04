@@ -102,6 +102,8 @@ public abstract class TinyProtocol1_8 implements AbstractTinyProtocol {
 
 		// Compute handler name
 		this.handlerName = getHandlerName();
+
+		registerBukkitEvents();
 	}
 
 	private void createServerChannelHandler() {
@@ -177,7 +179,7 @@ public abstract class TinyProtocol1_8 implements AbstractTinyProtocol {
 		};
 
 		//Since this is now deprecated, we'll just comment this out so nothing runs.
-		//plugin.getServer().getPluginManager().registerEvents(listener, plugin);
+		plugin.getServer().getPluginManager().registerEvents(listener, plugin);
 	}
 
 	@SuppressWarnings("unchecked")
