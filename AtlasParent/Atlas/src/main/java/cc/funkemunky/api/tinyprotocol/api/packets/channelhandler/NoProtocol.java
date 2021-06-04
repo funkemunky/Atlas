@@ -3,7 +3,6 @@ package cc.funkemunky.api.tinyprotocol.api.packets.channelhandler;
 import cc.funkemunky.api.tinyprotocol.api.packets.AbstractTinyProtocol;
 import org.bukkit.entity.Player;
 
-@Deprecated
 public class NoProtocol implements AbstractTinyProtocol {
     @Override
     public void sendPacket(Player player, Object packet) {
