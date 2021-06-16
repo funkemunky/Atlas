@@ -17,6 +17,9 @@ Atlas is an all-in-one and cohesive API for developers who want to improve their
 #### JavaDocs
 https://funkemunky.github.io/Atlas/
 
+#### Using Code from This Repo
+I'm aware that more people use Atlas as a means of learning rather than as an API, and therefore many people take parts of this repository and put it into their own projects. I have no problem with this. However, if you are using code from this repository in a **closed source** project, I would like ***easily-readable credit*** on any official distribution page for your project/product. Thanks!
+
 ## Custom Event System
 
 #### Creating an event
