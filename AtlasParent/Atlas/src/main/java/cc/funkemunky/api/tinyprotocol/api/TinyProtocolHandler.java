@@ -16,6 +16,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
+@Deprecated
 public class TinyProtocolHandler {
     @Getter
     private static AbstractTinyProtocol instance;
@@ -65,7 +66,7 @@ public class TinyProtocolHandler {
         };
     }
 
-    // Purely for making the code cleaner
+    @Deprecated
     public static void sendPacket(Player player, Object obj) {
         Object packet;
 
@@ -75,61 +76,21 @@ public class TinyProtocolHandler {
         instance.sendPacket(player, packet);
     }
 
+    @Deprecated
     public static ProtocolVersion getProtocolVersion(Player player) {
         return ProtocolVersion.getVersion(ProtocolAPI.INSTANCE.getPlayerVersion(player));
     }
 
     public Object onPacketOutAsync(Player sender, Object packet) {
-        if(!paused && sender != null && packet != null) {
-            String name = packet.getClass().getName();
-            int index = name.lastIndexOf(".");
-            String packetName = name.substring(index + 1);
-
-            PacketSendEvent event = new PacketSendEvent(sender, packet, packetName);
-
-            //EventManager.callEvent(new cc.funkemunky.api.event.custom.PacketSendEvent(sender, packet, packetName));
-
-            Atlas.getInstance().getEventManager().callEvent(event);
-            return !event.isCancelled() ? event.getPacket() : null;
-        } else return packet;
+        return packet;
     }
 
     public Object onPacketInAsync(Player sender, Object packet) {
-        if(!paused && sender != null && packet != null) {
-            String name = packet.getClass().getName();
-            int index = name.lastIndexOf(".");
-
-            String packetName = name.substring(index + 1)
-                    .replace(Packet.Client.LEGACY_LOOK, Packet.Client.LOOK)
-                    .replace(Packet.Client.LEGACY_POSITION, Packet.Client.POSITION)
-                    .replace(Packet.Client.LEGACY_POSITION_LOOK, Packet.Client.POSITION_LOOK);
-
-            if(ProtocolVersion.getGameVersion().isOrAbove(ProtocolVersion.V1_9)) {
-                packetName = packetName.replace("PacketPlayInBlockPlace",
-                        "PacketPlayInBlockPlace1_9")
-                        .replace("PacketPlayInUseItem", "PacketPlayInBlockPlace");
-            }
-
-            //Bukkit.broadcastMessage(packetName);
-
-            PacketReceiveEvent event = new PacketReceiveEvent(sender, packet, packetName);
-
-            Atlas.getInstance().getEventManager().callEvent(event);
-
-            return !event.isCancelled() ? event.getPacket() : null;
-        } return packet;
+        return packet;
     }
 
     public Object onHandshake(SocketAddress address, Object packet) {
-        String name = packet.getClass().getName();
-        int index = name.lastIndexOf(".");
-        String packetName = name.substring(index + 1);
-
-        PacketLoginEvent event = new PacketLoginEvent(address, packet, packetName);
-
-        Atlas.getInstance().getEventManager().callEvent(event);
-
-        return !event.isCancelled() ? event.getPacket() : null;
+        return packet;
     }
 }
 
