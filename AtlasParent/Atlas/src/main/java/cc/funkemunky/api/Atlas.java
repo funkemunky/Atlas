@@ -9,7 +9,6 @@ import cc.funkemunky.api.events.EventManager;
 import cc.funkemunky.api.events.impl.TickEvent;
 import cc.funkemunky.api.handlers.PluginLoaderHandler;
 import cc.funkemunky.api.metrics.Metrics;
-import cc.funkemunky.api.packet.PacketHandler;
 import cc.funkemunky.api.profiling.BaseProfiler;
 import cc.funkemunky.api.reflections.Reflections;
 import cc.funkemunky.api.reflections.impl.BukkitReflection;
@@ -56,9 +55,7 @@ public class Atlas extends JavaPlugin {
     private Updater updater;
     private BaseProfiler profile;
     private Metrics metrics;
-    @Deprecated
     private TinyProtocolHandler tinyProtocolHandler;
-    private PacketHandler packetHandler;
     private int currentThread = 0;
     private long profileStart;
     private EventManager eventManager;
@@ -104,7 +101,6 @@ public class Atlas extends JavaPlugin {
 
         pluginLoaderHandler = new PluginLoaderHandler();
         tinyProtocolHandler =  new TinyProtocolHandler();
-        //packetHandler = new PacketHandler();
 
         profileStart = System.currentTimeMillis();
         profile = new BaseProfiler();
