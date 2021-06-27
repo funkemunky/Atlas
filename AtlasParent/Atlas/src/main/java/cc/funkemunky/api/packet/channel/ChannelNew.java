@@ -1,18 +1,14 @@
 package cc.funkemunky.api.packet.channel;
 
 import cc.funkemunky.api.Atlas;
-import cc.funkemunky.api.reflections.Reflections;
 import cc.funkemunky.api.reflections.impl.MinecraftReflection;
-import cc.funkemunky.api.reflections.types.WrappedClass;
-import cc.funkemunky.api.reflections.types.WrappedField;
-import cc.funkemunky.api.utils.MiscUtils;
 import com.mojang.authlib.GameProfile;
+import io.netty.buffer.ByteBuf;
 import io.netty.channel.*;
+import io.netty.handler.codec.ByteToMessageDecoder;
 import lombok.RequiredArgsConstructor;
 import org.bukkit.entity.Player;
-import org.bukkit.scheduler.BukkitRunnable;
 
-import java.lang.reflect.Method;
 import java.net.SocketAddress;
 import java.util.HashMap;
 import java.util.List;
@@ -23,20 +19,7 @@ public class ChannelNew implements ChannelListener {
 
     private final Map<String, Channel> channelCache = new WeakHashMap<>();
     private final Map<Channel, Integer> versionCache = new HashMap<>();
-    private static final WrappedClass classPacketSetProtocol
-            = Reflections.getNMSClass("PacketHandshakingInSetProtocol"),
-            classLoginStart = Reflections.getNMSClass("PacketLoginInStart");
 
-    //TODO Check if this is the case for all versions cause Mojang mightve done something dumb in between.
-    private static final WrappedField fieldFutureList = MinecraftReflection.serverConnection
-            .getFieldByType(List.class, 0);
-    private static final WrappedField fieldProtocolId = classPacketSetProtocol.getFieldByType(int.class, 0),
-            fieldProtocolType = classPacketSetProtocol.getFieldByType(Enum.class, 0),
-            fieldGameProfile = classLoginStart.getFieldByType(GameProfile.class, 0);
-
-    private ChannelInboundHandlerAdapter serverRegisterHandler;
-    private ChannelInitializer<Channel> hackyRegister, channelRegister;
-    private boolean injectedServerChannel;
     private static String handle = "atlas_packet_listener";
 
     /* private static final FieldAccessor<Integer> protocolId = Reflection.getField(PACKET_SET_PROTOCOL, int.class, 0);
@@ -45,51 +28,6 @@ public class ChannelNew implements ChannelListener {
     public ChannelNew() {
         System.out.println("Running executor for server registering...");
         System.out.println("Running registration...");
-        List<ChannelFuture> futures = fieldFutureList.get(MinecraftReflection.getServerConnection());
-        channelRegister = new ChannelInitializer<Channel>() {
-
-            @Override
-            protected void initChannel(Channel channel) {
-                try {
-                    inject(channel);
-                } catch(Exception e) {
-                    System.out.println("Error injecting into channel " + channel.toString());
-                }
-            }
-
-        };
-
-        hackyRegister = new ChannelInitializer<Channel>() {
-            @Override
-            protected void initChannel(Channel channel) {
-                channel.pipeline().addLast(channelRegister);
-            }
-        };
-
-        serverRegisterHandler = new ChannelInboundHandlerAdapter() {
-
-            @Override
-            public void channelRead(ChannelHandlerContext ctx, Object msg) {
-                Channel channel = (Channel) msg;
-                channel.pipeline().addFirst(hackyRegister);
-                ctx.fireChannelRead(msg);
-            }
-        };
-
-        new BukkitRunnable() {
-            @Override
-            public void run() {
-                futures.forEach(future -> {
-                    Channel channel = future.channel();
-
-                    channel.pipeline().addFirst(serverRegisterHandler);
-
-                    MiscUtils.printToConsole("Injected server channel " + channel.toString());
-
-                    injectedServerChannel = true;
-                });
-            }
-        }.runTask(Atlas.getInstance());
     }
 
     @Override
@@ -107,10 +45,10 @@ public class ChannelNew implements ChannelListener {
         if(channel == null) return;
 
         channel.eventLoop().execute(() -> {
-            Listen listen = (Listen) channel.pipeline().get(handle);
+            Incoming listen = (Incoming) channel.pipeline().get(handle);
 
             if(listen == null) {
-                listen = new Listen(player);
+                listen = new Incoming(player);
 
                 if(channel.pipeline().get(handle) != null) {
                     channel.pipeline().remove(handle);
@@ -124,10 +62,10 @@ public class ChannelNew implements ChannelListener {
         if(!Atlas.getInstance().isEnabled()) return;
 
         channel.eventLoop().execute(() -> {
-            Listen listen = (Listen) channel.pipeline().get(handle);
+            Incoming listen = (Incoming) channel.pipeline().get(handle);
 
             if(listen == null) {
-                listen = new Listen(null);
+                listen = new Incoming(null);
 
                 if(channel.pipeline().get(handle) != null) {
                     channel.pipeline().remove(handle);
@@ -141,13 +79,13 @@ public class ChannelNew implements ChannelListener {
     public void uninject(Player player) {
         Channel channel = getChannel(player);
 
-        unject(channel);
+        uninject(channel);
 
         channelCache.remove(player.getName());
         versionCache.remove(channel);
     }
 
-    public void unject(Channel channel) {
+    public void uninject(Channel channel) {
         channel.eventLoop().execute(() -> {
             if(channel.pipeline().get(handle) != null) {
                 channel.pipeline().remove(handle);
@@ -187,45 +125,13 @@ public class ChannelNew implements ChannelListener {
     }
 
     @RequiredArgsConstructor
-    public class Listen extends ChannelDuplexHandler {
+    public class Incoming extends ByteToMessageDecoder {
         final Player player;
-        @Override
-        public void channelRead(ChannelHandlerContext context, Object o) throws Exception {
-            Object object = o;
-
-            if(player != null) {
-                object = onReceive(player, object);
-
-            } else object = onHandshake(context.channel().remoteAddress(), o);
-
-            if(classLoginStart.getParent().isInstance(o)) {
-                GameProfile profile = fieldGameProfile.get(o);
-
-                channelCache.put(profile.getName(), context.channel());
-            } else if (classPacketSetProtocol.getParent().isInstance(o)) {
-                String protocol = ((Enum)fieldProtocolType.get(o)).name();
-                if (protocol.equalsIgnoreCase("LOGIN")) {
-                    int id = fieldProtocolId.get(o);
-                    versionCache.put(context.channel(), id);
-                }
-            }
-
-            if(object != null) {
-                super.channelRead(context, object);
-            }
-        }
 
         @Override
-        public void write(ChannelHandlerContext context, Object o, ChannelPromise promise) throws Exception {
-            Object object = o;
+        protected void decode(ChannelHandlerContext channelHandlerContext, ByteBuf byteBuf, List<Object> list)
+                throws Exception {
 
-            if(player != null) {
-                object = onSend(player, object);
-            }  else object = onHandshake(context.channel().remoteAddress(), o);
-
-            if(object != null) {
-                super.write(context, object, promise);
-            }
         }
     }
 }

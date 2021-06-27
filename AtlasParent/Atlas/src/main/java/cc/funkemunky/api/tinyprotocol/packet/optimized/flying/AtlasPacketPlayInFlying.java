@@ -3,11 +3,11 @@ package cc.funkemunky.api.tinyprotocol.packet.optimized.flying;
 import cc.funkemunky.api.tinyprotocol.api.ProtocolVersion;
 import cc.funkemunky.api.tinyprotocol.packet.optimized.flying.versions.*;
 
-public abstract class OptimizedFlying {
+public abstract class AtlasPacketPlayInFlying {
 
     protected final Object packet;
 
-    public OptimizedFlying(Object packet) {
+    public AtlasPacketPlayInFlying(Object packet) {
         this.packet = packet;
     }
 
@@ -27,7 +27,7 @@ public abstract class OptimizedFlying {
 
     public abstract boolean isLook();
 
-    public static OptimizedFlying getFlying(Object packet) {
+    public static AtlasPacketPlayInFlying getFlying(Object packet) {
         switch(ProtocolVersion.getGameVersion()) {
             case V1_7_10: {
                 return new v1_7R4(packet);

@@ -3,9 +3,9 @@ package cc.funkemunky.api.tinyprotocol.packet.optimized.flying.versions;
 import cc.funkemunky.api.reflections.Reflections;
 import cc.funkemunky.api.reflections.types.WrappedClass;
 import cc.funkemunky.api.reflections.types.WrappedField;
-import cc.funkemunky.api.tinyprotocol.packet.optimized.flying.OptimizedFlying;
+import cc.funkemunky.api.tinyprotocol.packet.optimized.flying.AtlasPacketPlayInFlying;
 
-public class vReflection extends OptimizedFlying {
+public class vReflection extends AtlasPacketPlayInFlying {
     public vReflection(Object packet) {
         super(packet);
     }

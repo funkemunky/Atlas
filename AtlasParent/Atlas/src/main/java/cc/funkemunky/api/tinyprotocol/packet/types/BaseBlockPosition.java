@@ -19,12 +19,27 @@ public class BaseBlockPosition extends NMSObject {
     private int a;
     private int c;
     private int d;
+    private static final int NUM_X_BITS = 1 + cc.funkemunky.api.utils.MathHelper
+            .calculateLogBaseTwo(cc.funkemunky.api.utils.MathHelper.roundUpToPowerOfTwo(30000000));
+    private static final int NUM_Z_BITS = NUM_X_BITS;
+    private static final int NUM_Y_BITS = 64 - NUM_X_BITS - NUM_Z_BITS;
+    private static final int Y_SHIFT = 0 + NUM_Z_BITS;
+    private static final int X_SHIFT = Y_SHIFT + NUM_Y_BITS;
+    private static final long X_MASK = (1L << NUM_X_BITS) - 1L;
+    private static final long Y_MASK = (1L << NUM_Y_BITS) - 1L;
+    private static final long Z_MASK = (1L << NUM_Z_BITS) - 1L;
 
     public BaseBlockPosition(Object obj) {
         setObject(obj);
         this.a = fetch(fieldX);
         this.c = fetch(fieldY);
         this.d = fetch(fieldZ);
+    }
+
+    public BaseBlockPosition(long serialized) {
+        a = (int)(serialized << 64 - X_SHIFT - NUM_X_BITS >> 64 - NUM_X_BITS);
+        c = (int)(serialized << 64 - Y_SHIFT - NUM_Y_BITS >> 64 - NUM_Y_BITS);
+        d = (int)(serialized << 64 - NUM_Z_BITS >> 64 - NUM_Z_BITS);
     }
 
     public BaseBlockPosition(int var1, int var2, int var3) {
@@ -80,6 +95,13 @@ public class BaseBlockPosition extends NMSObject {
 
     public BaseBlockPosition d(BaseBlockPosition var1) {
         return new BaseBlockPosition(this.getY() * var1.getZ() - this.getZ() * var1.getY(), this.getZ() * var1.getX() - this.getX() * var1.getZ(), this.getX() * var1.getY() - this.getY() * var1.getX());
+    }
+
+    public long toLong()
+    {
+        return ((long)this.getX() & X_MASK) << X_SHIFT
+                | ((long)this.getY() & Y_MASK) << Y_SHIFT
+                | ((long) this.getZ() & Z_MASK);
     }
 
     public double c(double var1, double var3, double var5) {

@@ -5,7 +5,9 @@ import cc.funkemunky.api.events.Cancellable;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.entity.Player;
+
 @Getter
+@Deprecated
 public class PacketSendEvent extends AtlasEvent implements Cancellable {
     private Player player;
     @Setter

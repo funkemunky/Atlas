@@ -1,9 +1,9 @@
 package cc.funkemunky.api.tinyprotocol.packet.optimized.flying.versions;
 
-import cc.funkemunky.api.tinyprotocol.packet.optimized.flying.OptimizedFlying;
+import cc.funkemunky.api.tinyprotocol.packet.optimized.flying.AtlasPacketPlayInFlying;
 import net.minecraft.server.v1_16_R3.PacketPlayInFlying;
 
-public class v1_16R3 extends OptimizedFlying {
+public class v1_16R3 extends AtlasPacketPlayInFlying {
 
     public v1_16R3(Object packet) {
         super(packet);
