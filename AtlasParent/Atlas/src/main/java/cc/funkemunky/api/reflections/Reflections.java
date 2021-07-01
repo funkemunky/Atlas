@@ -6,34 +6,43 @@
  *
  * last modified: 4/19/18 7:22 PM
  */
-package cc.funkemunky.api.reflections;
+package cc.funkemunky.api
+        .reflections;
 
 import cc.funkemunky.api.reflections.types.WrappedClass;
 import cc.funkemunky.api.tinyprotocol.api.ProtocolVersion;
+import cc.funkemunky.api.utils.ClassScanner;
 import cc.funkemunky.api.utils.objects.QuadFunction;
 import cc.funkemunky.api.utils.objects.TriFunction;
 import lombok.Getter;
 import lombok.SneakyThrows;
 import lombok.val;
 import org.bukkit.Bukkit;
+import org.bukkit.craftbukkit.Main;
 
 import java.lang.invoke.LambdaMetafactory;
 import java.lang.invoke.MethodHandles;
 import java.lang.invoke.MethodType;
 import java.lang.reflect.Method;
+import java.util.Set;
 import java.util.function.BiFunction;
 import java.util.function.Function;
+import java.util.regex.Pattern;
 
 @Getter
 public class Reflections {
     private static final String craftBukkitString;
     private static final String netMinecraftServerString;
     private static MethodHandles.Lookup lookup = MethodHandles.lookup();
+    private static Set<String> classNames;
 
     static {
         String version = Bukkit.getServer().getClass().getPackage().getName().split("\\.")[3];
         craftBukkitString = "org.bukkit.craftbukkit." + version + ".";
         netMinecraftServerString = "net.minecraft.server." + version + ".";
+
+        System.out.println("Scanning all Bukkit files...");
+        classNames = ClassScanner.scanFile2(null, Main.class);
     }
 
     public static boolean classExists(String name) {
@@ -49,8 +58,18 @@ public class Reflections {
         return getClass(craftBukkitString + name);
     }
 
+    @SneakyThrows
     public static WrappedClass getNMSClass(String name) {
-        return getClass(netMinecraftServerString + name);
+        Pattern toTest = Pattern.compile("\\." + name + "$");
+        for (String className : classNames) {
+            if(!className.startsWith("net.minecraft")) continue;
+
+            if(toTest.matcher(className).find()) {
+                Bukkit.getLogger().info("Found: " + className + " for: " + name);
+                return getClass(className);
+            }
+        }
+        throw new ClassNotFoundException(name);
     }
 
     public static WrappedClass getClass(String name) {

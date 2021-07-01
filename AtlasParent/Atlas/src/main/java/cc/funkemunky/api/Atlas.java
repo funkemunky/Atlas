@@ -204,8 +204,7 @@ public class Atlas extends JavaPlugin {
                        entities.put(entity.getUniqueId(), entity);
                     }
                 }
-                entities.keySet().parallelStream().filter(uuid -> entities.get(uuid) == null)
-                        .sequential().forEach(entities::remove);
+                entities.keySet().removeIf(key -> entities.get(key) == null);
             }
             synchronized (entityIds) {
                 entities.forEach((id, entity) -> entityIds.put(entity.getEntityId(), entity.getUniqueId()));
