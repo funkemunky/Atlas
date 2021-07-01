@@ -45,55 +45,59 @@ public class MinecraftReflection {
     public static WrappedClass worldServer = Reflections.getNMSClass("WorldServer");
     public static WrappedClass playerInventory = Reflections.getNMSClass("PlayerInventory");
     public static WrappedClass itemStack = Reflections.getNMSClass("ItemStack");
-    public static WrappedClass enumAnimation = Reflections.getNMSClass("EnumAnimation");
     public static WrappedClass chunk = Reflections.getNMSClass("Chunk");
     public static WrappedClass classBlockInfo;
     public static WrappedClass minecraftServer = Reflections.getNMSClass("MinecraftServer");
-    public static WrappedClass entityPlayer = Reflections.getNMSClass("EntityPlayer");
-    public static WrappedClass playerConnection = Reflections.getNMSClass("PlayerConnection");
+    public static WrappedClass entityPlayer = ProtocolVersion.getGameVersion().isOrAbove(ProtocolVersion.v1_17)
+            ? Reflections.getClass("net.minecraft.server.level.EntityPlayer")
+            : Reflections.getNMSClass("EntityPlayer");
+    public static WrappedClass playerConnection = ProtocolVersion.getGameVersion().isOrAbove(ProtocolVersion.v1_17)
+            ? Reflections.getClass("net.minecraft.server.network.PlayerConnection")
+            : Reflections.getNMSClass("PlayerConnection");
     public static WrappedClass networkManager = Reflections.getNMSClass("NetworkManager");
     public static WrappedClass serverConnection = Reflections.getNMSClass("ServerConnection");
     public static WrappedClass gameProfile = Reflections.getUtilClass("com.mojang.authlib.GameProfile");
-    private static WrappedClass propertyMap = Reflections.getUtilClass("com.mojang.authlib.properties.PropertyMap");
-    private static WrappedClass forwardMultiMap = Reflections.getUtilClass("com.google.common.collect.ForwardingMultimap");
+    private static final WrappedClass propertyMap = Reflections.getUtilClass("com.mojang.authlib.properties.PropertyMap");
+    private static final WrappedClass forwardMultiMap = Reflections.getUtilClass("com.google.common.collect.ForwardingMultimap");
     public static WrappedClass iChatBaseComponent = Reflections.getNMSClass("IChatBaseComponent"),
-            chatComponentSerializer = ProtocolVersion.getGameVersion().isOrAbove(ProtocolVersion.V1_8_5) ? Reflections.getNMSClass("IChatBaseComponent");
+            chatComponentSerializer =  Reflections.getNMSClass("IChatBaseComponent");
     public static WrappedClass vec3D = Reflections.getNMSClass("Vec3D");
 
-    private static WrappedMethod getProfile = CraftReflection.craftPlayer.getMethod("getProfile"),
-            methodGetServerConnection = minecraftServer
+    private static final WrappedMethod getProfile = CraftReflection.craftPlayer.getMethod("getProfile");
+    private static final WrappedMethod methodGetServerConnection = minecraftServer
             .getMethodByType(serverConnection.getParent(), ProtocolVersion.getGameVersion()
                     .isBelow(ProtocolVersion.V1_13) ? 1 : 0);
-    private static WrappedMethod getProperties = gameProfile.getMethod("getProperties");
-    private static WrappedMethod removeAll = forwardMultiMap.getMethod("removeAll", Object.class);
-    private static WrappedMethod putAll = propertyMap.getMethod("putAll", Object.class, Iterable.class);
-    private static WrappedMethod worldGetType;
-    //BoundingBoxes
-    private static WrappedMethod getCubes;
-    private static WrappedField aBB = axisAlignedBB.getFieldByName("a");
-    private static WrappedField bBB = axisAlignedBB.getFieldByName("b");
-    private static WrappedField cBB = axisAlignedBB.getFieldByName("c");
-    private static WrappedField dBB = axisAlignedBB.getFieldByName("d");
-    private static WrappedField eBB = axisAlignedBB.getFieldByName("e");
-    private static WrappedField fBB = axisAlignedBB.getFieldByName("f");
+    private static final WrappedMethod getProperties = gameProfile.getMethod("getProperties");
+    private static final WrappedMethod removeAll = forwardMultiMap.getMethod("removeAll", Object.class);
+    private static final WrappedMethod putAll = propertyMap.getMethod("putAll", Object.class, Iterable.class);
+    private static final WrappedMethod worldGetType;
+    //SimpleCollisionBoxes
+    private static final WrappedMethod getCubes;
+    private static final WrappedField aBB = axisAlignedBB.getFieldByName("a");
+    private static final WrappedField bBB = axisAlignedBB.getFieldByName("b");
+    private static final WrappedField cBB = axisAlignedBB.getFieldByName("c");
+    private static final WrappedField dBB = axisAlignedBB.getFieldByName("d");
+    private static final WrappedField eBB = axisAlignedBB.getFieldByName("e");
+    private static final WrappedField fBB = axisAlignedBB.getFieldByName("f");
     private static WrappedConstructor aabbConstructor;
     private static WrappedMethod idioticOldStaticConstructorAABB, methodBlockCollisionBox;
-    private static WrappedField entityBoundingBox = entity.getFirstFieldByType(axisAlignedBB.getParent());
+    private static final WrappedField entitySimpleCollisionBox = entity.getFirstFieldByType(axisAlignedBB.getParent());
+    public static WrappedClass enumAnimation = Reflections.getNMSClass("EnumAnimation");
 
     //ItemStack methods and fields
     private static WrappedMethod enumAnimationStack;
-    private static WrappedField activeItemField;
-    private static WrappedMethod getItemMethod = itemStack.getMethod("getItem");
-    private static WrappedMethod getAnimationMethod = itemClass.getMethodByType(enumAnimation.getParent(), 0);
-    private static WrappedMethod canDestroyMethod;
+    private static final WrappedField activeItemField;
+    private static final WrappedMethod getItemMethod = itemStack.getMethod("getItem");
+    private static final WrappedMethod getAnimationMethod = itemClass.getMethodByType(enumAnimation.getParent(), 0);
+    private static final WrappedMethod canDestroyMethod;
 
     //1.13+ only
     private static WrappedClass voxelShape;
     private static WrappedClass worldReader;
     private static WrappedMethod getCubesFromVoxelShape;
 
-    private static WrappedField pingField = entityPlayer.getFieldByName("ping");
-    private static WrappedMethod itemStackAsBukkitCopy = CraftReflection.craftItemStack
+    private static final WrappedField pingField = entityPlayer.getFieldByName("ping");
+    private static final WrappedMethod itemStackAsBukkitCopy = CraftReflection.craftItemStack
             .getMethod("asBukkitCopy", itemStack.getParent());
 
     //Blocks
@@ -101,21 +105,25 @@ public class MinecraftReflection {
     public static WrappedClass blockPos;
     private static WrappedConstructor blockPosConstructor;
     private static WrappedMethod getBlockData, getBlock;
-    private static WrappedField blockData = block.getFieldByName("blockData");
-    private static WrappedField frictionFactor;
-    private static WrappedField strength;
-    private static WrappedField chunkProvider = MinecraftReflection.worldServer
+    private static WrappedField blockData;
+    private static final WrappedField frictionFactor;
+    private static final WrappedField strength;
+    private static final WrappedField chunkProvider = MinecraftReflection.worldServer
             .getFieldByType(Reflections.getNMSClass(ProtocolVersion.getGameVersion()
-                    .isBelow(ProtocolVersion.v1_16) ? "IChunkProvider" : "ChunkProviderServer").getParent(), 0);
+                    .isBelow(ProtocolVersion.v1_16)
+                    && ProtocolVersion.getGameVersion()
+                    .isOrAbove(ProtocolVersion.V1_9) ? "IChunkProvider" : "ChunkProviderServer")
+                    .getParent(), 0);
+
 
     //Entity Player fields
-    private static WrappedField connectionField = entityPlayer.getFieldByName("playerConnection");
-    private static WrappedField connectionNetworkField = playerConnection
+    private static final WrappedField connectionField = entityPlayer.getFieldByName("playerConnection");
+    private static final WrappedField connectionNetworkField = playerConnection
             .getFieldByType(networkManager.getParent(), 0);
-    private static WrappedField networkChannelField = networkManager.getFieldByName("channel");
+    private static final WrappedField networkChannelField = networkManager.getFieldByName("channel");
 
     //General Fields
-    private static WrappedField primaryThread = minecraftServer.getFirstFieldByType(Thread.class);
+    private static final WrappedField primaryThread = minecraftServer.getFirstFieldByType(Thread.class);
 
     public static WrappedEnumAnimation getArmAnimation(HumanEntity entity) {
         if(entity.getItemInHand() != null) {
@@ -176,7 +184,7 @@ public class MinecraftReflection {
     public static <T> T getEntityBoundingBox(Entity entity) {
         Object vanillaEntity = CraftReflection.getEntity(entity);
 
-        return entityBoundingBox.get(vanillaEntity);
+        return entitySimpleCollisionBox.get(vanillaEntity);
     }
 
     public static <T> T getItemInUse(HumanEntity entity) {
@@ -451,7 +459,9 @@ public class MinecraftReflection {
         if(ProtocolVersion.getGameVersion().isAbove(ProtocolVersion.V1_7_10)) {
             iBlockData = Reflections.getNMSClass("IBlockData");
             blockPos = Reflections.getNMSClass("BlockPosition");
+            blockPosConstructor = blockPos.getConstructor(int.class, int.class, int.class);
             getBlock = iBlockData.getMethod("getBlock");
+            blockData = block.getFieldByName("blockData");
             blockPosConstructor = blockPos.getConstructor(int.class, int.class, int.class);
             getBlockData = block.getMethod("getBlockData");
             aabbConstructor = axisAlignedBB
@@ -498,7 +508,7 @@ public class MinecraftReflection {
             //1.13 and 1.13.1 returns just VoxelShape while 1.13.2+ returns a Stream<VoxelShape>
             getCubes = ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.v1_16) ?
                     worldReader.getMethod("a", entity.getParent(), axisAlignedBB.getParent(),
-                    double.class, double.class, double.class)
+                            double.class, double.class, double.class)
                     : world.getMethod("c", entity.getParent(), axisAlignedBB.getParent(), Predicate.class);
             voxelShape = Reflections.getNMSClass("VoxelShape");
             getCubesFromVoxelShape = voxelShape.getMethodByType(List.class, 0);
@@ -515,11 +525,7 @@ public class MinecraftReflection {
         } else {
             activeItemField = entityLiving.getFieldByType(itemStack.getParent(), 0);
         }
-        try {
-            enumAnimationStack = itemStack.getMethodByType(enumAnimation.getParent(), 0);
-        } catch(Exception e) {
-            e.printStackTrace();
-        }
+
         canDestroyMethod = ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.v1_16)
                 ? playerInventory.getMethod("b",
                 ProtocolVersion.getGameVersion().isAbove(ProtocolVersion.V1_8_9)
