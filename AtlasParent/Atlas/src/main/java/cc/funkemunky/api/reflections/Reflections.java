@@ -43,6 +43,11 @@ public class Reflections {
 
         System.out.println("Scanning all Bukkit files...");
         classNames = ClassScanner.scanFile2(null, Main.class);
+
+        for (String className : classNames) {
+            if(className.contains("EnumTeleport"))
+                System.out.println(className);
+        }
     }
 
     public static boolean classExists(String name) {
@@ -60,7 +65,7 @@ public class Reflections {
 
     @SneakyThrows
     public static WrappedClass getNMSClass(String name) {
-        Pattern toTest = Pattern.compile("\\." + name + "$");
+        Pattern toTest = Pattern.compile("\\." + name.replace("$", ".") + "$");
         for (String className : classNames) {
             if(!className.startsWith("net.minecraft")) continue;
 

@@ -11,8 +11,6 @@ import cc.funkemunky.api.handlers.PluginLoaderHandler;
 import cc.funkemunky.api.metrics.Metrics;
 import cc.funkemunky.api.profiling.BaseProfiler;
 import cc.funkemunky.api.reflections.Reflections;
-import cc.funkemunky.api.reflections.impl.BukkitReflection;
-import cc.funkemunky.api.reflections.impl.MinecraftReflection;
 import cc.funkemunky.api.reflections.types.WrappedClass;
 import cc.funkemunky.api.tinyprotocol.api.ProtocolVersion;
 import cc.funkemunky.api.tinyprotocol.api.TinyProtocolHandler;
@@ -40,7 +38,6 @@ import java.io.File;
 import java.util.*;
 import java.util.concurrent.*;
 import java.util.logging.Level;
-import java.util.stream.Collectors;
 
 @Getter
 @Setter
@@ -144,6 +141,7 @@ public class Atlas extends JavaPlugin {
 
         Bukkit.getOnlinePlayers().forEach(player -> TinyProtocolHandler.getInstance().injectPlayer(player));
         bungeeManager = new BungeeManager();
+
         MiscUtils.printToConsole(Color.Green + "Successfully loaded Atlas and its utilities!");
         done = true;
     }

@@ -63,9 +63,6 @@ public class EventManager {
 
     public void callEvent(AtlasEvent event) {
         if(!paused && event != null) {
-            String name = event.getClass().getSimpleName();
-            Atlas.getInstance().getProfile().start("event:" + name);
-
             List<ListenerMethod> methods = listenerMethods.parallelStream()
                     .filter(lm -> lm.method.getParameters().get(0).equals(event.getClass()))
                     .sequential()
@@ -85,7 +82,6 @@ public class EventManager {
                     lm.method.invoke(lm.listener, event);
                 }
             }
-            Atlas.getInstance().getProfile().stop("event:" + name);
         }
     }
 

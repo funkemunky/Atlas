@@ -1,9 +1,9 @@
 package cc.funkemunky.api.utils;
 
+import jdk.internal.org.objectweb.asm.ClassReader;
+import jdk.internal.org.objectweb.asm.tree.AnnotationNode;
+import jdk.internal.org.objectweb.asm.tree.ClassNode;
 import org.bukkit.Bukkit;
-import org.objectweb.asm.tree.AnnotationNode;
-import org.objectweb.asm.tree.ClassNode;
-import org.objectweb.asm.ClassReader;
 
 import java.io.File;
 import java.io.IOException;

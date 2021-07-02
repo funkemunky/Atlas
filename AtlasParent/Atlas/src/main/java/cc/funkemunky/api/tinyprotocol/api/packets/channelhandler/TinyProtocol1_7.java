@@ -34,7 +34,6 @@ import java.util.logging.Level;
  * @author Kristian
  */
 
-@Deprecated
 public abstract class TinyProtocol1_7 implements AbstractTinyProtocol {
     private static final AtomicInteger ID = new AtomicInteger(0);
 
