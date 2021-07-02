@@ -43,11 +43,6 @@ public class Reflections {
 
         System.out.println("Scanning all Bukkit files...");
         classNames = ClassScanner.scanFile2(null, Main.class);
-
-        for (String className : classNames) {
-            if(className.contains("EnumTeleport"))
-                System.out.println(className);
-        }
     }
 
     public static boolean classExists(String name) {
@@ -70,7 +65,6 @@ public class Reflections {
             if(!className.startsWith("net.minecraft")) continue;
 
             if(toTest.matcher(className).find()) {
-                Bukkit.getLogger().info("Found: " + className + " for: " + name);
                 return getClass(className);
             }
         }
