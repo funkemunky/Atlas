@@ -4,7 +4,6 @@ import cc.funkemunky.api.Atlas;
 import cc.funkemunky.api.bungee.BungeeAPI;
 import cc.funkemunky.api.handlers.protocolsupport.Protocol;
 import cc.funkemunky.api.handlers.protocolsupport.ProtocolAPI;
-import cc.funkemunky.api.packet.PacketHandler;
 import cc.funkemunky.api.tinyprotocol.api.ProtocolVersion;
 import cc.funkemunky.api.tinyprotocol.api.TinyProtocolHandler;
 import org.bukkit.entity.Player;
@@ -16,7 +15,7 @@ public class NoAPI implements Protocol {
         return ProtocolAPI.classInstance.protocolVersionByIP.computeIfAbsent(player.getAddress().getAddress()
                 .getHostAddress().substring(1), shit -> {
             if(Atlas.getInstance().getBungeeManager().isBungee()) {
-                int version = PacketHandler.bungeeVersionCache
+                int version = TinyProtocolHandler.bungeeVersionCache
                         .computeIfAbsent(player.getUniqueId(), key -> BungeeAPI.getPlayerVersion(player));
 
                 if(version != -1) return ProtocolVersion.getVersion(version).getVersion();

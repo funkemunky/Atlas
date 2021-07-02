@@ -34,7 +34,6 @@ import java.util.logging.Level;
  * @author Kristian
  */
 
-@Deprecated
 public abstract class TinyProtocol1_7 implements AbstractTinyProtocol {
     private static final AtomicInteger ID = new AtomicInteger(0);
 
@@ -94,6 +93,27 @@ public abstract class TinyProtocol1_7 implements AbstractTinyProtocol {
 
         // Compute handler name
         this.handlerName = getHandlerName();
+
+        // Prepare existing players
+        registerBukkitEvents();
+
+        try {
+            System.out.println("Attempting to inject into netty");
+            registerChannelHandler();
+            registerPlayers(plugin);
+        } catch (IllegalArgumentException ex) {
+            // Damn you, late bind
+            plugin.getLogger().info("Attempting to delay injection.");
+
+            new BukkitRunnable() {
+                @Override
+                public void run() {
+                    registerChannelHandler();
+                    registerPlayers(plugin);
+                    plugin.getLogger().info("Injection complete.");
+                }
+            }.runTask(plugin);
+        }
     }
 
     private void createServerChannelHandler() {

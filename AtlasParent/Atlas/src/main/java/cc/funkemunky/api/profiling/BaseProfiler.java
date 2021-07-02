@@ -60,8 +60,8 @@ public class BaseProfiler implements Profiler {
                 for (String key : currentResults.keySet()) {
                     Timing timing = currentResults.get(key);
 
-                    toReturn.put(key, new Tuple<>(timing.calls, timing.average.getAverage()
-                            * (timing.calls / (double)totalCalls)));
+                    toReturn.put(key, new Tuple<>(timing.calls, timing.average.getTotal()
+                            / (double)timing.calls));
                 }
                 break;
             }

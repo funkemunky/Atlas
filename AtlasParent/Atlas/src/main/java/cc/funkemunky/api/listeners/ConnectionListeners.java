@@ -1,7 +1,6 @@
 package cc.funkemunky.api.listeners;
 
 import cc.funkemunky.api.Atlas;
-import cc.funkemunky.api.packet.PacketHandler;
 import cc.funkemunky.api.tinyprotocol.api.TinyProtocolHandler;
 import cc.funkemunky.api.utils.Init;
 import org.bukkit.event.EventHandler;
@@ -18,7 +17,7 @@ public class ConnectionListeners implements Listener {
 
     @EventHandler
     public void onQuit(PlayerQuitEvent event) {
-        PacketHandler.bungeeVersionCache.remove(event.getPlayer().getUniqueId());
+        TinyProtocolHandler.bungeeVersionCache.remove(event.getPlayer().getUniqueId());
     }
 
     @EventHandler

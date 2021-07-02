@@ -9,11 +9,8 @@ import cc.funkemunky.api.events.EventManager;
 import cc.funkemunky.api.events.impl.TickEvent;
 import cc.funkemunky.api.handlers.PluginLoaderHandler;
 import cc.funkemunky.api.metrics.Metrics;
-import cc.funkemunky.api.packet.PacketHandler;
 import cc.funkemunky.api.profiling.BaseProfiler;
 import cc.funkemunky.api.reflections.Reflections;
-import cc.funkemunky.api.reflections.impl.BukkitReflection;
-import cc.funkemunky.api.reflections.impl.MinecraftReflection;
 import cc.funkemunky.api.reflections.types.WrappedClass;
 import cc.funkemunky.api.tinyprotocol.api.ProtocolVersion;
 import cc.funkemunky.api.tinyprotocol.api.TinyProtocolHandler;
@@ -41,7 +38,6 @@ import java.io.File;
 import java.util.*;
 import java.util.concurrent.*;
 import java.util.logging.Level;
-import java.util.stream.Collectors;
 
 @Getter
 @Setter
@@ -56,9 +52,7 @@ public class Atlas extends JavaPlugin {
     private Updater updater;
     private BaseProfiler profile;
     private Metrics metrics;
-    @Deprecated
     private TinyProtocolHandler tinyProtocolHandler;
-    private PacketHandler packetHandler;
     private int currentThread = 0;
     private long profileStart;
     private EventManager eventManager;
@@ -104,7 +98,6 @@ public class Atlas extends JavaPlugin {
 
         pluginLoaderHandler = new PluginLoaderHandler();
         tinyProtocolHandler =  new TinyProtocolHandler();
-        packetHandler = new PacketHandler();
 
         profileStart = System.currentTimeMillis();
         profile = new BaseProfiler();
@@ -148,6 +141,7 @@ public class Atlas extends JavaPlugin {
 
         Bukkit.getOnlinePlayers().forEach(player -> TinyProtocolHandler.getInstance().injectPlayer(player));
         bungeeManager = new BungeeManager();
+
         MiscUtils.printToConsole(Color.Green + "Successfully loaded Atlas and its utilities!");
         done = true;
     }
@@ -208,8 +202,7 @@ public class Atlas extends JavaPlugin {
                        entities.put(entity.getUniqueId(), entity);
                     }
                 }
-                entities.keySet().parallelStream().filter(uuid -> entities.get(uuid) == null)
-                        .sequential().forEach(entities::remove);
+                entities.keySet().removeIf(key -> entities.get(key) == null);
             }
             synchronized (entityIds) {
                 entities.forEach((id, entity) -> entityIds.put(entity.getEntityId(), entity.getUniqueId()));

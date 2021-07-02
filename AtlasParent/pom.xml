@@ -46,6 +46,10 @@
             <id>funkemunky-releases</id>
             <url>https://nexus.funkemunky.cc/content/repositories/releases/</url>
         </repository>
+        <repository>
+            <id>aikar</id>
+            <url>http://repo.aikar.co/nexus/content/groups/aikar/</url>
+        </repository>
     </repositories>
 
     <dependencies>
