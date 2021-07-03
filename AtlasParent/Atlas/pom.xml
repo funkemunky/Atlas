@@ -49,6 +49,10 @@
                                     <pattern>org.yaml.snakeyaml</pattern>
                                     <shadedPattern>cc.funkemunky.api.utils.org.yaml.snakeyaml</shadedPattern>
                                 </relocation>
+                                <relocation>
+                                    <pattern>club.minnced.discord</pattern>
+                                    <shadedPattern>cc.funkemunky.api.utils.club.minnced.discord</shadedPattern>
+                                </relocation>
                             </relocations>
                         </configuration>
                     </execution>
@@ -120,6 +124,12 @@
             <artifactId>1.16.2</artifactId>
             <version>1.16.2</version>
             <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>club.minnced</groupId>
+            <artifactId>discord-webhooks</artifactId>
+            <version>0.5.7</version>
+            <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>com.shevchik.protocolsupport</groupId>
