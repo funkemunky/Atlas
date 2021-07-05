@@ -7,6 +7,7 @@ import lombok.Setter;
 import org.bukkit.entity.Player;
 
 @Getter
+@Deprecated
 public class PacketReceiveEvent extends AtlasEvent implements Cancellable {
     private Player player;
     @Setter
