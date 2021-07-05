@@ -14,6 +14,7 @@ import cc.funkemunky.api.reflections.Reflections;
 import cc.funkemunky.api.reflections.types.WrappedClass;
 import cc.funkemunky.api.tinyprotocol.api.ProtocolVersion;
 import cc.funkemunky.api.tinyprotocol.api.TinyProtocolHandler;
+import cc.funkemunky.api.tinyprotocol.listener.PacketProcessor;
 import cc.funkemunky.api.updater.Updater;
 import cc.funkemunky.api.utils.*;
 import cc.funkemunky.api.utils.Color;
@@ -56,6 +57,7 @@ public class Atlas extends JavaPlugin {
     private int currentThread = 0;
     private long profileStart;
     private EventManager eventManager;
+    private PacketProcessor packetProcessor;
     private int currentTicks;
     private PluginLoaderHandler pluginLoaderHandler;
     private BungeeManager bungeeManager;
@@ -98,6 +100,8 @@ public class Atlas extends JavaPlugin {
 
         pluginLoaderHandler = new PluginLoaderHandler();
         tinyProtocolHandler =  new TinyProtocolHandler();
+
+        packetProcessor = new PacketProcessor();
 
         profileStart = System.currentTimeMillis();
         profile = new BaseProfiler();
