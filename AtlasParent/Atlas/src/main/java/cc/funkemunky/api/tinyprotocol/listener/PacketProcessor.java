@@ -72,6 +72,7 @@ public class PacketProcessor {
     }
 
     public boolean call(Player player, Object packet, String type) {
+        if(packet == null) return false;
         PacketInfo info = new PacketInfo(player, packet, type, System.currentTimeMillis());
         if(asyncProcessors.containsKey(type))
         Atlas.getInstance().getSchedular().execute(() -> {
@@ -90,12 +91,13 @@ public class PacketProcessor {
 
         list.addAll(processors.getOrDefault("*", Collections.emptyList()));
 
+        boolean cancelled = false;
         for (Tuple<EventPriority, PacketListener> tuple : list) {
             if(!tuple.two.onEvent(info)) {
-                return false;
+                cancelled = true;
             }
         }
-        return true;
+        return !cancelled;
     }
 
     public void shutdown() {
