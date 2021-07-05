@@ -34,12 +34,20 @@ public class PacketProcessor {
         }
     }
 
+    public void process(EventPriority priority, PacketListener listener) {
+        process(priority, listener, "*");
+    }
+
     public void process(PacketListener listener, String... types) {
         process(EventPriority.NORMAL, listener, types);
     }
 
     public void processAsync(AsyncPacketListener listener, String... types) {
         processAsync(EventPriority.NORMAL, listener, types);
+    }
+
+    public void processAsync(EventPriority priority, AsyncPacketListener listener) {
+        processAsync(priority, listener, "*");
     }
 
     public void processAsync(EventPriority priority, AsyncPacketListener listener, String... types) {
@@ -59,12 +67,15 @@ public class PacketProcessor {
     }
 
     public boolean call(Object packet, String type) {
+        PacketInfo info = new PacketInfo(packet, type, System.currentTimeMillis());
         if(asyncProcessors.containsKey(type))
         Atlas.getInstance().getSchedular().execute(() -> {
             val list = asyncProcessors.get(type);
 
+            list.addAll(asyncProcessors.getOrDefault("*", Collections.emptyList()));
+
             for (Tuple<EventPriority, AsyncPacketListener> tuple : list) {
-                tuple.two.onEvent(packet, type);
+                tuple.two.onEvent(info);
             }
         });
 
@@ -72,8 +83,10 @@ public class PacketProcessor {
 
         val list = processors.get(type);
 
+        list.addAll(processors.getOrDefault("*", Collections.emptyList()));
+
         for (Tuple<EventPriority, PacketListener> tuple : list) {
-            if(tuple.two.onEvent(packet, type)) {
+            if(tuple.two.onEvent(info)) {
                 return false;
             }
         }
