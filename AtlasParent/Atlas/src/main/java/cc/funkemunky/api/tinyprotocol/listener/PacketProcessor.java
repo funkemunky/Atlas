@@ -5,6 +5,7 @@ import cc.funkemunky.api.tinyprotocol.listener.functions.AsyncPacketListener;
 import cc.funkemunky.api.tinyprotocol.listener.functions.PacketListener;
 import cc.funkemunky.api.utils.Tuple;
 import lombok.val;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventPriority;
 
 import java.util.*;
@@ -70,8 +71,8 @@ public class PacketProcessor {
         return listener;
     }
 
-    public boolean call(Object packet, String type) {
-        PacketInfo info = new PacketInfo(packet, type, System.currentTimeMillis());
+    public boolean call(Player player, Object packet, String type) {
+        PacketInfo info = new PacketInfo(player, packet, type, System.currentTimeMillis());
         if(asyncProcessors.containsKey(type))
         Atlas.getInstance().getSchedular().execute(() -> {
             val list = asyncProcessors.get(type);

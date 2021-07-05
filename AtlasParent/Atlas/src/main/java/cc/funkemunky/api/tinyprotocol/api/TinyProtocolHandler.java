@@ -88,7 +88,7 @@ public class TinyProtocolHandler {
             int index = name.lastIndexOf(".");
             String packetName = name.substring(index + 1);
 
-            boolean result = Atlas.getInstance().getPacketProcessor().call(packet, packetName);
+            boolean result = Atlas.getInstance().getPacketProcessor().call(sender, packet, packetName);
 
             PacketSendEvent event = new PacketSendEvent(sender, packet, packetName);
 
@@ -115,7 +115,7 @@ public class TinyProtocolHandler {
                         .replace("PacketPlayInUseItem", "PacketPlayInBlockPlace");
             }
 
-            boolean result = Atlas.getInstance().getPacketProcessor().call(packet, packetName);
+            boolean result = Atlas.getInstance().getPacketProcessor().call(sender, packet, packetName);
 
             //Bukkit.broadcastMessage(packetName);
 
