@@ -18,7 +18,7 @@ public class PacketProcessor {
     private final Map<String, List<Tuple<EventPriority, AsyncPacketListener>>>
             asyncProcessors = Collections.synchronizedMap(new HashMap<>());
 
-    public void process(EventPriority priority, PacketListener listener, String... types) {
+    public PacketListener process(EventPriority priority, PacketListener listener, String... types) {
         Tuple<EventPriority, PacketListener> tuple = new Tuple<>(priority, listener);
         synchronized (processors) {
             for (String type : types) {
@@ -32,25 +32,27 @@ public class PacketProcessor {
                 });
             }
         }
+
+        return listener;
     }
 
-    public void process(EventPriority priority, PacketListener listener) {
-        process(priority, listener, "*");
+    public PacketListener process(EventPriority priority, PacketListener listener) {
+        return process(priority, listener, "*");
     }
 
-    public void process(PacketListener listener, String... types) {
-        process(EventPriority.NORMAL, listener, types);
+    public PacketListener process(PacketListener listener, String... types) {
+        return process(EventPriority.NORMAL, listener, types);
     }
 
-    public void processAsync(AsyncPacketListener listener, String... types) {
-        processAsync(EventPriority.NORMAL, listener, types);
+    public AsyncPacketListener processAsync(AsyncPacketListener listener, String... types) {
+        return processAsync(EventPriority.NORMAL, listener, types);
     }
 
-    public void processAsync(EventPriority priority, AsyncPacketListener listener) {
-        processAsync(priority, listener, "*");
+    public AsyncPacketListener processAsync(EventPriority priority, AsyncPacketListener listener) {
+        return processAsync(priority, listener, "*");
     }
 
-    public void processAsync(EventPriority priority, AsyncPacketListener listener, String... types) {
+    public AsyncPacketListener processAsync(EventPriority priority, AsyncPacketListener listener, String... types) {
         Tuple<EventPriority, AsyncPacketListener> tuple = new Tuple<>(priority, listener);
         synchronized (asyncProcessors) {
             for (String type : types) {
@@ -64,6 +66,8 @@ public class PacketProcessor {
                 });
             }
         }
+
+        return listener;
     }
 
     public boolean call(Object packet, String type) {
