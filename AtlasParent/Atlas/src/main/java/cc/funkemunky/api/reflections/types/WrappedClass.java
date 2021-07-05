@@ -8,7 +8,6 @@
  */
 package cc.funkemunky.api.reflections.types;
 
-import cc.funkemunky.api.utils.MiscUtils;
 import lombok.Getter;
 import lombok.val;
 

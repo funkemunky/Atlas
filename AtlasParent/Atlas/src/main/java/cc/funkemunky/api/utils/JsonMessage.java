@@ -5,12 +5,9 @@ import cc.funkemunky.api.tinyprotocol.packet.out.WrappedOutChatPacket;
 import cc.funkemunky.api.tinyprotocol.packet.types.WrappedChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.chat.ComponentSerializer;
-import net.md_5.bungee.chat.TextComponentSerializer;
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-import java.lang.reflect.Constructor;
 import java.util.*;
 
 public class JsonMessage {

@@ -7,18 +7,14 @@ import cc.funkemunky.api.reflections.types.WrappedField;
 import cc.funkemunky.api.reflections.types.WrappedMethod;
 import cc.funkemunky.api.tinyprotocol.api.NMSObject;
 import cc.funkemunky.api.tinyprotocol.api.ProtocolVersion;
-import cc.funkemunky.api.tinyprotocol.packet.types.WrappedChatComponent;
-import cc.funkemunky.api.tinyprotocol.packet.types.WrappedChatMessage;
 import cc.funkemunky.api.tinyprotocol.packet.types.WrappedChatMessageType;
 import cc.funkemunky.api.utils.MiscUtils;
 import lombok.Getter;
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.chat.ComponentSerializer;
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
-import java.awt.*;
 import java.util.UUID;
 
 @Getter

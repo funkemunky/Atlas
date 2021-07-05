@@ -14,7 +14,8 @@ import lombok.Getter;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
-import java.util.*;
+import java.util.Objects;
+import java.util.Optional;
 
 @Getter
 //TODO Test updateObject functionality and additions to the wrapper for 1.8 and 1.9+.

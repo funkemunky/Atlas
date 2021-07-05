@@ -19,6 +19,10 @@ public class PacketProcessor {
     private final Map<String, List<Tuple<EventPriority, AsyncPacketListener>>>
             asyncProcessors = Collections.synchronizedMap(new HashMap<>());
 
+    public PacketListener process(PacketListener listener, String... types) {
+        return process(EventPriority.NORMAL, listener, types);
+    }
+
     public PacketListener process(EventPriority priority, PacketListener listener, String... types) {
         Tuple<EventPriority, PacketListener> tuple = new Tuple<>(priority, listener);
         synchronized (processors) {
@@ -39,10 +43,6 @@ public class PacketProcessor {
 
     public PacketListener process(EventPriority priority, PacketListener listener) {
         return process(priority, listener, "*");
-    }
-
-    public PacketListener process(PacketListener listener, String... types) {
-        return process(EventPriority.NORMAL, listener, types);
     }
 
     public AsyncPacketListener processAsync(AsyncPacketListener listener, String... types) {
@@ -74,22 +74,19 @@ public class PacketProcessor {
     public boolean call(Player player, Object packet, String type) {
         if(packet == null) return false;
         PacketInfo info = new PacketInfo(player, packet, type, System.currentTimeMillis());
-        if(asyncProcessors.containsKey(type))
         Atlas.getInstance().getSchedular().execute(() -> {
-            val list = asyncProcessors.get(type);
+            val list = asyncProcessors.getOrDefault("*", new ArrayList<>());
 
-            list.addAll(asyncProcessors.getOrDefault("*", Collections.emptyList()));
+            list.addAll(asyncProcessors.getOrDefault(type, Collections.emptyList()));
 
             for (Tuple<EventPriority, AsyncPacketListener> tuple : list) {
                 tuple.two.onEvent(info);
             }
         });
 
-        if(!processors.containsKey(type)) return true;
+        val list = processors.getOrDefault("*", new ArrayList<>());
 
-        val list = processors.get(type);
-
-        list.addAll(processors.getOrDefault("*", Collections.emptyList()));
+        list.addAll(processors.getOrDefault(type, Collections.emptyList()));
 
         boolean cancelled = false;
         for (Tuple<EventPriority, PacketListener> tuple : list) {

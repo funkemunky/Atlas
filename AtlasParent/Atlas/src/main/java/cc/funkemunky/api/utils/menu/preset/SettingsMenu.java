@@ -1,7 +1,6 @@
 package cc.funkemunky.api.utils.menu.preset;
 
 import cc.funkemunky.api.utils.MathHelper;
-import cc.funkemunky.api.utils.MathUtils;
 import cc.funkemunky.api.utils.menu.preset.button.SettingButton;
 import cc.funkemunky.api.utils.menu.type.impl.ChestMenu;
 

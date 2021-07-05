@@ -1,12 +1,11 @@
 package cc.funkemunky.api.commands.tab;
 
+import cc.funkemunky.api.Atlas;
 import cc.funkemunky.api.events.AtlasListener;
-import cc.funkemunky.api.events.Listen;
-import cc.funkemunky.api.events.ListenerPriority;
-import cc.funkemunky.api.events.impl.PacketReceiveEvent;
 import cc.funkemunky.api.tinyprotocol.api.Packet;
 import cc.funkemunky.api.tinyprotocol.api.ProtocolVersion;
 import cc.funkemunky.api.tinyprotocol.api.TinyProtocolHandler;
+import cc.funkemunky.api.tinyprotocol.listener.functions.AsyncPacketListener;
 import cc.funkemunky.api.tinyprotocol.packet.in.WrappedInTabComplete;
 import cc.funkemunky.api.tinyprotocol.packet.out.WrappedOutTabComplete;
 import cc.funkemunky.api.tinyprotocol.packet.types.v1_13.DontImportIfNotLatestThanks;
@@ -27,26 +26,23 @@ public class TabHandler implements AtlasListener {
         INSTANCE = this;
     }
 
-    @Listen(priority = ListenerPriority.HIGH)
-    public void onTab(PacketReceiveEvent event) {
-        if(event.getType().equals(Packet.Client.TAB_COMPLETE)) {
-            WrappedInTabComplete packet = new WrappedInTabComplete(event.getPacket(), event.getPlayer());
+    private AsyncPacketListener tabComplete = Atlas.getInstance().getPacketProcessor().processAsync(event -> {
+        WrappedInTabComplete packet = new WrappedInTabComplete(event.getPacket(), event.getPlayer());
 
-            String[] args = (packet.getMessage().startsWith("/")
-                    ? packet.getMessage().toLowerCase().substring(1) : packet.getMessage().toLowerCase())
-                    .split(" ");
+        String[] args = (packet.getMessage().startsWith("/")
+                ? packet.getMessage().toLowerCase().substring(1) : packet.getMessage().toLowerCase())
+                .split(" ");
 
-            if(tabArgs.containsKey(args)) {
-                Set<String> options = tabArgs.get(args);
+        if(tabArgs.containsKey(args)) {
+            Set<String> options = tabArgs.get(args);
 
-                WrappedOutTabComplete complete = new WrappedOutTabComplete(options.stream()
-                        .sorted(Comparator.comparing(s -> s))
-                        .toArray(String[]::new));
+            WrappedOutTabComplete complete = new WrappedOutTabComplete(options.stream()
+                    .sorted(Comparator.comparing(s -> s))
+                    .toArray(String[]::new));
 
-                TinyProtocolHandler.sendPacket(event.getPlayer(), complete.getObject());
-            }
+            TinyProtocolHandler.sendPacket(event.getPlayer(), complete.getObject());
         }
-    }
+    }, Packet.Client.TAB_COMPLETE);
 
     public void addTabComplete(String[] requirement, String... args) {
         if(stuff != null) {

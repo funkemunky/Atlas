@@ -3,15 +3,12 @@ package cc.funkemunky.api.tinyprotocol.packet.out;
 import cc.funkemunky.api.reflections.Reflections;
 import cc.funkemunky.api.reflections.types.WrappedClass;
 import cc.funkemunky.api.reflections.types.WrappedField;
-import cc.funkemunky.api.tinyprotocol.api.GeneralWrapper;
 import cc.funkemunky.api.tinyprotocol.api.NMSObject;
 import cc.funkemunky.api.tinyprotocol.api.Packet;
 import cc.funkemunky.api.tinyprotocol.api.ProtocolVersion;
 import cc.funkemunky.api.tinyprotocol.packet.types.MathHelper;
-import cc.funkemunky.api.utils.MiscUtils;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
-import org.bukkit.util.Vector;
 
 import java.util.Optional;
 import java.util.UUID;

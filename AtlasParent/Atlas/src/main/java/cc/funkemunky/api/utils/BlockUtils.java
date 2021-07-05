@@ -1,16 +1,9 @@
 package cc.funkemunky.api.utils;
 
 import cc.funkemunky.api.Atlas;
-import cc.funkemunky.api.handlers.protocolsupport.Protocol;
-import cc.funkemunky.api.reflections.Reflections;
-import cc.funkemunky.api.reflections.impl.CraftReflection;
 import cc.funkemunky.api.reflections.impl.MinecraftReflection;
-import cc.funkemunky.api.reflections.types.WrappedClass;
 import cc.funkemunky.api.reflections.types.WrappedField;
 import cc.funkemunky.api.tinyprotocol.api.ProtocolVersion;
-import cc.funkemunky.api.tinyprotocol.packet.types.BaseBlockPosition;
-import cc.funkemunky.api.utils.world.types.NoCollisionBox;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;

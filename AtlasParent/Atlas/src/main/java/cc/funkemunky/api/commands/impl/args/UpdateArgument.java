@@ -4,7 +4,6 @@ import cc.funkemunky.api.Atlas;
 import cc.funkemunky.api.commands.FunkeArgument;
 import cc.funkemunky.api.commands.FunkeCommand;
 import cc.funkemunky.api.handlers.chat.ChatHandler;
-import cc.funkemunky.api.handlers.chat.OnChat;
 import cc.funkemunky.api.utils.Color;
 import cc.funkemunky.api.utils.MiscUtils;
 import org.bukkit.command.Command;
