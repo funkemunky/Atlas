@@ -23,6 +23,7 @@ public class TinyProtocolHandler {
 
     public boolean paused = false;
 
+    public static boolean legacyListeners = false;
     public static Map<UUID, Integer> bungeeVersionCache = new HashMap<>();
 
     public TinyProtocolHandler() {
@@ -90,12 +91,16 @@ public class TinyProtocolHandler {
 
             boolean result = Atlas.getInstance().getPacketProcessor().call(sender, packet, packetName);
 
-            PacketSendEvent event = new PacketSendEvent(sender, packet, packetName);
+            if(legacyListeners) {
+                PacketSendEvent event = new PacketSendEvent(sender, packet, packetName);
 
-            //EventManager.callEvent(new cc.funkemunky.api.event.custom.PacketSendEvent(sender, packet, packetName));
+                //EventManager.callEvent(new cc.funkemunky.api.event.custom.PacketSendEvent(sender, packet, packetName));
 
-            Atlas.getInstance().getEventManager().callEvent(event);
-            return !event.isCancelled() && result ? event.getPacket() : null;
+                Atlas.getInstance().getEventManager().callEvent(event);
+
+                if(event.isCancelled()) return null;
+            }
+            return result ? packet : null;
         } else return packet;
     }
 
@@ -117,13 +122,16 @@ public class TinyProtocolHandler {
 
             boolean result = Atlas.getInstance().getPacketProcessor().call(sender, packet, packetName);
 
-            //Bukkit.broadcastMessage(packetName);
+            if(legacyListeners) {
+                PacketReceiveEvent event = new PacketReceiveEvent(sender, packet, packetName);
 
-            PacketReceiveEvent event = new PacketReceiveEvent(sender, packet, packetName);
+                //EventManager.callEvent(new cc.funkemunky.api.event.custom.PacketSendEvent(sender, packet, packetName));
 
-            Atlas.getInstance().getEventManager().callEvent(event);
+                Atlas.getInstance().getEventManager().callEvent(event);
 
-            return !event.isCancelled() && result ? event.getPacket() : null;
+                if(event.isCancelled()) return null;
+            }
+            return result ? packet : null;
         } return packet;
     }
 

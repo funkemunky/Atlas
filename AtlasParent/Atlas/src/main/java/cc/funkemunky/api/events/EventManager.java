@@ -2,10 +2,14 @@ package cc.funkemunky.api.events;
 
 import cc.funkemunky.api.Atlas;
 import cc.funkemunky.api.events.exceptions.ListenParamaterException;
+import cc.funkemunky.api.events.impl.PacketReceiveEvent;
+import cc.funkemunky.api.events.impl.PacketSendEvent;
+import cc.funkemunky.api.tinyprotocol.api.TinyProtocolHandler;
 import lombok.Getter;
 import org.bukkit.plugin.Plugin;
 
 import java.lang.reflect.Method;
+import java.lang.reflect.Parameter;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
@@ -19,10 +23,17 @@ public class EventManager {
 
     public void registerListener(Method method, AtlasListener listener, Plugin plugin) throws ListenParamaterException {
         if(method.getParameterTypes().length == 1) {
-            if(method.getParameterTypes()[0].getSuperclass().equals(AtlasEvent.class)) {
+            Class<?> param = method.getParameterTypes()[0];
+            if(param.getSuperclass().equals(AtlasEvent.class)) {
                 Listen listen = method.getAnnotation(Listen.class);
                 ListenerMethod lm = new ListenerMethod(plugin, method, listener, listen.priority());
 
+                if(param == PacketReceiveEvent.class || param == PacketSendEvent.class) {
+                    TinyProtocolHandler.legacyListeners = true;
+                    Atlas.getInstance().getLogger().warning("Legacy packet listeners are being used by plugin " +
+                            "" + plugin.getName() + " and therefore have been enabled. This can reduce performance," +
+                            " so please update your plugin or tell the author to use the new packet listeners");
+                }
                 if(!listen.priority().equals(ListenerPriority.NONE)) {
                     lm.listenerPriority = listen.priority();
                 }
