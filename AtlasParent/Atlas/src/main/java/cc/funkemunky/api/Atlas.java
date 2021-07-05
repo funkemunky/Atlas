@@ -155,6 +155,7 @@ public class Atlas extends JavaPlugin {
         MiscUtils.printToConsole(Color.Gray + "Unloading all Atlas hooks...");
         HandlerList.unregisterAll(this);
         Bukkit.getScheduler().cancelTasks(this);
+        packetProcessor.shutdown();
 
         eventManager.clearAllRegistered();
         getCommandManager(this).unregisterCommands();

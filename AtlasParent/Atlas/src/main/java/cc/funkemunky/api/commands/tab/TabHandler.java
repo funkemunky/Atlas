@@ -26,26 +26,28 @@ public class TabHandler implements AtlasListener {
         INSTANCE = this;
     }
 
-    private AsyncPacketListener tabComplete = Atlas.getInstance().getPacketProcessor().processAsync(event -> {
-        WrappedInTabComplete packet = new WrappedInTabComplete(event.getPacket(), event.getPlayer());
+    private AsyncPacketListener tabComplete = Atlas.getInstance().getPacketProcessor().processAsync(Atlas.getInstance(),
+            event -> {
+                WrappedInTabComplete packet = new WrappedInTabComplete(event.getPacket(), event.getPlayer());
 
-        String[] args = (packet.getMessage().startsWith("/")
-                ? packet.getMessage().toLowerCase().substring(1) : packet.getMessage().toLowerCase())
-                .split(" ");
+                String[] args = (packet.getMessage().startsWith("/")
+                        ? packet.getMessage().toLowerCase().substring(1) : packet.getMessage().toLowerCase())
+                        .split(" ");
 
-        if(tabArgs.containsKey(args)) {
-            Set<String> options = tabArgs.get(args);
+                if (tabArgs.containsKey(args)) {
+                    Set<String> options = tabArgs.get(args);
 
-            WrappedOutTabComplete complete = new WrappedOutTabComplete(options.stream()
-                    .sorted(Comparator.comparing(s -> s))
-                    .toArray(String[]::new));
+                    WrappedOutTabComplete complete = new WrappedOutTabComplete(options.stream()
+                            .sorted(Comparator.comparing(s -> s))
+                            .toArray(String[]::new));
 
-            TinyProtocolHandler.sendPacket(event.getPlayer(), complete.getObject());
-        }
-    }, Packet.Client.TAB_COMPLETE);
+                    TinyProtocolHandler.sendPacket(event.getPlayer(), complete.getObject());
+
+                }
+            }, Packet.Client.TAB_COMPLETE);
 
     public void addTabComplete(String[] requirement, String... args) {
-        if(stuff != null) {
+        if (stuff != null) {
             for (String arg : args) {
                 String[] array = new String[requirement.length + 1];
 
@@ -63,9 +65,9 @@ public class TabHandler implements AtlasListener {
 
         tabArgs.put(requirement, complete);
     }
-    
+
     static {
-        if(ProtocolVersion.getGameVersion().isOrAbove(ProtocolVersion.V1_13)) {
+        if (ProtocolVersion.getGameVersion().isOrAbove(ProtocolVersion.V1_13)) {
             stuff = new DontImportIfNotLatestThanks();
         }
     }
