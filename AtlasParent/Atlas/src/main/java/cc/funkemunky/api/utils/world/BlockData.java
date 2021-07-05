@@ -23,6 +23,8 @@ import java.util.*;
 import java.util.stream.Stream;
 
 public enum BlockData {
+    _DEFAULT(new SimpleCollisionBox(0, 0, 0, 1, 1, 1),
+            XMaterial.STONE.parseMaterial()),
     _VINE((v, block) -> {
         Vine data = (Vine) block.getType().getNewData(block.getData());
 
@@ -262,26 +264,28 @@ public enum BlockData {
     _SOULSAND(new SimpleCollisionBox(0, 0, 0, 1, 0.875, 1),
             XMaterial.SOUL_SAND.parseMaterial()),
     _PICKLE((version, block) -> {
-        val wrapped = new WrappedClass(block.getClass());
-        val getBlockData = wrapped.getMethod("getBlockData");
-        val pickleClass = Reflections.getNMSClass("SeaPickle");
-        Object pickle = getBlockData.invoke(block);
+        if(version.isOrAbove(ProtocolVersion.V1_13)) {
+            val wrapped = new WrappedClass(block.getClass());
+            val getBlockData = wrapped.getMethod("getBlockData");
+            val pickleClass = Reflections.getNMSClass("SeaPickle");
+            Object pickle = getBlockData.invoke(block);
 
-        int pickles = pickleClass.getMethod("getPickles").invoke(pickle);
+            int pickles = pickleClass.getMethod("getPickles").invoke(pickle);
 
-        switch(pickles) {
-            case 1:
-                return new SimpleCollisionBox(6.0D / 15, 0.0, 6.0D / 15,
-                        10.0D / 15, 6.0D / 15, 10.0D / 15);
-            case 2:
-                return new SimpleCollisionBox(3.0D / 15, 0.0D, 3.0D / 15,
-                        13.0D / 15, 6.0D / 15, 13.0D / 15);
-            case 3:
-                return new SimpleCollisionBox(2.0D / 15, 0.0D, 2.0D / 15,
-                        14.0D / 15, 6.0D / 15, 14.0D / 15);
-            case 4:
-                return new SimpleCollisionBox(2.0D / 15, 0.0D, 2.0D / 15,
-                        14.0D / 15, 7.0D / 15, 14.0D / 15);
+            switch (pickles) {
+                case 1:
+                    return new SimpleCollisionBox(6.0D / 15, 0.0, 6.0D / 15,
+                            10.0D / 15, 6.0D / 15, 10.0D / 15);
+                case 2:
+                    return new SimpleCollisionBox(3.0D / 15, 0.0D, 3.0D / 15,
+                            13.0D / 15, 6.0D / 15, 13.0D / 15);
+                case 3:
+                    return new SimpleCollisionBox(2.0D / 15, 0.0D, 2.0D / 15,
+                            14.0D / 15, 6.0D / 15, 14.0D / 15);
+                case 4:
+                    return new SimpleCollisionBox(2.0D / 15, 0.0D, 2.0D / 15,
+                            14.0D / 15, 7.0D / 15, 14.0D / 15);
+            }
         }
         return NoCollisionBox.INSTANCE;
     }, XMaterial.SEA_PICKLE.parseMaterial()),
@@ -439,9 +443,7 @@ public enum BlockData {
                 names.add(mat.name());
                 return names.stream().anyMatch(name ->
                         name.contains("PLATE"));
-            }).map(BlockData::m).toArray(Material[]::new)),
-    _DEFAULT(new SimpleCollisionBox(0, 0, 0, 1, 1, 1),
-            XMaterial.STONE.parseMaterial());
+            }).map(BlockData::m).toArray(Material[]::new));
 
     private CollisionBox box;
     private CollisionFactory dynamic;
