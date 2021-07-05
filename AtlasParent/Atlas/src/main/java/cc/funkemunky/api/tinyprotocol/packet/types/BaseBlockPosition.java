@@ -9,13 +9,9 @@ import cc.funkemunky.api.tinyprotocol.reflection.FieldAccessor;
 
 public class BaseBlockPosition extends NMSObject {
     public static final BaseBlockPosition ZERO = new BaseBlockPosition(0, 0, 0);
-    private static FieldAccessor<Integer> fieldX;
-    private static FieldAccessor<Integer> fieldY;
-    private static FieldAccessor<Integer> fieldZ;
-    private static WrappedClass baseBlockPositionClass;
-    private static WrappedClass blockPositionClass;
-    private static WrappedConstructor blockPosConstructor;
-    private static WrappedConstructor baseBlockPosConstructor;
+    private static final FieldAccessor<Integer> fieldX, fieldY, fieldZ;
+    private static final WrappedClass blockPositionClass, baseBlockPositionClass;
+    private static final WrappedConstructor blockPosConstructor, baseBlockPosConstructor;
     private int a;
     private int c;
     private int d;
@@ -23,7 +19,7 @@ public class BaseBlockPosition extends NMSObject {
             .calculateLogBaseTwo(cc.funkemunky.api.utils.MathHelper.roundUpToPowerOfTwo(30000000));
     private static final int NUM_Z_BITS = NUM_X_BITS;
     private static final int NUM_Y_BITS = 64 - NUM_X_BITS - NUM_Z_BITS;
-    private static final int Y_SHIFT = 0 + NUM_Z_BITS;
+    private static final int Y_SHIFT = NUM_Z_BITS;
     private static final int X_SHIFT = Y_SHIFT + NUM_Y_BITS;
     private static final long X_MASK = (1L << NUM_X_BITS) - 1L;
     private static final long Y_MASK = (1L << NUM_Y_BITS) - 1L;
@@ -93,6 +89,18 @@ public class BaseBlockPosition extends NMSObject {
         return this.d;
     }
 
+    public void setX(int x) {
+        this.a = x;
+    }
+
+    public void setY(int y) {
+        this.c = y;
+    }
+
+    public void setZ(int z) {
+        this.d = z;
+    }
+
     public BaseBlockPosition d(BaseBlockPosition var1) {
         return new BaseBlockPosition(this.getY() * var1.getZ() - this.getZ() * var1.getY(), this.getZ() * var1.getX() - this.getX() * var1.getZ(), this.getX() * var1.getY() - this.getY() * var1.getX());
     }
@@ -123,6 +131,9 @@ public class BaseBlockPosition extends NMSObject {
     }
 
     public <T> T getAsBaseBlockPosition() {
+        assert ProtocolVersion.getGameVersion().isAbove(ProtocolVersion.V1_8)
+                : "Plugin is trying to access BaseBlockPosition on a 1.7.10 server";
+
         return baseBlockPosConstructor.newInstance(getX(), getY(), getZ());
     }
 
@@ -132,7 +143,9 @@ public class BaseBlockPosition extends NMSObject {
 
     @Override
     public void updateObject() {
-
+        set(fieldX, a);
+        set(fieldY, c);
+        set(fieldZ, c);
     }
 
     static {
@@ -140,10 +153,18 @@ public class BaseBlockPosition extends NMSObject {
             fieldX = fetchField(Type.BASEBLOCKPOSITION, int.class, 0);
             fieldY = fetchField(Type.BASEBLOCKPOSITION, int.class, 1);
             fieldZ = fetchField(Type.BASEBLOCKPOSITION, int.class, 2);
-            baseBlockPositionClass = Reflections.getNMSClass("BaseBlockPosition");
-            blockPositionClass = Reflections.getNMSClass("BlockPosition");
+            blockPositionClass = Reflections.getNMSClass(Type.BLOCKPOSITION);
             blockPosConstructor = blockPositionClass.getConstructor(int.class, int.class, int.class);
+            baseBlockPositionClass = Reflections.getNMSClass(Type.BASEBLOCKPOSITION);
             baseBlockPosConstructor = baseBlockPositionClass.getConstructor(int.class, int.class, int.class);
+        } else {
+            fieldX = fetchField(Type.CHUNKPOSITION, int.class, 0);
+            fieldY = fetchField(Type.CHUNKPOSITION, int.class, 1);
+            fieldZ = fetchField(Type.CHUNKPOSITION, int.class, 2);
+            blockPositionClass = Reflections.getClass(Type.CHUNKPOSITION);
+            blockPosConstructor = blockPositionClass.getConstructor(int.class, int.class, int.class);
+            baseBlockPositionClass = null;
+            baseBlockPosConstructor = null;
         }
     }
 }

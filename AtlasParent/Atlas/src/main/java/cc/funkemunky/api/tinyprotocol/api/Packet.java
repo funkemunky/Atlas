@@ -192,6 +192,7 @@ public abstract class Packet {
         public static final String OPEN_WINDOW = SERVER + "OpenWindow";
         public static final String ENTITY_EFFECT = SERVER + "EntityEffect";
         public static final String SET_SLOT =  SERVER + "SetSlot";
+        public static final String EXPLOSION = SERVER + "Explosion";
     }
 
     public static class Login {

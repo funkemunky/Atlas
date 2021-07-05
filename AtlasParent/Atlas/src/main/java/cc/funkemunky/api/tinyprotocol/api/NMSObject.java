@@ -211,6 +211,7 @@ public abstract class NMSObject {
                 ? "DataWatcher$WatchableObject"
                 : "DataWatcher$Item");
         public static final String BASEBLOCKPOSITION = "BaseBlockPosition";
+        public static final String CHUNKPOSITION = "ChunkPosition";
         public static final String BLOCKPOSITION = "BlockPosition";
         public static final String ITEMSTACK = Reflection.NMS_PREFIX + ".ItemStack";
         public static final String ENTITY = Reflection.NMS_PREFIX + ".Entity";
