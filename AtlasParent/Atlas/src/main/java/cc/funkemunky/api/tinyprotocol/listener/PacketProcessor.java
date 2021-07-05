@@ -91,7 +91,7 @@ public class PacketProcessor {
         list.addAll(processors.getOrDefault("*", Collections.emptyList()));
 
         for (Tuple<EventPriority, PacketListener> tuple : list) {
-            if(tuple.two.onEvent(info)) {
+            if(!tuple.two.onEvent(info)) {
                 return false;
             }
         }
