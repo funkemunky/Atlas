@@ -1,7 +1,6 @@
 package cc.funkemunky.api.tinyprotocol.listener;
 
 import cc.funkemunky.api.Atlas;
-import cc.funkemunky.api.tinyprotocol.api.NMSObject;
 import cc.funkemunky.api.tinyprotocol.listener.functions.AsyncPacketListener;
 import cc.funkemunky.api.tinyprotocol.listener.functions.PacketListener;
 import cc.funkemunky.api.utils.Tuple;
@@ -59,7 +58,7 @@ public class PacketProcessor {
         }
     }
 
-    public boolean call(NMSObject packet, String type) {
+    public boolean call(Object packet, String type) {
         if(asyncProcessors.containsKey(type))
         Atlas.getInstance().getSchedular().execute(() -> {
             val list = asyncProcessors.get(type);

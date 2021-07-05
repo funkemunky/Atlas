@@ -88,12 +88,14 @@ public class TinyProtocolHandler {
             int index = name.lastIndexOf(".");
             String packetName = name.substring(index + 1);
 
+            boolean result = Atlas.getInstance().getPacketProcessor().call(packet, packetName);
+
             PacketSendEvent event = new PacketSendEvent(sender, packet, packetName);
 
             //EventManager.callEvent(new cc.funkemunky.api.event.custom.PacketSendEvent(sender, packet, packetName));
 
             Atlas.getInstance().getEventManager().callEvent(event);
-            return !event.isCancelled() ? event.getPacket() : null;
+            return !event.isCancelled() && result ? event.getPacket() : null;
         } else return packet;
     }
 
@@ -113,13 +115,15 @@ public class TinyProtocolHandler {
                         .replace("PacketPlayInUseItem", "PacketPlayInBlockPlace");
             }
 
+            boolean result = Atlas.getInstance().getPacketProcessor().call(packet, packetName);
+
             //Bukkit.broadcastMessage(packetName);
 
             PacketReceiveEvent event = new PacketReceiveEvent(sender, packet, packetName);
 
             Atlas.getInstance().getEventManager().callEvent(event);
 
-            return !event.isCancelled() ? event.getPacket() : null;
+            return !event.isCancelled() && result ? event.getPacket() : null;
         } return packet;
     }
 

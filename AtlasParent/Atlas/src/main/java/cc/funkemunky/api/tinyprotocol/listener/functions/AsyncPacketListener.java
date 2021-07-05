@@ -4,5 +4,5 @@ import cc.funkemunky.api.tinyprotocol.api.NMSObject;
 
 @FunctionalInterface
 public interface AsyncPacketListener {
-    void onEvent(NMSObject object, String type);
+    void onEvent(Object packet, String type);
 }
