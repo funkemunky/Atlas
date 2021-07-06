@@ -65,9 +65,8 @@ public class Atlas extends JavaPlugin {
     private boolean done;
     private ExecutorService service;
     private File file;
-    private final Map<UUID, Entity> entities = new ConcurrentHashMap<>();
-    private final Map<Integer, UUID> entityIds = new ConcurrentHashMap<>();
-    private Map<Location, Block> blocksMap = new ConcurrentHashMap<>();
+    private final Map<UUID, Entity> entities = Collections.synchronizedMap(new HashMap<>());
+    private final Map<Integer, UUID> entityIds = Collections.synchronizedMap(new HashMap<>());
     private Map<String, CommandManager> pluginCommandManagers = new HashMap<>();
     private Map<String, BukkitCommandManager> bukkitCommandManagers = new HashMap<>();
 
@@ -202,16 +201,15 @@ public class Atlas extends JavaPlugin {
         }
 
         RunUtils.taskTimer(() -> {
+            entities.clear();
+            entityIds.clear();
             synchronized (entities) {
                 for (World world : Bukkit.getWorlds()) {
                     for (Entity entity : world.getEntities()) {
                        entities.put(entity.getUniqueId(), entity);
+                       entityIds.put(entity.getEntityId(), entity.getUniqueId());
                     }
                 }
-                entities.keySet().removeIf(key -> entities.get(key) == null);
-            }
-            synchronized (entityIds) {
-                entities.forEach((id, entity) -> entityIds.put(entity.getEntityId(), entity.getUniqueId()));
             }
         }, 2L, 5L);
     }
@@ -362,24 +360,5 @@ public class Atlas extends JavaPlugin {
 
     public void initializeScanner(Plugin plugin, boolean loadListeners, boolean loadCommands) {
         initializeScanner(plugin.getClass(), plugin, null, loadListeners, loadCommands);
-    }
-
-    //Always wait to load chunks if you never want this to return as null. It may add delays tho when it is null.
-    //Max time is 5 seconds to load chunks.
-    public Block getBlock(Location location, boolean waitToLoadChunks) {
-        return blocksMap.computeIfAbsent(location, key -> {
-            if(waitToLoadChunks) {
-                FutureTask<Block> blockTask = new FutureTask<>(key::getBlock);
-
-                try {
-                    return blockTask.get(5000L, TimeUnit.SECONDS);
-                } catch(InterruptedException | ExecutionException | TimeoutException e) {
-                    e.printStackTrace();
-                }
-            } else {
-                return BlockUtils.getBlock(location);
-            }
-            return null;
-        });
     }
 }
