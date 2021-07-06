@@ -56,11 +56,7 @@ public class MiscUtils {
     }
 
     public static BaseComponent[] toComponentArray(TextComponent message) {
-        List<BaseComponent> components = new ArrayList<>();
-
-        components.add(message);
-        components.addAll(message.getExtra());
-        return components.toArray(new BaseComponent[0]);
+        return TextComponent.fromLegacyText(message.toLegacyText());
     }
 
     public static String injectColor(String string, String color) {
