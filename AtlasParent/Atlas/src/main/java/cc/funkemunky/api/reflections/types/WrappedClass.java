@@ -49,13 +49,12 @@ public class WrappedClass {
                 clazz = null;
             } else clazz = this.parent.getSuperclass();
 
-            System.out.println(clazz.getName());
         }  while(clazz != null && !clazz.getName().contains("Object"));
 
         return null;
     }
 
-    public WrappedConstructor getConstructor(Class... types) {
+    public WrappedConstructor getConstructor(Class<?>... types) {
         try {
             return new WrappedConstructor(this, this.parent.getDeclaredConstructor(types));
         } catch (NoSuchMethodException e) {

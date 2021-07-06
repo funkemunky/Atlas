@@ -1,6 +1,5 @@
 package cc.funkemunky.api.utils;
 
-import cc.funkemunky.api.Atlas;
 import cc.funkemunky.api.reflections.impl.MinecraftReflection;
 import cc.funkemunky.api.reflections.types.WrappedField;
 import cc.funkemunky.api.tinyprotocol.api.ProtocolVersion;
@@ -18,7 +17,7 @@ public class BlockUtils {
     public static Map<Material, BoundingBox> collisionBoundingBoxes = new HashMap<>();
 
     public static Block getBlock(Location location) {
-        if (Atlas.getInstance().getBlockBoxManager().getBlockBox().isChunkLoaded(location)) {
+        if (location.getWorld().isChunkLoaded(location.getBlockX() >> 4, location.getBlockZ() >> 4)) {
             return location.getBlock();
         } else {
             return null;

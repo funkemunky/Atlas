@@ -2,13 +2,18 @@ package cc.funkemunky.api.utils.world.types;
 
 import cc.funkemunky.api.tinyprotocol.api.ProtocolVersion;
 import cc.funkemunky.api.tinyprotocol.packet.types.enums.WrappedEnumParticle;
+import cc.funkemunky.api.utils.BlockUtils;
+import cc.funkemunky.api.utils.Materials;
 import cc.funkemunky.api.utils.MiscUtils;
 import cc.funkemunky.api.utils.Tuple;
 import cc.funkemunky.api.utils.math.RayTrace;
 import cc.funkemunky.api.utils.world.BlockData;
 import cc.funkemunky.api.utils.world.CollisionBox;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.World;
+import org.bukkit.block.Block;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
@@ -125,10 +130,15 @@ public class RayCollision implements CollisionBox {
         originY+=z;
         return this;
     }
-    
+
     public List<CollisionBox> boxesOnRay(World world, double distance) {
-        int amount = Math.round((float)(distance / 0.5));
+        int amount = Math.round((float) (distance / 0.5));
+
         Location[] locs = new Location[Math.max(2, amount)]; //We do a max to prevent NegativeArraySizeException.
+        List<CollisionBox> boxes = new ArrayList<>();
+        boolean primaryThread = Bukkit.isPrimaryThread();
+        ProtocolVersion version = ProtocolVersion.getGameVersion();
+
         for (int i = 0; i < locs.length; i++) {
             double ix = i / 2d;
 
@@ -136,14 +146,24 @@ public class RayCollision implements CollisionBox {
             double fy = (originY + (directionY * ix));
             double fz = (originZ + (directionZ * ix));
 
-            locs[i] = new Location(world, fx, fy, fz);
+            Location loc = new Location(world, fx, fy, fz);
+
+            Block block = primaryThread ? loc.getBlock() : BlockUtils.getBlock(loc);
+
+            if (block == null) continue;
+
+            final Material type = block.getType();
+
+            if (!Materials.checkFlag(type, Materials.SOLID)) continue;
+
+            CollisionBox box = BlockData.getData(type).getBox(block, version);
+
+            if (!isCollided(box)) continue;
+
+            boxes.add(box);
         }
-        return Arrays.stream(locs).parallel()
-                .filter(loc -> loc.getWorld().isChunkLoaded(loc.getBlockX() >> 4, loc.getBlockZ() >> 4))
-                .map(Location::getBlock)
-                .filter(block -> block.getType().isSolid())
-                .map(block -> BlockData.getData(block.getType()).getBox(block, ProtocolVersion.getGameVersion()))
-                .filter(this::isCollided).collect(Collectors.toList());
+
+        return boxes;
     }
 
     @Override
