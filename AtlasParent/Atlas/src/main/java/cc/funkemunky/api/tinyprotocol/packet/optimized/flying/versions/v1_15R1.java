@@ -36,7 +36,7 @@ public class v1_15R1 extends AtlasPacketPlayInFlying {
 
     @Override
     public boolean isOnGround() {
-        return getFlying().a();
+        return getFlying().b();
     }
 
     @Override
