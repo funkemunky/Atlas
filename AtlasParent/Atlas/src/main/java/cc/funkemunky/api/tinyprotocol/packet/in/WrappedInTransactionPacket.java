@@ -2,6 +2,7 @@ package cc.funkemunky.api.tinyprotocol.packet.in;
 
 import cc.funkemunky.api.tinyprotocol.api.NMSObject;
 import cc.funkemunky.api.tinyprotocol.api.ProtocolVersion;
+import cc.funkemunky.api.tinyprotocol.packet.optimized.incoming.transaction.AtlasPacketPlayInTransaction;
 import cc.funkemunky.api.tinyprotocol.reflection.FieldAccessor;
 import lombok.Getter;
 import org.bukkit.entity.Player;
@@ -10,9 +11,9 @@ import org.bukkit.entity.Player;
 public class WrappedInTransactionPacket extends NMSObject {
     private static final String packet = Client.TRANSACTION;
 
-    private static FieldAccessor<Integer> fieldId = fetchField(packet, int.class, 0);
-    private static FieldAccessor<Short> fieldAction = fetchField(packet, short.class, 0);
-    private static FieldAccessor<Boolean> fieldAccepted = fetchField(packet, boolean.class, 0);
+    private static final FieldAccessor<Integer> fieldId = fetchField(packet, int.class, 0);
+    private static final FieldAccessor<Short> fieldAction = fetchField(packet, short.class, 0);
+    private static final FieldAccessor<Boolean> fieldAccepted = fetchField(packet, boolean.class, 0);
 
     private int id;
     private short action;
@@ -24,13 +25,16 @@ public class WrappedInTransactionPacket extends NMSObject {
 
     @Override
     public void process(Player player, ProtocolVersion version) {
-        id = fetch(fieldId);
-        action = fetch(fieldAction);
-        accept = fetch(fieldAccepted);
+        AtlasPacketPlayInTransaction transaction = AtlasPacketPlayInTransaction.getTransaction(getObject());
+        id = transaction.getId();
+        action = transaction.getAction();
+        accept = transaction.isAccepted();
     }
 
     @Override
     public void updateObject() {
-        setObject(NMSObject.construct(getObject(), packet, id, action, accept));
+        set(fieldId, id);
+        set(fieldAction, action);
+        set(fieldAccepted, accept);
     }
 }
