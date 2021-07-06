@@ -41,12 +41,14 @@ public class v1_11R1 extends AtlasPacketPlayInFlying {
 
     @Override
     public boolean isPos() {
-        return getFlying().a(Double.POSITIVE_INFINITY) == Double.POSITIVE_INFINITY;
+        return getFlying() instanceof PacketPlayInFlying.PacketPlayInPositionLook
+                || getFlying() instanceof PacketPlayInFlying.PacketPlayInPosition;
     }
 
     @Override
     public boolean isLook() {
-        return getFlying().a(Float.POSITIVE_INFINITY) == Float.POSITIVE_INFINITY;
+        return getFlying() instanceof PacketPlayInFlying.PacketPlayInLook
+                || getFlying() instanceof PacketPlayInFlying.PacketPlayInPositionLook;
     }
 
     private PacketPlayInFlying getFlying() {
