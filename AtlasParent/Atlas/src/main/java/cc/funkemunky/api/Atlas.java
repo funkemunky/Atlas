@@ -30,6 +30,7 @@ import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.Player;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.Plugin;
@@ -65,8 +66,12 @@ public class Atlas extends JavaPlugin {
     private boolean done;
     private ExecutorService service;
     private File file;
+    @Deprecated
     private final Map<UUID, Entity> entities = Collections.synchronizedMap(new HashMap<>());
+    @Deprecated
     private final Map<Integer, UUID> entityIds = Collections.synchronizedMap(new HashMap<>());
+    private final Map<Integer, Entity> trackedEntities = new ConcurrentHashMap<>();
+    private final Map<UUID, Set<Integer>> nearbyEntities = new ConcurrentHashMap<>();
     private Map<String, CommandManager> pluginCommandManagers = new HashMap<>();
     private Map<String, BukkitCommandManager> bukkitCommandManagers = new HashMap<>();
 
@@ -200,18 +205,24 @@ public class Atlas extends JavaPlugin {
             getSchedular().scheduleAtFixedRate(this::runTickEvent, 50L, 50L, TimeUnit.MILLISECONDS);
         }
 
-        RunUtils.taskTimer(() -> {
-            entities.clear();
-            entityIds.clear();
-            synchronized (entities) {
-                for (World world : Bukkit.getWorlds()) {
-                    for (Entity entity : world.getEntities()) {
-                       entities.put(entity.getUniqueId(), entity);
-                       entityIds.put(entity.getEntityId(), entity.getUniqueId());
+        RunUtils.taskTimerAsync(() -> {
+            trackedEntities.clear();
+            nearbyEntities.clear();
+            for (Player player : Bukkit.getOnlinePlayers()) {
+                for (Entity nearbyEntity : player.getNearbyEntities(5, 5, 5)) {
+                    if(!trackedEntities.containsKey(nearbyEntity.getEntityId())) {
+                        trackedEntities.put(nearbyEntity.getEntityId(), nearbyEntity);
                     }
+                    nearbyEntities.compute(player.getUniqueId(), (key, set) -> {
+                        if(set == null) set = new HashSet<>();
+
+                        set.add(nearbyEntity.getEntityId());
+
+                        return set;
+                    });
                 }
             }
-        }, 2L, 5L);
+        }, 0L, 20L);
     }
     private void runTickEvent() {
         service.execute(() -> {

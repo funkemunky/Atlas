@@ -47,8 +47,12 @@ public class WrappedInUseEntityPacket extends NMSObject {
         action = fieldAct == null ? EnumEntityUseAction.INTERACT_AT : EnumEntityUseAction.valueOf(fieldAct.name());
 
         //We cache the entities so we dont have to loop every single packet for the same entity.
-        Optional.ofNullable(Atlas.getInstance().getEntityIds().get(id))
-                .ifPresent(uuid -> entity = Atlas.getInstance().getEntities().get(uuid));
+        for (Entity entity : player.getWorld().getEntities()) {
+            if(entity.getEntityId() == id) {
+                this.entity = entity;
+                break;
+            }
+        }
 
         if(ProtocolVersion.getGameVersion().isOrAbove(ProtocolVersion.V1_8)) {
             Object vec = fetch(vecField);
