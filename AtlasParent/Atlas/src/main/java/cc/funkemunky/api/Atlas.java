@@ -70,8 +70,7 @@ public class Atlas extends JavaPlugin {
     private final Map<UUID, Entity> entities = Collections.synchronizedMap(new HashMap<>());
     @Deprecated
     private final Map<Integer, UUID> entityIds = Collections.synchronizedMap(new HashMap<>());
-    private final Map<Integer, Entity> trackedEntities = new ConcurrentHashMap<>();
-    private final Map<UUID, Set<Integer>> nearbyEntities = new ConcurrentHashMap<>();
+    private final Map<Tuple<UUID, Integer>, Entity> trackedEntities = new ConcurrentHashMap<>();
     private Map<String, CommandManager> pluginCommandManagers = new HashMap<>();
     private Map<String, BukkitCommandManager> bukkitCommandManagers = new HashMap<>();
 
@@ -205,24 +204,18 @@ public class Atlas extends JavaPlugin {
             getSchedular().scheduleAtFixedRate(this::runTickEvent, 50L, 50L, TimeUnit.MILLISECONDS);
         }
 
-        RunUtils.taskTimerAsync(() -> {
+        RunUtils.taskTimer(() -> {
             trackedEntities.clear();
-            nearbyEntities.clear();
             for (Player player : Bukkit.getOnlinePlayers()) {
-                for (Entity nearbyEntity : player.getNearbyEntities(5, 5, 5)) {
-                    if(!trackedEntities.containsKey(nearbyEntity.getEntityId())) {
-                        trackedEntities.put(nearbyEntity.getEntityId(), nearbyEntity);
-                    }
-                    nearbyEntities.compute(player.getUniqueId(), (key, set) -> {
-                        if(set == null) set = new HashSet<>();
+                for (Entity nearbyEntity : player.getNearbyEntities(20, 15, 20)) {
+                    Tuple<UUID, Integer> key = new Tuple<>(nearbyEntity.getWorld().getUID(), nearbyEntity.getEntityId());
 
-                        set.add(nearbyEntity.getEntityId());
+                    if(trackedEntities.containsKey(key)) continue;
 
-                        return set;
-                    });
+                    trackedEntities.put(key, nearbyEntity);
                 }
             }
-        }, 0L, 30L);
+        }, 40L, 20L);
     }
     private void runTickEvent() {
         service.execute(() -> {
@@ -237,13 +230,14 @@ public class Atlas extends JavaPlugin {
     }
 
     public Entity getEntityById(World world, int id) {
-        return trackedEntities.computeIfAbsent(id, key -> {
-            for (Entity entity : world.getEntities()) {
-                if(entity.getEntityId() == key) {
-                    return entity;
+        return trackedEntities.compute(new Tuple<>(world.getUID(), id), (key, entity) -> {
+            if(entity == null) {
+                for (Entity worldEntity : world.getEntities()) {
+                    if(worldEntity.getEntityId() == key.two)
+                        return worldEntity;
                 }
             }
-            return null;
+            return entity;
         });
     }
 

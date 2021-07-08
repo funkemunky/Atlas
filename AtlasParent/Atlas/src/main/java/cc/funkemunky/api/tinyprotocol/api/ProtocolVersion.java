@@ -55,13 +55,11 @@ public enum ProtocolVersion {
     private final String serverVersion;
 
     private static ProtocolVersion fetchGameVersion() {
-        if(gameVersion == UNKNOWN) {
-            for (ProtocolVersion version : values()) {
-                if (version.getServerVersion() != null && version.getServerVersion().equals(Reflection.VERSION))
-                    return version;
-            }
+        for (ProtocolVersion version : values()) {
+            if (version.getServerVersion() != null && version.getServerVersion().equals(Reflection.VERSION))
+                return version;
         }
-        return gameVersion;
+        return UNKNOWN;
     }
 
     public static ProtocolVersion getVersion(int versionId) {

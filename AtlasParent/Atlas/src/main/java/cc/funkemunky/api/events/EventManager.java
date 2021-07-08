@@ -9,15 +9,13 @@ import lombok.Getter;
 import org.bukkit.plugin.Plugin;
 
 import java.lang.reflect.Method;
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.stream.Collectors;
 
 @Getter
 public class EventManager {
-    private final List<ListenerMethod> listenerMethods = new CopyOnWriteArrayList<>();
+    private final Map<Class<?>, List<ListenerMethod>> listenerMethods = Collections.synchronizedMap(new HashMap<>());
     public boolean paused = false;
 
     public void registerListener(Method method, AtlasListener listener, Plugin plugin) throws ListenParamaterException {
@@ -37,8 +35,15 @@ public class EventManager {
                     lm.listenerPriority = listen.priority();
                 }
 
-                listenerMethods.add(lm);
-                listenerMethods.sort(Comparator.comparing(mth -> mth.listenerPriority.getPriority(), Comparator.reverseOrder()));
+                listenerMethods.compute(param, (key, list) -> {
+                    if(list == null) list = new ArrayList<>();
+
+                    list.add(lm);
+                    list.sort(Comparator
+                            .comparing(mth -> mth.listenerPriority.getPriority(), Comparator.reverseOrder()));
+
+                    return list;
+                });
             } else {
                 throw new ListenParamaterException("Method " + method.getDeclaringClass().getName() + "#" + method.getName() + "'s paramater: " + method.getParameterTypes()[0].getName() + " is not an instanceof " + AtlasEvent.class.getSimpleName() + "!");
             }
@@ -52,13 +57,25 @@ public class EventManager {
     }
 
     public void unregisterAll(Plugin plugin) {
-        listenerMethods.stream()
-                .filter(lm -> lm.plugin.getName().equals(plugin.getName()))
-                .forEach(listenerMethods::remove);
+        for (Class<?> aClass : listenerMethods.keySet()) {
+            listenerMethods.compute(aClass, (key, list) -> {
+                if(list != null)
+                list.removeIf(listenerMethod -> listenerMethod.plugin == plugin);
+
+                return list;
+            });
+        }
     }
 
     public void unregisterListener(AtlasListener listener) {
-        listenerMethods.stream().filter(lm -> lm.listener.equals(listener)).forEach(listenerMethods::remove);
+        for (Class<?> aClass : listenerMethods.keySet()) {
+            listenerMethods.compute(aClass, (key, list) -> {
+                if(list != null)
+                list.removeIf(listenerMethod -> listenerMethod.listener == listener);
+
+                return list;
+            });
+        }
     }
 
     public void registerListeners(AtlasListener listener, Plugin plugin) {
@@ -72,13 +89,10 @@ public class EventManager {
     }
 
     public void callEvent(AtlasEvent event) {
-        if(!paused && event != null) {
-            List<ListenerMethod> methods = listenerMethods.parallelStream()
-                    .filter(lm -> lm.method.getParameters().get(0).equals(event.getClass()))
-                    .sequential()
-                    .sorted(Comparator.comparing(lm -> lm.listenerPriority.getPriority(), Comparator.reverseOrder()))
-                    .collect(Collectors.toList());
-
+        if(event == null) return;
+        Class<?> eventClass = event.getClass();
+        if(!paused && listenerMethods.containsKey(eventClass)) {
+            List<ListenerMethod> methods = listenerMethods.get(eventClass);
 
             if(event instanceof Cancellable) {
                 Cancellable cancellable = (Cancellable) event;

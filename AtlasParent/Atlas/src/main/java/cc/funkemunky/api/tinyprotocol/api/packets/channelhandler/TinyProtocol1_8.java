@@ -8,6 +8,10 @@
 
 package cc.funkemunky.api.tinyprotocol.api.packets.channelhandler;
 
+import cc.funkemunky.api.reflections.Reflections;
+import cc.funkemunky.api.reflections.impl.MinecraftReflection;
+import cc.funkemunky.api.reflections.types.WrappedClass;
+import cc.funkemunky.api.reflections.types.WrappedMethod;
 import cc.funkemunky.api.tinyprotocol.api.packets.AbstractTinyProtocol;
 import cc.funkemunky.api.tinyprotocol.reflection.FieldAccessor;
 import cc.funkemunky.api.tinyprotocol.reflection.MethodInvoker;
@@ -55,6 +59,9 @@ public abstract class TinyProtocol1_8 implements AbstractTinyProtocol {
 	private static final Class<Object> serverConnectionClass = Reflection.getUntypedClass("{nms}.ServerConnection");
 	private static final FieldAccessor<Object> getMinecraftServer = Reflection.getField("{obc}.CraftServer", minecraftServerClass, 0);
 	private static final FieldAccessor<Object> getServerConnection = Reflection.getField(minecraftServerClass, serverConnectionClass, 0);
+	private static final WrappedClass playerConnection = Reflections.getNMSClass("PlayerConnection"),
+			packetClass = Reflections.getNMSClass("Packet");
+	private static final WrappedMethod methodSendPacket = playerConnection.getMethod("sendPacket", packetClass.getParent());
 
 	// Packets we have to intercept
 	private static final Class<?> PACKET_SET_PROTOCOL = Reflection.getMinecraftClass("PacketHandshakingInSetProtocol");
@@ -313,7 +320,7 @@ public abstract class TinyProtocol1_8 implements AbstractTinyProtocol {
 	 * @param packet - the packet to send.
 	 */
 	public void sendPacket(Player player, Object packet) {
-		sendPacket(getChannel(player), packet);
+		methodSendPacket.invoke(MinecraftReflection.getPlayerConnection(player), packet);
 	}
 
 	/**
