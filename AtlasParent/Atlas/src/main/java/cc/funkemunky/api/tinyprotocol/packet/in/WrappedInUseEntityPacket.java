@@ -9,32 +9,29 @@ import cc.funkemunky.api.tinyprotocol.api.NMSObject;
 import cc.funkemunky.api.tinyprotocol.api.ProtocolVersion;
 import cc.funkemunky.api.tinyprotocol.packet.types.Vec3D;
 import cc.funkemunky.api.tinyprotocol.packet.types.enums.WrappedEnumHand;
-import cc.funkemunky.api.tinyprotocol.reflection.FieldAccessor;
 import lombok.Getter;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
 import java.util.Objects;
-import java.util.Optional;
 
 @Getter
-//TODO Test updateObject functionality and additions to the wrapper for 1.8 and 1.9+.
 public class WrappedInUseEntityPacket extends NMSObject {
-    private static String packet = Client.USE_ENTITY;
 
-    private static FieldAccessor<Integer> fieldId = fetchField(packet, int.class, 0);
-    private static FieldAccessor<Enum> fieldAction = fetchField(packet, Enum.class, 0);
-    private static WrappedClass packetClass = Reflections.getNMSClass(packet),
+    private static final WrappedClass packetClass = Reflections.getNMSClass(Client.USE_ENTITY),
             enumEntityUseAction = Reflections.getNMSClass(
                     (ProtocolVersion.getGameVersion().isAbove(ProtocolVersion.V1_8)
                             ? "PacketPlayInUseEntity$" : "") + "EnumEntityUseAction");
-    private static WrappedField vecField, handField;
+    private static final WrappedField fieldId = fetchField(packetClass, int.class, 0),
+            fieldAction = fetchField(packetClass, Enum.class, 0);
+    private static WrappedField fieldVec, fieldHand, fieldSneaking;
 
     private int id;
     private EnumEntityUseAction action;
     private Entity entity;
     private Vec3D vec;
-    private WrappedEnumHand enumHand;
+    private WrappedEnumHand enumHand = WrappedEnumHand.MAIN_HAND;
+    private boolean sneaking;
 
     public WrappedInUseEntityPacket(Object packet, Player player) {
         super(packet, player);
@@ -47,32 +44,38 @@ public class WrappedInUseEntityPacket extends NMSObject {
         action = fieldAct == null ? EnumEntityUseAction.INTERACT_AT : EnumEntityUseAction.valueOf(fieldAct.name());
 
         //We cache the entities so we dont have to loop every single packet for the same entity.
-        for (Entity entity : player.getWorld().getEntities()) {
-            if(entity.getEntityId() == id) {
-                this.entity = entity;
-                break;
-            }
-        }
+        entity = Atlas.getInstance().getEntityById(player.getWorld(), id);
 
         if(ProtocolVersion.getGameVersion().isOrAbove(ProtocolVersion.V1_8)) {
-            Object vec = fetch(vecField);
+            Object vec = fetch(fieldVec);
             if(vec != null)
             this.vec = new Vec3D(vec);
+
+            if(ProtocolVersion.getGameVersion().isOrAbove(ProtocolVersion.V1_9)) {
+                enumHand = WrappedEnumHand.getFromVanilla(fetch(fieldHand));
+            }
         }
-        if(ProtocolVersion.getGameVersion().isOrAbove(ProtocolVersion.V1_9)) {
-            enumHand = WrappedEnumHand.getFromVanilla(fetch(handField));
-        } else enumHand = WrappedEnumHand.MAIN_HAND;
+        if(ProtocolVersion.getGameVersion().isOrAbove(ProtocolVersion.v1_16)) {
+            sneaking = fetch(fieldSneaking);
+        } else sneaking = player.isSneaking();
     }
 
     @Override
     public void updateObject() {
-        if(ProtocolVersion.getGameVersion().isOrAbove(ProtocolVersion.V1_9)) {
-            vec.updateObject();
-            setPacket(packet, id, enumEntityUseAction.getEnum(action.toString()),
-                    vec.getObject(), enumHand.toEnumHand());
-        } else if(ProtocolVersion.getGameVersion().isOrAbove(ProtocolVersion.V1_8)) {
-            setPacket(packet, id, enumEntityUseAction.getEnum(action.toString()), vec.getObject());
-        } else setPacket(packet, id, enumEntityUseAction.getEnum(action.toString()));
+        set(fieldId, id);
+        set(fieldAction, enumEntityUseAction.getEnum(action.toString()));
+
+        if(ProtocolVersion.getGameVersion().isOrAbove(ProtocolVersion.V1_8)) {
+            set(fieldVec, vec.getObject());
+
+            if(ProtocolVersion.getGameVersion().isOrAbove(ProtocolVersion.V1_9)) {
+                set(fieldHand, enumHand.toEnumHand());
+
+                if(ProtocolVersion.getGameVersion().isOrAbove(ProtocolVersion.v1_16)) {
+                    set(fieldSneaking, sneaking);
+                }
+            }
+        }
     }
 
     public enum EnumEntityUseAction {
@@ -90,10 +93,15 @@ public class WrappedInUseEntityPacket extends NMSObject {
 
     static {
         if(ProtocolVersion.getGameVersion().isOrAbove(ProtocolVersion.V1_8)) {
-            vecField = packetClass.getFieldByType(MinecraftReflection.vec3D.getParent(), 0);
-        }
-        if(ProtocolVersion.getGameVersion().isOrAbove(ProtocolVersion.V1_9)) {
-            handField = packetClass.getFieldByType(WrappedEnumHand.enumHandClass.getParent(), 0);
+            fieldVec = packetClass.getFieldByType(MinecraftReflection.vec3D.getParent(), 0);
+
+            if(ProtocolVersion.getGameVersion().isOrAbove(ProtocolVersion.V1_9)) {
+                fieldHand = packetClass.getFieldByType(WrappedEnumHand.enumHandClass.getParent(), 0);
+
+                if(ProtocolVersion.getGameVersion().isOrAbove(ProtocolVersion.v1_16)) {
+                    fieldSneaking = fetchField(packetClass, boolean.class, 0);
+                }
+            }
         }
     }
 }

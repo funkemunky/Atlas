@@ -48,18 +48,20 @@ public enum ProtocolVersion {
     UNKNOWN(-1, "UNKNOWN");
 
     @Getter
-    private static ProtocolVersion gameVersion = fetchGameVersion();
-    private int version;
+    private static final ProtocolVersion gameVersion = fetchGameVersion();
+    private final int version;
     @Getter
     private static boolean paper;
-    private String serverVersion;
+    private final String serverVersion;
 
     private static ProtocolVersion fetchGameVersion() {
-        for (ProtocolVersion version : values()) {
-            if (version.getServerVersion() != null && version.getServerVersion().equals(Reflection.VERSION))
-                return version;
+        if(gameVersion == UNKNOWN) {
+            for (ProtocolVersion version : values()) {
+                if (version.getServerVersion() != null && version.getServerVersion().equals(Reflection.VERSION))
+                    return version;
+            }
         }
-        return UNKNOWN;
+        return gameVersion;
     }
 
     public static ProtocolVersion getVersion(int versionId) {

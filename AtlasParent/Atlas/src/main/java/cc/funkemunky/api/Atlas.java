@@ -222,7 +222,7 @@ public class Atlas extends JavaPlugin {
                     });
                 }
             }
-        }, 0L, 20L);
+        }, 0L, 30L);
     }
     private void runTickEvent() {
         service.execute(() -> {
@@ -234,6 +234,17 @@ public class Atlas extends JavaPlugin {
     public void initializeScanner(Class<? extends Plugin> mainClass, Plugin plugin, ClassLoader loader,
                                   boolean loadListeners, boolean loadCommands) {
         initializeScanner(mainClass, plugin, loader, ClassScanner.scanFile(null, mainClass), loadListeners, loadCommands);
+    }
+
+    public Entity getEntityById(World world, int id) {
+        return trackedEntities.computeIfAbsent(id, key -> {
+            for (Entity entity : world.getEntities()) {
+                if(entity.getEntityId() == key) {
+                    return entity;
+                }
+            }
+            return null;
+        });
     }
 
     public void initializeScanner(Class<? extends Plugin> mainClass, Plugin plugin, ClassLoader loader, Set<String> names,
