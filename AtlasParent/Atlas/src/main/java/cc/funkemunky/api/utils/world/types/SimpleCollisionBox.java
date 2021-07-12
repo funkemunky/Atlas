@@ -101,6 +101,18 @@ public class SimpleCollisionBox implements CollisionBox {
     }
 
     @Override
+    public CollisionBox shrink(double x, double y, double z) {
+        this.xMin += x;
+        this.yMin += y;
+        this.zMin += z;
+        this.xMax -= x;
+        this.yMax -= y;
+        this.zMax -= z;
+
+        return this;
+    }
+
+    @Override
     public void downCast(List<SimpleCollisionBox> list) {
         list.add(this);
     }

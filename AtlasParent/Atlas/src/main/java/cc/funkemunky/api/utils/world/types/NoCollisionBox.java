@@ -29,6 +29,16 @@ public class NoCollisionBox implements CollisionBox {
     }
 
     @Override
+    public CollisionBox shrink(double x, double y, double z) {
+        return this;
+    }
+
+    @Override
+    public CollisionBox expand(double x, double y, double z) {
+        return this;
+    }
+
+    @Override
     public void downCast(List<SimpleCollisionBox> list) { /**/ }
 
     @Override

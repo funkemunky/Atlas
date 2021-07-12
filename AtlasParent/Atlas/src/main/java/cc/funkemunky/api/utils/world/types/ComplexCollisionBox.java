@@ -51,6 +51,20 @@ public class ComplexCollisionBox implements CollisionBox {
     }
 
     @Override
+    public CollisionBox shrink(double x, double y, double z) {
+        for (CollisionBox b : boxes)
+            b.shrink(x,y,z);
+        return this;
+    }
+
+    @Override
+    public CollisionBox expand(double x, double y, double z) {
+        for (CollisionBox b : boxes)
+            b.expand(x,y,z);
+        return this;
+    }
+
+    @Override
     public void downCast(List<SimpleCollisionBox> list) {
         for (CollisionBox box : boxes)
             box.downCast(list);

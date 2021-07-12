@@ -54,6 +54,16 @@ public class DynamicCollisionBox implements CollisionBox {
     }
 
     @Override
+    public CollisionBox shrink(double x, double y, double z) {
+        return this;
+    }
+
+    @Override
+    public CollisionBox expand(double x, double y, double z) {
+        return this;
+    }
+
+    @Override
     public void downCast(List<SimpleCollisionBox> list) {
         box.fetch(version,block).offset(x,y,z).downCast(list);
     }

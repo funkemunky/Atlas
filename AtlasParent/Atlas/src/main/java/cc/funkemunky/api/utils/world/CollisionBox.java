@@ -13,6 +13,8 @@ public interface CollisionBox {
     void draw(WrappedEnumParticle particle, Collection<? extends Player> players);
     CollisionBox copy();
     CollisionBox offset(double x, double y, double z);
+    CollisionBox shrink(double x, double y, double z);
+    CollisionBox expand(double x, double y, double z);
     void downCast(List<SimpleCollisionBox> list);
     boolean isNull();
 }

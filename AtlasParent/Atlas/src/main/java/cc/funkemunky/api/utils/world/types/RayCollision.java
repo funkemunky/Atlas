@@ -131,6 +131,16 @@ public class RayCollision implements CollisionBox {
         return this;
     }
 
+    @Override
+    public CollisionBox shrink(double x, double y, double z) {
+        return this;
+    }
+
+    @Override
+    public CollisionBox expand(double x, double y, double z) {
+        return this;
+    }
+
     public List<CollisionBox> boxesOnRay(World world, double distance) {
         int amount = Math.round((float) (distance / 0.5));
 
