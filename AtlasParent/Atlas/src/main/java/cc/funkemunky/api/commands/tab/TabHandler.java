@@ -26,26 +26,6 @@ public class TabHandler implements AtlasListener {
         INSTANCE = this;
     }
 
-    private AsyncPacketListener tabComplete = Atlas.getInstance().getPacketProcessor().processAsync(Atlas.getInstance(),
-            event -> {
-                WrappedInTabComplete packet = new WrappedInTabComplete(event.getPacket(), event.getPlayer());
-
-                String[] args = (packet.getMessage().startsWith("/")
-                        ? packet.getMessage().toLowerCase().substring(1) : packet.getMessage().toLowerCase())
-                        .split(" ");
-
-                if (tabArgs.containsKey(args)) {
-                    Set<String> options = tabArgs.get(args);
-
-                    WrappedOutTabComplete complete = new WrappedOutTabComplete(options.stream()
-                            .sorted(Comparator.comparing(s -> s))
-                            .toArray(String[]::new));
-
-                    TinyProtocolHandler.sendPacket(event.getPlayer(), complete.getObject());
-
-                }
-            }, Packet.Client.TAB_COMPLETE);
-
     public void addTabComplete(String[] requirement, String... args) {
         if (stuff != null) {
             for (String arg : args) {

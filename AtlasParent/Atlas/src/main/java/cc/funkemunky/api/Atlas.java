@@ -97,7 +97,7 @@ public class Atlas extends JavaPlugin {
         MiscUtils.printToConsole(Color.Red + "Loading Atlas...");
 
         MiscUtils.printToConsole(Color.Gray + "Firing up the thread turbines...");
-        service = Executors.newFixedThreadPool(2);
+        service = Executors.newFixedThreadPool(3);
         schedular = Executors.newSingleThreadScheduledExecutor();
         eventManager = new EventManager();
         Carbon.setup();

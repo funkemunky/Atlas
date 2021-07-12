@@ -549,7 +549,7 @@ public abstract class TinyProtocol1_8 implements AbstractTinyProtocol {
 		public Player player;
 
 		@Override
-		public void channelRead(ChannelHandlerContext ctx, Object msg) {
+		public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
 			// Intercept channel
 			final Channel channel = ctx.channel();
 
@@ -565,40 +565,25 @@ public abstract class TinyProtocol1_8 implements AbstractTinyProtocol {
 			}
 
 			if(player != null) {
-				try {
-					msg = onPacketInAsync(player, msg);
-				} catch (Exception e) {
-					plugin.getLogger().log(Level.SEVERE, "Error in onPacketInAsync().", e);
-				}
+				msg = onPacketInAsync(player, msg);
 			} else {
 				msg = onHandshake(ctx.channel().remoteAddress(), msg);
 			}
+
 			if (msg != null) {
-				try {
-					super.channelRead(ctx, msg);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
+				super.channelRead(ctx, msg);
 			}
 		}
 
 		@Override
-		public void write(ChannelHandlerContext ctx, Object msg, ChannelPromise promise) {
+		public void write(ChannelHandlerContext ctx, Object msg, ChannelPromise promise) throws Exception {
 
 			if(player != null) {
-				try {
-					msg = onPacketOutAsync(player, msg);
-				} catch (Exception e) {
-					plugin.getLogger().log(Level.SEVERE, "Error in onPacketOutAsync().", e);
-				}
+				msg = onPacketOutAsync(player, msg);
 			}
 
 			if (msg != null) {
-				try {
-					super.write(ctx, msg, promise);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
+				super.write(ctx, msg, promise);
 			}
 		}
 	}

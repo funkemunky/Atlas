@@ -480,7 +480,8 @@ public enum BlockData {
     }
 
     public static BlockData getData(Material material) {
-        Material matched = MiscUtils.match(material.toString());
+        Material matched = ProtocolVersion.getGameVersion().isOrAbove(ProtocolVersion.V1_13)
+                ? MiscUtils.match(material.toString()) : material;
         BlockData data = lookup[matched.ordinal()];
         return data != null ? data : _DEFAULT;
     }

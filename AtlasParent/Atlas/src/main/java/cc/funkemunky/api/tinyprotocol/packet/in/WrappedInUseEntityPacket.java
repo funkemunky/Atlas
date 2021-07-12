@@ -19,11 +19,10 @@ import java.util.Objects;
 public class WrappedInUseEntityPacket extends NMSObject {
 
     private static final WrappedClass packetClass = Reflections.getNMSClass(Client.USE_ENTITY),
-            enumEntityUseAction = Reflections.getNMSClass(
-                    (ProtocolVersion.getGameVersion().isAbove(ProtocolVersion.V1_8)
-                            ? "PacketPlayInUseEntity$" : "") + "EnumEntityUseAction");
+            enumEntityUseAction = Reflections.getNMSClass((ProtocolVersion.getGameVersion()
+                    .isAbove(ProtocolVersion.V1_8) ? "PacketPlayInUseEntity$" : "") + "EnumEntityUseAction");
     private static final WrappedField fieldId = fetchField(packetClass, int.class, 0),
-            fieldAction = fetchField(packetClass, Enum.class, 0);
+            fieldAction = fetchField(packetClass, enumEntityUseAction.getParent(), 0);
     private static WrappedField fieldVec, fieldHand, fieldSneaking;
 
     private int id;

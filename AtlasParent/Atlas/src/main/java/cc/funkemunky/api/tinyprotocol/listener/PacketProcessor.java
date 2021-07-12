@@ -9,6 +9,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.plugin.Plugin;
 
 import java.util.*;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 /*
     An asynchronous processor for packets.
@@ -28,7 +29,7 @@ public class PacketProcessor {
         synchronized (processors) {
             for (String type : types) {
                 processors.compute(type, (key, list) -> {
-                    if(list == null) list = new ArrayList<>();
+                    if(list == null) list = new CopyOnWriteArrayList<>();
 
                     list.add(entry);
                     list.sort(Comparator.comparing(t -> t.getPriority().getSlot()));
@@ -59,7 +60,7 @@ public class PacketProcessor {
         synchronized (asyncProcessors) {
             for (String type : types) {
                 asyncProcessors.compute(type, (key, list) -> {
-                    if(list == null) list = new ArrayList<>();
+                    if(list == null) list = new CopyOnWriteArrayList<>();
 
                     list.add(entry);
                     list.sort(Comparator.comparing(t -> t.getPriority().getSlot()));
@@ -105,10 +106,10 @@ public class PacketProcessor {
     public boolean call(Player player, Object packet, String type) {
         if(packet == null) return false;
         PacketInfo info = new PacketInfo(player, packet, type, System.currentTimeMillis());
-        Atlas.getInstance().getSchedular().execute(() -> {
+        Atlas.getInstance().getService().execute(() -> {
             val list = asyncProcessors.getOrDefault("*", new ArrayList<>());
 
-            list.addAll(asyncProcessors.getOrDefault(type, Collections.emptyList()));
+            list.addAll(asyncProcessors.getOrDefault(type, new ArrayList<>()));
 
             for (AsyncListenerEntry tuple : list) {
                 tuple.getListener().onEvent(info);
@@ -117,7 +118,7 @@ public class PacketProcessor {
 
         val list = processors.getOrDefault("*", new ArrayList<>());
 
-        list.addAll(processors.getOrDefault(type, Collections.emptyList()));
+        list.addAll(processors.getOrDefault(type, new CopyOnWriteArrayList<>()));
 
         boolean cancelled = false;
         for (ListenerEntry tuple : list) {
