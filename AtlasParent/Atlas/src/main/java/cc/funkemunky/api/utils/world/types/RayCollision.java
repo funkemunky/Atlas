@@ -132,12 +132,12 @@ public class RayCollision implements CollisionBox {
     }
 
     @Override
-    public CollisionBox shrink(double x, double y, double z) {
+    public RayCollision shrink(double x, double y, double z) {
         return this;
     }
 
     @Override
-    public CollisionBox expand(double x, double y, double z) {
+    public RayCollision expand(double x, double y, double z) {
         return this;
     }
 

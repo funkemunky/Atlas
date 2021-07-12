@@ -41,12 +41,12 @@ public class DynamicCollisionBox implements CollisionBox {
     }
 
     @Override
-    public CollisionBox copy() {
+    public DynamicCollisionBox copy() {
         return new DynamicCollisionBox(box,block,version).offset(x,y,z);
     }
 
     @Override
-    public CollisionBox offset(double x, double y, double z) {
+    public DynamicCollisionBox offset(double x, double y, double z) {
         this.x+=x;
         this.y+=y;
         this.z+=z;
@@ -54,12 +54,12 @@ public class DynamicCollisionBox implements CollisionBox {
     }
 
     @Override
-    public CollisionBox shrink(double x, double y, double z) {
+    public DynamicCollisionBox shrink(double x, double y, double z) {
         return this;
     }
 
     @Override
-    public CollisionBox expand(double x, double y, double z) {
+    public DynamicCollisionBox expand(double x, double y, double z) {
         return this;
     }
 

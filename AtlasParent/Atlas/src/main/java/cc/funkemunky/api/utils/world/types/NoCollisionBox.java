@@ -24,17 +24,17 @@ public class NoCollisionBox implements CollisionBox {
     }
 
     @Override
-    public CollisionBox offset(double x, double y, double z) {
+    public NoCollisionBox offset(double x, double y, double z) {
         return this;
     }
 
     @Override
-    public CollisionBox shrink(double x, double y, double z) {
+    public NoCollisionBox shrink(double x, double y, double z) {
         return this;
     }
 
     @Override
-    public CollisionBox expand(double x, double y, double z) {
+    public NoCollisionBox expand(double x, double y, double z) {
         return this;
     }
 
@@ -47,7 +47,7 @@ public class NoCollisionBox implements CollisionBox {
     }
 
     @Override
-    public CollisionBox copy() {
+    public NoCollisionBox copy() {
         return this;
     }
 

@@ -101,7 +101,7 @@ public class SimpleCollisionBox implements CollisionBox {
     }
 
     @Override
-    public CollisionBox shrink(double x, double y, double z) {
+    public SimpleCollisionBox shrink(double x, double y, double z) {
         this.xMin += x;
         this.yMin += y;
         this.zMin += z;

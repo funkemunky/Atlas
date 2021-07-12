@@ -36,7 +36,7 @@ public class ComplexCollisionBox implements CollisionBox {
     }
 
     @Override
-    public CollisionBox copy() {
+    public ComplexCollisionBox copy() {
         ComplexCollisionBox cc = new ComplexCollisionBox();
         for (CollisionBox b : boxes)
             cc.boxes.add(b.copy());
@@ -44,21 +44,21 @@ public class ComplexCollisionBox implements CollisionBox {
     }
 
     @Override
-    public CollisionBox offset(double x, double y, double z) {
+    public ComplexCollisionBox offset(double x, double y, double z) {
         for (CollisionBox b : boxes)
             b.offset(x,y,z);
         return this;
     }
 
     @Override
-    public CollisionBox shrink(double x, double y, double z) {
+    public ComplexCollisionBox shrink(double x, double y, double z) {
         for (CollisionBox b : boxes)
             b.shrink(x,y,z);
         return this;
     }
 
     @Override
-    public CollisionBox expand(double x, double y, double z) {
+    public ComplexCollisionBox expand(double x, double y, double z) {
         for (CollisionBox b : boxes)
             b.expand(x,y,z);
         return this;

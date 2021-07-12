@@ -69,12 +69,12 @@ public enum BlockData {
         int dir = state.getData().getData() & 0b01;
         CollisionBox box;
         if (dir == 1) {
-            box = new SimpleCollisionBox(0.0F, 0.0F, 0.125F, 1.0F, 1.0F, 0.875F);
+            box = new SimpleCollisionBox(0.0, 0.0, 0.12, 1.0, 1.0, 0.875);
         } else {
-            box = new SimpleCollisionBox(0.125F, 0.0F, 0.0F, 0.875F, 1.0F, 1.0F);
+            box = new SimpleCollisionBox(0.125, 0.0, 0.0, 0.875, 1.0, 1.0);
         }
         return box;
-    }, XMaterial.ANVIL.parseMaterial())
+    }, XMaterial.ANVIL.parseMaterial(), XMaterial.CHIPPED_ANVIL.parseMaterial(), XMaterial.DAMAGED_ANVIL.parseMaterial())
 
     ,_WALL(new DynamicWall(), Arrays.stream(XMaterial.values())
             .filter(mat -> mat.name().contains("WALL"))
