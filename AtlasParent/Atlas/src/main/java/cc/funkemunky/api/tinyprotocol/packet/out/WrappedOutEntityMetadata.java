@@ -32,8 +32,6 @@ public class WrappedOutEntityMetadata extends NMSObject {
 
     @Override
     public void process(Player player, ProtocolVersion version) {
-        watchableObjectsField = fetchField(packet, List.class, 0);
-        entityidField = fetchField(packet, int.class, 0);
 
         watchableObjects = new ArrayList<>();
         entityId = fetch(entityidField);
@@ -48,5 +46,10 @@ public class WrappedOutEntityMetadata extends NMSObject {
     @Override
     public void updateObject() {
 
+    }
+
+    static {
+        watchableObjectsField = fetchField(packet, List.class, 0);
+        entityidField = fetchField(packet, int.class, 0);
     }
 }

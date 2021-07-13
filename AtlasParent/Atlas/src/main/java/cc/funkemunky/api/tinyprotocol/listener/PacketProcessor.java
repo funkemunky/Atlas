@@ -4,6 +4,7 @@ import cc.funkemunky.api.Atlas;
 import cc.funkemunky.api.tinyprotocol.api.Packet;
 import cc.funkemunky.api.tinyprotocol.listener.functions.AsyncPacketListener;
 import cc.funkemunky.api.tinyprotocol.listener.functions.PacketListener;
+import cc.funkemunky.api.utils.RunUtils;
 import lombok.val;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventPriority;
@@ -109,7 +110,7 @@ public class PacketProcessor {
         if(packet == null) return false;
         PacketInfo info = new PacketInfo(player, packet, type, System.currentTimeMillis());
         if(asyncProcessors.containsKey(type)) {
-            Atlas.getInstance().getService().execute(() -> {
+            RunUtils.taskAsync(() -> {
                 val list = asyncProcessors.get(type);
 
                 for (AsyncListenerEntry tuple : list) {
