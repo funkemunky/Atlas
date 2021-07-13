@@ -4,6 +4,7 @@
 
 package cc.funkemunky.api.tinyprotocol.api;
 
+import cc.funkemunky.api.reflections.types.WrappedClass;
 import cc.funkemunky.api.tinyprotocol.reflection.FieldAccessor;
 import cc.funkemunky.api.tinyprotocol.reflection.Reflection;
 import lombok.Getter;
@@ -13,7 +14,9 @@ import org.bukkit.entity.Player;
 
 import java.lang.reflect.Field;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 @NoArgsConstructor
 @Getter
@@ -199,5 +202,27 @@ public abstract class Packet {
         public static final String HANDSHAKE = "PacketHandshakingInSetProtocol";
         public static final String PING = "PacketStatusInPing";
         public static final String START = "PacketStatusInStart";
+    }
+
+    public static final Set<String> incomingPackets = new HashSet<>(), outgoingPackets = new HashSet<>(),
+            allPackets = new HashSet<>();
+
+    static {
+        new WrappedClass(Packet.Server.class).getFields().forEach(field -> {
+            String packet = field.get(null);
+            outgoingPackets.add(packet);
+            allPackets.add(packet);
+        });
+
+        new WrappedClass(Packet.Client.class).getFields().forEach(field -> {
+            String packet = field.get(null);
+            incomingPackets.add(packet);
+            allPackets.add(packet);
+        });
+
+        new WrappedClass(Packet.Login.class).getFields().forEach(field -> {
+            String packet = field.get(null);
+            allPackets.add(packet);
+        });
     }
 }

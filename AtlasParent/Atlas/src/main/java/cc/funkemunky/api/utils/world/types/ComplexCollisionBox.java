@@ -72,7 +72,7 @@ public class ComplexCollisionBox implements CollisionBox {
 
     @Override
     public boolean isNull() {
-        for(CollisionBox box: boxes)
+        for(CollisionBox box : boxes)
             if (!box.isNull())
                 return false;
         return true;

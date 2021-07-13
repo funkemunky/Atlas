@@ -1,6 +1,7 @@
 package cc.funkemunky.api.tinyprotocol.listener;
 
 import cc.funkemunky.api.Atlas;
+import cc.funkemunky.api.tinyprotocol.api.Packet;
 import cc.funkemunky.api.tinyprotocol.listener.functions.AsyncPacketListener;
 import cc.funkemunky.api.tinyprotocol.listener.functions.PacketListener;
 import lombok.val;
@@ -28,6 +29,7 @@ public class PacketProcessor {
         ListenerEntry entry = new ListenerEntry(plugin, priority, listener);
         synchronized (processors) {
             for (String type : types) {
+                System.out.println("Registering: " + type + " for plugin " + plugin.getName());
                 processors.compute(type, (key, list) -> {
                     if(list == null) list = new CopyOnWriteArrayList<>();
 
@@ -43,7 +45,7 @@ public class PacketProcessor {
     }
 
     public PacketListener process(Plugin plugin, EventPriority priority, PacketListener listener) {
-        return process(plugin, priority, listener, "*");
+        return process(plugin, priority, listener, Packet.allPackets.toArray(new String[0]));
     }
 
     public AsyncPacketListener processAsync(Plugin plugin, AsyncPacketListener listener, String... types) {
@@ -51,7 +53,7 @@ public class PacketProcessor {
     }
 
     public AsyncPacketListener processAsync(Plugin plugin, EventPriority priority, AsyncPacketListener listener) {
-        return processAsync(plugin, priority, listener, "*");
+        return processAsync(plugin, priority, listener, Packet.allPackets.toArray(new String[0]));
     }
 
     public AsyncPacketListener processAsync(Plugin plugin, EventPriority priority, AsyncPacketListener listener,
@@ -106,27 +108,27 @@ public class PacketProcessor {
     public boolean call(Player player, Object packet, String type) {
         if(packet == null) return false;
         PacketInfo info = new PacketInfo(player, packet, type, System.currentTimeMillis());
-        Atlas.getInstance().getService().execute(() -> {
-            val list = asyncProcessors.getOrDefault("*", new ArrayList<>());
+        if(asyncProcessors.containsKey(type)) {
+            Atlas.getInstance().getService().execute(() -> {
+                val list = asyncProcessors.get(type);
 
-            list.addAll(asyncProcessors.getOrDefault(type, new ArrayList<>()));
-
-            for (AsyncListenerEntry tuple : list) {
-                tuple.getListener().onEvent(info);
-            }
-        });
-
-        val list = processors.getOrDefault("*", new ArrayList<>());
-
-        list.addAll(processors.getOrDefault(type, new CopyOnWriteArrayList<>()));
-
-        boolean cancelled = false;
-        for (ListenerEntry tuple : list) {
-            if(!tuple.getListener().onEvent(info)) {
-                cancelled = true;
-            }
+                for (AsyncListenerEntry tuple : list) {
+                    tuple.getListener().onEvent(info);
+                }
+            });
         }
-        return !cancelled;
+
+        if(processors.containsKey(type)) {
+            val list = processors.get(type);
+
+            boolean cancelled = false;
+            for (ListenerEntry tuple : list) {
+                if (!tuple.getListener().onEvent(info)) {
+                    cancelled = true;
+                }
+            }
+            return !cancelled;
+        } return true;
     }
 
     public void shutdown() {
