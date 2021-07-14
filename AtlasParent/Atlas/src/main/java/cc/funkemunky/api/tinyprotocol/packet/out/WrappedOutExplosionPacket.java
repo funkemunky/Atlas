@@ -36,6 +36,10 @@ public class WrappedOutExplosionPacket extends NMSObject {
     private final List<BaseBlockPosition> blockRecords = new ArrayList<>();
     private float radius, motionX, motionY, motionZ;
 
+    public WrappedOutExplosionPacket(Object object, Player player) {
+        super(object, player);
+    }
+
     @Override
     public void process(Player player, ProtocolVersion version) {
         x = fetch(fieldX);

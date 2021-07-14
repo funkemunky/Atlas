@@ -114,12 +114,6 @@ public class TinyProtocolHandler {
                     .replace(Packet.Client.LEGACY_POSITION, Packet.Client.POSITION)
                     .replace(Packet.Client.LEGACY_POSITION_LOOK, Packet.Client.POSITION_LOOK);
 
-            if(ProtocolVersion.getGameVersion().isOrAbove(ProtocolVersion.V1_9)) {
-                packetName = packetName.replace("PacketPlayInBlockPlace",
-                        "PacketPlayInBlockPlace1_9")
-                        .replace("PacketPlayInUseItem", "PacketPlayInBlockPlace");
-            }
-
             boolean result = Atlas.getInstance().getPacketProcessor().call(sender, packet, packetName);
 
             if(legacyListeners) {
