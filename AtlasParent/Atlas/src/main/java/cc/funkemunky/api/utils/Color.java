@@ -28,16 +28,15 @@ public class Color {
     public static final String Dark_Blue = ChatColor.DARK_BLUE.toString();
     public static final String Pink = ChatColor.LIGHT_PURPLE.toString();
     public static final String Purple = ChatColor.DARK_PURPLE.toString();
-    public static final String Dark_Purple = ChatColor.DARK_PURPLE.toString();
     public static final String Black = ChatColor.BLACK.toString();
     public static final String Underline = ChatColor.UNDERLINE.toString();
 
     private static final Pattern pattern = Pattern.compile("#[a-fA-F0-9]{6}");
-    
+
     public static String translate(String string) {
-        if(ProtocolVersion.getGameVersion().isOrAbove(ProtocolVersion.v1_16)) {
-            Matcher match = pattern.matcher(string);
-            while(match.find()) {
+        Matcher match = pattern.matcher(string);
+        if (match.matches())
+            while (match.find()) {
                 String colorToTranslate = string.substring(match.start(), match.end());
                 int rgb;
                 try {
@@ -45,19 +44,19 @@ public class Color {
                 } catch (NumberFormatException var7) {
                     throw new IllegalArgumentException("Illegal hex string " + string);
                 }
+                if (ProtocolVersion.getGameVersion().isOrAbove(ProtocolVersion.v1_16)) {
 
-                StringBuilder magic = new StringBuilder("§x");
-                char[] var3 = string.substring(1).toCharArray();
+                    StringBuilder magic = new StringBuilder("§x");
+                    char[] var3 = string.substring(1).toCharArray();
 
-                for (char c : var3) {
-                    magic.append('§').append(c);
-                }
+                    for (char c : var3) {
+                        magic.append('§').append(c);
+                    }
 
-                string = string.replace(colorToTranslate, magic.toString());
+                    string = string.replace(colorToTranslate, magic.toString());
+                } else string = string.replace(colorToTranslate, getClosestColor(rgb));
             }
 
-            return string;
-        }
         return
                 ChatColor.translateAlternateColorCodes('&', string);
     }
@@ -148,7 +147,7 @@ public class Color {
             new TranslatedColor(Dark_Green, ChatColor.DARK_GREEN, 0x00aa00),
             new TranslatedColor(Dark_Aqua, ChatColor.DARK_AQUA, 0x00aaaa),
             new TranslatedColor(Dark_Red, ChatColor.DARK_RED,0xaa0000),
-            new TranslatedColor(Dark_Purple, ChatColor.DARK_PURPLE,0xaa00aa),
+            new TranslatedColor(Purple, ChatColor.DARK_PURPLE,0xaa00aa),
             new TranslatedColor(Gold, ChatColor.GOLD,0xffaa00),
             new TranslatedColor(Gray, ChatColor.GRAY,0xaaaaaa),
             new TranslatedColor(Dark_Gray, ChatColor.DARK_GRAY,0x555555),

@@ -35,7 +35,7 @@ public class ExampleCommand {
             display = "execute", usage = "/<command> <arg>",
             permission = "atlas.command.example.execute", aliases = "atlasexample.execute")
     public void onExecute(CommandAdapter cmd) {
-        cmd.getSender().sendMessage("You have initiated the test command.");
+        cmd.getSender().sendMessage(Color.translate("#9F8DFAYou have initiated the test command."));
     }
 
     @Command(name = "testjson", playerOnly = true)
