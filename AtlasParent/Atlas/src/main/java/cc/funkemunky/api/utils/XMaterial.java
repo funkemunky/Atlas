@@ -919,7 +919,7 @@ public enum XMaterial {
             if(result == null) {
                 for (XMaterial value : XMaterial.values()) {
                     for (String test : value.names) {
-                        if(name.equals(test) && ((byte)value.data) == data) {
+                        if(name.equals(test) && (value.data == 0 || ((byte)value.data) == data)) {
                             return value;
                         }
                     }
