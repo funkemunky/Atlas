@@ -336,7 +336,8 @@ public enum BlockData {
             .toArray(Material[]::new)),
 
     _SIGN(new SimpleCollisionBox(0.25, 0.0, 0.25, 0.75, 1.0, 0.75),
-            XMaterial.SIGN.parseMaterial(), XMaterial.LEGACY_SIGN_POST.parseMaterial()),
+            Arrays.stream(Material.values()).filter(m -> m.name().endsWith("_SIGN") || m.name().startsWith("SIGN"))
+                    .toArray(Material[]::new)),
     _BUTTON((version, block) -> {
         BlockFace face;
         switch(block.getData() & 7) {
@@ -430,14 +431,14 @@ public enum BlockData {
 
     _NONE(NoCollisionBox.INSTANCE, Stream.of(XMaterial.TORCH, XMaterial.REDSTONE_TORCH,
             XMaterial.REDSTONE_WIRE, XMaterial.REDSTONE_WALL_TORCH, XMaterial.POWERED_RAIL, XMaterial.WALL_TORCH,
-            XMaterial.RAIL, XMaterial.ACTIVATOR_RAIL, XMaterial.DETECTOR_RAIL, XMaterial.AIR, XMaterial.LONG_GRASS,
+            XMaterial.RAIL, XMaterial.ACTIVATOR_RAIL, XMaterial.DETECTOR_RAIL, XMaterial.AIR, XMaterial.FERN,
             XMaterial.TRIPWIRE, XMaterial.TRIPWIRE_HOOK)
             .map(BlockData::m)
             .toArray(Material[]::new)),
 
     _NONE2(NoCollisionBox.INSTANCE, Arrays.stream(XMaterial.values())
             .filter(mat -> {
-                List<String> names = new ArrayList<>(Arrays.asList(mat.names));
+                List<String> names = new ArrayList<>(Arrays.asList(mat.getLegacy()));
                 names.add(mat.name());
                 return names.stream().anyMatch(name ->
                         name.contains("PLATE"));

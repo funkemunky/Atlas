@@ -21,7 +21,7 @@ public class Materials {
             Material material = Material.values()[i];
 
             //We use the one in BlockUtils also since we can't trust Material to include everything.
-            if (material.isSolid()) {
+            if (material.isSolid() || material.name().contains("COMPARATOR") || material.name().contains("DIODE")) {
                 MATERIAL_FLAGS[i] |= SOLID;
             }
             if (material.name().endsWith("_STAIRS")) {
@@ -31,16 +31,17 @@ public class Materials {
             if (material.name().contains("SLAB") || material.name().contains("STEP")) {
                 MATERIAL_FLAGS[i] |= SLABS;
             }
+
+            if(material.name().contains("STATIONARY")) {
+                if(material.name().contains("LAVA")) {
+                    MATERIAL_FLAGS[i] |= LIQUID | LAVA;
+                } else MATERIAL_FLAGS[i] |= LIQUID | WATER;
+            }
         }
 
         // fix some types where isSolid() returns the wrong value
         MATERIAL_FLAGS[XMaterial.SLIME_BLOCK.parseMaterial().ordinal()] = SOLID;
-        MATERIAL_FLAGS[XMaterial.COMPARATOR.parseMaterial().ordinal()] = SOLID;
-        MATERIAL_FLAGS[XMaterial.REDSTONE_COMPARATOR_OFF.parseMaterial().ordinal()] = SOLID;
-        MATERIAL_FLAGS[XMaterial.REDSTONE_COMPARATOR_ON.parseMaterial().ordinal()] = SOLID;
         MATERIAL_FLAGS[XMaterial.REPEATER.parseMaterial().ordinal()] = SOLID;
-        MATERIAL_FLAGS[XMaterial.DIODE_BLOCK_OFF.parseMaterial().ordinal()] = SOLID;
-        MATERIAL_FLAGS[XMaterial.DIODE_BLOCK_ON.parseMaterial().ordinal()] = SOLID;
         MATERIAL_FLAGS[XMaterial.SNOW.parseMaterial().ordinal()] = SOLID;
         MATERIAL_FLAGS[XMaterial.ANVIL.parseMaterial().ordinal()] = SOLID;
         MATERIAL_FLAGS[XMaterial.LILY_PAD.parseMaterial().ordinal()] = SOLID;
@@ -48,12 +49,6 @@ public class Materials {
         MATERIAL_FLAGS[XMaterial.SKELETON_WALL_SKULL.parseMaterial().ordinal()] = SOLID;
         MATERIAL_FLAGS[XMaterial.WITHER_SKELETON_SKULL.parseMaterial().ordinal()] = SOLID;
         MATERIAL_FLAGS[XMaterial.WITHER_SKELETON_WALL_SKULL.parseMaterial().ordinal()] = SOLID;
-
-        // liquids
-        MATERIAL_FLAGS[XMaterial.WATER.parseMaterial().ordinal()] |= LIQUID | WATER;
-        MATERIAL_FLAGS[XMaterial.LAVA.parseMaterial().ordinal()] |= LIQUID | LAVA;
-        MATERIAL_FLAGS[XMaterial.STATIONARY_LAVA.parseMaterial().ordinal()] |= LIQUID | LAVA;
-        MATERIAL_FLAGS[XMaterial.STATIONARY_WATER.parseMaterial().ordinal()] |= LIQUID | WATER;
 
         // ladders
         MATERIAL_FLAGS[XMaterial.LADDER.parseMaterial().ordinal()] |= LADDER | SOLID;

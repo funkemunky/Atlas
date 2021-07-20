@@ -21,7 +21,7 @@ public class ConfirmationMenu extends ChestMenu {
             setCloseHandler(null);
             close(player);
         })));
-        setItem(6, new Button(false, new ItemBuilder(XMaterial.ROSE_RED.parseMaterial())
+        setItem(6, new Button(false, new ItemBuilder(XMaterial.RED_DYE.parseMaterial())
                 .durability(1).name(ChatColor.RED + "Deny").build(), (((player, buttonClickTypeInformationPair) -> {
             function.accept(player, false);
             close(player);
