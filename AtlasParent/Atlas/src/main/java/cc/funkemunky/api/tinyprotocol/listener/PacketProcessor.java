@@ -124,8 +124,12 @@ public class PacketProcessor {
 
             boolean cancelled = false;
             for (ListenerEntry tuple : list) {
-                if (!tuple.getListener().onEvent(info)) {
-                    cancelled = true;
+                try {
+                    if (!tuple.getListener().onEvent(info)) {
+                        cancelled = true;
+                    }
+                } catch(Exception e) {
+                    e.printStackTrace();
                 }
             }
             return !cancelled;

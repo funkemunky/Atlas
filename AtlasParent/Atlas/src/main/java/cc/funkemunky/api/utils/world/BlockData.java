@@ -1,6 +1,7 @@
 package cc.funkemunky.api.utils.world;
 
 import cc.funkemunky.api.reflections.Reflections;
+import cc.funkemunky.api.reflections.impl.MinecraftReflection;
 import cc.funkemunky.api.reflections.types.WrappedClass;
 import cc.funkemunky.api.tinyprotocol.api.ProtocolVersion;
 import cc.funkemunky.api.utils.MiscUtils;
@@ -264,10 +265,8 @@ public enum BlockData {
             XMaterial.SOUL_SAND.parseMaterial()),
     _PICKLE((version, block) -> {
         if(version.isOrAbove(ProtocolVersion.V1_13)) {
-            val wrapped = new WrappedClass(block.getClass());
-            val getBlockData = wrapped.getMethod("getBlockData");
             val pickleClass = Reflections.getNMSClass("SeaPickle");
-            Object pickle = getBlockData.invoke(block);
+            Object pickle = MinecraftReflection.getBlockData(block);
 
             int pickles = pickleClass.getMethod("getPickles").invoke(pickle);
 
