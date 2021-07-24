@@ -20,6 +20,7 @@ import org.bukkit.material.MaterialData;
 import org.bukkit.material.Vine;
 
 import java.util.*;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public enum BlockData {
@@ -104,8 +105,7 @@ public enum BlockData {
                 box = new SimpleCollisionBox(0.0F, 0.25F, 0.25F, 0.5F, 0.75F, 0.75F);
         }
         return box;
-    }, XMaterial.SKELETON_SKULL.parseMaterial(), XMaterial.WITHER_SKELETON_SKULL.parseMaterial(),
-            XMaterial.WITHER_SKELETON_WALL_SKULL.parseMaterial(), XMaterial.WITHER_SKELETON_SKULL.parseMaterial()),
+    }, Arrays.stream(Material.values()).filter(mat -> mat.name().contains("SKULL")).toArray(Material[]::new)),
 
     _DOOR(new DoorHandler(), Arrays.stream(Material.values())
             .filter(mat -> !mat.name().contains("TRAP") && mat.name().contains("DOOR"))

@@ -32,6 +32,9 @@ public class Materials {
                 MATERIAL_FLAGS[i] |= SLABS;
             }
 
+            if(material.name().contains("SKULL"))
+                MATERIAL_FLAGS[i] = SOLID;
+
             if(material.name().contains("STATIONARY")) {
                 if(material.name().contains("LAVA")) {
                     MATERIAL_FLAGS[i] |= LIQUID | LAVA;
@@ -45,10 +48,6 @@ public class Materials {
         MATERIAL_FLAGS[XMaterial.SNOW.parseMaterial().ordinal()] = SOLID;
         MATERIAL_FLAGS[XMaterial.ANVIL.parseMaterial().ordinal()] = SOLID;
         MATERIAL_FLAGS[XMaterial.LILY_PAD.parseMaterial().ordinal()] = SOLID;
-        MATERIAL_FLAGS[XMaterial.SKELETON_SKULL.parseMaterial().ordinal()] = SOLID;
-        MATERIAL_FLAGS[XMaterial.SKELETON_WALL_SKULL.parseMaterial().ordinal()] = SOLID;
-        MATERIAL_FLAGS[XMaterial.WITHER_SKELETON_SKULL.parseMaterial().ordinal()] = SOLID;
-        MATERIAL_FLAGS[XMaterial.WITHER_SKELETON_WALL_SKULL.parseMaterial().ordinal()] = SOLID;
 
         // ladders
         MATERIAL_FLAGS[XMaterial.LADDER.parseMaterial().ordinal()] |= LADDER | SOLID;
