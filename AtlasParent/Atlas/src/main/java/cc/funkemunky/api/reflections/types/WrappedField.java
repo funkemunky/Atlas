@@ -38,12 +38,9 @@ public class WrappedField {
 
     public void set(Object parent, Object value) {
         try {
-            Field modifiersField = Field.class.getDeclaredField("modifiers");
-            modifiersField.setAccessible(true);
-            modifiersField.setInt(this.field, this.field.getModifiers() & ~Modifier.FINAL);
             this.field.setAccessible(true);
             this.field.set(parent, value);
-        } catch (IllegalAccessException | NoSuchFieldException e) {
+        } catch (IllegalAccessException e) {
             e.printStackTrace();
         }
     }
