@@ -42,6 +42,12 @@
                         </goals>
                         <configuration>
                             <minimizeJar>false</minimizeJar>
+                            <relocations>
+                                <relocation>
+                                    <pattern>org.objectweb.asm</pattern>
+                                    <shadedPattern>cc.funkemunky.bungee.utils.org.objectweb.asm</shadedPattern>
+                                </relocation>
+                            </relocations>
                         </configuration>
                     </execution>
                 </executions>
@@ -73,6 +79,18 @@
             <groupId>co.aikar</groupId>
             <artifactId>acf-bungee</artifactId>
             <version>0.5.0-SNAPSHOT</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.ow2.asm</groupId>
+            <artifactId>asm</artifactId>
+            <version>9.2</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.ow2.asm</groupId>
+            <artifactId>asm-tree</artifactId>
+            <version>9.2</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
