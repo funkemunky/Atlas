@@ -23,6 +23,7 @@ import org.bukkit.scheduler.BukkitTask;
 
 import java.io.*;
 import java.util.*;
+import java.util.logging.Level;
 
 public class BungeeManager implements AtlasListener, PluginMessageListener {
     @Getter
@@ -78,6 +79,7 @@ public class BungeeManager implements AtlasListener, PluginMessageListener {
             }
         }
 
+        if(isBungee)
         //If no players are online, we'll have to wait to send things
         serverCheckTask = RunUtils.taskTimerAsync(() -> {
             if(receivedHeartbeat) {
@@ -100,6 +102,9 @@ public class BungeeManager implements AtlasListener, PluginMessageListener {
                 //If we didn't receive a heartbeat in 8 seconds, we can reasonably assume we don't have atlasbungee.
                 if(System.currentTimeMillis() - lastHeartbeatReceive > 8000L) {
                     atlasBungeeInstalled = false;
+                    Bukkit.getLogger().log(Level.WARNING, "If you are running a BungeeCord server, it is"
+                            + " recommended you also install AtlasBungee for certain features to work. Download it"
+                            + " from: https://github.com/funkemunky/Atlas/releases");
                 }
             }
             if(toSend.size() > 0 && Bukkit.getOnlinePlayers().size() > 0) {
