@@ -24,6 +24,20 @@ public class AtlasMsgListener implements Listener {
     public AtlasMsgListener() {
         BungeeCord.getInstance().registerChannel(AtlasBungee.INSTANCE.outChannel);
         BungeeCord.getInstance().registerChannel(AtlasBungee.INSTANCE.inChannel);
+
+        try {
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            ObjectOutputStream oos = new ObjectOutputStream(baos);
+
+            oos.writeUTF("heartbeat");
+            oos.close();
+
+            System.out.println("Sending out heartbeats");
+            ProxyServer.getInstance().getServers().values()
+                    .forEach(si -> si.sendData("atlas:in", baos.toByteArray(), true));
+        } catch(IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @EventHandler
@@ -44,12 +58,12 @@ public class AtlasMsgListener implements Listener {
                 ByteArrayInputStream bis = new ByteArrayInputStream(event.getData());
                 ObjectInputStream inputStream = new ObjectInputStream(bis);
 
-                //System.out.println(event.getData().length);
-                String type = (String)inputStream.readObject();
+                String type = inputStream.readUTF();
 
                 switch(type) {
                     case "heartbeat": {
-                        switch((String)inputStream.readObject()) {
+                        if(inputStream.available() > 1)
+                        switch(inputStream.readUTF()) {
                             case "reloadChannels": {
                                 BungeeCord.getInstance().unregisterChannel(AtlasBungee.INSTANCE.outChannel);
                                 BungeeCord.getInstance().unregisterChannel(AtlasBungee.INSTANCE.inChannel);
@@ -58,6 +72,17 @@ public class AtlasMsgListener implements Listener {
                                 break;
                             }
                         }
+
+                        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                        ObjectOutputStream oos = new ObjectOutputStream(baos);
+
+                        oos.writeUTF("heartbeat");
+                        oos.close();
+
+                        System.out.println("Sending back heartbeat");
+                        ProxyServer.getInstance().getServers().values().stream()
+                                .filter(server -> server.getAddress().equals(event.getSender().getAddress()))
+                                .forEach(si -> si.sendData("atlas:in", baos.toByteArray()));
                         break;
                     }
                     case "sendObjects": {
@@ -133,6 +158,7 @@ public class AtlasMsgListener implements Listener {
                         dataOut.writeObject(uuid);
                         dataOut.writeUTF(user.brand);
                         dataOut.writeBoolean(user.legacy);
+                        dataOut.close();
 
                         ProxyServer.getInstance().getServers()
                                 .forEach((name, info) -> info.sendData(AtlasBungee.INSTANCE.outChannel,
@@ -149,6 +175,7 @@ public class AtlasMsgListener implements Listener {
                         dataOut.writeUTF("mods");
                         dataOut.writeObject(uuid);
                         dataOut.writeObject(user.modData != null ? user.modData.getModsMap() : "");
+                        dataOut.close();
 
                         ProxyServer.getInstance().getServers()
                                 .forEach((name, info) -> {

@@ -12,6 +12,8 @@ import cc.funkemunky.api.reflections.types.WrappedClass;
 import cc.funkemunky.api.tinyprotocol.api.Packet;
 import cc.funkemunky.api.tinyprotocol.packet.in.WrappedInCustomPayload;
 import cc.funkemunky.api.utils.MiscUtils;
+import cc.funkemunky.api.utils.RunUtils;
+import cc.funkemunky.api.utils.Tuple;
 import lombok.Getter;
 import lombok.val;
 import org.bukkit.Bukkit;
@@ -22,22 +24,29 @@ import org.bukkit.scheduler.BukkitTask;
 import java.io.*;
 import java.util.*;
 
-@Getter
 public class BungeeManager implements AtlasListener, PluginMessageListener {
-    private String channelOut = "BungeeCord", channelIn = "BungeeCord";
-    private String atlasIn = "atlas:in", atlasOut = "atlas:out";
-    private Map<UUID, BungeePlayer> bungeePlayers = new HashMap<>();
-    private Map<UUID, Version> versionsMap = new HashMap<>();
-    private boolean isBungee;
-    private List<String> bungeeServers = Collections.synchronizedList(new ArrayList<>());
+    @Getter
+    private final String channelOut = "BungeeCord", channelIn = "BungeeCord";
+    @Getter
+    private final String atlasIn = "atlas:in", atlasOut = "atlas:out";
+    @Getter
+    private final Map<UUID, BungeePlayer> bungeePlayers = new HashMap<>();
+    @Getter
+    private final Map<UUID, Version> versionsMap = new HashMap<>();
+    @Getter
+    private boolean isBungee, atlasBungeeInstalled;
+    @Getter
+    private final List<String> bungeeServers = Collections.synchronizedList(new ArrayList<>());
     private BukkitTask serverCheckTask;
+    private boolean receivedHeartbeat;
+    private long lastHeartbeatReceive;
+    private final Queue<Tuple<String, byte[]>> toSend = new LinkedList<>();
 
     public BungeeManager() {
         Bukkit.getMessenger().registerOutgoingPluginChannel(Atlas.getInstance(), channelOut);
         Bukkit.getMessenger().registerOutgoingPluginChannel(Atlas.getInstance(), atlasOut);
         Bukkit.getMessenger().registerIncomingPluginChannel(Atlas.getInstance(), channelIn, this);
         Bukkit.getMessenger().registerIncomingPluginChannel(Atlas.getInstance(), atlasIn, this);
-
 
         Atlas.getInstance().getEventManager().registerListeners(this, Atlas.getInstance());
 
@@ -59,19 +68,61 @@ public class BungeeManager implements AtlasListener, PluginMessageListener {
 
                 oos.writeUTF("heartbeat");
                 oos.writeUTF("reloadChannels");
+                oos.close();
 
-                sendData(baos.toByteArray(), atlasOut);
+                byte[] array = baos.toByteArray();
+
+                sendData(array, atlasOut);
             } catch(IOException e) {
                 e.printStackTrace();
             }
         }
+
+        //If no players are online, we'll have to wait to send things
+        serverCheckTask = RunUtils.taskTimerAsync(() -> {
+            if(receivedHeartbeat) {
+                receivedHeartbeat = false;
+                try {
+                    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                    ObjectOutputStream oos = new ObjectOutputStream(baos);
+
+                    oos.writeUTF("heartbeat");
+                    oos.writeUTF("reloadChannels");
+                    oos.close();
+
+                    byte[] array = baos.toByteArray();
+
+                    sendData(array, atlasOut);
+                } catch(IOException e) {
+                    e.printStackTrace();
+                }
+
+                //If we didn't receive a heartbeat in 8 seconds, we can reasonably assume we don't have atlasbungee.
+                if(System.currentTimeMillis() - lastHeartbeatReceive > 8000L) {
+                    atlasBungeeInstalled = false;
+                }
+            }
+            if(toSend.size() > 0 && Bukkit.getOnlinePlayers().size() > 0) {
+                Tuple<String, byte[]> next = null;
+                synchronized (toSend) {
+                    while((next = toSend.poll()) != null) {
+                        sendData(next.two, next.one);
+                    }
+                }
+            }
+        }, 60, 40);
     }
 
     public void sendData(byte[] data, String out) {
+        boolean sent = false;
         for (Player onlinePlayer : Bukkit.getOnlinePlayers()) {
             onlinePlayer.sendPluginMessage(Atlas.getInstance(), out, data);
+            sent = true;
             break;
         }
+
+        if(!sent)
+        toSend.add(new Tuple<>(out, data));
     }
 
     public void sendData(byte[] data) {
@@ -84,12 +135,12 @@ public class BungeeManager implements AtlasListener, PluginMessageListener {
 
         boolean override  = server.toLowerCase().contains("override");
         if(override) {
-            stream.writeObject("sendObjects");
+            stream.writeUTF("sendObjects");
             stream.writeObject(server);
         } else {
-            stream.writeObject("Forward");
-            stream.writeObject(server);
-            stream.writeObject("Forward");
+            stream.writeUTF("Forward");
+            stream.writeUTF(server);
+            stream.writeUTF("Forward");
         }
 
         ByteArrayOutputStream objectOutput = new ByteArrayOutputStream();
@@ -99,10 +150,15 @@ public class BungeeManager implements AtlasListener, PluginMessageListener {
 
         for (Object object : objects) objectStream.writeObject(object);
 
+        objectStream.close();
+
+        objectOutput.close();
         byte[] array = objectOutput.toByteArray();
 
         stream.writeShort(array.length);
         stream.write(array);
+
+        stream.close();
 
         sendData(output.toByteArray(), override ? atlasOut : channelOut); //This is where we finally send the data
     }
@@ -154,8 +210,18 @@ public class BungeeManager implements AtlasListener, PluginMessageListener {
                 try {
                     ObjectInputStream input = new ObjectInputStream(stream);
 
+                    if(input.available() < 3) {
+                        System.out.println("Something went wrong reading atlas:in [" + input.available() + "]");
+                    }
+
                     String dataType = input.readUTF();
                     switch (dataType) {
+                        case "heartbeat": {
+                            atlasBungeeInstalled = true;
+                            lastHeartbeatReceive = System.currentTimeMillis();
+                            receivedHeartbeat = true;
+                            break;
+                        }
                         case "mods": {
                             UUID uuid = (UUID) input.readObject();
                             Object modsObject = input.readObject();
@@ -164,7 +230,6 @@ public class BungeeManager implements AtlasListener, PluginMessageListener {
                                 Map<String, String> mods = (Map<String, String>) modsObject;
                                 Player pl = Bukkit.getPlayer(uuid);
                                 if (pl != null) {
-                                    System.out.println("Received mods for " + pl.getName());
                                     ForgeHandler.runBungeeModChecker(pl, mods);
                                 }
                             }
@@ -190,7 +255,7 @@ public class BungeeManager implements AtlasListener, PluginMessageListener {
                             boolean success = input.readBoolean();
                             int version = input.readInt();
                             UUID uuid = (UUID) input.readObject();
-                            String brand = (String) input.readObject();
+                            String brand = input.readUTF();
                             boolean legacy = input.readBoolean();
 
                             if(success) versionsMap.put(uuid, new Version(version, brand, legacy));

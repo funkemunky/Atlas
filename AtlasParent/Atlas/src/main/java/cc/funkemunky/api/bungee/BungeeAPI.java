@@ -32,9 +32,10 @@ public class BungeeAPI {
             ByteArrayOutputStream stream = new ByteArrayOutputStream();
             ObjectOutputStream oStream = new ObjectOutputStream(stream);
 
-            oStream.writeObject("broadcastMsg");
+            oStream.writeUTF("broadcastMsg");
             oStream.writeObject(message);
             oStream.writeObject(permission);
+            oStream.close();
 
             Atlas.getInstance().getBungeeManager().sendData(stream.toByteArray(), "atlas:out");
         } catch(IOException e) {
@@ -81,6 +82,7 @@ public class BungeeAPI {
              ObjectOutputStream dataOutput = new ObjectOutputStream(stream);
              dataOutput.writeUTF("version");
              dataOutput.writeObject(uuid);
+             dataOutput.close();
 
              Atlas.getInstance().getBungeeManager().sendData(stream.toByteArray());
          } catch(IOException e) {
@@ -95,6 +97,7 @@ public class BungeeAPI {
             oStream.writeUTF("Message");
             oStream.writeUTF(name);
             oStream.writeUTF(Color.translate(message));
+            oStream.close();
             Atlas.getInstance().getBungeeManager().sendData(stream.toByteArray());
         } catch (IOException e) {
             e.printStackTrace();
@@ -127,8 +130,9 @@ public class BungeeAPI {
         try {
             ByteArrayOutputStream stream = new ByteArrayOutputStream();
             ObjectOutputStream oStream = new ObjectOutputStream(stream);
-            oStream.writeObject("commandBungee");
+            oStream.writeUTF("commandBungee");
             oStream.writeObject(command);
+            oStream.close();
             val array = stream.toByteArray();
 
             Atlas.getInstance().getBungeeManager().sendData(array, "atlas:out");

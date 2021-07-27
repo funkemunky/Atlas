@@ -27,8 +27,9 @@ public class ConnectionListeners implements Listener {
                 ByteArrayOutputStream bstream = new ByteArrayOutputStream();
                 ObjectOutputStream ostream = new ObjectOutputStream(bstream);
 
-                ostream.writeObject("version");
+                ostream.writeUTF("version");
                 ostream.writeObject(event.getPlayer().getUniqueId());
+                ostream.close();
 
                 event.getPlayer().sendPluginMessage(Atlas.getInstance(), "atlas:out", bstream.toByteArray());
             } catch(IOException e) {

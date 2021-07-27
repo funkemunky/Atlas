@@ -160,8 +160,9 @@ public class ForgeHandler implements Listener, PluginMessageListener {
                 ByteArrayOutputStream bytesOut = new ByteArrayOutputStream();
                 ObjectOutputStream output = new ObjectOutputStream(bytesOut);
 
-                output.writeObject("mods");
+                output.writeUTF("mods");
                 output.writeObject(player.getUniqueId());
+                output.close();
 
                 player.sendPluginMessage(Atlas.getInstance(), "atlas:out", bytesOut.toByteArray());
             } catch (IOException e) {

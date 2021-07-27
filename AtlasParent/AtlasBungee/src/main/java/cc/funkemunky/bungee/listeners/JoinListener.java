@@ -45,7 +45,7 @@ public class JoinListener implements Listener {
         BungeeCord.getInstance().getScheduler().schedule(AtlasBungee.INSTANCE, () -> {
             User user = User.getUser(event.getPlayer().getUniqueId());
             if(!isForgeSupport) {
-                if(user.brand.toLowerCase().contains("fml") || user.brand.toLowerCase().contains("forge")) {
+                if(user.brand != null && (user.brand.toLowerCase().contains("fml") || user.brand.toLowerCase().contains("forge"))) {
                     sendFmlPacket(user, (byte) -2, (byte) 0);
                     sendFmlPacket(user, (byte) 0, (byte) 2, (byte) 0, (byte) 0, (byte) 0, (byte) 0);
                     sendFmlPacket(user, (byte) 2, (byte) 0, (byte) 0, (byte) 0, (byte) 0);
