@@ -29,7 +29,7 @@ public class BungeeManager implements AtlasListener, PluginMessageListener {
     @Getter
     private final String channelOut = "BungeeCord", channelIn = "BungeeCord";
     @Getter
-    private final String atlasIn = "atlas:in", atlasOut = "atlas:out";
+    private final String atlasIn = "atlasin", atlasOut = "atlasout";
     @Getter
     private final Map<UUID, BungeePlayer> bungeePlayers = new HashMap<>();
     @Getter
@@ -56,6 +56,7 @@ public class BungeeManager implements AtlasListener, PluginMessageListener {
 
             isBungee = wrappedClass.getFieldByName("bungee").get(null);
         } catch(ClassNotFoundException e) {
+            System.out.println("Class not found");
             //empty
             isBungee = false;
         }
@@ -63,6 +64,7 @@ public class BungeeManager implements AtlasListener, PluginMessageListener {
         isBungee = BungeeAPI.bungee;
 
         if(isBungee) {
+            System.out.println("Is Bungee");
             try {
                 ByteArrayOutputStream baos = new ByteArrayOutputStream();
                 ObjectOutputStream oos = new ObjectOutputStream(baos);
@@ -85,6 +87,8 @@ public class BungeeManager implements AtlasListener, PluginMessageListener {
             if(receivedHeartbeat) {
                 receivedHeartbeat = false;
                 try {
+
+                    System.out.println("Sending heartbeat");
                     ByteArrayOutputStream baos = new ByteArrayOutputStream();
                     ObjectOutputStream oos = new ObjectOutputStream(baos);
 
@@ -216,7 +220,7 @@ public class BungeeManager implements AtlasListener, PluginMessageListener {
                     ObjectInputStream input = new ObjectInputStream(stream);
 
                     if(input.available() < 3) {
-                        System.out.println("Something went wrong reading atlas:in [" + input.available() + "]");
+                        System.out.println("Something went wrong reading atlasin [" + input.available() + "]");
                     }
 
                     String dataType = input.readUTF();

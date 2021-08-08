@@ -39,6 +39,7 @@
         <module>Atlas</module>
         <module>AtlasBungee</module>
         <module>AtlasExample</module>
+        <module>AtlasVelocity</module>
     </modules>
 
     <repositories>

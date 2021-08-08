@@ -16,7 +16,7 @@ import java.util.concurrent.ScheduledExecutorService;
 public class AtlasBungee extends Plugin {
 
     public static AtlasBungee INSTANCE;
-    public String outChannel = "atlas:in", inChannel = "atlas:out";
+    public String outChannel = "atlasin", inChannel = "atlasout";
     public ScheduledExecutorService executorService;
 
     public void onEnable() {

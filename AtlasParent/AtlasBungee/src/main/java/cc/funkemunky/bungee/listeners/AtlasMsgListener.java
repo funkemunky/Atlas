@@ -34,7 +34,7 @@ public class AtlasMsgListener implements Listener {
 
             System.out.println("Sending out heartbeats");
             ProxyServer.getInstance().getServers().values()
-                    .forEach(si -> si.sendData("atlas:in", baos.toByteArray(), true));
+                    .forEach(si -> si.sendData("atlasin", baos.toByteArray(), true));
         } catch(IOException e) {
             e.printStackTrace();
         }
@@ -53,7 +53,7 @@ public class AtlasMsgListener implements Listener {
                 user.legacy = !event.getTag().contains(":");
             }
         }
-        if(event.getTag().equalsIgnoreCase("atlas:out")) {
+        if(event.getTag().equalsIgnoreCase("atlasout")) {
             try {
                 ByteArrayInputStream bis = new ByteArrayInputStream(event.getData());
                 ObjectInputStream inputStream = new ObjectInputStream(bis);
@@ -82,7 +82,7 @@ public class AtlasMsgListener implements Listener {
                         System.out.println("Sending back heartbeat");
                         ProxyServer.getInstance().getServers().values().stream()
                                 .filter(server -> server.getAddress().equals(event.getSender().getAddress()))
-                                .forEach(si -> si.sendData("atlas:in", baos.toByteArray()));
+                                .forEach(si -> si.sendData("atlasin", baos.toByteArray()));
                         break;
                     }
                     case "sendObjects": {
@@ -95,13 +95,13 @@ public class AtlasMsgListener implements Listener {
 
                         if(server.equalsIgnoreCase("all")) {
                             for (ServerInfo info : ProxyServer.getInstance().getServers().values()) {
-                                info.sendData("atlas:in", event.getData());
+                                info.sendData("atlasin", event.getData());
                             }
                         } else {
                             Optional<ServerInfo> infoOptional = ProxyServer.getInstance().getServers().values()
                                     .stream().filter(val -> val.getName().equalsIgnoreCase(server)).findFirst();
 
-                            infoOptional.ifPresent(serverInfo -> serverInfo.sendData("atlas:in", event.getData(), true));
+                            infoOptional.ifPresent(serverInfo -> serverInfo.sendData("atlasin", event.getData(), true));
                         }
 
                         break;
@@ -132,12 +132,12 @@ public class AtlasMsgListener implements Listener {
 
                         if(name.equalsIgnoreCase("ALL")) {
                             ProxyServer.getInstance().getServers()
-                                    .forEach((sname, info) -> info.sendData("atlas:in", baos.toByteArray()));
+                                    .forEach((sname, info) -> info.sendData("atlasin", baos.toByteArray()));
                         } else {
                             ServerInfo field;
 
                             if((field = BungeeCord.getInstance().getServerInfo(name)) != null) {
-                                field.sendData("atlas:in", baos.toByteArray());
+                                field.sendData("atlasin", baos.toByteArray());
                             }
                         }
                         break;

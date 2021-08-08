@@ -164,7 +164,7 @@ public class ForgeHandler implements Listener, PluginMessageListener {
                 output.writeObject(player.getUniqueId());
                 output.close();
 
-                player.sendPluginMessage(Atlas.getInstance(), "atlas:out", bytesOut.toByteArray());
+                player.sendPluginMessage(Atlas.getInstance(), "atlasout", bytesOut.toByteArray());
             } catch (IOException e) {
                 e.printStackTrace();
             }

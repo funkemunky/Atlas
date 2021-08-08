@@ -37,7 +37,7 @@ public class BungeeAPI {
             oStream.writeObject(permission);
             oStream.close();
 
-            Atlas.getInstance().getBungeeManager().sendData(stream.toByteArray(), "atlas:out");
+            Atlas.getInstance().getBungeeManager().sendData(stream.toByteArray(), "atlasout");
         } catch(IOException e) {
             e.printStackTrace();
         }
@@ -135,7 +135,7 @@ public class BungeeAPI {
             oStream.close();
             val array = stream.toByteArray();
 
-            Atlas.getInstance().getBungeeManager().sendData(array, "atlas:out");
+            Atlas.getInstance().getBungeeManager().sendData(array, "atlasout");
         } catch (IOException e) {
             e.printStackTrace();
         }
