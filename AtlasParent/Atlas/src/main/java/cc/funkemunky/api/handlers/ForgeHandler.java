@@ -24,12 +24,12 @@ import java.util.Map;
 public class ForgeHandler implements Listener, PluginMessageListener {
 
     public ForgeHandler() {
-        if(ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.V1_13)) {
-            Atlas.getInstance().getServer().getMessenger()
-                    .registerIncomingPluginChannel(Atlas.getInstance(), "FML|HS", this);
-            Atlas.getInstance().getServer().getMessenger()
-                    .registerOutgoingPluginChannel(Atlas.getInstance(), "FML|HS");
-        }
+        Atlas.getInstance().getServer().getMessenger()
+                .registerIncomingPluginChannel(Atlas.getInstance(), ProtocolVersion.getGameVersion().isOrAbove(ProtocolVersion.V1_13)
+                        ? "fml:handshake" : "FML|HS", this);
+        Atlas.getInstance().getServer().getMessenger()
+                .registerOutgoingPluginChannel(Atlas.getInstance(), ProtocolVersion.getGameVersion().isOrAbove(ProtocolVersion.V1_13)
+                        ? "fml:handshake" : "FML|HS");
         INSTANCE = this;
     }
 
@@ -74,7 +74,8 @@ public class ForgeHandler implements Listener, PluginMessageListener {
      */
     private static void sendFmlPacket(Player player, byte... data)
     {
-        player.sendPluginMessage(Atlas.getInstance(), "FML|HS", data);
+        player.sendPluginMessage(Atlas.getInstance(), ProtocolVersion.getGameVersion().isOrAbove(ProtocolVersion.V1_13) 
+                ? "fml:handshake" : "FML|HS", data);
     }
 
     @Override
@@ -164,7 +165,7 @@ public class ForgeHandler implements Listener, PluginMessageListener {
                 output.writeObject(player.getUniqueId());
                 output.close();
 
-                player.sendPluginMessage(Atlas.getInstance(), "atlasout", bytesOut.toByteArray());
+                player.sendPluginMessage(Atlas.getInstance(), "atlas:out", bytesOut.toByteArray());
             } catch (IOException e) {
                 e.printStackTrace();
             }

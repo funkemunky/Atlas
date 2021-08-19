@@ -29,7 +29,7 @@ public class BungeeManager implements AtlasListener, PluginMessageListener {
     @Getter
     private final String channelOut = "BungeeCord", channelIn = "BungeeCord";
     @Getter
-    private final String atlasIn = "atlasin", atlasOut = "atlasout";
+    private final String atlasIn = "atlas:in", atlasOut = "atlas:out";
     @Getter
     private final Map<UUID, BungeePlayer> bungeePlayers = new HashMap<>();
     @Getter

@@ -92,7 +92,7 @@ public class JoinListener implements Listener {
      */
     private static void sendFmlPacket(User user, byte... data)
     {
-        user.getPlayer().sendData(user.legacy ? "FML|HS" : "fml:hs", data);
+        user.getPlayer().sendData(user.legacy ? "FML|HS" : "fml:handshake", data);
     }
 
     private ModData getModData(byte[] data)

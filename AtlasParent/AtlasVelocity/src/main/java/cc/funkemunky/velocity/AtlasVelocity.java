@@ -20,7 +20,7 @@ public class AtlasVelocity {
     private final ProxyServer server;
     private final Logger logger;
 
-    private static final String atlasOut = "atlasin", atlasIn = "atlasout";
+    private static final String atlasOut = "atlas:in", atlasIn = "atlas:out";
     public static AtlasVelocity INSTANCE;
 
     private MinecraftChannelIdentifier incoming, outgoing;
