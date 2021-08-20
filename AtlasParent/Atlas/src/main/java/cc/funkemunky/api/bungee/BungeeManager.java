@@ -60,8 +60,6 @@ public class BungeeManager implements AtlasListener, PluginMessageListener {
             //empty
             isBungee = false;
         }
-        if(BungeeAPI.bungee)
-        isBungee = BungeeAPI.bungee;
 
         if(isBungee) {
             System.out.println("Is Bungee");
