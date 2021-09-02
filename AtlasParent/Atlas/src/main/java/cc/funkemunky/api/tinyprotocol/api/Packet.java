@@ -159,6 +159,7 @@ public abstract class Packet {
         public static final String SETTINGS = CLIENT + "Settings";
         public static final String ADVANCEMENTS = CLIENT + "Advancements";
         public static final String UPDATE_SIGN = CLIENT + "UpdateSign";
+        public static final String TELEPORT_ACCEPT = CLIENT + "TeleportAccept";
     }
 
     public static class Server {
