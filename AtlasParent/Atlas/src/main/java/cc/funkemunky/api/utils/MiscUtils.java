@@ -23,10 +23,7 @@ import org.bukkit.plugin.*;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.util.Vector;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.io.*;
 import java.lang.reflect.Field;
 import java.util.*;
 import java.util.function.Supplier;
@@ -42,6 +39,24 @@ public class MiscUtils {
 
     public static boolean containsIgnoreCase(String toCheck, String contains) {
         return toCheck.toLowerCase().contains(contains.toLowerCase());
+    }
+
+    public static void copy(InputStream in, File file) {
+        try {
+            OutputStream out = new FileOutputStream(file);
+            int lenght;
+            byte[] buf = new byte[1024];
+
+            while ((lenght = in.read(buf)) > 0)
+            {
+                out.write(buf, 0, lenght);
+            }
+
+            out.close();
+            in.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public static int getOridinal(Material material) {

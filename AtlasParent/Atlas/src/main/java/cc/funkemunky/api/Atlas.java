@@ -18,6 +18,9 @@ import cc.funkemunky.api.tinyprotocol.listener.PacketProcessor;
 import cc.funkemunky.api.updater.Updater;
 import cc.funkemunky.api.utils.*;
 import cc.funkemunky.api.utils.blockbox.BlockBoxManager;
+import cc.funkemunky.api.utils.config.Configuration;
+import cc.funkemunky.api.utils.config.ConfigurationProvider;
+import cc.funkemunky.api.utils.config.YamlConfiguration;
 import cc.funkemunky.api.utils.objects.RemoteClassLoader;
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.BukkitCommandManager;
@@ -38,6 +41,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.*;
 import java.util.concurrent.*;
 import java.util.logging.Level;
@@ -66,6 +70,7 @@ public class Atlas extends JavaPlugin {
     private boolean done;
     private ExecutorService service;
     private File file;
+    private final Map<String, Map<String, Configuration>> pluginConfigs = new HashMap<>();
     @Deprecated
     private final Map<UUID, Entity> entities = Collections.synchronizedMap(new HashMap<>());
     @Deprecated
@@ -91,7 +96,9 @@ public class Atlas extends JavaPlugin {
 
     public void onEnable() {
         instance = this;
-        saveDefaultConfig();
+
+        ConfigurationProvider.providers.size(); //Just to load the static fields in class
+        registerConfig(this);
         consoleSender = Bukkit.getConsoleSender();
 
         MiscUtils.printToConsole(Color.Red + "Loading Atlas...");
@@ -178,6 +185,54 @@ public class Atlas extends JavaPlugin {
     private void shutdownExecutor() {
         service.shutdown();
         schedular.shutdown();
+    }
+
+    public Configuration registerConfig(Plugin plugin) {
+        return registerConfig(plugin, "config");
+    }
+
+    public Configuration registerConfig(Plugin plugin, String name) {
+        File configFile = new File(plugin.getDataFolder(), name +".yml");
+        if(!configFile.exists()){
+            configFile.getParentFile().mkdirs();
+            MiscUtils.copy(plugin.getResource(name + ".yml"), configFile);
+        }
+        try {
+            Configuration yaml = ConfigurationProvider
+                    .getProvider(YamlConfiguration.class)
+                    .load(configFile);
+
+            pluginConfigs.compute(plugin.getName(), (key, value) -> {
+                if(value == null) return new HashMap<>();
+
+                value.put(name, yaml);
+
+                return value;
+            });
+
+            return yaml;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+
+    public Configuration getConfig(Plugin plugin) {
+        return getConfig(plugin, "config");
+    }
+
+    public Configuration getConfig(Plugin plugin, String name) {
+        if(!pluginConfigs.containsKey(plugin.getName())) {
+            return registerConfig(plugin, name);
+        } else {
+            synchronized (pluginConfigs) {
+                Map<String, Configuration> configs = pluginConfigs.get(plugin.getName());
+
+                if(!configs.containsKey(name)) return registerConfig(plugin, name);
+                else return configs.get(name);
+            }
+        }
     }
 
     @Deprecated
@@ -352,12 +407,13 @@ public class Atlas extends JavaPlugin {
                                 MiscUtils.printToConsole("&7Found ConfigSetting &e" + field.getField().getName()
                                         + " &7(default=&f" + (setting.hide() ? "HIDDEN" : field.get(obj)) + "&7.");
 
-                                if(plugin.getConfig().get(setting.path() + "." + name) == null) {
+
+                                if(getConfig(plugin).get(setting.path() + "." + name) == null) {
                                     MiscUtils.printToConsole("&7Value not set in config! Setting value...");
-                                    plugin.getConfig().set(setting.path() + "." + name, field.get(obj));
-                                    plugin.saveConfig();
+                                    getConfig(plugin).set(setting.path() + "." + name, field.get(obj));
+
                                 } else {
-                                    Object configObj = plugin.getConfig().get(setting.path() + "." + name);
+                                    Object configObj = getConfig(plugin).get(setting.path() + "." + name);
                                     MiscUtils.printToConsole("&7Set field to value &e"
                                             + (setting.hide() ? "HIDDEN" : configObj) + "&7.");
                                     field.set(obj, configObj);

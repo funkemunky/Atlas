@@ -46,10 +46,6 @@
                             <minimizeJar>false</minimizeJar>
                             <relocations>
                                 <relocation>
-                                    <pattern>org.yaml.snakeyaml</pattern>
-                                    <shadedPattern>cc.funkemunky.api.utils.org.yaml.snakeyaml</shadedPattern>
-                                </relocation>
-                                <relocation>
                                     <pattern>org.objectweb.asm</pattern>
                                     <shadedPattern>cc.funkemunky.api.utils.org.objectweb.asm</shadedPattern>
                                 </relocation>
