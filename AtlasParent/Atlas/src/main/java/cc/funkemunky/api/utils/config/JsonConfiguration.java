@@ -22,7 +22,7 @@ import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(access = AccessLevel.PACKAGE)
-public class fffJsonConfiguration extends ConfigurationProvider
+public class JsonConfiguration extends ConfigurationProvider
 {
 
     private final Gson json = new GsonBuilder().serializeNulls().setPrettyPrinting().registerTypeAdapter( Configuration.class, new JsonSerializer<Configuration>()
