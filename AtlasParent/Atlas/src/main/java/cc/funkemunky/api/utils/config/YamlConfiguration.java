@@ -39,7 +39,11 @@ public class YamlConfiguration extends ConfigurationProvider
                         @Override
                         public Node representData(Object data)
                         {
-                            return represent( ( (Configuration) data ).self );
+                            ConfigurationSerializable serializable = (ConfigurationSerializable) data;
+                            Map<String, Object> values = ((Configuration) data ).self;
+                            values.put(ConfigurationSerialization.SERIALIZED_TYPE_KEY, ConfigurationSerialization.getAlias(serializable.getClass()));
+                            values.putAll(serializable.serialize());
+                            return represent(values);
                         }
                     } );
                 }
