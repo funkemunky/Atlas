@@ -217,24 +217,6 @@ public class Atlas extends JavaPlugin {
         return null;
     }
 
-
-    public Configuration getConfig(Plugin plugin) {
-        return getConfig(plugin, "config");
-    }
-
-    public Configuration getConfig(Plugin plugin, String name) {
-        if(!pluginConfigs.containsKey(plugin.getName())) {
-            return registerConfig(plugin, name);
-        } else {
-            synchronized (pluginConfigs) {
-                Map<String, Configuration> configs = pluginConfigs.get(plugin.getName());
-
-                if(!configs.containsKey(name)) return registerConfig(plugin, name);
-                else return configs.get(name);
-            }
-        }
-    }
-
     @Deprecated
     public CommandManager getCommandManager(Plugin plugin) {
         return pluginCommandManagers.computeIfAbsent(plugin.getName(), key -> new CommandManager(plugin));
@@ -408,12 +390,12 @@ public class Atlas extends JavaPlugin {
                                         + " &7(default=&f" + (setting.hide() ? "HIDDEN" : field.get(obj)) + "&7.");
 
 
-                                if(getConfig(plugin).get(setting.path() + "." + name) == null) {
+                                if(plugin.getConfig().get(setting.path() + "." + name) == null) {
                                     MiscUtils.printToConsole("&7Value not set in config! Setting value...");
-                                    getConfig(plugin).set(setting.path() + "." + name, field.get(obj));
-
+                                    plugin.getConfig().set(setting.path() + "." + name, field.get(obj));
+                                    plugin.saveConfig();
                                 } else {
-                                    Object configObj = getConfig(plugin).get(setting.path() + "." + name);
+                                    Object configObj = plugin.getConfig().get(setting.path() + "." + name);
                                     MiscUtils.printToConsole("&7Set field to value &e"
                                             + (setting.hide() ? "HIDDEN" : configObj) + "&7.");
                                     field.set(obj, configObj);
