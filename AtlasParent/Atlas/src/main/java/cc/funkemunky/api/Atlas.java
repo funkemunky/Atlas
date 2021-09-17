@@ -28,9 +28,7 @@ import dev.brighten.db.Carbon;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Bukkit;
-import org.bukkit.Location;
 import org.bukkit.World;
-import org.bukkit.block.Block;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -224,6 +222,13 @@ public class Atlas extends JavaPlugin {
 
     public BukkitCommandManager getBukkitCommandManager(Plugin plugin) {
         return bukkitCommandManagers.computeIfAbsent(plugin.getName(), key -> new BukkitCommandManager(plugin));
+    }
+
+    public void removePluginInstances(Plugin plugin) {
+        pluginCommandManagers.remove(plugin.getName());
+        bukkitCommandManagers.remove(plugin.getName());
+        Atlas.getInstance().getFunkeCommandManager().removeAll(plugin);
+        pluginConfigs.remove(plugin.getName());
     }
 
     private void runTasks() {

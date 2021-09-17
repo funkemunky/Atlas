@@ -17,7 +17,6 @@ import org.bukkit.plugin.java.JavaPlugin;
 import java.util.HashSet;
 import java.util.Set;
 
-@Init
 public class PluginLoaderHandler implements Listener {
 
     @Getter
