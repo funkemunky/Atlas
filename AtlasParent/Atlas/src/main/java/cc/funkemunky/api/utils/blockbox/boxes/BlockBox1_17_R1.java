@@ -2,6 +2,7 @@ package cc.funkemunky.api.utils.blockbox.boxes;
 
 import cc.funkemunky.api.utils.blockbox.BlockBox;
 import lombok.val;
+import net.minecraft.world.entity.ai.attributes.AttributeModifiable;
 import net.minecraft.world.entity.ai.attributes.GenericAttributes;
 import net.minecraft.world.level.World;
 import org.bukkit.Location;
@@ -30,7 +31,7 @@ public class BlockBox1_17_R1 implements BlockBox {
 
     @Override
     public float getMovementFactor(Player player) {
-        val attribute = ((CraftPlayer)player).getHandle()
+        AttributeModifiable attribute = ((CraftPlayer)player).getHandle()
                 .getAttributeInstance(GenericAttributes.d);
         return (float) (attribute != null ? attribute.getValue() : 0);
     }
