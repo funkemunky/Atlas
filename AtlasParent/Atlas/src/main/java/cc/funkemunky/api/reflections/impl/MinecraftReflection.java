@@ -265,6 +265,10 @@ public class MinecraftReflection {
         return methodGetServerConnection.invoke(CraftReflection.getMinecraftServer());
     }
 
+    public static <T> T getServerConnection(Object minecraftServer) {
+        return methodGetServerConnection.invoke(minecraftServer);
+    }
+
     /* Gets the amount of mining required to break a block. Input can be NMS Block or Bukkit Block. */
     public static float getBlockDurability(Object block) {
         Object vBlock;

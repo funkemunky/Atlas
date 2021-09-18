@@ -9,8 +9,10 @@
 package cc.funkemunky.api.tinyprotocol.api.packets.channelhandler;
 
 import cc.funkemunky.api.reflections.Reflections;
+import cc.funkemunky.api.reflections.impl.CraftReflection;
 import cc.funkemunky.api.reflections.impl.MinecraftReflection;
 import cc.funkemunky.api.reflections.types.WrappedClass;
+import cc.funkemunky.api.reflections.types.WrappedField;
 import cc.funkemunky.api.reflections.types.WrappedMethod;
 import cc.funkemunky.api.tinyprotocol.api.packets.AbstractTinyProtocol;
 import cc.funkemunky.api.tinyprotocol.reflection.FieldAccessor;
@@ -48,27 +50,17 @@ import java.util.logging.Level;
 public abstract class TinyProtocol1_8 implements AbstractTinyProtocol {
 	private static final AtomicInteger ID = new AtomicInteger(0);
 
-	// Used in order to lookup a channel
-	private static final MethodInvoker getPlayerHandle = Reflection.getMethod("{obc}.entity.CraftPlayer", "getHandle");
-	private static final FieldAccessor<Object> getConnection = Reflection.getField("{nms}.EntityPlayer", "playerConnection", Object.class);
-	private static final FieldAccessor<Object> getManager = Reflection.getField("{nms}.PlayerConnection", "networkManager", Object.class);
-	private static final FieldAccessor<Channel> getChannel = Reflection.getField("{nms}.NetworkManager", Channel.class, 0);
-
 	// Looking up ServerConnection
-	private static final Class<Object> minecraftServerClass = Reflection.getUntypedClass("{nms}.MinecraftServer");
-	private static final Class<Object> serverConnectionClass = Reflection.getUntypedClass("{nms}.ServerConnection");
-	private static final FieldAccessor<Object> getMinecraftServer = Reflection.getField("{obc}.CraftServer", minecraftServerClass, 0);
-	private static final FieldAccessor<Object> getServerConnection = Reflection.getField(minecraftServerClass, serverConnectionClass, 0);
-	private static final WrappedClass playerConnection = Reflections.getNMSClass("PlayerConnection"),
-			packetClass = Reflections.getNMSClass("Packet");
-	private static final WrappedMethod methodSendPacket = playerConnection.getMethod("sendPacket", packetClass.getParent());
+	private static final WrappedClass packetClass = Reflections.getNMSClass("Packet");
+	private static final WrappedMethod methodSendPacket = MinecraftReflection.playerConnection
+			.getMethod("sendPacket", packetClass.getParent());
 
 	// Packets we have to intercept
-	private static final Class<?> PACKET_SET_PROTOCOL = Reflection.getMinecraftClass("PacketHandshakingInSetProtocol");
-	private static final Class<?> PACKET_LOGIN_IN_START = Reflection.getMinecraftClass("PacketLoginInStart");
-	private static final FieldAccessor<GameProfile> getGameProfile = Reflection.getField(PACKET_LOGIN_IN_START, GameProfile.class, 0);
-	private static final FieldAccessor<Integer> protocolId = Reflection.getField(PACKET_SET_PROTOCOL, int.class, 0);
-	private static final FieldAccessor<Enum> protocolType = Reflection.getField(PACKET_SET_PROTOCOL, Enum.class, 0);
+	private static final WrappedClass PACKET_SET_PROTOCOL = Reflections.getNMSClass("PacketHandshakingInSetProtocol");
+	private static final WrappedClass PACKET_LOGIN_IN_START = Reflections.getNMSClass("PacketLoginInStart");
+	private static final WrappedField getGameProfile = PACKET_LOGIN_IN_START.getFieldByType(GameProfile.class, 0),
+			protocolId = PACKET_SET_PROTOCOL.getFieldByType(int.class, 0),
+			protocolType = PACKET_SET_PROTOCOL.getFieldByType(Enum.class, 0);
 
 	private List<ChannelFuture> gList;
 
@@ -219,13 +211,14 @@ public abstract class TinyProtocol1_8 implements AbstractTinyProtocol {
 
 	@SuppressWarnings("unchecked")
 	private void registerChannelHandler() {
-		Object mcServer = getMinecraftServer.get(Bukkit.getServer());
-		Object serverConnection = getServerConnection.get(mcServer);
+		Object mcServer = CraftReflection.getMinecraftServer();
+		Object serverConnection = MinecraftReflection.getServerConnection(mcServer);
 		boolean looking = true;
 
 		// We need to synchronize against this list
 		for (Method m : mcServer.getClass().getMethods()) {
-			if (m.getParameterTypes().length == 0 && m.getReturnType().isAssignableFrom(serverConnectionClass)) {
+			if (m.getParameterTypes().length == 0 && m.getReturnType()
+					.isAssignableFrom(MinecraftReflection.serverConnection.getParent())) {
 				try {
 					Object result = m.invoke(mcServer);
 					if (result != null) serverConnection = result;
@@ -434,9 +427,9 @@ public abstract class TinyProtocol1_8 implements AbstractTinyProtocol {
 
 		// Lookup channel again
 		if (channel == null) {
-			Object connection = getConnection.get(getPlayerHandle.invoke(player));
-			Object manager = getManager.get(connection);
-			channel = getChannel.get(manager);
+			Object connection = MinecraftReflection.getPlayerConnection(CraftReflection.getEntityPlayer(player));
+			Object manager = MinecraftReflection.getNetworkManager(connection);
+			channel = MinecraftReflection.getChannel(manager);
 			if (channel == null) return null;
 			channelLookup.put(player.getName(), channel);
 		}
@@ -449,10 +442,10 @@ public abstract class TinyProtocol1_8 implements AbstractTinyProtocol {
 
 		// Lookup channel again
 		if (channel == null) {
-			Object connection = getConnection.get(getPlayerHandle.invoke(player));
-			Object manager = getManager.get(connection);
+			Object connection = MinecraftReflection.getPlayerConnection(CraftReflection.getEntityPlayer(player));
+			Object manager = MinecraftReflection.getNetworkManager(connection);
 
-			channelLookup.put(player.getName(), channel = getChannel.get(manager));
+			channelLookup.put(player.getName(), channel = MinecraftReflection.getChannel(manager));
 		}
 
 		Integer protocol = protocolLookup.get(channel);
@@ -553,11 +546,11 @@ public abstract class TinyProtocol1_8 implements AbstractTinyProtocol {
 			// Intercept channel
 			final Channel channel = ctx.channel();
 
-			if (PACKET_LOGIN_IN_START.isInstance(msg)) {
+			if (PACKET_LOGIN_IN_START.getParent().isInstance(msg)) {
 				GameProfile profile = getGameProfile.get(msg);
 				channelLookup.put(profile.getName(), channel);
-			} else if (PACKET_SET_PROTOCOL.isInstance(msg)) {
-				String protocol = protocolType.get(msg).name();
+			} else if (PACKET_SET_PROTOCOL.getParent().isInstance(msg)) {
+				String protocol = ((Enum)protocolType.get(msg)).name();
 				if (protocol.equalsIgnoreCase("LOGIN")) {
 					int id = protocolId.get(msg);
 					protocolLookup.put(channel, id);
@@ -579,7 +572,7 @@ public abstract class TinyProtocol1_8 implements AbstractTinyProtocol {
 		public void write(ChannelHandlerContext ctx, Object msg, ChannelPromise promise) throws Exception {
 
 			if(player != null) {
-				msg = onPacketOutAsync(player, msg);
+				onPacketOutAsync(player, msg);
 			}
 
 			if (msg != null) {

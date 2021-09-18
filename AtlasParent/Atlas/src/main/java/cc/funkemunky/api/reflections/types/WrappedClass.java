@@ -114,9 +114,11 @@ public class WrappedClass {
         Class<?> clazz = this.parent;
 
         do {
-            for (Field field : clazz.getDeclaredFields()) {
-                if (field.getType().equals(type) && index-- <= 0) {
-                    return new WrappedField(this, field);
+            for (Field[] fields : new Field[][]{clazz.getDeclaredFields(), clazz.getFields()}) {
+                for (Field field : fields) {
+                    if (type.isAssignableFrom(field.getType()) && index-- <= 0) {
+                        return new WrappedField(this, field);
+                    }
                 }
             }
 
@@ -168,7 +170,7 @@ public class WrappedClass {
 
     public WrappedMethod getDeclaredMethodByType(Class<?> type, int index) {
         for (Method method : this.parent.getDeclaredMethods()) {
-            if(method.getReturnType().equals(type) && index-- <= 0) {
+            if(type.isAssignableFrom(method.getReturnType()) && index-- <= 0) {
                 return new WrappedMethod(this, method);
             }
         }
@@ -177,7 +179,7 @@ public class WrappedClass {
 
     public WrappedMethod getMethodByType(Class<?> type, int index) throws NullPointerException {
         for (Method method : this.parent.getMethods()) {
-            if(method.getReturnType().equals(type) && index-- <= 0) {
+            if(type.isAssignableFrom(method.getReturnType()) && index-- <= 0) {
                 return new WrappedMethod(this, method);
             }
         }

@@ -18,9 +18,9 @@ import java.util.concurrent.CopyOnWriteArrayList;
  */
 public class PacketProcessor {
     private final Map<String, List<ListenerEntry>>
-            processors = Collections.synchronizedMap(new HashMap<>());
+            processors = new HashMap<>();
     private final Map<String, List<AsyncListenerEntry>>
-            asyncProcessors = Collections.synchronizedMap(new HashMap<>());
+            asyncProcessors = new HashMap<>();
 
     public PacketListener process(Plugin plugin, PacketListener listener, String... types) {
         return process(plugin, EventPriority.NORMAL, listener, types);
