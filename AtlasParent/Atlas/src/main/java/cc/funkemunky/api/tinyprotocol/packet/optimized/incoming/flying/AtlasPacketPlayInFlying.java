@@ -77,6 +77,9 @@ public abstract class AtlasPacketPlayInFlying {
             case v1_16_4:
             case v1_16_5:
                 return new v1_16R3(packet);
+            case v1_17: {
+
+            }
             default: {
                 return new vReflection(packet);
             }
