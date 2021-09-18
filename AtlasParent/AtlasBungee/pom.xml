@@ -90,6 +90,10 @@
 
     <repositories>
         <repository>
+            <id>aikar</id>
+            <url>https://repo.aikar.co/content/repositories/aikar-release/</url>
+        </repository>
+        <repository>
             <id>funkemunky-releases</id>
             <url>https://nexus.funkemunky.cc/content/repositories/releases/</url>
         </repository>
