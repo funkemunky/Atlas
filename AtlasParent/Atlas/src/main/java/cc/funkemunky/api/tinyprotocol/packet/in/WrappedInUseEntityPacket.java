@@ -19,7 +19,9 @@ import java.util.Objects;
 public class WrappedInUseEntityPacket extends NMSObject {
 
     private static final WrappedClass packetClass = Reflections.getNMSClass(Client.USE_ENTITY),
-            enumEntityUseAction = Reflections.getNMSClass((ProtocolVersion.getGameVersion()
+            enumEntityUseAction = ProtocolVersion.getGameVersion().isOrAbove(ProtocolVersion.v1_17) ? Reflections
+                    .getClass("net.minecraft.network.protocol.game.PacketPlayInUseEntity$EnumEntityUseAction")
+                    : Reflections.getNMSClass((ProtocolVersion.getGameVersion()
                     .isAbove(ProtocolVersion.V1_8) ? "PacketPlayInUseEntity$" : "") + "EnumEntityUseAction");
     private static final WrappedField fieldId = fetchField(packetClass, int.class, 0),
             fieldAction = fetchField(packetClass, enumEntityUseAction.getParent(), 0);
@@ -92,14 +94,17 @@ public class WrappedInUseEntityPacket extends NMSObject {
 
     static {
         if(ProtocolVersion.getGameVersion().isOrAbove(ProtocolVersion.V1_8)) {
-            fieldVec = packetClass.getFieldByType(MinecraftReflection.vec3D.getParent(), 0);
+            if(ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.v1_17)) {
+                fieldVec = packetClass.getFieldByType(MinecraftReflection.vec3D.getParent(), 0);
 
-            if(ProtocolVersion.getGameVersion().isOrAbove(ProtocolVersion.V1_9)) {
-                fieldHand = packetClass.getFieldByType(WrappedEnumHand.enumHandClass.getParent(), 0);
-
-                if(ProtocolVersion.getGameVersion().isOrAbove(ProtocolVersion.v1_16)) {
-                    fieldSneaking = fetchField(packetClass, boolean.class, 0);
+                if (ProtocolVersion.getGameVersion().isOrAbove(ProtocolVersion.V1_9)) {
+                    fieldHand = packetClass.getFieldByType(WrappedEnumHand.enumHandClass.getParent(), 0);
                 }
+            } else {
+                fieldHand =
+            }
+            if (ProtocolVersion.getGameVersion().isOrAbove(ProtocolVersion.v1_16)) {
+                fieldSneaking = fetchField(packetClass, boolean.class, 0);
             }
         }
     }
