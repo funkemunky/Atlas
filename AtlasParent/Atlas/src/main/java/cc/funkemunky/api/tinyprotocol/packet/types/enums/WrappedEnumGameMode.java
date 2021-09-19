@@ -75,6 +75,6 @@ public enum WrappedEnumGameMode {
     }
 
     public static WrappedEnumGameMode fromObject(Enum var) {
-        return getByName(var.name());
+        return getById(var.ordinal());
     }
 }

@@ -44,7 +44,9 @@ public class WrappedInUseEntityPacket extends NMSObject {
     public void process(Player player, ProtocolVersion version) {
         id = Objects.requireNonNull(fetch(fieldId));
         //We cache the entities so we dont have to loop every single packet for the same entity.
-        entity = Atlas.getInstance().getEntityById(player.getWorld(), id);
+        entity = Atlas.getInstance().getWorldInfo(player.getWorld())
+                .getEntityOrLock(player.getEntityId()).orElse(null);
+        //This will lock if the entity doesn't exist for some reaosn.
 
         if(ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.v1_17)) {
             Enum fieldAct = fetch(fieldAction);
@@ -65,10 +67,13 @@ public class WrappedInUseEntityPacket extends NMSObject {
             action = EnumEntityUseAction.ATTACK;
 
             if(actionField.getClass().isAssignableFrom(actionOne.getParent())) {
-                enumHand = WrappedEnumHand.getFromVanilla(fetch(fieldHand));
+                enumHand = WrappedEnumHand.getFromVanilla(fieldHand.get(actionField));
+                action = EnumEntityUseAction.INTERACT;
             } else if(actionField.getClass().isAssignableFrom(actionTwo.getParent())) {
-                enumHand = WrappedEnumHand.getFromVanilla(fetch(fieldHandTwo));
-                vec = new Vec3D(fetch(fieldVec));
+                enumHand = WrappedEnumHand.getFromVanilla(fieldHandTwo.get(actionField));
+                vec = new Vec3D(fieldVec.get(actionField));
+
+                action = EnumEntityUseAction.INTERACT_AT;
             }
         }
         if(ProtocolVersion.getGameVersion().isOrAbove(ProtocolVersion.v1_16)) {
