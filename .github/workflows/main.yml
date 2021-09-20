@@ -35,3 +35,5 @@ jobs:
 
     - name: Build and test project with Maven
       run: mvn -B package --file AtlasParent/pom.xml
+      env:
+        MVN_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
