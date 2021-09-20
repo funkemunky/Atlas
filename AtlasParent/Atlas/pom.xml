@@ -1,21 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
         <groupId>cc.funkemunky.utils</groupId>
-        <version>1.10.0-BUILD-SNAPSHOT</version>
+        <version>1.10.0-SNAPSHOT</version>
         <artifactId>atlas-parent</artifactId>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
     <artifactId>atlas</artifactId>
-    <version>1.10.0-BUILD-SNAPSHOT</version>
+    <version>1.10.0-SNAPSHOT</version>
 
     <scm>
         <developerConnection>scm:git:https://github.com/funkemunky/Atlas</developerConnection>
+        <tag>1.10.0</tag>
     </scm>
 
     <build>
@@ -91,8 +90,9 @@
 
     <distributionManagement>
         <snapshotRepository>
-            <id>funkemunky-snapshots</id>
-            <url>https://nexus.funkemunky.cc/content/repositories/snapshots/</url>
+            <id>github</id>
+            <name>GitHub funkemunky Apache Maven Packages</name>
+            <url>https://maven.pkg.github.com/funkemunky/Atlas</url>
         </snapshotRepository>
         <repository>
             <id>github</id>

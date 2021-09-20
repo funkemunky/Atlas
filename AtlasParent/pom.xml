@@ -7,12 +7,25 @@
     <groupId>cc.funkemunky.utils</groupId>
     <artifactId>atlas-parent</artifactId>
     <packaging>pom</packaging>
-    <version>1.10.0-BUILD-SNAPSHOT</version>
+    <version>1.10.0-SNAPSHOT</version>
 
-    <properties>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <release.identifier>SNAPSHOT</release.identifier>
-    </properties>
+    <scm>
+        <developerConnection>scm:git:https://github.com/funkemunky/Atlas</developerConnection>
+        <tag>1.10.0</tag>
+    </scm>
+
+    <distributionManagement>
+        <snapshotRepository>
+            <id>github</id>
+            <name>GitHub funkemunky Apache Maven Packages</name>
+            <url>https://maven.pkg.github.com/funkemunky/Atlas</url>
+        </snapshotRepository>
+        <repository>
+            <id>github</id>
+            <name>GitHub funkemunky Apache Maven Packages</name>
+            <url>https://maven.pkg.github.com/funkemunky/Atlas</url>
+        </repository>
+    </distributionManagement>
 
     <build>
         <plugins>
