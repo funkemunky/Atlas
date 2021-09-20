@@ -34,6 +34,6 @@ jobs:
         restore-keys: ${{ runner.os }}-m2      
 
     - name: Build and test project with Maven
-      run: mvn -B package --file AtlasParent/pom.xml
+      run: mvn -B package
       env:
         MVN_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
