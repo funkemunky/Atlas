@@ -6,13 +6,13 @@
 
     <parent>
         <groupId>cc.funkemunky.utils</groupId>
-        <version>1.10.0</version>
+        <version>1.10.0-BUILD-SNAPSHOT</version>
         <artifactId>atlas-parent</artifactId>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
-    <artifactId>Atlas</artifactId>
-    <version>1.10.0</version>
+    <artifactId>atlas</artifactId>
+    <version>1.10.0-BUILD-SNAPSHOT</version>
 
     <scm>
         <connection>scm:svn:http://127.0.0.1/dummy</connection>
@@ -59,33 +59,6 @@
                     </execution>
                 </executions>
             </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-deploy-plugin</artifactId>
-                <version>2.8.1</version>
-                <configuration>
-                    <skip>true</skip>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.sonatype.plugins</groupId>
-                <artifactId>nexus-staging-maven-plugin</artifactId>
-                <version>1.5.1</version>
-                <executions>
-                    <execution>
-                        <id>default-deploy</id>
-                        <phase>deploy</phase>
-                        <goals>
-                            <goal>deploy</goal>
-                        </goals>
-                    </execution>
-                </executions>
-                <configuration>
-                    <serverId>funkemunky</serverId>
-                    <nexusUrl>https://nexus.funkemunky.cc</nexusUrl>
-                    <skipStaging>true</skipStaging>
-                </configuration>
-            </plugin>
         </plugins>
         <resources>
             <resource>
@@ -120,8 +93,8 @@
             <url>https://nexus.funkemunky.cc/content/repositories/snapshots/</url>
         </snapshotRepository>
         <repository>
-            <id>atlas-repo</id>
-            <name>atlas-repo-release</name>
+            <id>github</id>
+            <name>GitHub funkemunky Apache Maven Packages</name>
             <url>https://maven.pkg.github.com/funkemunky/Atlas</url>
         </repository>
     </distributionManagement>
