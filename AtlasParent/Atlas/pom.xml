@@ -6,12 +6,13 @@
 
     <parent>
         <groupId>cc.funkemunky.utils</groupId>
-        <version>1.10.0-SNAPSHOT</version>
+        <version>1.10.0</version>
         <artifactId>atlas-parent</artifactId>
+        <relativePath>../pom.xml</relativePath>
     </parent>
 
     <artifactId>Atlas</artifactId>
-    <version>1.10.0-SNAPSHOT</version>
+    <version>1.10.0</version>
 
     <scm>
         <connection>scm:svn:http://127.0.0.1/dummy</connection>
@@ -131,8 +132,9 @@
             <url>https://nexus.funkemunky.cc/content/repositories/snapshots/</url>
         </snapshotRepository>
         <repository>
-            <id>funkemunky-releases</id>
-            <url>https://nexus.funkemunky.cc/content/repositories/releases/</url>
+            <id>atlas-repo</id>
+            <name>atlas-repo-release</name>
+            <url>https://maven.pkg.github.com/funkemunky/Atlas</url>
         </repository>
     </distributionManagement>
 
