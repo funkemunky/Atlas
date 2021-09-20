@@ -34,4 +34,4 @@ jobs:
         restore-keys: ${{ runner.os }}-m2      
 
     - name: Build and test project with Maven
-      run: mvn clean install --file pom.xml
+      run: mvn clean install --file AtlasParent/pom.xml
