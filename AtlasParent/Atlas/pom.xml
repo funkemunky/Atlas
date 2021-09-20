@@ -6,13 +6,13 @@
 
     <parent>
         <groupId>cc.funkemunky.utils</groupId>
-        <version>1.10.0</version>
+        <version>1.10.0-SNAPSHOT-b8</version>
         <artifactId>atlas-parent</artifactId>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
     <artifactId>Atlas</artifactId>
-    <version>1.10.0</version>
+    <version>1.10.0-SNAPSHOT-b8</version>
 
     <scm>
         <connection>scm:svn:http://127.0.0.1/dummy</connection>
