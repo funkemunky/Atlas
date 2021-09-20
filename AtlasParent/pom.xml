@@ -14,18 +14,6 @@
         <release.identifier>SNAPSHOT</release.identifier>
     </properties>
 
-    <distributionManagement>
-        <snapshotRepository>
-            <id>funkemunky-snapshots</id>
-            <url>https://nexus.funkemunky.cc/content/repositories/snapshots/</url>
-        </snapshotRepository>
-        <repository>
-            <id>github</id>
-            <name>GitHub funkemunky Apache Maven Packages</name>
-            <url>https://maven.pkg.github.com/funkemunky/Atlas</url>
-        </repository>
-    </distributionManagement>
-
     <build>
         <plugins>
             <plugin>

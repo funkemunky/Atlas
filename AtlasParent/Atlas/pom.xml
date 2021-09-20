@@ -15,10 +15,7 @@
     <version>1.10.0-BUILD-SNAPSHOT</version>
 
     <scm>
-        <connection>scm:svn:http://127.0.0.1/dummy</connection>
-        <developerConnection>scm:svn:https://127.0.0.1/dummy</developerConnection>
-        <tag>HEAD</tag>
-        <url>http://127.0.0.1/dummy</url>
+        <developerConnection>scm:git:https://github.com/funkemunky/Atlas</developerConnection>
     </scm>
 
     <build>
@@ -58,6 +55,11 @@
                         </configuration>
                     </execution>
                 </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-release-plugin</artifactId>
+                <version>3.0.0-M4</version>
             </plugin>
         </plugins>
         <resources>
