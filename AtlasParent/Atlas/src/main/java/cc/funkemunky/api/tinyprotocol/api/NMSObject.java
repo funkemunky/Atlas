@@ -7,8 +7,13 @@ package cc.funkemunky.api.tinyprotocol.api;
 import cc.funkemunky.api.Atlas;
 import cc.funkemunky.api.events.impl.PacketReceiveEvent;
 import cc.funkemunky.api.events.impl.PacketSendEvent;
+import cc.funkemunky.api.handlers.protocolsupport.Protocol;
+import cc.funkemunky.api.reflections.Reflections;
+import cc.funkemunky.api.reflections.impl.CraftReflection;
+import cc.funkemunky.api.reflections.impl.MinecraftReflection;
 import cc.funkemunky.api.reflections.types.WrappedClass;
 import cc.funkemunky.api.reflections.types.WrappedField;
+import cc.funkemunky.api.reflections.types.WrappedMethod;
 import cc.funkemunky.api.tinyprotocol.reflection.FieldAccessor;
 import cc.funkemunky.api.tinyprotocol.reflection.MethodInvoker;
 import cc.funkemunky.api.tinyprotocol.reflection.Reflection;
@@ -29,7 +34,8 @@ import static cc.funkemunky.api.tinyprotocol.api.NMSObject.Type.ITEMSTACK;
 @Setter
 @NoArgsConstructor
 public abstract class NMSObject {
-    private static final MethodInvoker asCraftMirror = Reflection.getMethod(CRAFTITEMSTACK, "asCraftMirror", Reflection.getClass(ITEMSTACK));
+    private static final WrappedMethod asCraftMirror = CraftReflection.craftItemStack
+            .getMethod("asCraftMirror", MinecraftReflection.itemStack.getParent());
     private static Map<String, Class<?>> constructors = new HashMap<>();
     @Setter
     private Object object;
@@ -63,7 +69,7 @@ public abstract class NMSObject {
         try {
             Class<?> c = constructors.get(packet);
             if (c == null) {
-                c = Reflection.getMinecraftClass(packet);
+                c = Reflections.getNMSClass(packet).getParent();
                 constructors.put(packet, c);
             }
             Object p = c.newInstance();
@@ -92,7 +98,7 @@ public abstract class NMSObject {
         try {
             Class<?> c = constructors.get(packet);
             if (c == null) {
-                c = Reflection.getMinecraftClass(packet);
+                c = Reflections.getNMSClass(packet).getParent();
                 constructors.put(packet, c);
             }
             Object p = c.newInstance();
@@ -114,7 +120,7 @@ public abstract class NMSObject {
         try {
             Class<?> c = constructors.get(packet);
             if (c == null) {
-                c = Reflection.getMinecraftClass(packet);
+                c = Reflections.getNMSClass(packet).getParent();
                 constructors.put(packet, c);
             }
 
@@ -142,19 +148,19 @@ public abstract class NMSObject {
     }
 
     public static ItemStack toBukkitStack(Object nmsStack) {
-        return (ItemStack) asCraftMirror.invoke(null, nmsStack);
-    }
-
-    public static <T> FieldAccessor<T> fetchField(String className, Class<T> fieldType, int index) {
-        return Reflection.getFieldSafe(Reflection.NMS_PREFIX + "." + className, fieldType, index);
+        return asCraftMirror.invoke(null, nmsStack);
     }
 
     public static <T> FieldAccessor<T> fetchFieldByName(String className, String name, Class<T> fieldType) {
-        return Reflection.getField(Reflection.NMS_PREFIX + "." + className, name, fieldType);
+        return Reflection.getField(Reflection.getMinecraftClass(className), name, fieldType);
+    }
+
+    public static <T> FieldAccessor<T> fetchField(String className, Class<T> fieldType, int index) {
+        return Reflection.getFieldSafe(className, fieldType, index);
     }
 
     public static <T> FieldAccessor<T> fetchField(String className, String fieldType, int index) {
-        return Reflection.getFieldSafe(Reflection.NMS_PREFIX + "." + className, (Class<T>) Reflection.getClass(fieldType), index);
+        return Reflection.getFieldSafe(className, (Class<T>) Reflection.getClass(fieldType), index);
     }
 
     public static WrappedField fetchField(WrappedClass wrappedClass, Class<?> type, int index) {
@@ -236,7 +242,8 @@ public abstract class NMSObject {
         public static final String LEGACY_POSITION = CLIENT + "Position";
         public static final String LEGACY_POSITION_LOOK = CLIENT + "PositionLook";
         public static final String LEGACY_LOOK = CLIENT + "Look";
-        public static final String TRANSACTION = CLIENT + "Transaction";
+        public static final String TRANSACTION = ProtocolVersion.getGameVersion()
+                .isOrAbove(ProtocolVersion.v1_17) ? "ServerboundPongPacket" : CLIENT + "Transaction";
         public static final String BLOCK_DIG = CLIENT + "BlockDig";
         public static final String ENTITY_ACTION = CLIENT + "EntityAction";
         public static final String USE_ENTITY = CLIENT + "UseEntity";
@@ -264,7 +271,8 @@ public abstract class NMSObject {
         public static final String KEEP_ALIVE = SERVER + "KeepAlive";
         public static final String CHAT = SERVER + "Chat";
         public static final String POSITION = SERVER + "Position";
-        public static final String TRANSACTION = SERVER + "Transaction";
+        public static final String TRANSACTION = ProtocolVersion.getGameVersion()
+                .isOrAbove(ProtocolVersion.v1_17) ? "ClientboundPingPacket" : SERVER +  "Transaction";
         public static final String NAMED_ENTITY_SPAWN = SERVER + "NamedEntitySpawn";
         public static final String SPAWN_ENTITY_LIVING = SERVER + "SpawnEntityLiving";
         public static final String SPAWN_ENTITY = SERVER + "SpawnEntity";

@@ -202,20 +202,18 @@ public class ClassScanner {
         }
 
         try (ZipFile zip = new ZipFile(path.toFile())) {
-            Enumeration<? extends ZipEntry> entries = zip.entries();
-            while (entries.hasMoreElements()) {
-                ZipEntry entry = entries.nextElement();
-                if (entry.isDirectory() || !entry.getName().endsWith(".class")) {
-                    continue;
-                }
-
-                try (InputStream in = zip.getInputStream(entry)) {
-                    String plugin = findClasses(file, in);
-                    if (plugin != null) {
-                        plugins.add(plugin);
+            zip.stream().parallel().forEach(entry -> {
+                if (!entry.isDirectory() && entry.getName().endsWith(".class")) {
+                    try (InputStream in = zip.getInputStream(entry)) {
+                        String plugin = findClasses(file, in);
+                        if (plugin != null) {
+                            plugins.add(plugin);
+                        }
+                    } catch (IOException e) {
+                        e.printStackTrace();
                     }
                 }
-            }
+            });
         } catch (IOException e) {
             e.printStackTrace();
         }

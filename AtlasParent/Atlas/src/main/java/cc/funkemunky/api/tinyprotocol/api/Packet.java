@@ -4,6 +4,7 @@
 
 package cc.funkemunky.api.tinyprotocol.api;
 
+import cc.funkemunky.api.reflections.Reflections;
 import cc.funkemunky.api.reflections.types.WrappedClass;
 import cc.funkemunky.api.tinyprotocol.reflection.FieldAccessor;
 import cc.funkemunky.api.tinyprotocol.reflection.Reflection;
@@ -34,7 +35,7 @@ public abstract class Packet {
         try {
             Class<?> c = constructors.get(packet);
             if (c == null) {
-                c = Reflection.getMinecraftClass(packet);
+                c = Reflections.getNMSClass(packet).getParent();
                 constructors.put(packet, c);
             }
             Object p = c.newInstance();

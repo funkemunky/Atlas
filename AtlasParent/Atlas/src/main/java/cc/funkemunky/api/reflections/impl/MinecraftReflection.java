@@ -94,7 +94,6 @@ public class MinecraftReflection {
     private static WrappedClass worldReader;
     private static WrappedMethod getCubesFromVoxelShape;
 
-    private static final WrappedField pingField = entityPlayer.getFieldByName("ping");
     private static final WrappedMethod itemStackAsBukkitCopy = CraftReflection.craftItemStack
             .getMethod("asBukkitCopy", itemStack.getParent());
 
@@ -115,10 +114,12 @@ public class MinecraftReflection {
 
 
     //Entity Player fields
-    private static final WrappedField connectionField = entityPlayer.getFieldByName("playerConnection");
+    private static final WrappedField connectionField = entityPlayer
+            .getFieldByType(playerConnection.getParent(), 0);
     private static final WrappedField connectionNetworkField = playerConnection
             .getFieldByType(networkManager.getParent(), 0);
-    private static final WrappedField networkChannelField = networkManager.getFieldByName("channel");
+    private static final WrappedField networkChannelField = networkManager.getFieldByType(Reflections
+            .getUtilClass("io.netty.channel.Channel").getParent(), 0);
 
     //General Fields
     private static final WrappedField primaryThread = minecraftServer.getFirstFieldByType(Thread.class);
@@ -258,11 +259,15 @@ public class MinecraftReflection {
     }
 
     public static int getPing(Player player) {
-        return pingField.get(CraftReflection.getEntityPlayer(player));
+        return player.spigot().getPing();
     }
 
     public static <T> T getServerConnection() {
         return methodGetServerConnection.invoke(CraftReflection.getMinecraftServer());
+    }
+
+    public static <T> T getServerConnection(Object minecraftServer) {
+        return methodGetServerConnection.invoke(minecraftServer);
     }
 
     /* Gets the amount of mining required to break a block. Input can be NMS Block or Bukkit Block. */

@@ -117,12 +117,14 @@ public class WrappedOutRelativePosition extends NMSObject {
     static {
         List<WrappedField> fields = packetClass.getFields(true);
 
-        fieldId = fields.get(0);
-        fieldX = fields.get(1);
-        fieldY = fields.get(2);
-        fieldZ = fields.get(3);
-        fieldYaw = fields.get(4);
-        fieldPitch = fields.get(5);
-        fieldGround = fields.get(6);
+        int addIndex = ProtocolVersion.getGameVersion().isOrAbove(ProtocolVersion.v1_17) ? 1 : 0;
+
+        fieldId = fields.get(0 + addIndex);
+        fieldX = fields.get(1 + addIndex);
+        fieldY = fields.get(2 + addIndex);
+        fieldZ = fields.get(3 + addIndex);
+        fieldYaw = fields.get(4 + addIndex);
+        fieldPitch = fields.get(5 + addIndex);
+        fieldGround = fields.get(6 + addIndex);
     }
 }

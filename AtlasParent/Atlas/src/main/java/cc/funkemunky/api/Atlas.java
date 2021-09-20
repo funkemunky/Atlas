@@ -22,6 +22,7 @@ import cc.funkemunky.api.utils.config.Configuration;
 import cc.funkemunky.api.utils.config.ConfigurationProvider;
 import cc.funkemunky.api.utils.config.YamlConfiguration;
 import cc.funkemunky.api.utils.objects.RemoteClassLoader;
+import cc.funkemunky.api.utils.world.WorldInfo;
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.BukkitCommandManager;
 import dev.brighten.db.Carbon;
@@ -76,6 +77,7 @@ public class Atlas extends JavaPlugin {
     private final Map<Tuple<UUID, Integer>, Entity> trackedEntities = new ConcurrentHashMap<>();
     private Map<String, CommandManager> pluginCommandManagers = new HashMap<>();
     private Map<String, BukkitCommandManager> bukkitCommandManagers = new HashMap<>();
+    private Map<UUID, WorldInfo> worldInfoMap = new HashMap<>();
 
     @ConfigSetting(path = "updater", name = "autoDownload")
     private static boolean autoDownload = false;
@@ -152,6 +154,9 @@ public class Atlas extends JavaPlugin {
             }
         }
 
+        MiscUtils.printToConsole(Color.Green + "Loading WorldInfo system...");
+        Bukkit.getWorlds().forEach(w -> worldInfoMap.put(w.getUID(), new WorldInfo(w)));
+
         Bukkit.getOnlinePlayers().forEach(player -> TinyProtocolHandler.getInstance().injectPlayer(player));
         bungeeManager = new BungeeManager();
 
@@ -167,6 +172,11 @@ public class Atlas extends JavaPlugin {
 
         eventManager.clearAllRegistered();
         getCommandManager(this).unregisterCommands();
+
+        //unregistering worldinfo
+        worldInfoMap.entrySet().stream()
+                .peek(entry -> entry.getValue().shutdown())
+                .forEach(worldInfoMap.entrySet()::remove);
 
         MiscUtils.printToConsole(Color.Gray
                 + "Disabling all plugins that depend on Atlas to prevent any errors...");
@@ -224,6 +234,10 @@ public class Atlas extends JavaPlugin {
         return bukkitCommandManagers.computeIfAbsent(plugin.getName(), key -> new BukkitCommandManager(plugin));
     }
 
+    public WorldInfo getWorldInfo(World world) {
+        return worldInfoMap.get(world.getUID());
+    }
+
     public void removePluginInstances(Plugin plugin) {
         pluginCommandManagers.remove(plugin.getName());
         bukkitCommandManagers.remove(plugin.getName());
@@ -271,13 +285,11 @@ public class Atlas extends JavaPlugin {
         initializeScanner(mainClass, plugin, loader, ClassScanner.scanFile(null, mainClass), loadListeners, loadCommands);
     }
 
+    @Deprecated
     public Entity getEntityById(World world, int id) {
         return trackedEntities.compute(new Tuple<>(world.getUID(), id), (key, entity) -> {
             if(entity == null) {
-                for (Entity worldEntity : world.getEntities()) {
-                    if(worldEntity.getEntityId() == key.two)
-                        return worldEntity;
-                }
+                entity = getWorldInfo(world).getEntity(id).orElse(null);
             }
             return entity;
         });

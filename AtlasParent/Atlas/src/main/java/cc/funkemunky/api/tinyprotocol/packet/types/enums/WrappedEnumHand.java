@@ -14,7 +14,7 @@ public enum WrappedEnumHand {
         if(enumHandClass == null) return WrappedEnumHand.MAIN_HAND;
 
         if(object instanceof Enum)
-            return valueOf(object.toString());
+            return WrappedEnumHand.values()[((Enum)object).ordinal()];
 
         return WrappedEnumHand.MAIN_HAND;
     }

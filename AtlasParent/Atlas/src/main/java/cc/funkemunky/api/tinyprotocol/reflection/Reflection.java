@@ -5,6 +5,8 @@
 
 package cc.funkemunky.api.tinyprotocol.reflection;
 
+import cc.funkemunky.api.reflections.Reflections;
+import cc.funkemunky.api.reflections.impl.MinecraftReflection;
 import org.bukkit.Bukkit;
 
 import java.lang.reflect.Constructor;
@@ -83,7 +85,7 @@ public final class Reflection {
 
     public static <T> FieldAccessor<T> getFieldSafe(String className, Class<T> fieldType, int index) {
         try {
-            return getField(getClass(className), fieldType, index);
+            return getField(Reflections.getNMSClass(className).getParent(), fieldType, index);
         } catch (Exception e) {
             System.out.println("[WARN] Failed to find field at " + index + " in " + className + " with type " + fieldType.getSimpleName());
             return null;
@@ -380,7 +382,7 @@ public final class Reflection {
      * @throws IllegalArgumentException If the class doesn't exist.
      */
     public static Class<?> getMinecraftClass(String name) {
-        return getCanonicalClass(NMS_PREFIX + "." + name);
+        return Reflections.getNMSClass(name).getParent();
     }
 
     /**
@@ -390,7 +392,7 @@ public final class Reflection {
      * @throws IllegalArgumentException If the class doesn't exist.
      */
     public static Class<?> getCraftBukkitClass(String name) {
-        return getCanonicalClass(OBC_PREFIX + "." + name);
+        return Reflections.getCBClass(name).getParent();
     }
 
     /**
