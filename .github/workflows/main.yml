@@ -33,8 +33,5 @@ jobs:
         key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
         restore-keys: ${{ runner.os }}-m2      
 
-
-    - name: action-maven
-    # You may pin to the exact commit or the version.
-     # uses: comchangs/action-maven@54db702e085ac767dad94c87e84499afb9d77162
-      uses: comchangs/action-maven@v0.4-beta
+   - name: Build and test project with Maven
+      run: mvn clean install
