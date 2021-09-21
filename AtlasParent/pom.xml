@@ -54,7 +54,7 @@
     </build>
 
     <modules>
-        <module>atlas</module>
+        <module>Atlas</module>
         <module>AtlasBungee</module>
         <module>AtlasExample</module>
         <module>AtlasVelocity</module>
