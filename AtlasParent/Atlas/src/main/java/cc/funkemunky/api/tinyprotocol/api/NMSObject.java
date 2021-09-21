@@ -7,7 +7,6 @@ package cc.funkemunky.api.tinyprotocol.api;
 import cc.funkemunky.api.Atlas;
 import cc.funkemunky.api.events.impl.PacketReceiveEvent;
 import cc.funkemunky.api.events.impl.PacketSendEvent;
-import cc.funkemunky.api.handlers.protocolsupport.Protocol;
 import cc.funkemunky.api.reflections.Reflections;
 import cc.funkemunky.api.reflections.impl.CraftReflection;
 import cc.funkemunky.api.reflections.impl.MinecraftReflection;
@@ -15,7 +14,6 @@ import cc.funkemunky.api.reflections.types.WrappedClass;
 import cc.funkemunky.api.reflections.types.WrappedField;
 import cc.funkemunky.api.reflections.types.WrappedMethod;
 import cc.funkemunky.api.tinyprotocol.reflection.FieldAccessor;
-import cc.funkemunky.api.tinyprotocol.reflection.MethodInvoker;
 import cc.funkemunky.api.tinyprotocol.reflection.Reflection;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -26,9 +24,6 @@ import org.bukkit.inventory.ItemStack;
 import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.Map;
-
-import static cc.funkemunky.api.tinyprotocol.api.NMSObject.Type.CRAFTITEMSTACK;
-import static cc.funkemunky.api.tinyprotocol.api.NMSObject.Type.ITEMSTACK;
 
 @Getter
 @Setter

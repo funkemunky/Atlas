@@ -2,7 +2,6 @@ package cc.funkemunky.api.utils.world;
 
 import cc.funkemunky.api.reflections.Reflections;
 import cc.funkemunky.api.reflections.impl.MinecraftReflection;
-import cc.funkemunky.api.reflections.types.WrappedClass;
 import cc.funkemunky.api.tinyprotocol.api.ProtocolVersion;
 import cc.funkemunky.api.utils.MiscUtils;
 import cc.funkemunky.api.utils.ReflectionsUtil;
@@ -20,7 +19,6 @@ import org.bukkit.material.MaterialData;
 import org.bukkit.material.Vine;
 
 import java.util.*;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public enum BlockData {

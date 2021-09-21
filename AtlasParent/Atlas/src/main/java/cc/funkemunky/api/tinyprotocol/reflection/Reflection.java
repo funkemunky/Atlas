@@ -6,7 +6,6 @@
 package cc.funkemunky.api.tinyprotocol.reflection;
 
 import cc.funkemunky.api.reflections.Reflections;
-import cc.funkemunky.api.reflections.impl.MinecraftReflection;
 import org.bukkit.Bukkit;
 
 import java.lang.reflect.Constructor;

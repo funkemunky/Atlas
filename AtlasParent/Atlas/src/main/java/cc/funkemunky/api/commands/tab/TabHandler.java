@@ -1,13 +1,7 @@
 package cc.funkemunky.api.commands.tab;
 
-import cc.funkemunky.api.Atlas;
 import cc.funkemunky.api.events.AtlasListener;
-import cc.funkemunky.api.tinyprotocol.api.Packet;
 import cc.funkemunky.api.tinyprotocol.api.ProtocolVersion;
-import cc.funkemunky.api.tinyprotocol.api.TinyProtocolHandler;
-import cc.funkemunky.api.tinyprotocol.listener.functions.AsyncPacketListener;
-import cc.funkemunky.api.tinyprotocol.packet.in.WrappedInTabComplete;
-import cc.funkemunky.api.tinyprotocol.packet.out.WrappedOutTabComplete;
 import cc.funkemunky.api.tinyprotocol.packet.types.v1_13.DontImportIfNotLatestThanks;
 import cc.funkemunky.api.utils.Init;
 import cc.funkemunky.api.utils.Priority;

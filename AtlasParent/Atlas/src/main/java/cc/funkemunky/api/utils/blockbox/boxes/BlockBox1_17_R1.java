@@ -1,7 +1,6 @@
 package cc.funkemunky.api.utils.blockbox.boxes;
 
 import cc.funkemunky.api.utils.blockbox.BlockBox;
-import lombok.val;
 import net.minecraft.world.entity.ai.attributes.AttributeModifiable;
 import net.minecraft.world.entity.ai.attributes.GenericAttributes;
 import net.minecraft.world.level.World;

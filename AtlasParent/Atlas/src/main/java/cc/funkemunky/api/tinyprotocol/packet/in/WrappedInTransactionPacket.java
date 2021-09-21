@@ -1,6 +1,5 @@
 package cc.funkemunky.api.tinyprotocol.packet.in;
 
-import cc.funkemunky.api.handlers.protocolsupport.Protocol;
 import cc.funkemunky.api.tinyprotocol.api.NMSObject;
 import cc.funkemunky.api.tinyprotocol.api.ProtocolVersion;
 import cc.funkemunky.api.tinyprotocol.packet.optimized.incoming.transaction.AtlasPacketPlayInTransaction;

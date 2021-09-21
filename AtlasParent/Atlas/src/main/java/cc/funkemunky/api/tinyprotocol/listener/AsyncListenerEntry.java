@@ -1,7 +1,6 @@
 package cc.funkemunky.api.tinyprotocol.listener;
 
 import cc.funkemunky.api.tinyprotocol.listener.functions.AsyncPacketListener;
-import cc.funkemunky.api.tinyprotocol.listener.functions.PacketListener;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.bukkit.event.EventPriority;
