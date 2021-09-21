@@ -45,7 +45,7 @@ public class WrappedInUseEntityPacket extends NMSObject {
         id = Objects.requireNonNull(fetch(fieldId));
         //We cache the entities so we dont have to loop every single packet for the same entity.
         entity = Atlas.getInstance().getWorldInfo(player.getWorld())
-                .getEntityOrLock(entity.getEntityId()).orElse(null);
+                .getEntityOrLock(id).orElse(null);
         //This will lock if the entity doesn't exist for some reaosn.
 
         if(ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.v1_17)) {
