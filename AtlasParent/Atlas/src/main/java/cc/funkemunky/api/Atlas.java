@@ -77,7 +77,7 @@ public class Atlas extends JavaPlugin {
     private final Map<Tuple<UUID, Integer>, Entity> trackedEntities = new ConcurrentHashMap<>();
     private Map<String, CommandManager> pluginCommandManagers = new HashMap<>();
     private Map<String, BukkitCommandManager> bukkitCommandManagers = new HashMap<>();
-    private Map<UUID, WorldInfo> worldInfoMap = new HashMap<>();
+    private final Map<UUID, WorldInfo> worldInfoMap = new HashMap<>();
 
     @ConfigSetting(path = "updater", name = "autoDownload")
     private static boolean autoDownload = false;
@@ -174,9 +174,10 @@ public class Atlas extends JavaPlugin {
         getCommandManager(this).unregisterCommands();
 
         //unregistering worldinfo
-        worldInfoMap.entrySet().stream()
-                .peek(entry -> entry.getValue().shutdown())
-                .forEach(worldInfoMap.entrySet()::remove);
+        synchronized (worldInfoMap) {
+            worldInfoMap.forEach((key, value) -> value.shutdown());
+            worldInfoMap.clear();
+        }
 
         MiscUtils.printToConsole(Color.Gray
                 + "Disabling all plugins that depend on Atlas to prevent any errors...");

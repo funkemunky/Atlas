@@ -310,7 +310,7 @@ public abstract class TinyProtocol1_8 implements AbstractTinyProtocol {
 	 * @param packet - the packet to send.
 	 */
 	public void sendPacket(Player player, Object packet) {
-		methodSendPacket.invoke(MinecraftReflection.getPlayerConnection(player), packet);
+		sendPacket(getChannel(player), packet);
 	}
 
 	/**
