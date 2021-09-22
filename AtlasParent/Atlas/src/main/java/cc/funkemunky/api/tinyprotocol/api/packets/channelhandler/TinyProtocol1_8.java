@@ -16,6 +16,7 @@ import cc.funkemunky.api.reflections.types.WrappedField;
 import cc.funkemunky.api.reflections.types.WrappedMethod;
 import cc.funkemunky.api.tinyprotocol.api.packets.AbstractTinyProtocol;
 import cc.funkemunky.api.tinyprotocol.reflection.Reflection;
+import cc.funkemunky.api.utils.RunUtils;
 import com.google.common.collect.Lists;
 import com.google.common.collect.MapMaker;
 import com.mojang.authlib.GameProfile;
@@ -104,7 +105,8 @@ public abstract class TinyProtocol1_8 implements AbstractTinyProtocol {
 		try {
 			System.out.println("Attempting to inject into netty");
 			registerChannelHandler();
-			registerPlayers(plugin);
+
+			RunUtils.taskLater(() -> registerPlayers(plugin), 2);
 		} catch (IllegalArgumentException ex) {
 			// Damn you, late bind
 			plugin.getLogger().info("Attempting to delay injection.");
@@ -310,7 +312,7 @@ public abstract class TinyProtocol1_8 implements AbstractTinyProtocol {
 	 * @param packet - the packet to send.
 	 */
 	public void sendPacket(Player player, Object packet) {
-		sendPacket(getChannel(player), packet);
+		methodSendPacket.invoke(MinecraftReflection.getPlayerConnection(player), packet);
 	}
 
 	/**

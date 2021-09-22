@@ -157,7 +157,6 @@ public class Atlas extends JavaPlugin {
         MiscUtils.printToConsole(Color.Green + "Loading WorldInfo system...");
         Bukkit.getWorlds().forEach(w -> worldInfoMap.put(w.getUID(), new WorldInfo(w)));
 
-        Bukkit.getOnlinePlayers().forEach(player -> TinyProtocolHandler.getInstance().injectPlayer(player));
         bungeeManager = new BungeeManager();
 
         MiscUtils.printToConsole(Color.Green + "Successfully loaded Atlas and its utilities!");
@@ -169,6 +168,8 @@ public class Atlas extends JavaPlugin {
         HandlerList.unregisterAll(this);
         Bukkit.getScheduler().cancelTasks(this);
         packetProcessor.shutdown();
+        Bukkit.getOnlinePlayers()
+                .forEach(player -> TinyProtocolHandler.getInstance().uninjectPlayer(player));
 
         eventManager.clearAllRegistered();
         getCommandManager(this).unregisterCommands();
