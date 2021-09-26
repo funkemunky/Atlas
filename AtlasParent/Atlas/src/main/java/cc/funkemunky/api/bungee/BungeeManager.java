@@ -115,10 +115,10 @@ public class BungeeManager implements PluginMessageListener {
         }, 60, 40);
 
         //Listening to payloads for use of Bungee APIs
-        Atlas.getInstance().getPacketProcessor().processAsync(Atlas.getInstance(), event -> {
+        Atlas.getInstance().getPacketProcessor().process(Atlas.getInstance(), event -> {
             WrappedInCustomPayload wrapped = new WrappedInCustomPayload(event.getPacket(), event.getPlayer());
             byte[] bytes = wrapped.getData();
-            if(bytes == null || bytes.length <= 0) return;
+            if(bytes == null || bytes.length <= 0) return true;
 
             String channel = wrapped.getTag();
             ByteArrayInputStream stream = new ByteArrayInputStream(bytes);
@@ -226,6 +226,7 @@ public class BungeeManager implements PluginMessageListener {
                     e.printStackTrace();
                 }
             }
+            return true;
         }, Packet.Client.CUSTOM_PAYLOAD);
     }
 
