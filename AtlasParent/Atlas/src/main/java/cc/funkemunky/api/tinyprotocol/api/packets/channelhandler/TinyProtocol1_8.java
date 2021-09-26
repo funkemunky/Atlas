@@ -485,7 +485,7 @@ public abstract class TinyProtocol1_8 implements AbstractTinyProtocol {
 		// No need to guard against this if we're closing
 		if (!closed) {
 			uninjectedChannels.add(channel);
-		}
+		} else return;
 
 		// See ChannelInjector in ProtocolLib, line 590
 		channel.eventLoop().execute(() -> channel.pipeline().remove(handlerName));
@@ -518,7 +518,6 @@ public abstract class TinyProtocol1_8 implements AbstractTinyProtocol {
 	 */
 	public final void close() {
 		if (!closed) {
-			closed = true;
 
 			// Remove our handlers
 			for (Player player : plugin.getServer().getOnlinePlayers()) {
@@ -528,6 +527,7 @@ public abstract class TinyProtocol1_8 implements AbstractTinyProtocol {
 			// Clean up Bukkit
 			HandlerList.unregisterAll(listener);
 			unregisterChannelHandler();
+			closed = true;
 		}
 	}
 

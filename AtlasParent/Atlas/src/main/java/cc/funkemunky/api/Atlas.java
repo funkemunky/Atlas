@@ -168,8 +168,6 @@ public class Atlas extends JavaPlugin {
         HandlerList.unregisterAll(this);
         Bukkit.getScheduler().cancelTasks(this);
         packetProcessor.shutdown();
-        Bukkit.getOnlinePlayers()
-                .forEach(player -> TinyProtocolHandler.getInstance().uninjectPlayer(player));
 
         eventManager.clearAllRegistered();
         getCommandManager(this).unregisterCommands();
