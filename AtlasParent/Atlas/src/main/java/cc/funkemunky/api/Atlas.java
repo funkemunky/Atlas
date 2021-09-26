@@ -170,7 +170,12 @@ public class Atlas extends JavaPlugin {
         packetProcessor.shutdown();
 
         eventManager.clearAllRegistered();
+        eventManager = null;
         getCommandManager(this).unregisterCommands();
+
+        funkeCommandManager = null;
+        tinyProtocolHandler.shutdown();
+        tinyProtocolHandler = null;
 
         //unregistering worldinfo
         synchronized (worldInfoMap) {

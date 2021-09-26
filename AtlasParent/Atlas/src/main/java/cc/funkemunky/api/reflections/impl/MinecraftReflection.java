@@ -391,9 +391,8 @@ public class MinecraftReflection {
         return connectionField.get(entityPlayer);
     }
 
-    //Can either use Player or EntityPlayer object.
-    public static <T> T getNetworkManager(Object player) {
-        return connectionNetworkField.get(getPlayerConnection(player));
+    public static <T> T getNetworkManager(Object playerConnection) {
+        return connectionNetworkField.get(playerConnection);
     }
 
     //Can either use Player or EntityPlayer object.

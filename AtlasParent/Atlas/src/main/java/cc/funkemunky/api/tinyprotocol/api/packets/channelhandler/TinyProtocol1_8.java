@@ -14,6 +14,7 @@ import cc.funkemunky.api.reflections.impl.MinecraftReflection;
 import cc.funkemunky.api.reflections.types.WrappedClass;
 import cc.funkemunky.api.reflections.types.WrappedField;
 import cc.funkemunky.api.reflections.types.WrappedMethod;
+import cc.funkemunky.api.tinyprotocol.api.ProtocolVersion;
 import cc.funkemunky.api.tinyprotocol.api.packets.AbstractTinyProtocol;
 import cc.funkemunky.api.tinyprotocol.reflection.Reflection;
 import cc.funkemunky.api.utils.RunUtils;
@@ -50,7 +51,10 @@ public abstract class TinyProtocol1_8 implements AbstractTinyProtocol {
 
 	// Looking up ServerConnection
 	private static final WrappedClass packetClass = Reflections.getNMSClass("Packet");
-	private static final WrappedMethod methodSendPacket = MinecraftReflection.playerConnection
+	private static final WrappedClass playerConnection = ProtocolVersion.getGameVersion().isOrAbove(ProtocolVersion.v1_17)
+			? Reflections.getClass("net.minecraft.server.network.PlayerConnection")
+			: Reflections.getNMSClass("PlayerConnection");
+	private static final WrappedMethod methodSendPacket = playerConnection
 			.getMethod("sendPacket", packetClass.getParent());
 
 	// Packets we have to intercept

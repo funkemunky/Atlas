@@ -145,5 +145,11 @@ public class TinyProtocolHandler {
 
         return !event.isCancelled() ? event.getPacket() : null;
     }
+
+    public void shutdown() {
+        paused = true;
+        instance = null;
+        bungeeVersionCache.clear();
+    }
 }
 
