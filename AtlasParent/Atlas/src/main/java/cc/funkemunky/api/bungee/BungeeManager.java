@@ -4,9 +4,6 @@ import cc.funkemunky.api.Atlas;
 import cc.funkemunky.api.bungee.events.BungeeReceiveEvent;
 import cc.funkemunky.api.bungee.objects.BungeePlayer;
 import cc.funkemunky.api.bungee.objects.Version;
-import cc.funkemunky.api.events.AtlasListener;
-import cc.funkemunky.api.events.Listen;
-import cc.funkemunky.api.events.impl.PacketReceiveEvent;
 import cc.funkemunky.api.handlers.ForgeHandler;
 import cc.funkemunky.api.reflections.types.WrappedClass;
 import cc.funkemunky.api.tinyprotocol.api.Packet;
@@ -25,7 +22,7 @@ import java.io.*;
 import java.util.*;
 import java.util.logging.Level;
 
-public class BungeeManager implements AtlasListener, PluginMessageListener {
+public class BungeeManager implements PluginMessageListener {
     @Getter
     private final String channelOut = "BungeeCord", channelIn = "BungeeCord";
     @Getter
@@ -48,8 +45,6 @@ public class BungeeManager implements AtlasListener, PluginMessageListener {
         Bukkit.getMessenger().registerOutgoingPluginChannel(Atlas.getInstance(), atlasOut);
         Bukkit.getMessenger().registerIncomingPluginChannel(Atlas.getInstance(), channelIn, this);
         Bukkit.getMessenger().registerIncomingPluginChannel(Atlas.getInstance(), atlasIn, this);
-
-        Atlas.getInstance().getEventManager().registerListeners(this, Atlas.getInstance());
 
         try {
             val wrappedClass = new WrappedClass(Class.forName("org.spigotmc.SpigotConfig"));
@@ -118,61 +113,9 @@ public class BungeeManager implements AtlasListener, PluginMessageListener {
                 }
             }
         }, 60, 40);
-    }
 
-    public void sendData(byte[] data, String out) {
-        boolean sent = false;
-        for (Player onlinePlayer : Bukkit.getOnlinePlayers()) {
-            onlinePlayer.sendPluginMessage(Atlas.getInstance(), out, data);
-            sent = true;
-            break;
-        }
-
-        if(!sent)
-        toSend.add(new Tuple<>(out, data));
-    }
-
-    public void sendData(byte[] data) {
-        sendData(data, channelOut);
-    }
-
-    public void sendObjects(String server, Object... objects) throws IOException {
-        ByteArrayOutputStream output = new ByteArrayOutputStream();
-        ObjectOutputStream stream = new ObjectOutputStream(output);
-
-        boolean override  = server.toLowerCase().contains("override");
-        if(override) {
-            stream.writeUTF("sendObjects");
-            stream.writeObject(server);
-        } else {
-            stream.writeUTF("Forward");
-            stream.writeUTF(server);
-            stream.writeUTF("Forward");
-        }
-
-        ByteArrayOutputStream objectOutput = new ByteArrayOutputStream();
-        ObjectOutputStream objectStream = new ObjectOutputStream(objectOutput);
-
-        objectStream.writeShort(objects.length);
-
-        for (Object object : objects) objectStream.writeObject(object);
-
-        objectStream.close();
-
-        objectOutput.close();
-        byte[] array = objectOutput.toByteArray();
-
-        stream.writeShort(array.length);
-        stream.write(array);
-
-        stream.close();
-
-        sendData(output.toByteArray(), override ? atlasOut : channelOut); //This is where we finally send the data
-    }
-
-    @Listen
-    public void onPluginMessageReceived(PacketReceiveEvent event) {
-        if(event.getType().equals(Packet.Client.CUSTOM_PAYLOAD)) {
+        //Listening to payloads for use of Bungee APIs
+        Atlas.getInstance().getPacketProcessor().processAsync(Atlas.getInstance(), event -> {
             WrappedInCustomPayload wrapped = new WrappedInCustomPayload(event.getPacket(), event.getPlayer());
             byte[] bytes = wrapped.getData();
             if(bytes == null || bytes.length <= 0) return;
@@ -283,7 +226,57 @@ public class BungeeManager implements AtlasListener, PluginMessageListener {
                     e.printStackTrace();
                 }
             }
+        }, Packet.Client.CUSTOM_PAYLOAD);
+    }
+
+    public void sendData(byte[] data, String out) {
+        boolean sent = false;
+        for (Player onlinePlayer : Bukkit.getOnlinePlayers()) {
+            onlinePlayer.sendPluginMessage(Atlas.getInstance(), out, data);
+            sent = true;
+            break;
         }
+
+        if(!sent)
+        toSend.add(new Tuple<>(out, data));
+    }
+
+    public void sendData(byte[] data) {
+        sendData(data, channelOut);
+    }
+
+    public void sendObjects(String server, Object... objects) throws IOException {
+        ByteArrayOutputStream output = new ByteArrayOutputStream();
+        ObjectOutputStream stream = new ObjectOutputStream(output);
+
+        boolean override  = server.toLowerCase().contains("override");
+        if(override) {
+            stream.writeUTF("sendObjects");
+            stream.writeObject(server);
+        } else {
+            stream.writeUTF("Forward");
+            stream.writeUTF(server);
+            stream.writeUTF("Forward");
+        }
+
+        ByteArrayOutputStream objectOutput = new ByteArrayOutputStream();
+        ObjectOutputStream objectStream = new ObjectOutputStream(objectOutput);
+
+        objectStream.writeShort(objects.length);
+
+        for (Object object : objects) objectStream.writeObject(object);
+
+        objectStream.close();
+
+        objectOutput.close();
+        byte[] array = objectOutput.toByteArray();
+
+        stream.writeShort(array.length);
+        stream.write(array);
+
+        stream.close();
+
+        sendData(output.toByteArray(), override ? atlasOut : channelOut); //This is where we finally send the data
     }
 
     @Override
