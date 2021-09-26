@@ -430,9 +430,7 @@ public abstract class TinyProtocol1_8 implements AbstractTinyProtocol {
 
 		// Lookup channel again
 		if (channel == null) {
-			Object connection = MinecraftReflection.getPlayerConnection(CraftReflection.getEntityPlayer(player));
-			Object manager = MinecraftReflection.getNetworkManager(connection);
-			channel = MinecraftReflection.getChannel(manager);
+			channel = MinecraftReflection.getChannel(player);
 			if (channel == null) return null;
 			channelLookup.put(player.getName(), channel);
 		}
