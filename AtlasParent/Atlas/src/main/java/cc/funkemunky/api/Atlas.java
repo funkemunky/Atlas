@@ -240,7 +240,7 @@ public class Atlas extends JavaPlugin {
     }
 
     public WorldInfo getWorldInfo(World world) {
-        return worldInfoMap.get(world.getUID());
+        return worldInfoMap.computeIfAbsent(world.getUID(), key -> new WorldInfo(world));
     }
 
     public void removePluginInstances(Plugin plugin) {

@@ -4,13 +4,13 @@
 
     <parent>
         <groupId>cc.funkemunky.utils</groupId>
-        <version>1.10.0-SNAPSHOT-b8</version>
+        <version>1.10.0-SNAPSHOT-b9</version>
         <artifactId>atlas-parent</artifactId>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
     <artifactId>Atlas</artifactId>
-    <version>1.10.0-SNAPSHOT-b8</version>
+    <version>1.10.0-SNAPSHOT-b9</version>
 
     <scm>
         <developerConnection>scm:git:https://github.com/funkemunky/Atlas</developerConnection>
@@ -53,6 +53,10 @@
                         <configuration>
                             <minimizeJar>true</minimizeJar>
                             <relocations>
+                                <relocation>
+                                    <pattern>com.google.common</pattern>
+                                    <shadedPattern>cc.funkemunky.api.utils.com.google.common</shadedPattern>
+                                </relocation>
                                 <relocation>
                                     <pattern>org.objectweb.asm</pattern>
                                     <shadedPattern>cc.funkemunky.api.utils.org.objectweb.asm</shadedPattern>
@@ -248,6 +252,12 @@
             <artifactId>1.15.1</artifactId>
             <version>1.15.1</version>
             <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>21.0</version>
+            <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>org.github.spigot</groupId>

@@ -3,7 +3,7 @@
     <parent>
         <artifactId>atlas-parent</artifactId>
         <groupId>cc.funkemunky.utils</groupId>
-        <version>1.10.0-SNAPSHOT-b8</version>
+        <version>1.10.0-SNAPSHOT-b9</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
     <modelVersion>4.0.0</modelVersion>
@@ -87,7 +87,7 @@
         <dependency>
             <groupId>cc.funkemunky.utils</groupId>
             <artifactId>Atlas</artifactId>
-            <version>1.10.0-SNAPSHOT-b8</version>
+            <version>1.10.0-SNAPSHOT-b9</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>

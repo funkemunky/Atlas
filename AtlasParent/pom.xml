@@ -5,7 +5,7 @@
     <groupId>cc.funkemunky.utils</groupId>
     <artifactId>atlas-parent</artifactId>
     <packaging>pom</packaging>
-    <version>1.10.0-SNAPSHOT-b8</version>
+    <version>1.10.0-SNAPSHOT-b9</version>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -13,14 +13,12 @@
 
     <distributionManagement>
         <snapshotRepository>
-            <id>github</id>
-            <name>GitHub funkemunky Apache Maven Packages</name>
-            <url>https://maven.pkg.github.com/funkemunky/Atlas</url>
+            <id>funkemunky-snapshots</id>
+            <url>https://nexus.funkemunky.cc/content/repositories/snapshots/</url>
         </snapshotRepository>
         <repository>
-            <id>github</id>
-            <name>GitHub funkemunky Apache Maven Packages</name>
-            <url>https://maven.pkg.github.com/funkemunky/Atlas</url>
+            <id>funkemunky-releases</id>
+            <url>https://nexus.funkemunky.cc/content/repositories/releases/</url>
         </repository>
     </distributionManagement>
 
@@ -42,6 +40,33 @@
                     <source>8</source>
                     <target>8</target>
                     <compilerArgument>-XDignore.symbol.file</compilerArgument>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-deploy-plugin</artifactId>
+                <version>2.8.1</version>
+                <configuration>
+                    <skip>true</skip>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.sonatype.plugins</groupId>
+                <artifactId>nexus-staging-maven-plugin</artifactId>
+                <version>1.5.1</version>
+                <executions>
+                    <execution>
+                        <id>default-deploy</id>
+                        <phase>deploy</phase>
+                        <goals>
+                            <goal>deploy</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <serverId>funkemunky</serverId>
+                    <nexusUrl>https://nexus.funkemunky.cc</nexusUrl>
+                    <skipStaging>true</skipStaging>
                 </configuration>
             </plugin>
         </plugins>
