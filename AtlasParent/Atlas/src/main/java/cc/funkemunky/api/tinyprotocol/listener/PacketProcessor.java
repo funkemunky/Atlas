@@ -2,7 +2,6 @@ package cc.funkemunky.api.tinyprotocol.listener;
 
 import cc.funkemunky.api.Atlas;
 import cc.funkemunky.api.tinyprotocol.api.Packet;
-import cc.funkemunky.api.tinyprotocol.listener.functions.AsyncPacketListener;
 import cc.funkemunky.api.tinyprotocol.listener.functions.PacketListener;
 import cc.funkemunky.api.utils.RunUtils;
 import lombok.val;
@@ -19,7 +18,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 public class PacketProcessor {
     private final Map<String, List<ListenerEntry>>
             processors = new HashMap<>();
-    private final Map<String, List<AsyncListenerEntry>>
+    private final Map<String, List<ListenerEntry>>
             asyncProcessors = new HashMap<>();
 
     public PacketListener process(Plugin plugin, PacketListener listener, String... types) {
@@ -49,17 +48,17 @@ public class PacketProcessor {
         return process(plugin, priority, listener, Packet.allPackets.toArray(new String[0]));
     }
 
-    public AsyncPacketListener processAsync(Plugin plugin, AsyncPacketListener listener, String... types) {
+    public PacketListener processAsync(Plugin plugin, PacketListener listener, String... types) {
         return processAsync(plugin, EventPriority.NORMAL, listener, types);
     }
 
-    public AsyncPacketListener processAsync(Plugin plugin, EventPriority priority, AsyncPacketListener listener) {
+    public PacketListener processAsync(Plugin plugin, EventPriority priority, PacketListener listener) {
         return processAsync(plugin, priority, listener, Packet.allPackets.toArray(new String[0]));
     }
 
-    public AsyncPacketListener processAsync(Plugin plugin, EventPriority priority, AsyncPacketListener listener,
+    public PacketListener processAsync(Plugin plugin, EventPriority priority, PacketListener listener,
                                             String... types) {
-        AsyncListenerEntry entry = new AsyncListenerEntry(plugin, priority, listener);
+        ListenerEntry entry = new ListenerEntry(plugin, priority, listener);
         synchronized (asyncProcessors) {
             for (String type : types) {
                 asyncProcessors.compute(type, (key, list) -> {
@@ -113,7 +112,7 @@ public class PacketProcessor {
             RunUtils.taskAsync(() -> {
                 val list = asyncProcessors.get(type);
 
-                for (AsyncListenerEntry tuple : list) {
+                for (ListenerEntry tuple : list) {
                     tuple.getListener().onEvent(info);
                 }
             });
@@ -125,7 +124,9 @@ public class PacketProcessor {
             boolean cancelled = false;
             for (ListenerEntry tuple : list) {
                 try {
-                    if (!tuple.getListener().onEvent(info)) {
+                    tuple.getListener().onEvent(info);
+
+                    if(info.isCancelled()) {
                         cancelled = true;
                     }
                 } catch(Exception e) {

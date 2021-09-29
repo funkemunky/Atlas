@@ -60,15 +60,19 @@ public class Reflections {
 
     @SneakyThrows
     public static WrappedClass getNMSClass(String name) {
-        Pattern toTest = Pattern.compile("\\." + name.replace("$", ".") + "$");
-        for (String className : classNames) {
-            if(!className.startsWith("net.minecraft")) continue;
+        try {
+            return getClass(netMinecraftServerString + name);
+        } catch(Exception e) {
+            Pattern toTest = Pattern.compile("\\." + name.replace("$", ".") + "$");
+            for (String className : classNames) {
+                if(!className.startsWith("net.minecraft")) continue;
 
-            if(toTest.matcher(className).find()) {
-                return getClass(className);
+                if(toTest.matcher(className).find()) {
+                    return getClass(className);
+                }
             }
+            throw new ClassNotFoundException(name);
         }
-        throw new ClassNotFoundException(name);
     }
 
     public static WrappedClass getClass(String name) {

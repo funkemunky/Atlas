@@ -2,6 +2,7 @@ package cc.funkemunky.api.tinyprotocol.packet.out;
 
 import cc.funkemunky.api.reflections.Reflections;
 import cc.funkemunky.api.reflections.types.WrappedClass;
+import cc.funkemunky.api.reflections.types.WrappedConstructor;
 import cc.funkemunky.api.reflections.types.WrappedField;
 import cc.funkemunky.api.tinyprotocol.api.NMSObject;
 import cc.funkemunky.api.tinyprotocol.api.ProtocolVersion;
@@ -16,11 +17,24 @@ public class WrappedOutRelativePosition extends NMSObject {
     private static final String packet = Server.ENTITY;
 
     private static WrappedClass packetClass = Reflections.getNMSClass(packet);
+    private static WrappedConstructor emptyConst = packetClass.getConstructor();
     private static WrappedField fieldId, fieldX, fieldY, fieldZ, fieldYaw, fieldPitch, fieldGround;
 
     // Decoded data
     private int id;
     private boolean look, pos, ground;
+
+    public WrappedOutRelativePosition(int id, double x, double y, double z, float yaw, float pitch, boolean ground) {
+        super((Object)emptyConst.newInstance());
+
+        set(fieldId, id);
+        setX(x);
+        setY(y);
+        setZ(z);
+        setYaw(yaw);
+        setPitch(pitch);
+        set(fieldGround, ground);
+    }
 
     public WrappedOutRelativePosition(Object packet, Player player) {
         super(packet, player);

@@ -118,7 +118,7 @@ public class BungeeManager implements PluginMessageListener {
         Atlas.getInstance().getPacketProcessor().process(Atlas.getInstance(), event -> {
             WrappedInCustomPayload wrapped = new WrappedInCustomPayload(event.getPacket(), event.getPlayer());
             byte[] bytes = wrapped.getData();
-            if(bytes == null || bytes.length <= 0) return true;
+            if(bytes == null || bytes.length <= 0) return;
 
             String channel = wrapped.getTag();
             ByteArrayInputStream stream = new ByteArrayInputStream(bytes);
@@ -226,7 +226,7 @@ public class BungeeManager implements PluginMessageListener {
                     e.printStackTrace();
                 }
             }
-            return true;
+            return;
         }, Packet.Client.CUSTOM_PAYLOAD);
     }
 

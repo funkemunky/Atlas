@@ -4,5 +4,5 @@ import cc.funkemunky.api.tinyprotocol.listener.PacketInfo;
 
 @FunctionalInterface
 public interface PacketListener {
-    boolean onEvent(PacketInfo info);
+    void onEvent(PacketInfo info);
 }

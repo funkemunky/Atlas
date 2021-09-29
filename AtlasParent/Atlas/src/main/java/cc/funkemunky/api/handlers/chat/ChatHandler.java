@@ -3,7 +3,6 @@ package cc.funkemunky.api.handlers.chat;
 import cc.funkemunky.api.Atlas;
 import cc.funkemunky.api.events.AtlasListener;
 import cc.funkemunky.api.tinyprotocol.api.Packet;
-import cc.funkemunky.api.tinyprotocol.listener.functions.PacketListener;
 import cc.funkemunky.api.tinyprotocol.packet.in.WrappedInChatPacket;
 import cc.funkemunky.api.utils.Init;
 import org.bukkit.entity.Player;
@@ -17,30 +16,31 @@ public class ChatHandler implements AtlasListener {
 
     private final static Map<UUID, List<OnChat>> chatListeners = Collections.synchronizedMap(new HashMap<>());
 
-    private final PacketListener listener = Atlas.getInstance().getPacketProcessor().process(Atlas.getInstance(),
-            event -> {
-                WrappedInChatPacket packet = new WrappedInChatPacket(event.getPacket(), event.getPlayer());
+    public ChatHandler() {
+        Atlas.getInstance().getPacketProcessor().process(Atlas.getInstance(),
+                event -> {
+                    WrappedInChatPacket packet = new WrappedInChatPacket(event.getPacket(), event.getPlayer());
 
-                if (chatListeners.size() > 0) {
-                    synchronized (chatListeners) {
-                        AtomicBoolean cancelled = new AtomicBoolean(false);
-                        chatListeners.computeIfPresent(event.getPlayer().getUniqueId(), (key, chats) -> {
-                            List<OnChat> returnChats = new ArrayList<>(chats);
-                            returnChats.forEach(chat -> {
-                                chat.message.accept(chat, packet.getMessage());
-                                if (chat.removeOnFirstChat) returnChats.remove(chat);
+                    if (chatListeners.size() > 0) {
+                        synchronized (chatListeners) {
+                            AtomicBoolean cancelled = new AtomicBoolean(false);
+                            chatListeners.computeIfPresent(event.getPlayer().getUniqueId(), (key, chats) -> {
+                                List<OnChat> returnChats = new ArrayList<>(chats);
+                                returnChats.forEach(chat -> {
+                                    chat.message.accept(chat, packet.getMessage());
+                                    if (chat.removeOnFirstChat) returnChats.remove(chat);
+                                });
+
+                                cancelled.set(true);
+
+                                //Removing player from map if theres nothing else to listen to.
+                                return returnChats.size() > 0 ? returnChats : null;
                             });
-
-                            cancelled.set(true);
-
-                            //Removing player from map if theres nothing else to listen to.
-                            return returnChats.size() > 0 ? returnChats : null;
-                        });
-                        return !cancelled.get();
+                            if(cancelled.get()) event.setCancelled(true);
+                        }
                     }
-                }
-                return true;
-            }, Packet.Client.CHAT);
+                }, Packet.Client.CHAT);
+    }
 
     public static void removeAll(Player player) {
         removeAll(player.getUniqueId());

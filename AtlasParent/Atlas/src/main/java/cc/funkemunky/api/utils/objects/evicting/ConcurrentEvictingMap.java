@@ -7,25 +7,17 @@ import java.util.Deque;
 import java.util.LinkedList;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentSkipListMap;
 
 @RequiredArgsConstructor
-public class ConcurrentEvictingMap<K, V> extends ConcurrentHashMap<K, V> {
+public class ConcurrentEvictingMap<K, V> extends ConcurrentSkipListMap<K, V> {
 
     @Getter
     private final int size;
 
-    private final Deque<K> storedKeys = new LinkedList<>();
-
-    @Override
-    public boolean remove(Object key, Object value) {
-        //noinspection SuspiciousMethodCalls
-        storedKeys.remove(key);
-        return super.remove(key, value);
-    }
-
     @Override
     public V putIfAbsent(K key, V value) {
-        if(!storedKeys.contains(key) || !get(key).equals(value))
+        if(!value.equals(get(key)))
             checkAndRemove();
         return super.putIfAbsent(key, value);
     }
@@ -33,7 +25,6 @@ public class ConcurrentEvictingMap<K, V> extends ConcurrentHashMap<K, V> {
     @Override
     public V put(K key, V value) {
         checkAndRemove();
-        storedKeys.addLast(key);
         return super.put(key, value);
     }
 
@@ -44,20 +35,17 @@ public class ConcurrentEvictingMap<K, V> extends ConcurrentHashMap<K, V> {
 
     @Override
     public void clear() {
-        storedKeys.clear();
         super.clear();
     }
 
     @Override
     public V remove(Object key) {
-        //noinspection SuspiciousMethodCalls
-        storedKeys.remove(key);
         return super.remove(key);
     }
 
     private boolean checkAndRemove() {
-        if(storedKeys.size() >= size) {
-            storedKeys.removeFirst();
+        if(size() >= size) {
+            entrySet().remove(firstEntry());
             return true;
         }
         return false;
