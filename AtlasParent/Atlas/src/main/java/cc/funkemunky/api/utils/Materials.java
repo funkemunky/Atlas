@@ -1,6 +1,5 @@
 package cc.funkemunky.api.utils;
 
-import cc.funkemunky.api.tinyprotocol.api.ProtocolVersion;
 import org.bukkit.Material;
 
 public class Materials {
@@ -44,14 +43,11 @@ public class Materials {
         }
 
         // fix some types where isSolid() returns the wrong value
+        MATERIAL_FLAGS[XMaterial.SLIME_BLOCK.parseMaterial().ordinal()] = SOLID;
         MATERIAL_FLAGS[XMaterial.REPEATER.parseMaterial().ordinal()] = SOLID;
         MATERIAL_FLAGS[XMaterial.SNOW.parseMaterial().ordinal()] = SOLID;
         MATERIAL_FLAGS[XMaterial.ANVIL.parseMaterial().ordinal()] = SOLID;
         MATERIAL_FLAGS[XMaterial.LILY_PAD.parseMaterial().ordinal()] = SOLID;
-
-        if(ProtocolVersion.getGameVersion().isOrAbove(ProtocolVersion.V1_8)) {
-            MATERIAL_FLAGS[XMaterial.SLIME_BLOCK.parseMaterial().ordinal()] = SOLID;
-        }
 
         // ladders
         MATERIAL_FLAGS[XMaterial.LADDER.parseMaterial().ordinal()] |= LADDER | SOLID;
