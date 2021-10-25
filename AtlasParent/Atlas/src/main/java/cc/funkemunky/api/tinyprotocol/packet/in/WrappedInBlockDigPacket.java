@@ -8,6 +8,7 @@ import cc.funkemunky.api.tinyprotocol.api.NMSObject;
 import cc.funkemunky.api.tinyprotocol.api.ProtocolVersion;
 import cc.funkemunky.api.tinyprotocol.packet.types.BaseBlockPosition;
 import cc.funkemunky.api.tinyprotocol.packet.types.enums.WrappedEnumDirection;
+import cc.funkemunky.api.utils.math.IntVector;
 import lombok.Getter;
 import org.bukkit.entity.Player;
 
@@ -22,7 +23,7 @@ public class WrappedInBlockDigPacket extends NMSObject {
     private static WrappedField fieldPosX, fieldPosY, fieldPosZ, fieldFace, fieldIntAction;
 
     // Decoded data
-    private BaseBlockPosition position;
+    private IntVector blockPosition;
     private WrappedEnumDirection direction;
     private EnumPlayerDigType action;
 
@@ -34,13 +35,16 @@ public class WrappedInBlockDigPacket extends NMSObject {
     @Override
     public void updateObject() {
         if(ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.V1_8)) {
-            set(fieldPosX, position.getX());
-            set(fieldPosY, position.getY());
-            set(fieldPosZ, position.getZ());
+            set(fieldPosX, blockPosition.getX());
+            set(fieldPosY, blockPosition.getY());
+            set(fieldPosZ, blockPosition.getZ());
             set(fieldFace, direction.ordinal()); //TODO Test if this causes errors.
             set(fieldIntAction, action.ordinal()); //TODO Test if this causes errors.
         } else {
-            set(fieldBlockPosition, position.getObject());
+            set(fieldBlockPosition, new BaseBlockPosition(
+                    blockPosition.getX(),
+                    blockPosition.getY(),
+                    blockPosition.getZ()).getObject());
             set(fieldDirection, direction.toVanilla());
             set(fieldDigType, action.toVanilla());
         }
@@ -49,14 +53,20 @@ public class WrappedInBlockDigPacket extends NMSObject {
     @Override
     public void process(Player player, ProtocolVersion version) {
         if (ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.V1_8)) {
-            position = new BaseBlockPosition(fetch(fieldPosX), fetch(fieldPosY), fetch(fieldPosZ));
+            blockPosition = new IntVector(fetch(fieldPosX), fetch(fieldPosY), fetch(fieldPosZ));
             direction = WrappedEnumDirection.values()[Math.min(fetch(fieldFace), 5)];
             action = EnumPlayerDigType.values()[(int)fetch(fieldIntAction)];
         } else {
-            position = new BaseBlockPosition(fetch(fieldBlockPosition));
+            BaseBlockPosition bbp = new BaseBlockPosition(fetch(fieldBlockPosition));
+            blockPosition = new IntVector(bbp.getX(), bbp.getY(), bbp.getZ());
             direction = WrappedEnumDirection.fromVanilla(fetch(fieldDirection));
             action = EnumPlayerDigType.fromVanilla(fetch(fieldDigType));
         }
+    }
+
+    @Deprecated
+    public BaseBlockPosition getPosition() {
+        return new BaseBlockPosition(blockPosition.getX(), blockPosition.getY(), blockPosition.getZ());
     }
 
     public enum EnumPlayerDigType {

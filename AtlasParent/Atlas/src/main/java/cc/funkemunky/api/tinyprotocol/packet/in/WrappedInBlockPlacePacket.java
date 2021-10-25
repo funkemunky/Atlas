@@ -9,6 +9,7 @@ import cc.funkemunky.api.tinyprotocol.api.NMSObject;
 import cc.funkemunky.api.tinyprotocol.api.ProtocolVersion;
 import cc.funkemunky.api.tinyprotocol.packet.types.BaseBlockPosition;
 import cc.funkemunky.api.tinyprotocol.packet.types.enums.WrappedEnumDirection;
+import cc.funkemunky.api.utils.math.IntVector;
 import lombok.Getter;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -23,14 +24,14 @@ public class WrappedInBlockPlacePacket extends NMSObject {
     private static WrappedField fieldPosX, fieldPosY, fieldPosZ, fieldVecX, fieldVecY, fieldVecZ;
     private static WrappedField fieldMissed, fieldMovingObjectBS;
 
-    private static BaseBlockPosition a = new BaseBlockPosition(-1, -1, -1);
+    private static final IntVector a = new IntVector(-1, -1, -1);
 
     private static WrappedClass movingObjectBSObject, blockPlacePacket, enumHandClass;
 
     // Decoded data
     private WrappedEnumDirection face;
     private ItemStack itemStack;
-    private BaseBlockPosition position;
+    private IntVector blockPosition;
     private boolean mainHand;
     private boolean missed;
     private float vecX, vecY, vecZ;
@@ -42,9 +43,7 @@ public class WrappedInBlockPlacePacket extends NMSObject {
     @Override
     public void process(Player player, ProtocolVersion version) {
         if (ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.V1_8)) {
-            position = new BaseBlockPosition(fieldPosX.get(getObject()),
-                    fieldPosY.get(getObject()),
-                    fieldPosZ.get(getObject()));
+            blockPosition = new IntVector(fetch(fieldPosX), fetch(fieldPosY), fetch(fieldPosZ));
             face = WrappedEnumDirection.values()[Math.min(fieldFace.get(getObject()), 5)];
             itemStack = toBukkitStack(fieldItemStack.get(getObject()));
             vecX = fieldVecX.get(getObject());
@@ -53,7 +52,8 @@ public class WrappedInBlockPlacePacket extends NMSObject {
             mainHand = true;
             missed = false;
         } else if (ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.V1_9)) {
-            position = new BaseBlockPosition(fieldBlockPosition.get(getObject()));
+            BaseBlockPosition bbp = new BaseBlockPosition(fieldBlockPosition.get(getObject()));
+            blockPosition = new IntVector(bbp.getX(), bbp.getY(), bbp.getZ());
             face = WrappedEnumDirection.values()[Math.min(fieldFace.get(getObject()), 5)];
             itemStack = toBukkitStack(fieldItemStack.get(getObject()));
             vecX = fieldVecX.get(getObject());
@@ -62,7 +62,8 @@ public class WrappedInBlockPlacePacket extends NMSObject {
             mainHand = true;
             missed = false;
         } else if(ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.v1_15)) {
-            position = new BaseBlockPosition(fieldBlockPosition.get(getObject()));
+            BaseBlockPosition bbp = new BaseBlockPosition(fieldBlockPosition.get(getObject()));
+            blockPosition = new IntVector(bbp.getX(), bbp.getY(), bbp.getZ());
             face = WrappedEnumDirection.values()[((Enum) fieldFace1_9.get(getObject())).ordinal()];
             if (ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.V1_14)) {
                 vecX = fieldVecX.get(getObject());
@@ -74,10 +75,16 @@ public class WrappedInBlockPlacePacket extends NMSObject {
         } else {
             Object movingBS = fieldMovingObjectBS.get(getObject());
             face = WrappedEnumDirection.values()[((Enum) fieldFace1_9.get(movingBS)).ordinal()];
-            position = new BaseBlockPosition(fieldBlockPosition.get(movingBS));
+            BaseBlockPosition bbp = new BaseBlockPosition(fieldBlockPosition.get(movingBS));
+            blockPosition = new IntVector(bbp.getX(), bbp.getY(), bbp.getZ());
             mainHand = ((Enum) enumHand.get(getObject())).name().toLowerCase().contains("main");
             missed = fieldMissed.get(movingBS);
         }
+    }
+
+    @Deprecated
+    public BaseBlockPosition getPosition() {
+        return new BaseBlockPosition(blockPosition.getX(), blockPosition.getY(), blockPosition.getZ());
     }
 
     //TODO Redo this method.
@@ -87,17 +94,17 @@ public class WrappedInBlockPlacePacket extends NMSObject {
 
         }
         if (ProtocolVersion.getGameVersion().isOrAbove(ProtocolVersion.V1_14)) {
-            setObject(NMSObject.construct(getObject(), packet, position.getAsBlockPosition(), face.toVanilla(),
+            setObject(NMSObject.construct(getObject(), packet, getPosition().getAsBlockPosition(), face.toVanilla(),
                     mainHand ? enumHandClass.getEnum("MAIN_HAND") : enumHandClass.getEnum("OFF_HAND")));
         } else if (ProtocolVersion.getGameVersion().isOrAbove(ProtocolVersion.V1_9)) {
-            setObject(NMSObject.construct(getObject(), packet, position.getAsBlockPosition(), face.toVanilla(),
+            setObject(NMSObject.construct(getObject(), packet, getPosition().getAsBlockPosition(), face.toVanilla(),
                     mainHand ? enumHandClass.getEnum("MAIN_HAND") : enumHandClass.getEnum("OFF_HAND"),
                     vecX, vecY, vecZ));
         } else if (ProtocolVersion.getGameVersion().isOrAbove(ProtocolVersion.V1_8)) {
-            setObject(NMSObject.construct(getObject(), packet, position.getAsBlockPosition(), face.ordinal(),
+            setObject(NMSObject.construct(getObject(), packet, getPosition().getAsBlockPosition(), face.ordinal(),
                     CraftReflection.getVanillaItemStack(itemStack), vecX, vecY, vecZ));
         } else {
-            setObject(NMSObject.construct(getObject(), packet, position.getX(), position.getY(), position.getZ(),
+            setObject(NMSObject.construct(getObject(), packet, blockPosition.getX(), blockPosition.getY(), blockPosition.getZ(),
                     CraftReflection.getVanillaItemStack(itemStack), vecX, vecY, vecZ));
         }
     }
