@@ -102,6 +102,12 @@
                                     </includes>
                                 </filter>
                                 <filter>
+                                    <artifact>org.ow2.asm:asm-tree</artifact>
+                                    <includes>
+                                        <include>**</include>
+                                    </includes>
+                                </filter>
+                                <filter>
                                     <artifact>club.minnced:discord-webhooks</artifact>
                                     <includes>
                                         <include>**</include>

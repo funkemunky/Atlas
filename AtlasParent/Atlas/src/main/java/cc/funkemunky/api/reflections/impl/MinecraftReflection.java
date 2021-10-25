@@ -459,6 +459,7 @@ public class MinecraftReflection {
     }
 
     static {
+        System.out.println("Loading statically in MinecraftReflection");
         if(ProtocolVersion.getGameVersion().isAbove(ProtocolVersion.V1_7_10)) {
             iBlockData = Reflections.getNMSClass("IBlockData");
             blockPos = Reflections.getNMSClass("BlockPosition");
@@ -471,14 +472,17 @@ public class MinecraftReflection {
                     .getConstructor(double.class, double.class, double.class, double.class, double.class, double.class);
             worldGetType = worldServer.getMethod("getType", blockPos.getParent());
         } else {
+            System.out.println("Loading 1.7.10 only things...");
             idioticOldStaticConstructorAABB = axisAlignedBB.getMethod("a",
                     double.class, double.class, double.class, double.class, double.class, double.class);
             worldGetType = worldServer.getMethod("getType", int.class, int.class, int.class);
         }
+        System.out.println("Loading below 1.12 things...");
         if(ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.V1_12)) {
             getCubes = world.getMethod("a", axisAlignedBB.getParent());
 
             if(ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.V1_8)) {
+                System.out.println("Loading below 1.8 things and below 1.12 things...");
                 //1.7.10 does not have the BlockPosition object yet.
                 addCBoxes = block.getMethod("a", world.getParent(), int.class, int.class, int.class,
                         axisAlignedBB.getParent(), List.class, entity.getParent());
@@ -496,6 +500,7 @@ public class MinecraftReflection {
 
             getFlowMethod = Reflections.getNMSClass("BlockFluids")
                     .getDeclaredMethodByType(vec3D.getParent(), 0);
+            System.out.println("Finished grabbing below 1.12");
         } else if(ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.V1_13)) {
             getCubes = world.getMethod("getCubes", entity.getParent(), axisAlignedBB.getParent());
             addCBoxes = block.getMethod("a", iBlockData.getParent(), world.getParent(), blockPos.getParent(),
@@ -532,7 +537,7 @@ public class MinecraftReflection {
         canDestroyMethod = ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.v1_16)
                 ? playerInventory.getMethod("b",
                 ProtocolVersion.getGameVersion().isAbove(ProtocolVersion.V1_8_9)
-                        ? iBlockData.getParent() : block.getParent())
+                        ? iBlockData.getParent() : itemClass.getParent())
                 : itemStack.getMethod("canDestroySpecialBlock", iBlockData.getParent());
         frictionFactor = (ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.v1_16)
                 ? block : blockBase).getFieldByName("frictionFactor");
