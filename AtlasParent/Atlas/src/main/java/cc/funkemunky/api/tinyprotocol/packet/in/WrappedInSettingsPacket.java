@@ -47,7 +47,7 @@ public class WrappedInSettingsPacket extends NMSObject {
         chatColors = fetch(fieldChatColors);
 
         if(ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.V1_8)) {
-            version = fetch(fieldVersion);
+            this.version = fetch(fieldVersion);
             flags = fetch(fieldFlags);
             showCape = fetch(fieldShowCape);
         } else {

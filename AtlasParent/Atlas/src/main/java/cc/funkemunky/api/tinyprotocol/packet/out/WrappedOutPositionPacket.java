@@ -23,7 +23,7 @@ public class WrappedOutPositionPacket extends NMSObject {
 
     private static WrappedClass packetClass = Reflections.getNMSClass(packet);
     private static WrappedField fieldFlags;
-    private static final WrappedClass enumTeleportFlag = Reflections.getNMSClass("PacketPlayOutPosition$EnumPlayerTeleportFlags");
+    private static final WrappedClass enumTeleportFlag;
 
     // Fields
     private static FieldAccessor<Double> fieldX = fetchField(packet, double.class, 0);
@@ -158,7 +158,9 @@ public class WrappedOutPositionPacket extends NMSObject {
     static {
         if(ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.V1_8)) {
             fieldFlags = packetClass.getFieldByType(byte.class, 0);
+            enumTeleportFlag = null;
         } else {
+            enumTeleportFlag = Reflections.getNMSClass("PacketPlayOutPosition$EnumPlayerTeleportFlags");
             fieldFlags = packetClass.getFieldByType(Set.class, 0);
 
             if(ProtocolVersion.getGameVersion().isOrAbove(ProtocolVersion.V1_9)) {

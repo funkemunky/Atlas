@@ -10,7 +10,7 @@ import org.bukkit.inventory.ItemStack;
 public class BukkitReflection {
     public static WrappedField bukkitChunkField = MinecraftReflection.chunk.getFieldByType(Chunk.class, 0);
     public static WrappedClass spigotConfig;
-    private static WrappedMethod asBukkitCopyItemStack = CraftReflection.craftItemStack
+    private static final WrappedMethod asBukkitCopyItemStack = CraftReflection.craftItemStack
             .getMethod("asBukkitCopy", MinecraftReflection.itemStack.getParent());
 
     public static boolean isBungeeMode() {

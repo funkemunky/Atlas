@@ -85,7 +85,7 @@ public class Reflections {
 
     public static WrappedClass getUtilClass(String name) {
         return getClass((ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.V1_8)
-                ? "net.minecraft.util." : "") + name);
+                ? "net.minecraft.util." : "") + name.replace("cc.funkemunky.api.utils.", ""));
     }
 
     @SneakyThrows
