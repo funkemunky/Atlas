@@ -528,11 +528,14 @@ public class MinecraftReflection {
             blockBase = Reflections.getNMSClass("BlockBase");
         }
 
+        System.out.println("Debug 1");
         if(ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.V1_9)) {
             activeItemField = entityHuman.getFieldByType(itemStack.getParent(), 0);
         } else {
             activeItemField = entityLiving.getFieldByType(itemStack.getParent(), 0);
         }
+
+        System.out.println("Debug 2");
 
         canDestroyMethod = ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.v1_16)
                 ? playerInventory.getMethod("b",
@@ -543,5 +546,7 @@ public class MinecraftReflection {
                 ? block : blockBase).getFieldByName("frictionFactor");
         strength = ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.v1_16)
                 ? block.getFieldByName("strength") : blockBase.getFieldByName("durability");
+
+        System.out.println("Debug 3");
     }
 }
