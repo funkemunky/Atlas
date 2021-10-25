@@ -39,8 +39,6 @@ public class PluginListener {
                         oos.writeUTF("heartbeat");
                         oos.close();
 
-                        System.out.println("Sending back heartbeat");
-
                         event.getTarget().sendPluginMessage(AtlasVelocity.INSTANCE.getOutgoing(), baos.toByteArray());
                         break;
                     }

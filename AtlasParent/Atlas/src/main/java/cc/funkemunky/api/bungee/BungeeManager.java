@@ -57,7 +57,6 @@ public class BungeeManager implements PluginMessageListener {
         }
 
         if(isBungee) {
-            System.out.println("Is Bungee");
             try {
                 ByteArrayOutputStream baos = new ByteArrayOutputStream();
                 ObjectOutputStream oos = new ObjectOutputStream(baos);
@@ -81,7 +80,6 @@ public class BungeeManager implements PluginMessageListener {
                 receivedHeartbeat = false;
                 try {
 
-                    System.out.println("Sending heartbeat");
                     ByteArrayOutputStream baos = new ByteArrayOutputStream();
                     ObjectOutputStream oos = new ObjectOutputStream(baos);
 

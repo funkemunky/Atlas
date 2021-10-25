@@ -79,7 +79,6 @@ public class AtlasMsgListener implements Listener {
                         oos.writeUTF("heartbeat");
                         oos.close();
 
-                        System.out.println("Sending back heartbeat");
                         ProxyServer.getInstance().getServers().values().stream()
                                 .filter(server -> server.getAddress().equals(event.getSender().getAddress()))
                                 .forEach(si -> si.sendData("atlas:in", baos.toByteArray()));
