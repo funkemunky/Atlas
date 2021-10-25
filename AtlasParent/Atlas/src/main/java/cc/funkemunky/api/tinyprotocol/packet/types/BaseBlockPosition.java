@@ -143,9 +143,7 @@ public class BaseBlockPosition extends NMSObject {
 
     @Override
     public void updateObject() {
-        set(fieldX, a);
-        set(fieldY, c);
-        set(fieldZ, c);
+
     }
 
     static {
@@ -161,7 +159,7 @@ public class BaseBlockPosition extends NMSObject {
             fieldX = fetchField(Type.CHUNKPOSITION, int.class, 0);
             fieldY = fetchField(Type.CHUNKPOSITION, int.class, 1);
             fieldZ = fetchField(Type.CHUNKPOSITION, int.class, 2);
-            blockPositionClass = Reflections.getClass(Type.CHUNKPOSITION);
+            blockPositionClass = Reflections.getNMSClass(Type.CHUNKPOSITION);
             blockPosConstructor = blockPositionClass.getConstructor(int.class, int.class, int.class);
             baseBlockPositionClass = null;
             baseBlockPosConstructor = null;

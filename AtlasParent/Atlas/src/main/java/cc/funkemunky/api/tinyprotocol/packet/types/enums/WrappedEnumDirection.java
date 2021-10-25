@@ -5,6 +5,7 @@ import cc.funkemunky.api.reflections.types.WrappedClass;
 import cc.funkemunky.api.tinyprotocol.api.ProtocolVersion;
 import cc.funkemunky.api.tinyprotocol.packet.types.BaseBlockPosition;
 import cc.funkemunky.api.tinyprotocol.packet.types.MathHelper;
+import cc.funkemunky.api.utils.math.IntVector;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -12,12 +13,12 @@ import java.util.Map;
 import java.util.Random;
 
 public enum WrappedEnumDirection {
-    DOWN(1, -1, "down", WrappedEnumDirection.EnumAxisDirection.NEGATIVE, WrappedEnumDirection.EnumAxis.Y, new BaseBlockPosition(0, -1, 0)),
-    UP(0, -1, "up", WrappedEnumDirection.EnumAxisDirection.POSITIVE, WrappedEnumDirection.EnumAxis.Y, new BaseBlockPosition(0, 1, 0)),
-    NORTH(3, 2, "north", WrappedEnumDirection.EnumAxisDirection.NEGATIVE, WrappedEnumDirection.EnumAxis.Z, new BaseBlockPosition(0, 0, -1)),
-    SOUTH(2, 0, "south", WrappedEnumDirection.EnumAxisDirection.POSITIVE, WrappedEnumDirection.EnumAxis.Z, new BaseBlockPosition(0, 0, 1)),
-    WEST(5, 1, "west", WrappedEnumDirection.EnumAxisDirection.NEGATIVE, WrappedEnumDirection.EnumAxis.X, new BaseBlockPosition(-1, 0, 0)),
-    EAST(4, 3, "east", WrappedEnumDirection.EnumAxisDirection.POSITIVE, WrappedEnumDirection.EnumAxis.X, new BaseBlockPosition(1, 0, 0));
+    DOWN(1, -1, "down", WrappedEnumDirection.EnumAxisDirection.NEGATIVE, WrappedEnumDirection.EnumAxis.Y, new IntVector(0, -1, 0)),
+    UP(0, -1, "up", WrappedEnumDirection.EnumAxisDirection.POSITIVE, WrappedEnumDirection.EnumAxis.Y, new IntVector(0, 1, 0)),
+    NORTH(3, 2, "north", WrappedEnumDirection.EnumAxisDirection.NEGATIVE, WrappedEnumDirection.EnumAxis.Z, new IntVector(0, 0, -1)),
+    SOUTH(2, 0, "south", WrappedEnumDirection.EnumAxisDirection.POSITIVE, WrappedEnumDirection.EnumAxis.Z, new IntVector(0, 0, 1)),
+    WEST(5, 1, "west", WrappedEnumDirection.EnumAxisDirection.NEGATIVE, WrappedEnumDirection.EnumAxis.X, new IntVector(-1, 0, 0)),
+    EAST(4, 3, "east", WrappedEnumDirection.EnumAxisDirection.POSITIVE, WrappedEnumDirection.EnumAxis.X, new IntVector(1, 0, 0));
 
     private static final WrappedEnumDirection[] n = new WrappedEnumDirection[6];
     private static final WrappedEnumDirection[] o = new WrappedEnumDirection[4];
@@ -42,10 +43,10 @@ public enum WrappedEnumDirection {
     private final String j;
     private final WrappedEnumDirection.EnumAxis k;
     private final WrappedEnumDirection.EnumAxisDirection l;
-    private final BaseBlockPosition m;
+    private final IntVector m;
     public static WrappedClass enumDirection;
 
-    private WrappedEnumDirection(int order, int offset, String direction, WrappedEnumDirection.EnumAxisDirection axisDirection, WrappedEnumDirection.EnumAxis axis, BaseBlockPosition offsetPosition) {
+    private WrappedEnumDirection(int order, int offset, String direction, WrappedEnumDirection.EnumAxisDirection axisDirection, WrappedEnumDirection.EnumAxis axis, IntVector offsetPosition) {
         this.i = offset;
         this.h = order;
         this.j = direction;

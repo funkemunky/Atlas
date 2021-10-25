@@ -12,6 +12,7 @@ import lombok.Setter;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -33,7 +34,7 @@ public class WrappedOutExplosionPacket extends NMSObject {
             fieldMotionZ = fetchField(packetClass, float.class, 3);
 
     private double x, y, z;
-    private final List<BaseBlockPosition> blockRecords = new ArrayList<>();
+    private List<BaseBlockPosition> blockRecords = Collections.emptyList();
     private float radius, motionX, motionY, motionZ;
 
     public WrappedOutExplosionPacket(Object object, Player player) {
@@ -50,10 +51,17 @@ public class WrappedOutExplosionPacket extends NMSObject {
         motionY = fetch(fieldMotionY);
         motionZ = fetch(fieldMotionZ);
 
+        blockRecords = new ArrayList<>();
+
         final List<Object> blockRecordObjects = fetch(fieldBlockRecords);
 
         for (Object blockRecordObject : blockRecordObjects) {
-            blockRecords.add(new BaseBlockPosition(blockRecordObject));
+            if(blockRecordObject == null) continue;
+
+            blockRecords
+                    .add(new
+                            BaseBlockPosition
+                            (blockRecordObject));
         }
     }
 
