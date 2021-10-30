@@ -186,6 +186,7 @@ public class MathUtils {
     }
 
     //A much lighter but very slightly less accurate Math.sqrt.
+    @Deprecated
     public static double sqrt(double number) {
         if(number == 0) return 0;
         double t;
@@ -273,7 +274,7 @@ public class MathUtils {
 
     public static double getHorizontalDistance(Location from, Location to) {
         double deltaX = to.getX() - from.getX(), deltaZ = to.getZ() - from.getZ();
-        return sqrt(deltaX * deltaX + deltaZ * deltaZ);
+        return Math.sqrt(deltaX * deltaX + deltaZ * deltaZ);
     }
 
     public static double stdev(Collection<Double> list) {
@@ -293,7 +294,7 @@ public class MathUtils {
             num += numi;
         }
 
-        return sqrt(num / list.size());
+        return Math.sqrt(num / list.size());
     }
 
     public static int millisToTicks(long millis) {
@@ -438,16 +439,16 @@ public class MathUtils {
         }
         double difX = to.getX() - from.getX();
         double difZ = to.getZ() - from.getZ();
-        return MathUtils.yawTo180F((float) (Math.atan2(difZ, difX) * 180.0 / 3.141592653589793) - 90.0f);
+        return MathUtils.yawTo180F((float) (FastTrig.fast_atan2(difZ, difX) * 180.0 / 3.141592653589793) - 90.0f);
     }
 
     public static float[] getRotations(Location one, Location two) {
         double diffX = two.getX() - one.getX();
         double diffZ = two.getZ() - one.getZ();
         double diffY = two.getY() + 2.0 - 0.4 - (one.getY() + 2.0);
-        double dist = sqrt(diffX * diffX + diffZ * diffZ);
-        float yaw = (float) (Math.atan2(diffZ, diffX) * 180.0 / 3.141592653589793) - 90.0f;
-        float pitch = (float) (-Math.atan2(diffY, dist) * 180.0 / 3.141592653589793);
+        double dist = Math.sqrt(diffX * diffX + diffZ * diffZ);
+        float yaw = (float) (FastTrig.fast_atan2(diffZ, diffX) * 180.0 / 3.141592653589793) - 90.0f;
+        float pitch = (float) (-FastTrig.fast_atan2(diffY, dist) * 180.0 / 3.141592653589793);
         return new float[]{yaw, pitch};
     }
 
@@ -456,9 +457,9 @@ public class MathUtils {
         double diffX = two.getX() - one.getX();
         double diffZ = two.getZ() - one.getZ();
         double diffY = two.getY() + 2.0 - 0.4 - (one.getY() + 2.0);
-        double dist = sqrt(diffX * diffX + diffZ * diffZ);
-        float yaw = (float) (Math.atan2(diffZ, diffX) * 180.0 / 3.141592653589793) - 90.0f;
-        float pitch = (float) (-Math.atan2(diffY, dist) * 180.0 / 3.141592653589793);
+        double dist = Math.sqrt(diffX * diffX + diffZ * diffZ);
+        float yaw = (float) (FastTrig.fast_atan2(diffZ, diffX) * 180.0 / 3.141592653589793) - 90.0f;
+        float pitch = (float) (-FastTrig.fast_atan2(diffY, dist) * 180.0 / 3.141592653589793);
         return new float[]{yaw, pitch};
     }
 
