@@ -8,7 +8,6 @@ import cc.funkemunky.api.handlers.ForgeHandler;
 import cc.funkemunky.api.reflections.types.WrappedClass;
 import cc.funkemunky.api.tinyprotocol.api.Packet;
 import cc.funkemunky.api.tinyprotocol.packet.in.WrappedInCustomPayload;
-import cc.funkemunky.api.utils.MiscUtils;
 import cc.funkemunky.api.utils.RunUtils;
 import cc.funkemunky.api.utils.Tuple;
 import lombok.Getter;

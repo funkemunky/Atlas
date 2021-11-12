@@ -3,7 +3,8 @@ package cc.funkemunky.api.utils.objects.evicting;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
-import java.util.*;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 @RequiredArgsConstructor
 public class EvictingMap<K, V> extends LinkedHashMap<K, V> {

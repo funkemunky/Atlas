@@ -1,7 +1,6 @@
 package dev.brighten.example;
 
 import cc.funkemunky.api.Atlas;
-import cc.funkemunky.api.utils.MiscUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.event.HandlerList;
 import org.bukkit.plugin.java.JavaPlugin;

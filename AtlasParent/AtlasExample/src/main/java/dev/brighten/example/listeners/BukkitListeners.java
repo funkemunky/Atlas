@@ -5,7 +5,6 @@ import cc.funkemunky.api.tinyprotocol.packet.types.enums.WrappedEnumParticle;
 import cc.funkemunky.api.utils.Init;
 import cc.funkemunky.api.utils.world.BlockData;
 import cc.funkemunky.api.utils.world.CollisionBox;
-import lombok.val;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;

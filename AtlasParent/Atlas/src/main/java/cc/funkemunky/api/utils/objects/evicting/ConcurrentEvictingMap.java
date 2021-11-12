@@ -3,10 +3,7 @@ package cc.funkemunky.api.utils.objects.evicting;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
-import java.util.Deque;
-import java.util.LinkedList;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentSkipListMap;
 
 @RequiredArgsConstructor

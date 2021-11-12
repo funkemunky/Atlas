@@ -2,7 +2,6 @@ package cc.funkemunky.api.listeners;
 
 import cc.funkemunky.api.Atlas;
 import cc.funkemunky.api.utils.Init;
-import cc.funkemunky.api.utils.MiscUtils;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;

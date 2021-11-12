@@ -8,7 +8,6 @@ import cc.funkemunky.api.handlers.protocolsupport.ProtocolAPI;
 import cc.funkemunky.api.tinyprotocol.api.packets.AbstractTinyProtocol;
 import cc.funkemunky.api.tinyprotocol.api.packets.channelhandler.TinyProtocol1_7;
 import cc.funkemunky.api.tinyprotocol.api.packets.channelhandler.TinyProtocol1_8;
-import cc.funkemunky.api.utils.MiscUtils;
 import lombok.Getter;
 import org.bukkit.entity.Player;
 
