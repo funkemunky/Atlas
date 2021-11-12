@@ -20,4 +20,9 @@ public class IntVector {
     public Vector toBukkitVector() {
         return new Vector(x, y, z);
     }
+
+    @Override
+    public String toString() {
+        return String.format("IntVector[%s, %s, %s]", x, y, z);
+    }
 }

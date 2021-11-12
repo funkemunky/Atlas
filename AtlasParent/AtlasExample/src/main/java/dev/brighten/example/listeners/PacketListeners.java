@@ -5,6 +5,7 @@ import cc.funkemunky.api.tinyprotocol.api.Packet;
 import cc.funkemunky.api.tinyprotocol.listener.functions.PacketListener;
 import cc.funkemunky.api.tinyprotocol.packet.in.WrappedInAbilitiesPacket;
 import cc.funkemunky.api.tinyprotocol.packet.in.WrappedInAdvancementsPacket;
+import cc.funkemunky.api.tinyprotocol.packet.in.WrappedInBlockDigPacket;
 import cc.funkemunky.api.utils.Init;
 
 @Init
@@ -22,12 +23,11 @@ public class PacketListeners {
     private PacketListener otherListener = Atlas.getInstance().getPacketProcessor()
             .processAsync(Atlas.getInstance(), listener -> {
                 switch(listener.getType()) {
-                    case Packet.Client.ABILITIES: {
-                        WrappedInAbilitiesPacket packet = new WrappedInAbilitiesPacket(listener.getPacket(), listener.getPlayer());
+                    case Packet.Client.BLOCK_DIG: {
+                        WrappedInBlockDigPacket packet = new WrappedInBlockDigPacket(listener.getPacket(), listener.getPlayer());
 
-                        Atlas.getInstance().alog("&c%s: &f[%s, %s, %s, %s, %s, %s]", listener.getType(),
-                                packet.getFlySpeed(), packet.getWalkSpeed(), packet.isAllowedFlight(),
-                                packet.isCreativeMode(), packet.isFlying(), packet.isInvulnerable());
+                        Atlas.getInstance().alog("&c%s: &f[%s, %s, %s]", listener.getType(),
+                                packet.getAction(), packet.getBlockPosition(), packet.getDirection());
                         break;
                     }
                     case Packet.Client.ADVANCEMENTS: {
@@ -38,7 +38,7 @@ public class PacketListeners {
                         break;
                     }
                 }
-            }, Packet.Client.ABILITIES, Packet.Client.ADVANCEMENTS);
+            }, Packet.Client.BLOCK_DIG, Packet.Client.ADVANCEMENTS);
 
 
 
