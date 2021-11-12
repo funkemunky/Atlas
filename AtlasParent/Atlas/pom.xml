@@ -152,10 +152,6 @@
             <url>https://nexus.funkemunky.cc/content/repositories/releases/</url>
         </repository>
         <repository>
-            <id>aikar</id>
-            <url>https://repo.aikar.co/content/repositories/aikar-release/</url>
-        </repository>
-        <repository>
             <id>aikar-snapshots</id>
             <url>https://repo.aikar.co/content/repositories/aikar-snapshots/</url>
         </repository>
@@ -214,6 +210,12 @@
             <groupId>org.github.spigot</groupId>
             <artifactId>1.17</artifactId>
             <version>1.17</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.github.spigot</groupId>
+            <artifactId>1.17.1</artifactId>
+            <version>1.17.1</version>
             <scope>provided</scope>
         </dependency>
         <dependency>

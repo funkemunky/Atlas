@@ -4,9 +4,14 @@
 
 package cc.funkemunky.api.tinyprotocol.api;
 
+import cc.funkemunky.api.reflections.Reflections;
+import cc.funkemunky.api.reflections.types.WrappedClass;
 import cc.funkemunky.api.tinyprotocol.reflection.Reflection;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import org.bukkit.Bukkit;
+
+import java.util.logging.Level;
 
 //Protocol Version numbers: https://wiki.vg/Protocol_version_numbers
 @Getter
@@ -45,6 +50,7 @@ public enum ProtocolVersion {
     v1_16_4(754, "v1_16_R3"),
     v1_16_5(754, "v1_16_R3"),
     v1_17(755, "v1_17_R1"),
+    v1_17_1(756, "v1_17_R1"),
     UNKNOWN(-1, "UNKNOWN");
 
     @Getter
@@ -55,11 +61,34 @@ public enum ProtocolVersion {
     private final String serverVersion;
 
     private static ProtocolVersion fetchGameVersion() {
+        ProtocolVersion toReturn = UNKNOWN;
         for (ProtocolVersion version : values()) {
-            if (version.getServerVersion() != null && version.getServerVersion().equals(Reflection.VERSION))
-                return version;
+            if (version.getServerVersion() != null && version.getServerVersion().equals(Reflection.VERSION)) {
+                toReturn = version;
+                break;
+            }
         }
-        return UNKNOWN;
+
+        if(toReturn.isOrAbove(ProtocolVersion.v1_17)) {
+            WrappedClass mv = Reflections.getNMSClass("MinecraftVersion");
+            Object mvObject = mv.getFieldByName("a").get(null);
+
+            String version = mv.getFieldByType(String.class, 1).get(mvObject);
+
+            switch(version) {
+                case "1.17.1": {
+                    Bukkit.getLogger().log(Level.INFO, "Version is 1.17.1");
+                    toReturn = v1_17_1;
+                    break;
+                }
+                default: {
+                    toReturn = v1_17;
+                    break;
+                }
+            }
+        }
+
+        return toReturn;
     }
 
     public static ProtocolVersion getVersion(int versionId) {

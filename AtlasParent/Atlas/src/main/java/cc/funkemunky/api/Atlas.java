@@ -436,7 +436,7 @@ public class Atlas extends JavaPlugin {
     
     public void alog(boolean verbose, String log, Object... values) {
         if(!verbose || verboseLogging) {
-            alog(log, values);
+            MiscUtils.printToConsole(log, values);
         }
     }
 

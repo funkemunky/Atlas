@@ -38,7 +38,7 @@ public class PacketListeners {
                         break;
                     }
                 }
-            });
+            }, Packet.Client.ABILITIES, Packet.Client.ADVANCEMENTS);
 
 
 
