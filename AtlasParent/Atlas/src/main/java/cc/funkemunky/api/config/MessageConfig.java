@@ -39,7 +39,7 @@ public class MessageConfig {
             String line = file.getLines().get(i);
 
             int lineNumber = i; //For the sole purpose of using in the consumer below since it needs the int as final.
-            if(runCheck(line, reason -> MiscUtils.printToConsole("&cError while parsing message "
+            if(runCheck(line, reason -> Atlas.getInstance().alog("&cError while parsing message "
                         + "&8(&f" + language + "&8) &con line " + lineNumber))) {
                 return;
             }

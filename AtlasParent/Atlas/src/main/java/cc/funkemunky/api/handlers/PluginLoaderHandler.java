@@ -25,7 +25,7 @@ public class PluginLoaderHandler implements Listener {
     public void onEvent(PluginEnableEvent event) {
         val description = event.getPlugin().getDescription();
         if(description.getDepend().contains("Atlas") || description.getSoftDepend().contains("Atlas")) {
-            MiscUtils.printToConsole("&7Plugin &f" + description.getName() + " &7has been detected!");
+            Atlas.getInstance().alog("&7Plugin &f" + description.getName() + " &7has been detected!");
             loadedPlugins.add(event.getPlugin());
 
             loadPlugin(event.getPlugin());
@@ -36,7 +36,7 @@ public class PluginLoaderHandler implements Listener {
     public void onEvent(PluginDisableEvent event) {
         if(loadedPlugins.contains(event.getPlugin())) {
             val description = event.getPlugin().getDescription();
-            MiscUtils.printToConsole("&7Plugin &f" + description.getName() + " &7is being unloaded.");
+            Atlas.getInstance().alog("&7Plugin &f" + description.getName() + " &7is being unloaded.");
             loadedPlugins.remove(event.getPlugin());
 
             Atlas.getInstance().getPluginCommandManagers().computeIfPresent(description.getName(), (key, obj) -> {
@@ -54,7 +54,7 @@ public class PluginLoaderHandler implements Listener {
         try {
             val plClass = Class.forName(plugin.getDescription().getMain());
             if(plClass.isAnnotationPresent(AutoLoad.class)) {
-                MiscUtils.printToConsole("&cAutoload is commencing...");
+                Atlas.getInstance().alog("&cAutoload is commencing...");
                 Atlas.getInstance().initializeScanner((JavaPlugin) plugin, true, true);
             }
         } catch (ClassNotFoundException e) {

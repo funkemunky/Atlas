@@ -83,6 +83,9 @@ public class Atlas extends JavaPlugin {
 
     @ConfigSetting(path = "updater", name = "autoDownload")
     private static boolean autoDownload = false;
+    
+    @ConfigSetting(path = "logging", name = "verbose")
+    private static boolean verboseLogging = true;
 
     @ConfigSetting(name = "metrics")
     private static boolean metricsEnabled = true;
@@ -103,9 +106,9 @@ public class Atlas extends JavaPlugin {
         registerConfig(this);
         consoleSender = Bukkit.getConsoleSender();
 
-        MiscUtils.printToConsole(Color.Red + "Loading Atlas...");
+        alog("&cLoading Atlas...");
 
-        MiscUtils.printToConsole(Color.Gray + "Firing up the thread turbines...");
+        alog(Color.Gray + "Firing up the thread turbines...");
         service = Executors.newFixedThreadPool(3);
         schedular = Executors.newSingleThreadScheduledExecutor();
         eventManager = new EventManager();
@@ -119,7 +122,7 @@ public class Atlas extends JavaPlugin {
         profileStart = System.currentTimeMillis();
         profile = new BaseProfiler();
 
-        MiscUtils.printToConsole(Color.Gray + "Loading utilities and managers...");
+        alog(Color.Gray + "Loading utilities and managers...");
         blockBoxManager = new BlockBoxManager();
         funkeCommandManager = new FunkeCommandManager();
 
@@ -127,7 +130,7 @@ public class Atlas extends JavaPlugin {
 
         runTasks();
 
-        MiscUtils.printToConsole(Color.Gray + "Starting scanner...");
+        alog(Color.Gray + "Starting scanner...");
 
         initializeScanner(getClass(), this,
                 null,
@@ -136,37 +139,37 @@ public class Atlas extends JavaPlugin {
 
         funkeCommandManager.addCommand(this, new AtlasCommand());
 
-        MiscUtils.printToConsole(Color.Gray + "Loading other managers and utilities...");
+        alog(Color.Gray + "Loading other managers and utilities...");
 
         if(metricsEnabled) {
-            MiscUtils.printToConsole(Color.Gray + "Setting up bStats Metrics...");
+            alog(Color.Gray + "Setting up bStats Metrics...");
             metrics = new Metrics(this);
         }
 
-        MiscUtils.printToConsole(Color.Gray + "Checking for updates...");
+        alog(Color.Gray + "Checking for updates...");
         if(updater.needsToUpdate()) {
-            MiscUtils.printToConsole(Color.Yellow
+            alog(Color.Yellow
                     + "There is an update available. See more information with /atlas update.");
 
             if(autoDownload) {
-                MiscUtils.printToConsole(Color.Gray + "Downloading new version...");
+                alog(Color.Gray + "Downloading new version...");
                 updater.downloadNewVersion();
-                MiscUtils.printToConsole(Color.Green + "Atlas v" + updater.getLatestUpdate()
+                alog(Color.Green + "Atlas v" + updater.getLatestUpdate()
                         + " has been downloaded. Please restart/reload your server to import it.");
             }
         }
 
-        MiscUtils.printToConsole(Color.Green + "Loading WorldInfo system...");
+        alog(Color.Green + "Loading WorldInfo system...");
         Bukkit.getWorlds().forEach(w -> worldInfoMap.put(w.getUID(), new WorldInfo(w)));
 
         bungeeManager = new BungeeManager();
 
-        MiscUtils.printToConsole(Color.Green + "Successfully loaded Atlas and its utilities!");
+        alog(Color.Green + "Successfully loaded Atlas and its utilities!");
         done = true;
     }
 
     public void onDisable() {
-        MiscUtils.printToConsole(Color.Gray + "Unloading all Atlas hooks...");
+        alog(Color.Gray + "Unloading all Atlas hooks...");
         HandlerList.unregisterAll(this);
         Bukkit.getScheduler().cancelTasks(this);
         packetProcessor.shutdown();
@@ -185,7 +188,7 @@ public class Atlas extends JavaPlugin {
             worldInfoMap.clear();
         }
 
-        MiscUtils.printToConsole(Color.Gray
+        alog(Color.Gray
                 + "Disabling all plugins that depend on Atlas to prevent any errors...");
         Arrays.stream(Bukkit.getPluginManager().getPlugins())
                 .filter(plugin -> plugin.getDescription().getDepend().contains("Atlas")
@@ -193,7 +196,7 @@ public class Atlas extends JavaPlugin {
                 .forEach(plugin -> MiscUtils.unloadPlugin(plugin.getName()));
         shutdownExecutor();
 
-        MiscUtils.printToConsole(Color.Red + "Completed shutdown process.");
+        alog(Color.Red + "Completed shutdown process.");
     }
 
 
@@ -365,31 +368,31 @@ public class Atlas extends JavaPlugin {
                     if(loadListeners) {
                         if(obj instanceof AtlasListener) {
                             Atlas.getInstance().getEventManager().registerListeners((AtlasListener)obj, plugin);
-                            MiscUtils.printToConsole("&7Registered Atlas listener &e"
+                            alog(true,"&7Registered Atlas listener &e"
                                     + c.getParent().getSimpleName() + "&7.");
                         }
                         if(obj instanceof Listener) {
                             Bukkit.getPluginManager().registerEvents((Listener)obj, plugin);
-                            MiscUtils.printToConsole("&7Registered Bukkit listener &e"
+                            alog(true,"&7Registered Bukkit listener &e"
                                     + c.getParent().getSimpleName() + "&7.");
                         }
                     }
 
                     if(loadCommands && annotation.commands()) {
-                        MiscUtils.printToConsole("&7Registering commands in class &e"
+                        alog(true,"&7Registering commands in class &e"
                                 + c.getParent().getSimpleName() + "&7...");
                         Atlas.getInstance().getCommandManager(plugin).registerCommands(obj);
                     }
 
                     if(obj instanceof BaseCommand) {
-                        MiscUtils.printToConsole("&7Found BaseCommand for class &e"
+                        alog(true,"&7Found BaseCommand for class &e"
                                 + c.getParent().getSimpleName() + "&7! Registering commands...");
                         getBukkitCommandManager(plugin).registerCommand((BaseCommand)obj);
                     }
 
                     for (WrappedMethod method : c.getMethods()) {
                         if(method.getMethod().isAnnotationPresent(Invoke.class)) {
-                            MiscUtils.printToConsole("&7Invoking method &e" + method.getName() + " &7in &e"
+                            alog(true,"&7Invoking method &e" + method.getName() + " &7in &e"
                                     + c.getClass().getSimpleName() + "&7...");
                             method.invoke(obj);
                         }
@@ -397,7 +400,7 @@ public class Atlas extends JavaPlugin {
 
                     for (WrappedField field : c.getFields()) {
                         if(field.isAnnotationPresent(Instance.class)) {
-                            MiscUtils.printToConsole("&7Setting instance of &e"
+                            alog(true,"&7Setting instance of &e"
                                     + c.getClass().getSimpleName() + " &7on field &e"
                                     + field.getField().getName() + "&7...");
                             field.set(obj, obj);
@@ -408,23 +411,33 @@ public class Atlas extends JavaPlugin {
                                     ? setting.name()
                                     : field.getField().getName();
 
-                            MiscUtils.printToConsole("&7Found ConfigSetting &e" + field.getField().getName()
+                            alog(true,"&7Found ConfigSetting &e" + field.getField().getName()
                                     + " &7(default=&f" + (setting.hide() ? "HIDDEN" : field.get(obj)) + "&7.");
 
 
                             if(plugin.getConfig().get(setting.path() + "." + name) == null) {
-                                MiscUtils.printToConsole("&7Value not set in config! Setting value...");
+                                alog(true,"&7Value not set in config! Setting value...");
                                 plugin.getConfig().set(setting.path() + "." + name, field.get(obj));
                                 plugin.saveConfig();
                             } else {
                                 Object configObj = plugin.getConfig().get(setting.path() + "." + name);
-                                MiscUtils.printToConsole("&7Set field to value &e"
+                                alog(true,"&7Set field to value &e"
                                         + (setting.hide() ? "HIDDEN" : configObj) + "&7.");
                                 field.set(obj, configObj);
                             }
                         }
                     }
                 });
+    }
+    
+    public void alog(String log, Object... values) {
+        alog(false, log, values);
+    }
+    
+    public void alog(boolean verbose, String log, Object... values) {
+        if(!verbose || verboseLogging) {
+            alog(log, values);
+        }
     }
 
     public void initializeScanner(Class<? extends Plugin> mainClass, Plugin plugin) {

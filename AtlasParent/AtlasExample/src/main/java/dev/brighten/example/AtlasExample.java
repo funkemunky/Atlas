@@ -26,7 +26,7 @@ public class AtlasExample extends JavaPlugin {
     }
 
     private void print(String msg, boolean enable) {
-        MiscUtils.printToConsole("&7"
+        Atlas.getInstance().alog("&7"
                 + (enable ? "Enabling " : "Disabling ") + msg + "...");
     }
 }

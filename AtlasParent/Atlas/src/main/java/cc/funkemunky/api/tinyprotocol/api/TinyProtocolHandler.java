@@ -30,7 +30,7 @@ public class TinyProtocolHandler {
         // 1.8+ and 1.7 NMS have different class paths for their libraries used. This is why we have to separate the two.
         // These feed the packets asynchronously, before Minecraft processes it, into our own methods to process and be used as an API.
 
-        MiscUtils.printToConsole("&cLegacy has been enabled for any plugins that use this legacy system.");
+        Atlas.getInstance().alog("&cLegacy has been enabled for any plugins that use this legacy system.");
 
         TinyProtocolHandler self = this;
         // 1.8+ and 1.7 NMS have different class paths for their libraries used. This is why we have to separate the two.

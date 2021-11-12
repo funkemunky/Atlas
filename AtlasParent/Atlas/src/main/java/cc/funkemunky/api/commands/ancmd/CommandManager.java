@@ -102,7 +102,7 @@ public class CommandManager implements CommandExecutor {
 
     public void unregisterCommands() {
         registered.forEach(cmd -> {
-            MiscUtils.printToConsole(Color.Yellow + "Unregistered " + cmd.getLabel());
+            Atlas.getInstance().alog(true,Color.Yellow + "Unregistered " + cmd.getLabel());
             unregisterBukkitCommand(cmd);
         });
         commands.clear();
@@ -115,7 +115,7 @@ public class CommandManager implements CommandExecutor {
         registered.stream()
                 .filter(cmd -> cmd.getName().equalsIgnoreCase(name) || cmd.getLabel().equalsIgnoreCase(name))
                 .forEach(cmd -> {
-                    MiscUtils.printToConsole(Color.Yellow + "Unregistered " + cmd.getLabel());
+                    Atlas.getInstance().alog(true, Color.Yellow + "Unregistered " + cmd.getLabel());
                     unregisterBukkitCommand(cmd);
                 });
     }
@@ -127,7 +127,8 @@ public class CommandManager implements CommandExecutor {
             HashMap<String, Command> knownCommands = (HashMap<String, Command>) map;
             knownCommands.remove(cmd.getName());
             for (String alias : cmd.getAliases()){
-                if(knownCommands.containsKey(alias) && knownCommands.get(alias).toString().contains(Atlas.getInstance().getName())){
+                if(knownCommands.containsKey(alias) && knownCommands.get(alias).toString()
+                        .contains(Atlas.getInstance().getName())) {
                     knownCommands.remove(alias);
                 }
             }
@@ -141,7 +142,8 @@ public class CommandManager implements CommandExecutor {
         List<String> argsList = new ArrayList<>();
         String[] args;
         if(label.contains(":")) {
-            val splitLabel = (label.replace(label.split(":")[0] + ":", "")).split(":");
+            val splitLabel = (label.replace(label.split(":")[0] + ":", ""))
+                    .split(":");
             argsList.addAll(Arrays.asList(splitLabel));
             argsList.addAll(Arrays.asList(argsArray));
             args = argsList.toArray(new String[0]);
@@ -169,11 +171,15 @@ public class CommandManager implements CommandExecutor {
                             sender.sendMessage(Color.Red + "This command can only be run via terminal.");
                         } else {
                             int subCommand = bufferString.split("\\.").length - 1;
-                            String[] modArgs = IntStream.range(0, args.length - subCommand).mapToObj(i -> args[i + subCommand]).toArray(String[]::new);
+                            String[] modArgs = IntStream.range(0, args.length - subCommand)
+                                    .mapToObj(i -> args[i + subCommand]).toArray(String[]::new);
 
-                            String labelFinal = IntStream.range(0, subCommand).mapToObj(x -> " " + args[x]).collect(Collectors.joining("", label, ""));
-                            if(command.permission().length == 0 || Arrays.stream(command.permission()).anyMatch(sender::hasPermission)) {
-                                CommandAdapter adapter = new CommandAdapter(sender, cmd, sender instanceof Player ? (Player) sender : null, labelFinal, command, modArgs);
+                            String labelFinal = IntStream.range(0, subCommand).mapToObj(x -> " " + args[x])
+                                    .collect(Collectors.joining("", label, ""));
+                            if(command.permission().length == 0 || Arrays.stream(command.permission())
+                                    .anyMatch(sender::hasPermission)) {
+                                CommandAdapter adapter = new CommandAdapter(sender, cmd, sender instanceof Player
+                                        ? (Player) sender : null, labelFinal, command, modArgs);
                                 try {
                                     entry.getMethod().invoke(entry.getObject(), adapter);
                                 } catch (Exception e) {
@@ -193,11 +199,15 @@ public class CommandManager implements CommandExecutor {
                         sender.sendMessage(Color.Red + "This command can only be run via terminal.");
                     } else {
                         int subCommand = bufferString.split("\\.").length - 1;
-                        String[] modArgs = IntStream.range(0, args.length - subCommand).mapToObj(i -> args[i + subCommand]).toArray(String[]::new);
+                        String[] modArgs = IntStream.range(0, args.length - subCommand)
+                                .mapToObj(i -> args[i + subCommand]).toArray(String[]::new);
 
-                        String labelFinal = IntStream.range(0, subCommand).mapToObj(x -> " " + args[x]).collect(Collectors.joining("", label, ""));
-                        if(command.permission().length == 0 || Arrays.stream(command.permission()).anyMatch(sender::hasPermission)) {
-                            CommandAdapter adapter = new CommandAdapter(sender, cmd, sender instanceof Player ? (Player) sender : null, labelFinal, command, modArgs);
+                        String labelFinal = IntStream.range(0, subCommand).mapToObj(x -> " " + args[x])
+                                .collect(Collectors.joining("", label, ""));
+                        if(command.permission().length == 0 || Arrays.stream(command.permission())
+                                .anyMatch(sender::hasPermission)) {
+                            CommandAdapter adapter = new CommandAdapter(sender, cmd, sender instanceof Player
+                                    ? (Player) sender : null, labelFinal, command, modArgs);
                             try {
                                 entry.getMethod().invoke(entry.getObject(), adapter);
                             } catch (Exception e) {
@@ -217,7 +227,8 @@ public class CommandManager implements CommandExecutor {
     }
 
     public ColorScheme getDefaultScheme() {
-        return new ColorScheme(Color.Gold + Color.Bold, Color.Gray, Color.Yellow, Color.White, Color.Dark_Gray, Color.Red, Color.White);
+        return new ColorScheme(Color.Gold + Color.Bold, Color.Gray, Color.Yellow, Color.White,
+                Color.Dark_Gray, Color.Red, Color.White);
     }
 
     public void runHelpMessage(CommandAdapter command, CommandSender sender, ColorScheme scheme) {
@@ -225,7 +236,9 @@ public class CommandManager implements CommandExecutor {
             int page = command.getArgs().length > 0 ? Integer.parseInt(command.getArgs()[0]) : 1;
             Set<Command> argumentSet = new HashSet<>();
 
-            commands.keySet().stream().filter(key -> key.contains(".") && key.startsWith(command.getLabel().toLowerCase())).forEach(key -> {
+            commands.keySet().stream()
+                    .filter(key -> key.contains(".") && key.startsWith(command.getLabel().toLowerCase()))
+                    .forEach(key -> {
                 CommandRegister reg = commands.get(key);
 
                 Command cmd = reg.getMethod().getMethod().getAnnotation(Command.class);
@@ -236,16 +249,20 @@ public class CommandManager implements CommandExecutor {
             List<Command> arguments = new ArrayList<>(argumentSet);
 
             sender.sendMessage(MiscUtils.line(Color.Dark_Gray));
-            sender.sendMessage(scheme.getTitle() + command.getAnnotation().display() + scheme.getBody() + " Help " + scheme.getValue() + "Page (" + page + " / " + (int) MathUtils.round(arguments.size() / 6D) + ")");
+            sender.sendMessage(scheme.getTitle() + command.getAnnotation().display() + scheme.getBody()
+                    + " Help " + scheme.getValue() + "Page (" + page + " / "
+                    + (int) MathUtils.round(arguments.size() / 6D) + ")");
             sender.sendMessage("");
-            sender.sendMessage(Color.translate(scheme.getBody2nd()) + "<> " + scheme.getBody() + "= required. " + scheme.getBody2nd() + " [] " + scheme.getBody() +  "= optional.");
+            sender.sendMessage(Color.translate(scheme.getBody2nd()) + "<> " + scheme.getBody() + "= required. "
+                    + scheme.getBody2nd() + " [] " + scheme.getBody() +  "= optional.");
             sender.sendMessage("");
             if (sender instanceof Player) {
                 StringBuilder cmdaliasesFormatted = new StringBuilder();
                 List<String> cmdaliases = Arrays.asList(command.getAnnotation().aliases());
                 if (cmdaliases.size() > 0) {
                     for (String aliase : cmdaliases) {
-                        cmdaliasesFormatted.append(scheme.getValue()).append(aliase).append(scheme.getBody()).append(", ");
+                        cmdaliasesFormatted.append(scheme.getValue()).append(aliase).append(scheme.getBody())
+                                .append(", ");
                     }
                     int length = cmdaliasesFormatted.length();
                     cmdaliasesFormatted = new StringBuilder(cmdaliasesFormatted.substring(0, length - 2));
@@ -253,9 +270,13 @@ public class CommandManager implements CommandExecutor {
                     cmdaliasesFormatted = new StringBuilder(scheme.getError() + "None");
                 }
                 JsonMessage cmdMessage = new JsonMessage();
-                String commandText = Color.translate((command.getAnnotation().permission().length > 0 ? scheme.getTitle() + "Permissions: " + scheme.getValue() + " " + Arrays.toString(command.getAnnotation().permission()) : scheme.getTitle() + "Permission: " + scheme.getValue() + "none")
+                String commandText = Color.translate((command.getAnnotation().permission().length > 0
+                        ? scheme.getTitle() + "Permissions: " + scheme.getValue() + " "
+                        + Arrays.toString(command.getAnnotation().permission())
+                        : scheme.getTitle() + "Permission: " + scheme.getValue() + "none")
                         + "\n" + scheme.getTitle() +  "Aliases: " + scheme.getValue() + cmdaliasesFormatted);
-                cmdMessage.addText(scheme.getBody()+ "/" + scheme.getValue() + command.getLabel().toLowerCase() + scheme.getBody() + " to " + command.getAnnotation().description()).addHoverText(commandText);
+                cmdMessage.addText(scheme.getBody()+ "/" + scheme.getValue() + command.getLabel().toLowerCase()
+                        + scheme.getBody() + " to " + command.getAnnotation().description()).addHoverText(commandText);
                 cmdMessage.sendToPlayer((Player) sender);
                 for (int i = (page - 1) * 6; i < Math.min(page * 6, arguments.size()); i++) {
                     JsonMessage message = new JsonMessage();
@@ -265,7 +286,8 @@ public class CommandManager implements CommandExecutor {
                     List<String> aliases = Arrays.asList(argument.aliases());
                     if (aliases.size() > 0) {
                         for (String aliase : aliases) {
-                            aliasesFormatted.append(scheme.getValue()).append(aliase).append(scheme.getBody()).append(", ");
+                            aliasesFormatted.append(scheme.getValue()).append(aliase).append(scheme.getBody())
+                                    .append(", ");
                         }
                         int length = aliasesFormatted.length();
                         aliasesFormatted = new StringBuilder(aliasesFormatted.substring(0, length - 2));
@@ -274,78 +296,30 @@ public class CommandManager implements CommandExecutor {
                     }
 
 
-                    String hoverText = Color.translate((argument.permission().length > 0 ? scheme.getTitle() + "Permissions: " + scheme.getValue() + " " + Arrays.toString(argument.permission()) : scheme.getTitle() + "Permission: " + scheme.getValue() + "none")
+                    String hoverText = Color.translate((argument.permission().length > 0 ? scheme.getTitle()
+                            + "Permissions: " + scheme.getValue() + " " + Arrays.toString(argument.permission())
+                            : scheme.getTitle() + "Permission: " + scheme.getValue() + "none")
                             + "\n" + scheme.getTitle() +  "Aliases: " + scheme.getValue() + aliasesFormatted.toString());
-                    message.addText(scheme.getBody()+ "/" + command.getLabel().toLowerCase() + scheme.getValue() + " " + (argument.display().length() > 0 ? argument.display() : argument.name()) + scheme.getBody() + " to " + argument.description()).addHoverText(hoverText);
+                    message.addText(scheme.getBody()+ "/" + command.getLabel().toLowerCase()
+                            + scheme.getValue() + " " + (argument.display().length() > 0 ? argument.display()
+                            : argument.name()) + scheme.getBody() + " to " + argument.description())
+                            .addHoverText(hoverText);
                     message.sendToPlayer((Player) sender);
                 }
             } else {
-                sender.sendMessage(scheme.getBody()+ "/" + scheme.getValue() + command.getLabel().toLowerCase() + scheme.getBody() + " to " + command.getAnnotation().description());
+                sender.sendMessage(scheme.getBody()+ "/" + scheme.getValue() + command.getLabel().toLowerCase()
+                        + scheme.getBody() + " to " + command.getAnnotation().description());
                 for (int i = (page - 1) * 6; i < Math.min(arguments.size(), page * 6); i++) {
                     Command argument = arguments.get(i);
-                    sender.sendMessage(scheme.getBody()+ "/" + command.getLabel().toLowerCase() + scheme.getValue() + " " + (argument.display().length() > 0 ? argument.display() : argument.name()) + scheme.getBody() + " to " + argument.description());
+                    sender.sendMessage(scheme.getBody()+ "/" + command.getLabel().toLowerCase() + scheme.getValue()
+                            + " " + (argument.display().length() > 0 ? argument.display() : argument.name())
+                            + scheme.getBody() + " to " + argument.description());
                 }
             }
             sender.sendMessage(MiscUtils.line(Color.Dark_Gray));
         } catch(NumberFormatException e) {
             sender.sendMessage(scheme.getError() + "The page input must be a number only!");
         }
-        /*try {
-            int page = args.length > 0 ? Integer.parseInt(args[0]) : 1;
-            sender.sendMessage(MiscUtils.line(Color.Dark_Gray));
-            sender.sendMessage(commandMessages.getTitleColor() + Color.Bold + this.display + commandMessages.getSecondaryColor() + " Command Help " + commandMessages.getValueColor() + "Page (" + page + " / " + (int) MathUtils.round(arguments.size() / 6D) + ")");
-            sender.sendMessage("");
-            sender.sendMessage(Color.translate(commandMessages.getSecondaryColor() + "<> " + commandMessages.getPrimaryColor() + "= required. " + commandMessages.getSecondaryColor() + " [] " + commandMessages.getPrimaryColor() +  "= optional."));
-            sender.sendMessage("");
-            if (sender instanceof Player) {
-                for (int i = (page - 1) * 6; i < Math.min(page * 6, arguments.size()); i++) {
-                    FunkeArgument argument = arguments.get(i);
-                    JsonMessage message = new JsonMessage();
-
-                    StringBuilder aliasesFormatted = new StringBuilder();
-                    List<String> aliases = argument.getAliases();
-                    if (aliases.size() > 0) {
-                        for (String aliase : aliases) {
-                            aliasesFormatted.append(Color.White).append(aliase).append(Color.Gray).append(", ");
-                        }
-                        int length = aliasesFormatted.length();
-                        aliasesFormatted = new StringBuilder(aliasesFormatted.substring(0, length - 2));
-                    } else {
-                        aliasesFormatted = new StringBuilder(commandMessages.getErrorColor() + "None");
-                    }
-
-
-                    String hoverText = Color.translate((argument.getPermission() != null && argument.getPermission().length > 0 ? commandMessages.getTitleColor() + "Permissions: " + commandMessages.getValueColor() + " " + Arrays.toString(argument.getPermission()) : commandMessages.getTitleColor() + "Permission: " + commandMessages.getValueColor() + "none")
-                            + "\n" + commandMessages.getTitleColor() +  "Aliases: " + commandMessages.getValueColor() + aliasesFormatted);
-                    message.addText(commandMessages.getPrimaryColor()+ "/" + label.toLowerCase() + commandMessages.getValueColor() + " " + argument.getDisplay() + commandMessages.getPrimaryColor() + " to " + argument.getDescription()).addHoverText(hoverText);
-                    message.sendToPlayer((Player) sender);
-                }
-            } else {
-                for (int i = (page - 1) * 6; i < Math.min(arguments.size(), page * 6); i++) {
-                    FunkeArgument argument = arguments.get(i);
-                    sender.sendMessage(commandMessages.getPrimaryColor() + "/" + label.toLowerCase() + commandMessages.getValueColor() + " " + argument.getDisplay() + commandMessages.getPrimaryColor() + " to " + argument.getDescription());
-                }
-            }
-            sender.sendMessage(MiscUtils.line(Color.Dark_Gray));
-        } catch (NumberFormatException e) {
-            for (FunkeArgument argument : this.arguments) {
-
-                if (!args[0].equalsIgnoreCase(argument.getName()) && !argument.getAliases().contains(args[0].toLowerCase()))
-                    continue;
-
-                if ((argument.getPermission() == null || sender.hasPermission(adminPerm)
-                        || sender.hasPermission(permission))) {
-                    if(!argument.isPlayerOnly() || sender instanceof Player) {
-                        argument.onArgument(sender, cmd, args);
-                    } else {
-                        sender.sendMessage(commandMessages.getErrorColor() + commandMessages.getPlayerOnly());
-                    }
-                    break;
-                }
-                sender.sendMessage(commandMessages.getErrorColor() + commandMessages.getNoPermission());
-                break;
-            }
-        }*/
     }
 
     public void registerCommand(Command command, String label, WrappedMethod method, Object clazz) {
@@ -367,7 +341,7 @@ public class CommandManager implements CommandExecutor {
             TabHandler.INSTANCE.addTabComplete(requirements, split[split.length - 1].replace("/", ""));
         }
         Arrays.stream(annotation.aliases()).forEach(alias -> commands.put(alias.toLowerCase(), cmdReg));
-        MiscUtils.printToConsole(Color.Yellow + "Registered ancmd: " + annotation.name());
+        Atlas.getInstance().alog(Color.Yellow + "Registered ancmd: " + annotation.name());
 
         String cmdLabel = label.split("\\.")[0].toLowerCase();
 

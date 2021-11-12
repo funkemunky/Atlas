@@ -143,7 +143,7 @@ public class BungeeManager implements PluginMessageListener {
                             break;
                         }
                         case "GetServers": {
-                            MiscUtils.printToConsole("&7Grabbed servers.");
+                            Atlas.getInstance().alog(true,"&7Grabbed servers.");
                             bungeeServers.clear();
                             bungeeServers.addAll(Arrays.asList(input.readUTF().split(", ")));
                             break;
@@ -157,10 +157,6 @@ public class BungeeManager implements PluginMessageListener {
             } else if (channel.equals(atlasIn)) {
                 try {
                     ObjectInputStream input = new ObjectInputStream(stream);
-
-                    if(input.available() < 3) {
-                        System.out.println("Something went wrong reading atlasin [" + input.available() + "]");
-                    }
 
                     String dataType = input.readUTF();
                     switch (dataType) {
@@ -299,7 +295,7 @@ public class BungeeManager implements PluginMessageListener {
                 output.writeLong(System.currentTimeMillis());
                 sendData(baos.toByteArray(), atlasOut);
             } catch (IOException e) {
-                MiscUtils.printToConsole("&cFailed to check if the server is connected to Bungee!");
+                Atlas.getInstance().alog("&cFailed to check if the server is connected to Bungee!");
                 e.printStackTrace();
             }
         }, 20*30, 20*60);

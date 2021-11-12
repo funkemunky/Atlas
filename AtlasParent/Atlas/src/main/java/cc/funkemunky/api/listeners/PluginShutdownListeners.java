@@ -14,12 +14,12 @@ public class PluginShutdownListeners implements Listener {
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onEvent(PluginDisableEvent event) {
         if(event.getPlugin().getDescription().getDepend().contains("Atlas")) {
-            MiscUtils.printToConsole("&c" + event.getPlugin().getName() + "" +
+            Atlas.getInstance().alog("&c" + event.getPlugin().getName() + "" +
                     " &7has been shutdown. Removing its hooks and listeners...");
             Atlas.getInstance().getFunkeCommandManager().removeAll(event.getPlugin());
             Atlas.getInstance().getBukkitCommandManager(event.getPlugin()).unregisterCommands();
             Atlas.getInstance().removePluginInstances(event.getPlugin());
-            MiscUtils.printToConsole("&aCompleted!");
+            Atlas.getInstance().alog("&aCompleted!");
         }
     }
 }
