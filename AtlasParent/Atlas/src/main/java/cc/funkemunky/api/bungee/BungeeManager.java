@@ -205,16 +205,6 @@ public class BungeeManager implements PluginMessageListener {
                             if(success) versionsMap.put(uuid, new Version(version, brand, legacy));
                             break;
                         }
-                    /*case "ping": {
-                        String name = input.readUTF();
-                        long start = input.readLong();
-                        long halfPing = input.readLong();
-
-                        bungeePing = System.currentTimeMillis() - start;
-                        bungeeToPing = halfPing;
-                        bungeeFromPing = MathUtils.getDelta(bungeePing, bungeeToPing);
-                        break;
-                    }*/
                     }
                 } catch (IOException | ClassNotFoundException e) {
                     e.printStackTrace();
@@ -278,26 +268,4 @@ public class BungeeManager implements PluginMessageListener {
     public void onPluginMessageReceived(String s, Player player, byte[] bytes) {
 
     }
-
-    /*private void runServerCheckTask() {
-        if(serverCheckTask != null) serverCheckTask.cancel();
-        serverCheckTask = RunUtils.taskTimerAsync(() -> {
-            try {
-                ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                ObjectOutputStream output = new ObjectOutputStream(baos);
-                output.writeUTF("GetServers");
-                sendData(baos.toByteArray());
-
-                baos = new ByteArrayOutputStream();
-                output = new ObjectOutputStream(baos);
-
-                output.writeUTF("ping");
-                output.writeLong(System.currentTimeMillis());
-                sendData(baos.toByteArray(), atlasOut);
-            } catch (IOException e) {
-                Atlas.getInstance().alog("&cFailed to check if the server is connected to Bungee!");
-                e.printStackTrace();
-            }
-        }, 20*30, 20*60);
-    }*/
 }

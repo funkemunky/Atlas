@@ -341,7 +341,7 @@ public class CommandManager implements CommandExecutor {
             TabHandler.INSTANCE.addTabComplete(requirements, split[split.length - 1].replace("/", ""));
         }
         Arrays.stream(annotation.aliases()).forEach(alias -> commands.put(alias.toLowerCase(), cmdReg));
-        Atlas.getInstance().alog(Color.Yellow + "Registered ancmd: " + annotation.name());
+        Atlas.getInstance().alog(true, Color.Yellow + "Registered ancmd: " + annotation.name());
 
         String cmdLabel = label.split("\\.")[0].toLowerCase();
 
