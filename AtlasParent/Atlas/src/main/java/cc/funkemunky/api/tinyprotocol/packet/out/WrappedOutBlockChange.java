@@ -37,8 +37,8 @@ public class WrappedOutBlockChange extends NMSObject {
 
     private BaseBlockPosition position;
 
-    public WrappedOutBlockChange(Object packet) {
-        super(packet);
+    public WrappedOutBlockChange(Object packet, Player player) {
+        super(packet, player);
     }
 
     public WrappedOutBlockChange(Block block) {
