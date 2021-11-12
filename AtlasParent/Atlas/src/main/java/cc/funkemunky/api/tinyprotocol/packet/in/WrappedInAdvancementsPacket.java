@@ -18,6 +18,10 @@ public class WrappedInAdvancementsPacket extends NMSObject {
     public Status status;
     public WrappedMinecraftKey key;
 
+    public WrappedInAdvancementsPacket(Object object, Player player) {
+        super(object, player);
+    }
+
     private static WrappedField fieldStatus = fetchField(packet, statusClass.getParent(), 0),
             fieldKey = fetchField(packet, WrappedMinecraftKey.vanilla.getParent(), 0);
 
