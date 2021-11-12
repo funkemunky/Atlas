@@ -3,9 +3,7 @@ package dev.brighten.example.listeners;
 import cc.funkemunky.api.Atlas;
 import cc.funkemunky.api.tinyprotocol.api.Packet;
 import cc.funkemunky.api.tinyprotocol.listener.functions.PacketListener;
-import cc.funkemunky.api.tinyprotocol.packet.in.WrappedInAbilitiesPacket;
-import cc.funkemunky.api.tinyprotocol.packet.in.WrappedInAdvancementsPacket;
-import cc.funkemunky.api.tinyprotocol.packet.in.WrappedInBlockDigPacket;
+import cc.funkemunky.api.tinyprotocol.packet.in.*;
 import cc.funkemunky.api.utils.Init;
 
 @Init
@@ -23,22 +21,21 @@ public class PacketListeners {
     private PacketListener otherListener = Atlas.getInstance().getPacketProcessor()
             .processAsync(Atlas.getInstance(), listener -> {
                 switch(listener.getType()) {
-                    case Packet.Client.BLOCK_DIG: {
-                        WrappedInBlockDigPacket packet = new WrappedInBlockDigPacket(listener.getPacket(), listener.getPlayer());
+                    case Packet.Client.BLOCK_PLACE: {
+                        WrappedInBlockPlacePacket packet = new WrappedInBlockPlacePacket(listener.getPacket(), listener.getPlayer());
 
-                        Atlas.getInstance().alog("&c%s: &f[%s, %s, %s]", listener.getType(),
-                                packet.getAction(), packet.getBlockPosition(), packet.getDirection());
+                        Atlas.getInstance().alog("&c%s: &f[%s, %s, %s, %s, %s, %s]", listener.getType(),
+                                packet.getBlockPosition(), packet.getFace(), packet.getItemStack(), packet.getVecX(), packet.getVecY(), packet.getVecZ());
                         break;
                     }
-                    case Packet.Client.ADVANCEMENTS: {
-                        WrappedInAdvancementsPacket packet = new WrappedInAdvancementsPacket(listener.getPacket(), listener.getPlayer());
+                    case Packet.Client.BLOCK_PLACE_1_9: {
+                        WrappedInBlockPlace1_9 packet = new WrappedInBlockPlace1_9(listener.getPacket(), listener.getPlayer());
 
-                        Atlas.getInstance().alog("&c%s: &f[%s, %s, %s]",
-                                packet.key.namespace, packet.key.key, packet.status.name());
+                        Atlas.getInstance().alog("&c%s: &f[%s, %s]", listener.getType(), packet.mainHand, packet.timeStamp);
                         break;
                     }
                 }
-            }, Packet.Client.BLOCK_DIG, Packet.Client.ADVANCEMENTS);
+            }, Packet.Client.BLOCK_PLACE, Packet.Client.BLOCK_PLACE_1_9);
 
 
 
