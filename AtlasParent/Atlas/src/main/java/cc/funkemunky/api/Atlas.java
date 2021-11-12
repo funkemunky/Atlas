@@ -12,6 +12,8 @@ import cc.funkemunky.api.metrics.Metrics;
 import cc.funkemunky.api.profiling.BaseProfiler;
 import cc.funkemunky.api.reflections.Reflections;
 import cc.funkemunky.api.reflections.types.WrappedClass;
+import cc.funkemunky.api.reflections.types.WrappedField;
+import cc.funkemunky.api.reflections.types.WrappedMethod;
 import cc.funkemunky.api.tinyprotocol.api.ProtocolVersion;
 import cc.funkemunky.api.tinyprotocol.api.TinyProtocolHandler;
 import cc.funkemunky.api.tinyprotocol.listener.PacketProcessor;
@@ -318,8 +320,8 @@ public class Atlas extends JavaPlugin {
                         return Reflections.getClass(name);
                     }
                 })
-                .filter(Objects::nonNull)
                 .filter(c -> {
+                    if(c == null) return false;
                     Init init = c.getAnnotation(Init.class);
                     //If the current version is 1.8, but the required version is 1.9, this will return false.
                     if(ProtocolVersion.getGameVersion().isBelow(init.requireProtocolVersion())) return false;
@@ -385,44 +387,43 @@ public class Atlas extends JavaPlugin {
                         getBukkitCommandManager(plugin).registerCommand((BaseCommand)obj);
                     }
 
-                    c.getMethods(method -> method.getMethod().isAnnotationPresent(Invoke.class))
-                            .forEach(method -> {
-                                MiscUtils.printToConsole("&7Invoking method &e" + method.getName() + " &7in &e"
-                                        + c.getClass().getSimpleName() + "&7...");
-                                method.invoke(obj);
-                            });
+                    for (WrappedMethod method : c.getMethods()) {
+                        if(method.getMethod().isAnnotationPresent(Invoke.class)) {
+                            MiscUtils.printToConsole("&7Invoking method &e" + method.getName() + " &7in &e"
+                                    + c.getClass().getSimpleName() + "&7...");
+                            method.invoke(obj);
+                        }
+                    }
 
-                    c.getFields(field -> field.isAnnotationPresent(Instance.class))
-                            .forEach(field -> {
-                                MiscUtils.printToConsole("&7Setting instance of &e"
-                                        + c.getClass().getSimpleName() + " &7on field &e"
-                                        + field.getField().getName() + "&7...");
-                                field.set(obj, obj);
-                            });
+                    for (WrappedField field : c.getFields()) {
+                        if(field.isAnnotationPresent(Instance.class)) {
+                            MiscUtils.printToConsole("&7Setting instance of &e"
+                                    + c.getClass().getSimpleName() + " &7on field &e"
+                                    + field.getField().getName() + "&7...");
+                            field.set(obj, obj);
+                        } else if(field.isAnnotationPresent(ConfigSetting.class)) {
+                            ConfigSetting setting = field.getAnnotation(ConfigSetting.class);
 
-                    c.getFields(field -> field.isAnnotationPresent(ConfigSetting.class))
-                            .forEach(field -> {
-                                ConfigSetting setting = field.getAnnotation(ConfigSetting.class);
+                            String name = setting.name().length() > 0
+                                    ? setting.name()
+                                    : field.getField().getName();
 
-                                String name = setting.name().length() > 0
-                                        ? setting.name()
-                                        : field.getField().getName();
-
-                                MiscUtils.printToConsole("&7Found ConfigSetting &e" + field.getField().getName()
-                                        + " &7(default=&f" + (setting.hide() ? "HIDDEN" : field.get(obj)) + "&7.");
+                            MiscUtils.printToConsole("&7Found ConfigSetting &e" + field.getField().getName()
+                                    + " &7(default=&f" + (setting.hide() ? "HIDDEN" : field.get(obj)) + "&7.");
 
 
-                                if(plugin.getConfig().get(setting.path() + "." + name) == null) {
-                                    MiscUtils.printToConsole("&7Value not set in config! Setting value...");
-                                    plugin.getConfig().set(setting.path() + "." + name, field.get(obj));
-                                    plugin.saveConfig();
-                                } else {
-                                    Object configObj = plugin.getConfig().get(setting.path() + "." + name);
-                                    MiscUtils.printToConsole("&7Set field to value &e"
-                                            + (setting.hide() ? "HIDDEN" : configObj) + "&7.");
-                                    field.set(obj, configObj);
-                                }
-                            });
+                            if(plugin.getConfig().get(setting.path() + "." + name) == null) {
+                                MiscUtils.printToConsole("&7Value not set in config! Setting value...");
+                                plugin.getConfig().set(setting.path() + "." + name, field.get(obj));
+                                plugin.saveConfig();
+                            } else {
+                                Object configObj = plugin.getConfig().get(setting.path() + "." + name);
+                                MiscUtils.printToConsole("&7Set field to value &e"
+                                        + (setting.hide() ? "HIDDEN" : configObj) + "&7.");
+                                field.set(obj, configObj);
+                            }
+                        }
+                    }
                 });
     }
 
