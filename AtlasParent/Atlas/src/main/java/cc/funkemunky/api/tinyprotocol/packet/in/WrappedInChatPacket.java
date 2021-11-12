@@ -4,6 +4,7 @@ import cc.funkemunky.api.tinyprotocol.api.NMSObject;
 import cc.funkemunky.api.tinyprotocol.api.ProtocolVersion;
 import cc.funkemunky.api.tinyprotocol.reflection.FieldAccessor;
 import lombok.Getter;
+import lombok.Setter;
 import org.bukkit.entity.Player;
 
 public class WrappedInChatPacket extends NMSObject {
@@ -16,6 +17,7 @@ public class WrappedInChatPacket extends NMSObject {
     }
 
     @Getter
+    @Setter
     private String message;
 
     @Override
@@ -25,6 +27,6 @@ public class WrappedInChatPacket extends NMSObject {
 
     @Override
     public void updateObject() {
-        setObject(NMSObject.construct(getObject(), packet, message));
+        set(messageAccessor, message);
     }
 }

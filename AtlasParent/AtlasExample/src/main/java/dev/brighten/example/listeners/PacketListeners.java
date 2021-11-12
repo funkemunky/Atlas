@@ -2,9 +2,12 @@ package dev.brighten.example.listeners;
 
 import cc.funkemunky.api.Atlas;
 import cc.funkemunky.api.tinyprotocol.api.Packet;
+import cc.funkemunky.api.tinyprotocol.api.TinyProtocolHandler;
 import cc.funkemunky.api.tinyprotocol.listener.functions.PacketListener;
 import cc.funkemunky.api.tinyprotocol.packet.in.*;
+import cc.funkemunky.api.tinyprotocol.packet.out.WrappedOutTransaction;
 import cc.funkemunky.api.utils.Init;
+import cc.funkemunky.api.utils.RunUtils;
 
 @Init
 public class PacketListeners {
@@ -19,23 +22,41 @@ public class PacketListeners {
             }, Packet.Client.FLYING, Packet.Client.POSITION_LOOK, Packet.Client.LOOK, Packet.Client.POSITION);*/
 
     private PacketListener otherListener = Atlas.getInstance().getPacketProcessor()
-            .processAsync(Atlas.getInstance(), listener -> {
+            .process(Atlas.getInstance(), listener -> {
                 switch(listener.getType()) {
-                    case Packet.Client.BLOCK_PLACE: {
-                        WrappedInBlockPlacePacket packet = new WrappedInBlockPlacePacket(listener.getPacket(), listener.getPlayer());
+                    case Packet.Client.TRANSACTION: {
+                        WrappedInTransactionPacket packet = new WrappedInTransactionPacket(listener.getPacket(), listener.getPlayer());
 
-                        Atlas.getInstance().alog("&c%s: &f[%s, %s, %s, %s, %s, %s]", listener.getType(),
-                                packet.getBlockPosition(), packet.getFace(), packet.getItemStack(), packet.getVecX(), packet.getVecY(), packet.getVecZ());
+                        Atlas.getInstance().alog("&c%s: &f[%s, %s, %s]", listener.getType(),
+                                packet.getAction(), packet.getId(), packet.isAccept());
                         break;
                     }
-                    case Packet.Client.BLOCK_PLACE_1_9: {
-                        WrappedInBlockPlace1_9 packet = new WrappedInBlockPlace1_9(listener.getPacket(), listener.getPlayer());
+                    case Packet.Client.WINDOW_CLICK: {
+                        WrappedInWindowClickPacket packet = new WrappedInWindowClickPacket(listener.getPacket(),
+                                listener.getPlayer());
 
-                        Atlas.getInstance().alog("&c%s: &f[%s, %s]", listener.getType(), packet.mainHand, packet.timeStamp);
+                        Atlas.getInstance().alog("&c%s: &f[%s, %s, %s, %s, %s, %s, %s]",
+                                listener.getType(),
+                                packet.getId(), packet.getAction(), packet.getButton(), packet.getCounter(), packet.getItem(), packet.getMode(), packet.getSlot());
+                        break;
+                    }
+                    case Packet.Client.USE_ENTITY: {
+                        WrappedInUseEntityPacket packet = new WrappedInUseEntityPacket(listener.getPacket(),
+                                listener.getPlayer());
+
+                        Atlas.getInstance().alog(true, "Sending trans");
+                        RunUtils.task(() -> {
+                            WrappedOutTransaction trans = new WrappedOutTransaction(0, (short)69, false);
+
+                            TinyProtocolHandler.sendPacket(listener.getPlayer(), trans.getObject());
+                        });
+
+                        Atlas.getInstance().alog("&c%s: &f[%s, %s, %s, %s]",
+                                listener.getType(), packet.getId(), packet.getAction(), packet.getEntity(), packet.getEnumHand());
                         break;
                     }
                 }
-            }, Packet.Client.BLOCK_PLACE, Packet.Client.BLOCK_PLACE_1_9);
+            }, Packet.Client.TRANSACTION, Packet.Client.WINDOW_CLICK, Packet.Client.USE_ENTITY);
 
 
 
