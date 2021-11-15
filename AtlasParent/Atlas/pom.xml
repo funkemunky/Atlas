@@ -128,15 +128,6 @@
                     </execution>
                 </executions>
             </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-release-plugin</artifactId>
-                <version>3.0.0-M4</version>
-                <configuration>
-                    <username>funkemunky</username>
-                    <password>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</password>
-                </configuration>
-            </plugin>
         </plugins>
         <resources>
             <resource>
