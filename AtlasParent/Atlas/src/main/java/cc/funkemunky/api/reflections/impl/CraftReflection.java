@@ -25,6 +25,7 @@ public class CraftReflection {
     public static WrappedClass craftServer = Reflections.getCBClass("CraftServer"); //1.7-1.14\
     public static WrappedClass craftChunk = Reflections.getCBClass("CraftChunk");
     public static WrappedClass craftMagicNumbers = Reflections.getCBClass("util.CraftMagicNumbers");
+    public static WrappedClass craftChatMessage = Reflections.getCBClass("util.CraftChatMessage");
 
     //Vanilla Instances
     private static WrappedMethod itemStackInstance = craftItemStack.getMethod("asNMSCopy", ItemStack.class); //1.7-1.14
@@ -41,6 +42,8 @@ public class CraftReflection {
     private static WrappedMethod methodGetBlockFromMaterial = ProtocolVersion.getGameVersion()
             .isOrAbove(ProtocolVersion.V1_13) ? craftMagicNumbers.getMethod("getBlock", Material.class)
             : craftMagicNumbers.getMethod("getBlock", int.class);
+    private static final WrappedMethod fromComponent = craftChatMessage.getMethod("fromComponent",
+            MinecraftReflection.iChatBaseComponent.getParent());
 
     public static <T> T getVanillaItemStack(ItemStack stack) {
         return itemStackInstance.invoke(null, stack);
@@ -88,5 +91,9 @@ public class CraftReflection {
         } else {
             return methodGetBlockFromMaterial.invoke(null, material.getId());
         }
+    }
+
+    public static String getMessageFromComp(Object ichatcomp, String defaultColor) {
+        return fromComponent.invoke(null, ichatcomp);
     }
 }

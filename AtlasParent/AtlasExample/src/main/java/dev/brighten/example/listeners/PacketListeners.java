@@ -10,10 +10,7 @@ import cc.funkemunky.api.tinyprotocol.listener.functions.PacketListener;
 import cc.funkemunky.api.tinyprotocol.packet.in.*;
 import cc.funkemunky.api.tinyprotocol.packet.login.WrappedHandshakingInSetProtocol;
 import cc.funkemunky.api.tinyprotocol.packet.login.WrappedStatusInPing;
-import cc.funkemunky.api.tinyprotocol.packet.out.WrappedOutAbilitiesPacket;
-import cc.funkemunky.api.tinyprotocol.packet.out.WrappedOutBlockChange;
-import cc.funkemunky.api.tinyprotocol.packet.out.WrappedOutChatPacket;
-import cc.funkemunky.api.tinyprotocol.packet.out.WrappedOutTransaction;
+import cc.funkemunky.api.tinyprotocol.packet.out.*;
 import cc.funkemunky.api.utils.Init;
 import cc.funkemunky.api.utils.RunUtils;
 
@@ -90,36 +87,33 @@ public class PacketListeners implements AtlasListener {
     private PacketListener outListener = Atlas.getInstance().getPacketProcessor()
             .process(Atlas.getInstance(), listener -> {
                 switch(listener.getType()) {
-                    case Packet.Server.ABILITIES: {
-                        WrappedOutAbilitiesPacket packet = new WrappedOutAbilitiesPacket(listener.getPacket(), listener.getPlayer());
+                    case Packet.Server.CLOSE_WINDOW: {
+                        WrappedOutCloseWindowPacket packet = new WrappedOutCloseWindowPacket(listener.getPacket(), listener.getPlayer());
 
-                        Atlas.getInstance().alog("&c%s: &f[%s, %s, %s, %s, %s, %s]", listener.getType(),
-                                packet.getFlySpeed(), packet.getWalkSpeed(), packet.isFlying(),
-                                packet.isAllowedFlight(), packet.isCreativeMode(), packet.isInvulnerable());
+                        Atlas.getInstance().alog("&c%s: &f[%s]", listener.getType(),
+                                packet.id);
                         break;
                     }
-                    case Packet.Server.BLOCK_CHANGE: {
-                        WrappedOutBlockChange packet = new WrappedOutBlockChange(listener.getPacket(),
+                    case Packet.Server.CUSTOM_PAYLOAD: {
+                        WrappedOutCustomPayload packet = new WrappedOutCustomPayload(listener.getPacket(),
                                 listener.getPlayer());
 
-                        Atlas.getInstance().alog("&c%s: &f[%s]",
-                                listener.getType(),
-                                packet.getPosition());
+                        Atlas.getInstance().alog("&c%s: &f[%s, %s]", listener.getType(),
+                                packet.getData().length, packet.getTag());
                         break;
                     }
-                    case Packet.Server.CHAT: {
-                        WrappedOutChatPacket packet = new WrappedOutChatPacket(listener.getPacket(),
+                    case Packet.Server.ENTITY_EFFECT: {
+                        WrappedOutEntityEffectPacket packet = new WrappedOutEntityEffectPacket(listener.getPacket(),
                                 listener.getPlayer());
 
-                        Atlas.getInstance().alog("&c%s: &f[%s, %s, %s, %s]",
-                                listener.getType(), packet.getChatType(), packet.getMessage(), packet.getUuid());
-                        packet.getMessage().addExtra(" [Appended Message]");
+                        Atlas.getInstance().alog("&c%s: &f[%s, %s, %s, %s, %s]", listener.getType(),
+                                packet.amplifier, packet.duration, packet.effectId, packet.entityId, packet.flags);
 
                         packet.updateObject();
                         break;
                     }
                 }
-            }, Packet.Server.ABILITIES, Packet.Server.BLOCK_CHANGE, Packet.Server.CHAT);
+            }, Packet.Server.CLOSE_WINDOW, Packet.Server.CUSTOM_PAYLOAD, Packet.Server.ENTITY_EFFECT);
 
 
     /*@Listen

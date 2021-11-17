@@ -1,6 +1,9 @@
 package cc.funkemunky.api.tinyprotocol.packet.out;
 
+import cc.funkemunky.api.Atlas;
 import cc.funkemunky.api.reflections.Reflections;
+import cc.funkemunky.api.reflections.impl.CraftReflection;
+import cc.funkemunky.api.reflections.impl.MinecraftReflection;
 import cc.funkemunky.api.reflections.types.WrappedClass;
 import cc.funkemunky.api.reflections.types.WrappedConstructor;
 import cc.funkemunky.api.reflections.types.WrappedField;
@@ -14,9 +17,12 @@ import lombok.Setter;
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.chat.ComponentSerializer;
+import org.bukkit.Bukkit;
+import org.bukkit.craftbukkit.v1_14_R1.inventory.CraftBlastingRecipe;
 import org.bukkit.entity.Player;
 
 import java.util.UUID;
+import java.util.logging.Level;
 
 @Getter
 @Setter
@@ -65,8 +71,18 @@ public class WrappedOutChatPacket extends NMSObject {
     @Override
     public void process(Player player, ProtocolVersion version) {
         //Getting the message
-        Object chatComp = fetch(chatCompField);
-        message = new TextComponent(ComponentSerializer.parse(getTextMethod.invoke(chatComp)));
+
+        BaseComponent[] components = fetch(fieldComponents);
+
+        if(components != null) {
+            message = new TextComponent(components);
+        } else {
+            Object chatComp = fetch(chatCompField);
+
+            if(chatComp != null) {
+                message = new TextComponent(CraftReflection.getMessageFromComp(chatComp, "WHITE"));
+            }
+        }
 
         //Getting the chat type.
         chatType = WrappedChatMessageType.fromNMS(fetch(chatTypeField));

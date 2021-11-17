@@ -38,7 +38,8 @@ public class MinecraftReflection {
     public static WrappedClass block = Reflections.getNMSClass("Block");
     public static WrappedClass iBlockData, blockBase,
             chunkProviderServer = Reflections.getNMSClass("ChunkProviderServer");
-    public static WrappedClass itemClass = Reflections.getNMSClass("Item");
+    public static WrappedClass itemClass = Reflections.getNMSClass("Item"),
+            enumChatFormat = Reflections.getNMSClass("EnumChatFormat");;
     public static WrappedClass world = Reflections.getNMSClass("World");
     public static WrappedClass worldServer = Reflections.getNMSClass("WorldServer");
     public static WrappedClass playerInventory = Reflections.getNMSClass("PlayerInventory");
