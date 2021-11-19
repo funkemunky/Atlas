@@ -106,6 +106,8 @@ public class PacketListeners implements AtlasListener {
                         WrappedOutEntityEffectPacket packet = new WrappedOutEntityEffectPacket(listener.getPacket(),
                                 listener.getPlayer());
 
+                        TinyProtocolHandler.sendPacket(listener.getPlayer(), new WrappedOutCustomPayload("payload", new byte[0]));
+
                         Atlas.getInstance().alog("&c%s: &f[%s, %s, %s, %s, %s]", listener.getType(),
                                 packet.amplifier, packet.duration, packet.effectId, packet.entityId, packet.flags);
 

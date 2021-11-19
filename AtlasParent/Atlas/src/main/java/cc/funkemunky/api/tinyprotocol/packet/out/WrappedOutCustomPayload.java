@@ -18,12 +18,19 @@ public class WrappedOutCustomPayload extends NMSObject {
     }
 
     public WrappedOutCustomPayload(String tag, byte[] data) {
-        setObject(payloadClass.getConstructor().newInstance());
+        if(ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.v1_17)) {
+            setObject(payloadClass.getConstructor().newInstance());
 
-        this.tag = tag;
-        this.data = data;
+            this.tag = tag;
+            this.data = data;
 
-        updateObject();
+            updateObject();
+        } else {
+            setObject(payloadClass.getConstructor(minecraftKeyWrapper.getParent(),
+                    WrappedPacketDataSerializer.vanillaClass.getParent())
+                    .newInstance(minecraftKeyWrapper.getConstructor(String.class)
+                            .newInstance(tag), new WrappedPacketDataSerializer(data).getObject()));
+        }
     }
 
     private static WrappedClass payloadClass = Reflections.getNMSClass(Server.CUSTOM_PAYLOAD);

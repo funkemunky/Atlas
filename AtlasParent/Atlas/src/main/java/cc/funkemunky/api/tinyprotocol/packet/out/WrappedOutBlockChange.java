@@ -42,9 +42,11 @@ public class WrappedOutBlockChange extends NMSObject {
 
     public WrappedOutBlockChange(Block block) {
         if(ProtocolVersion.getGameVersion().isAbove(ProtocolVersion.V1_7_10)) {
-            setPacket(packet, block.getX(), block.getY(), block.getZ(), ReflectionsUtil.getWorldHandle(block.getWorld()));
+            setPacket(packet, block.getX(), block.getY(), block.getZ(), ReflectionsUtil
+                    .getWorldHandle(block.getWorld()));
         } else {
-            setPacket(packet, ReflectionsUtil.getWorldHandle(block.getWorld()), new BaseBlockPosition(block.getX(), block.getY(), block.getZ()).getAsBlockPosition());
+            setPacket(packet, ReflectionsUtil.getWorldHandle(block.getWorld()),
+                    new BaseBlockPosition(block.getX(), block.getY(), block.getZ()).getAsBlockPosition());
         }
     }
 
@@ -71,7 +73,8 @@ public class WrappedOutBlockChange extends NMSObject {
             nmsBlockClass = Reflections.getNMSClass("Block");
             blockChangeBlockField = blockChangeClass.getFirstFieldByType(nmsBlockClass.getParent());
             blockDataIntField = blockChangeClass.getFieldByName("data");
-            getDataMethod = Reflections.getNMSClass("World").getMethod("getData", int.class, int.class, int.class);
+            getDataMethod = Reflections.getNMSClass("World").getMethod("getData",
+                    int.class, int.class, int.class);
         } else {
             blockPosAccessor = blockChangeClass.getFieldByType(MinecraftReflection.blockPos.getParent(), 0);
             iBlockDataField = blockChangeClass.getFieldByType(MinecraftReflection.iBlockData.getParent(), 0);

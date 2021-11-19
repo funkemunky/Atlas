@@ -45,11 +45,11 @@ public class WrappedOutEntityEffectPacket extends NMSObject {
     }
 
     static {
-        fieldEntityId = wrapped.getFieldByType(int.class, 0);
+        fieldEntityId = wrapped.getFieldByType(int.class, ProtocolVersion.getGameVersion().isOrAbove(ProtocolVersion.v1_17) ? 3 : 0);
         fieldEffectId = wrapped.getFieldByType(byte.class, 0);
         fieldAmplifier = wrapped.getFieldByType(byte.class, 1);
         if(ProtocolVersion.getGameVersion().isAbove(ProtocolVersion.V1_7_10)) {
-            fieldDuration = wrapped.getFieldByType(int.class, 1);
+            fieldDuration = wrapped.getFieldByType(int.class, 1 + (ProtocolVersion.getGameVersion().isOrAbove(ProtocolVersion.v1_17) ? 3 : 0));
             fieldFlags = wrapped.getFieldByType(byte.class, 2);
         } else  fieldDuration = wrapped.getFieldByType(short.class, 0);
     }
