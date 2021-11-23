@@ -411,8 +411,9 @@ public class Atlas extends JavaPlugin {
                                     ? setting.name()
                                     : field.getField().getName();
 
-                            alog(true,"&7Found ConfigSetting &e" + field.getField().getName()
-                                    + " &7(default=&f" + (setting.hide() ? "HIDDEN" : field.get(obj)) + "&7.");
+                            alog(true, "&7Found ConfigSetting &e%s &7(default=&f%s&7).",
+                                    field.getField().getName(),
+                                    (setting.hide() ? "HIDDEN" : field.get(obj)));
 
 
                             if(plugin.getConfig().get(setting.path() + "." + name) == null) {
@@ -421,8 +422,8 @@ public class Atlas extends JavaPlugin {
                                 plugin.saveConfig();
                             } else {
                                 Object configObj = plugin.getConfig().get(setting.path() + "." + name);
-                                alog(true,"&7Set field to value &e"
-                                        + (setting.hide() ? "HIDDEN" : configObj) + "&7.");
+                                alog(true, "&7Set field to value &e%s&7.",
+                                        (setting.hide() ? "HIDDEN" : configObj));
                                 field.set(obj, configObj);
                             }
                         }
@@ -436,7 +437,9 @@ public class Atlas extends JavaPlugin {
     
     public void alog(boolean verbose, String log, Object... values) {
         if(!verbose || verboseLogging) {
-            alog(log, values);
+            if(values.length > 0)
+            MiscUtils.printToConsole(log, values);
+            else MiscUtils.printToConsole(log);
         }
     }
 

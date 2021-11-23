@@ -4,13 +4,13 @@
 
     <parent>
         <groupId>cc.funkemunky.utils</groupId>
-        <version>1.10.0-SNAPSHOT</version>
+        <version>1.10.0-SNAPSHOT-b10</version>
         <artifactId>atlas-parent</artifactId>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
     <artifactId>Atlas</artifactId>
-    <version>1.10.0-SNAPSHOT</version>
+    <version>1.10.0-SNAPSHOT-b10</version>
 
     <scm>
         <developerConnection>scm:git:https://github.com/funkemunky/Atlas</developerConnection>
@@ -130,11 +130,29 @@
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-release-plugin</artifactId>
-                <version>3.0.0-M4</version>
+                <artifactId>maven-deploy-plugin</artifactId>
+                <version>2.8.1</version>
                 <configuration>
-                    <username>funkemunky</username>
-                    <password>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</password>
+                    <skip>true</skip>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.sonatype.plugins</groupId>
+                <artifactId>nexus-staging-maven-plugin</artifactId>
+                <version>1.5.1</version>
+                <executions>
+                    <execution>
+                        <id>default-deploy</id>
+                        <phase>deploy</phase>
+                        <goals>
+                            <goal>deploy</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <serverId>funkemunky</serverId>
+                    <nexusUrl>https://nexus.funkemunky.cc</nexusUrl>
+                    <skipStaging>true</skipStaging>
                 </configuration>
             </plugin>
         </plugins>
@@ -152,10 +170,6 @@
             <url>https://nexus.funkemunky.cc/content/repositories/releases/</url>
         </repository>
         <repository>
-            <id>aikar</id>
-            <url>https://repo.aikar.co/content/repositories/aikar-release/</url>
-        </repository>
-        <repository>
             <id>aikar-snapshots</id>
             <url>https://repo.aikar.co/content/repositories/aikar-snapshots/</url>
         </repository>
@@ -167,14 +181,12 @@
 
     <distributionManagement>
         <snapshotRepository>
-            <id>github</id>
-            <name>GitHub funkemunky Apache Maven Packages</name>
-            <url>https://maven.pkg.github.com/funkemunky/Atlas</url>
+            <id>funkemunky-snapshots</id>
+            <url>https://nexus.funkemunky.cc/content/repositories/snapshots/</url>
         </snapshotRepository>
         <repository>
-            <id>github</id>
-            <name>GitHub funkemunky Apache Maven Packages</name>
-            <url>https://maven.pkg.github.com/funkemunky/Atlas</url>
+            <id>funkemunky-releases</id>
+            <url>https://nexus.funkemunky.cc/content/repositories/releases/</url>
         </repository>
     </distributionManagement>
 
@@ -197,6 +209,12 @@
             <version>1.8.8</version>
             <scope>provided</scope>
         </dependency>
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <version>1.4.199</version>
+            <scope>compile</scope>
+        </dependency>
         <!-- https://mvnrepository.com/artifact/com.google.code.gson/gson -->
         <dependency>
             <groupId>com.google.code.gson</groupId>
@@ -214,6 +232,12 @@
             <groupId>org.github.spigot</groupId>
             <artifactId>1.17</artifactId>
             <version>1.17</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.github.spigot</groupId>
+            <artifactId>1.17.1</artifactId>
+            <version>1.17.1</version>
             <scope>provided</scope>
         </dependency>
         <dependency>

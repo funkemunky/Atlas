@@ -1,6 +1,7 @@
 package cc.funkemunky.api.tinyprotocol.packet.out;
 
 import cc.funkemunky.api.reflections.Reflections;
+import cc.funkemunky.api.reflections.impl.MinecraftReflection;
 import cc.funkemunky.api.reflections.types.WrappedClass;
 import cc.funkemunky.api.reflections.types.WrappedField;
 import cc.funkemunky.api.reflections.types.WrappedMethod;
@@ -27,25 +28,25 @@ public class WrappedOutBlockChange extends NMSObject {
     private static WrappedMethod getDataMethod;
 
     //1.8 and newer
-    private static FieldAccessor<Object> blockPosAccessor;
-    private static WrappedField iBlockDataField;
+    private static WrappedField iBlockDataField, blockPosAccessor;
 
 
-    private static WrappedClass blockChangeClass = Reflections.getNMSClass(packet);
-    private static WrappedClass nmsBlockClass = Reflections.getNMSClass("Block");
-    private static WrappedClass craftBlockClass = Reflections.getCBClass("CraftBlock");
+    private static final WrappedClass blockChangeClass = Reflections.getNMSClass(packet);
+    private static WrappedClass nmsBlockClass;
 
     private BaseBlockPosition position;
 
-    public WrappedOutBlockChange(Object packet) {
-        super(packet);
+    public WrappedOutBlockChange(Object packet, Player player) {
+        super(packet, player);
     }
 
     public WrappedOutBlockChange(Block block) {
         if(ProtocolVersion.getGameVersion().isAbove(ProtocolVersion.V1_7_10)) {
-            setPacket(packet, block.getX(), block.getY(), block.getZ(), ReflectionsUtil.getWorldHandle(block.getWorld()));
+            setPacket(packet, block.getX(), block.getY(), block.getZ(), ReflectionsUtil
+                    .getWorldHandle(block.getWorld()));
         } else {
-            setPacket(packet, ReflectionsUtil.getWorldHandle(block.getWorld()), new BaseBlockPosition(block.getX(), block.getY(), block.getZ()).getAsBlockPosition());
+            setPacket(packet, ReflectionsUtil.getWorldHandle(block.getWorld()),
+                    new BaseBlockPosition(block.getX(), block.getY(), block.getZ()).getAsBlockPosition());
         }
     }
 
@@ -69,13 +70,14 @@ public class WrappedOutBlockChange extends NMSObject {
             legacyY = fetchField(packet, int.class, 1);
             legacyZ = fetchField(packet, int.class, 2);
 
-
+            nmsBlockClass = Reflections.getNMSClass("Block");
             blockChangeBlockField = blockChangeClass.getFirstFieldByType(nmsBlockClass.getParent());
             blockDataIntField = blockChangeClass.getFieldByName("data");
-            getDataMethod = Reflections.getNMSClass("World").getMethod("getData", int.class, int.class, int.class);
+            getDataMethod = Reflections.getNMSClass("World").getMethod("getData",
+                    int.class, int.class, int.class);
         } else {
-            blockPosAccessor = fetchField(packet, Object.class, 0);
-            iBlockDataField = blockChangeClass.getFieldByType(ReflectionsUtil.iBlockData, 0);
+            blockPosAccessor = blockChangeClass.getFieldByType(MinecraftReflection.blockPos.getParent(), 0);
+            iBlockDataField = blockChangeClass.getFieldByType(MinecraftReflection.iBlockData.getParent(), 0);
         }
     }
 }
