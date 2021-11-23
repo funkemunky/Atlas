@@ -111,7 +111,7 @@ public class ClassScanner {
     private static void scanPath2(String file, Path path, Set<String> plugins) {
         if (Files.exists(path)) {
             if (Files.isDirectory(path)) {
-                scanDirectory(file, path, plugins);
+                scanDirectory2(file, path, plugins);
             } else {
                 scanZip2(file, path, plugins);
             }
