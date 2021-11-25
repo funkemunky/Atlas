@@ -43,7 +43,7 @@ public class WrappedInWindowClickPacket extends NMSObject {
         id = fetch(fieldId);
         slot = fetch(fieldSlot).shortValue();
         byte button = (byte)(this.button = fetch(fieldButton));
-        counter = ((Integer)fetch(fieldAction)).shortValue();
+        counter = (ProtocolVersion.getGameVersion().isOrAbove(ProtocolVersion.v1_17) ? ((Integer)fetch(fieldAction)).shortValue() : fetch(fieldAction));
         item = toBukkitStack(fetch(fieldItemStack));
 
         if (ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.V1_9)) {

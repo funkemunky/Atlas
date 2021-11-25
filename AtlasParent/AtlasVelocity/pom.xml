@@ -3,7 +3,7 @@
     <parent>
         <artifactId>atlas-parent</artifactId>
         <groupId>cc.funkemunky.utils</groupId>
-        <version>1.10.0-SNAPSHOT-b10</version>
+        <version>1.10.0-SNAPSHOT-b10-HOTFIX</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
     <modelVersion>4.0.0</modelVersion>

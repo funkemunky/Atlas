@@ -4,13 +4,13 @@
 
     <parent>
         <groupId>cc.funkemunky.utils</groupId>
-        <version>1.10.0-SNAPSHOT-b10</version>
+        <version>1.10.0-SNAPSHOT-b10-HOTFIX</version>
         <artifactId>atlas-parent</artifactId>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
     <artifactId>Atlas</artifactId>
-    <version>1.10.0-SNAPSHOT-b10</version>
+    <version>1.10.0-SNAPSHOT-b10-HOTFIX</version>
 
     <scm>
         <developerConnection>scm:git:https://github.com/funkemunky/Atlas</developerConnection>
