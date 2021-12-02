@@ -29,6 +29,10 @@ public class WrappedPacketDataSerializer extends NMSObject {
         else data = new byte[0];
     }
 
+    public WrappedPacketDataSerializer(ByteBuf buf) {
+        setObject(byteConst.newInstance(buf));
+    }
+
     @Override
     public void updateObject() {
         //Empty method
@@ -39,5 +43,25 @@ public class WrappedPacketDataSerializer extends NMSObject {
 
         this.data = data;
         setObject(pds);
+    }
+
+    public void d(int dint) {
+        vanillaClass.getMethod("d", int.class).invoke(getObject(), dint);
+    }
+
+    public void writeInt(int integer) {
+        vanillaClass.getMethod("writeInt", int.class).invoke(getObject(), integer);
+    }
+
+    public void writeDouble(double doubleFloat) {
+        vanillaClass.getMethod("writeDouble", double.class).invoke(getObject(), doubleFloat);
+    }
+
+    public void writeFloat(float floating) {
+        vanillaClass.getMethod("writeFloat", float.class).invoke(getObject(), floating);
+    }
+
+    public void writeBoolean(boolean bool) {
+        vanillaClass.getMethod("writeBoolean", boolean.class).invoke(getObject(), bool);
     }
 }

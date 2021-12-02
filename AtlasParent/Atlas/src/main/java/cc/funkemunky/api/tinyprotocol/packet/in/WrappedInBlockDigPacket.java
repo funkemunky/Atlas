@@ -81,7 +81,7 @@ public class WrappedInBlockDigPacket extends NMSObject {
         public static WrappedClass classDigType;
 
         public static EnumPlayerDigType fromVanilla(Enum obj) {
-            return valueOf(obj.name());
+            return EnumPlayerDigType.values()[obj.ordinal()];
         }
 
         public <T> T toVanilla() {

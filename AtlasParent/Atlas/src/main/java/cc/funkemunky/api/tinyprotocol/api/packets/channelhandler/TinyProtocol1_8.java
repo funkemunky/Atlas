@@ -16,6 +16,8 @@ import cc.funkemunky.api.reflections.types.WrappedField;
 import cc.funkemunky.api.reflections.types.WrappedMethod;
 import cc.funkemunky.api.tinyprotocol.api.ProtocolVersion;
 import cc.funkemunky.api.tinyprotocol.api.packets.AbstractTinyProtocol;
+import cc.funkemunky.api.tinyprotocol.packet.login.WrappedHandshakingInSetProtocol;
+import cc.funkemunky.api.tinyprotocol.packet.types.enums.WrappedEnumProtocol;
 import cc.funkemunky.api.tinyprotocol.reflection.Reflection;
 import cc.funkemunky.api.utils.RunUtils;
 import com.google.common.collect.Lists;
@@ -462,6 +464,7 @@ public abstract class TinyProtocol1_8 implements AbstractTinyProtocol {
 	 * @param player - the injected player.
 	 */
 	public void uninjectPlayer(Player player) {
+		channelLookup.remove(player.getName());
 		uninjectChannel(getChannel(player));
 	}
 
@@ -540,11 +543,11 @@ public abstract class TinyProtocol1_8 implements AbstractTinyProtocol {
 				GameProfile profile = getGameProfile.get(msg);
 				channelLookup.put(profile.getName(), channel);
 			} else if (PACKET_SET_PROTOCOL.getParent().isInstance(msg)) {
-				int protocol = ((Enum)protocolType.get(msg)).ordinal();
-				System.out.println("PacketPlayInSetProtocol: " + protocol);
-				if (protocol == 3) {
-					int id = protocolId.get(msg);
-					protocolLookup.put(channel, id);
+				WrappedHandshakingInSetProtocol protocol = new WrappedHandshakingInSetProtocol(msg);
+				System.out.println("PacketPlayInSetProtocol: " + protocol.enumProtocol + ";" + protocol.a);
+				if (protocol.enumProtocol == WrappedEnumProtocol.LOGIN) {
+					System.out.println("Enum protocol matched");
+					protocolLookup.put(channel, protocol.a);
 				}
 			}
 

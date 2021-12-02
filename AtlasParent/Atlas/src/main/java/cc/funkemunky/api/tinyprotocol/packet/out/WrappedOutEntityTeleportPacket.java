@@ -10,6 +10,8 @@ import cc.funkemunky.api.tinyprotocol.api.ProtocolVersion;
 import cc.funkemunky.api.tinyprotocol.packet.types.WrappedPacketDataSerializer;
 import cc.funkemunky.api.utils.MathHelper;
 import io.netty.buffer.ByteBuf;
+import io.netty.buffer.ByteBufAllocator;
+import io.netty.buffer.PooledByteBufAllocator;
 import io.netty.buffer.Unpooled;
 import org.bukkit.entity.Player;
 
@@ -17,7 +19,7 @@ public class WrappedOutEntityTeleportPacket extends NMSObject {
 
     private static WrappedField fieldEntityId, fieldX, fieldY, fieldZ, fieldYaw, fieldPitch, fieldOnGround;
     private static WrappedClass classEntityTeleport = Reflections.getNMSClass(Packet.Server.ENTITY_TELEPORT);
-    private static WrappedConstructor emptyConstructor = classEntityTeleport.getConstructor();
+    private static WrappedConstructor emptyConstructor;
 
     public int entityId;
     public double x, y, z;
@@ -42,8 +44,8 @@ public class WrappedOutEntityTeleportPacket extends NMSObject {
             setObject(emptyConstructor.newInstance());
             updateObject();
         } else {
-            ByteBuf buf = Unpooled.buffer();
-            buf.writeInt(entityId);
+            WrappedPacketDataSerializer buf = new WrappedPacketDataSerializer(Unpooled.buffer());
+            buf.d(entityId);
             buf.writeDouble(x);
             buf.writeDouble(y);
             buf.writeDouble(z);
@@ -52,8 +54,7 @@ public class WrappedOutEntityTeleportPacket extends NMSObject {
             buf.writeBoolean(onGround);
 
             setObject(classEntityTeleport.getConstructor(WrappedPacketDataSerializer.vanillaClass.getParent())
-                    .newInstance((Object) WrappedPacketDataSerializer.vanillaClass.getConstructor(ByteBuf.class)
-                            .newInstance(buf)));
+                    .newInstance(buf.getObject()));
         }
     }
 
@@ -107,6 +108,10 @@ public class WrappedOutEntityTeleportPacket extends NMSObject {
             fieldX = fetchField(classEntityTeleport, double.class, 0);
             fieldY = fetchField(classEntityTeleport, double.class, 1);
             fieldZ = fetchField(classEntityTeleport, double.class, 2);
+
+            if(ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.v1_17)) {
+                emptyConstructor = classEntityTeleport.getConstructor();
+            }
         }
     }
 }

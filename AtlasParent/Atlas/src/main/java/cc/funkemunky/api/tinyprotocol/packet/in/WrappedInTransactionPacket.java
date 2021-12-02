@@ -32,8 +32,8 @@ public class WrappedInTransactionPacket extends NMSObject {
             accept = transaction.isAccepted();
         } else {
             idRaw = fetch(fieldId);
-            id = (short) ((id >> 16) & 0xFF);
-            action = (short) (id & 0xFFFF);
+            id = (short) ((idRaw >> 16) & 0xFF);
+            action = (short) (idRaw & 0xFFFF);
             accept = (idRaw & (1 << 30)) != 0;
         }
     }
