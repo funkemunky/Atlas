@@ -573,7 +573,7 @@ public abstract class TinyProtocol1_8 implements AbstractTinyProtocol {
 		public void write(ChannelHandlerContext ctx, Object msg, ChannelPromise promise) throws Exception {
 
 			if(player != null) {
-				onPacketOutAsync(player, msg);
+				msg = onPacketOutAsync(player, msg);
 			}
 
 			if (msg != null) {

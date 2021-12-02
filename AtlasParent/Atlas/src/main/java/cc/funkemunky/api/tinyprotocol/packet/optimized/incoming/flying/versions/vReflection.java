@@ -11,9 +11,9 @@ public class vReflection extends AtlasPacketPlayInFlying {
     }
 
     private final static WrappedClass classFlying = Reflections.getNMSClass("PacketPlayInFlying");
-    private final static WrappedField fieldX = classFlying.getFieldByName("x"),
-            fieldY = classFlying.getFieldByName("y"), fieldZ = classFlying.getFieldByName("z"),
-            fieldYaw = classFlying.getFieldByName("yaw"), fieldPitch = classFlying.getFieldByName("pitch"),
+    private final static WrappedField fieldX = classFlying.getFieldByType(double.class, 0),
+            fieldY = classFlying.getFieldByType(double.class, 1), fieldZ = classFlying.getFieldByType(double.class, 2),
+            fieldYaw = classFlying.getFieldByType(float.class, 0), fieldPitch = classFlying.getFieldByType(float.class, 1),
             fieldGround = classFlying.getFieldByType(boolean.class, 0),
             fieldHasPos = classFlying.getFieldByType(boolean.class, 1),
             fieldHasLook = classFlying.getFieldByType(boolean.class, 2);

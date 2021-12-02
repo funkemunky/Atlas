@@ -11,8 +11,11 @@ import cc.funkemunky.api.tinyprotocol.packet.in.*;
 import cc.funkemunky.api.tinyprotocol.packet.login.WrappedHandshakingInSetProtocol;
 import cc.funkemunky.api.tinyprotocol.packet.login.WrappedStatusInPing;
 import cc.funkemunky.api.tinyprotocol.packet.out.*;
+import cc.funkemunky.api.tinyprotocol.packet.types.WrappedWatchableObject;
 import cc.funkemunky.api.utils.Init;
 import cc.funkemunky.api.utils.RunUtils;
+
+import java.util.stream.Collectors;
 
 @Init
 public class PacketListeners implements AtlasListener {
@@ -87,35 +90,37 @@ public class PacketListeners implements AtlasListener {
     private PacketListener outListener = Atlas.getInstance().getPacketProcessor()
             .process(Atlas.getInstance(), listener -> {
                 switch(listener.getType()) {
-                    case Packet.Server.CLOSE_WINDOW: {
-                        WrappedOutCloseWindowPacket packet = new WrappedOutCloseWindowPacket(listener.getPacket(), listener.getPlayer());
+                    case Packet.Server.EXPLOSION: {
+                        WrappedOutExplosionPacket packet = new WrappedOutExplosionPacket(listener.getPacket(), listener.getPlayer());
 
-                        Atlas.getInstance().alog("&c%s: &f[%s]", listener.getType(),
-                                packet.id);
+                        Atlas.getInstance().alog("&c%s: &f[%s, %s]", listener.getType(),
+                                packet.getX(), packet.getY(), packet.getZ(), packet.getMotionX(), packet.getMotionY());
                         break;
                     }
-                    case Packet.Server.CUSTOM_PAYLOAD: {
-                        WrappedOutCustomPayload packet = new WrappedOutCustomPayload(listener.getPacket(),
+                    case Packet.Server.HELD_ITEM: {
+                        WrappedOutEntityMetadata packet = new WrappedOutEntityMetadata(listener.getPacket(),
                                 listener.getPlayer());
 
                         Atlas.getInstance().alog("&c%s: &f[%s, %s]", listener.getType(),
-                                packet.getData().length, packet.getTag());
+                                packet.getEntityId(), packet.getWatchableObjects().stream().map(o -> {
+                                    WrappedWatchableObject wrapped = new WrappedWatchableObject(o);
+
+                                    return String.format("(%s, %s)", wrapped.getDataValueId(), wrapped.getWatchedObject());
+                                }).collect(Collectors.joining(", ")));
                         break;
                     }
-                    case Packet.Server.ENTITY_EFFECT: {
-                        WrappedOutEntityEffectPacket packet = new WrappedOutEntityEffectPacket(listener.getPacket(),
+                    case Packet.Server.KEEP_ALIVE: {
+                        WrappedOutEntityTeleportPacket packet = new WrappedOutEntityTeleportPacket(listener.getPacket(),
                                 listener.getPlayer());
 
-                        TinyProtocolHandler.sendPacket(listener.getPlayer(), new WrappedOutCustomPayload("payload", new byte[0]));
-
-                        Atlas.getInstance().alog("&c%s: &f[%s, %s, %s, %s, %s]", listener.getType(),
-                                packet.amplifier, packet.duration, packet.effectId, packet.entityId, packet.flags);
+                        Atlas.getInstance().alog("&c%s: &f[%s, %s, %s, %s]", listener.getType(),
+                                packet.entityId, packet.x, packet.y, packet.z);
 
                         packet.updateObject();
                         break;
                     }
                 }
-            }, Packet.Server.CLOSE_WINDOW, Packet.Server.CUSTOM_PAYLOAD, Packet.Server.ENTITY_EFFECT);
+            }, Packet.Server.ENTITY_HEAD_ROTATION, Packet.Server.ENTITY_METADATA, Packet.Server.ENTITY_TELEPORT);
 
 
     /*@Listen
