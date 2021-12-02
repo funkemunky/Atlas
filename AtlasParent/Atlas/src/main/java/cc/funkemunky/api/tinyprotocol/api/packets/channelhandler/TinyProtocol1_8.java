@@ -451,6 +451,7 @@ public abstract class TinyProtocol1_8 implements AbstractTinyProtocol {
 
 		Integer protocol = protocolLookup.get(channel);
 		if (protocol != null) {
+			System.out.println(player.getName() + ": " + protocol);
 			return protocol;
 		} else return -1;
 	}
@@ -540,6 +541,7 @@ public abstract class TinyProtocol1_8 implements AbstractTinyProtocol {
 				channelLookup.put(profile.getName(), channel);
 			} else if (PACKET_SET_PROTOCOL.getParent().isInstance(msg)) {
 				int protocol = ((Enum)protocolType.get(msg)).ordinal();
+				System.out.println("PacketPlayInSetProtocol: " + protocol);
 				if (protocol == 3) {
 					int id = protocolId.get(msg);
 					protocolLookup.put(channel, id);
