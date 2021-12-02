@@ -450,18 +450,6 @@ public abstract class TinyProtocol1_8 implements AbstractTinyProtocol {
 		}
 
 		Integer protocol = protocolLookup.get(channel);
-		int protocolVersion;
-		try {
-			Class<?> Via = Class.forName("us.myles.ViaVersion.api.Via");
-			Class<?> clazzViaAPI = Class.forName("us.myles.ViaVersion.api.ViaAPI");
-			Object ViaAPI = Via.getMethod("getAPI").invoke(null);
-			Method getPlayerVersion = clazzViaAPI.getMethod("getPlayerVersion", Object.class);
-			protocolVersion = (int) getPlayerVersion.invoke(ViaAPI, player);
-			protocolLookup.put(channel, protocolVersion);
-			return protocolVersion;
-		} catch (Throwable e) {
-
-		}
 		if (protocol != null) {
 			return protocol;
 		} else return -1;
@@ -551,8 +539,8 @@ public abstract class TinyProtocol1_8 implements AbstractTinyProtocol {
 				GameProfile profile = getGameProfile.get(msg);
 				channelLookup.put(profile.getName(), channel);
 			} else if (PACKET_SET_PROTOCOL.getParent().isInstance(msg)) {
-				String protocol = ((Enum)protocolType.get(msg)).name();
-				if (protocol.equalsIgnoreCase("LOGIN")) {
+				int protocol = ((Enum)protocolType.get(msg)).ordinal();
+				if (protocol == 3) {
 					int id = protocolId.get(msg);
 					protocolLookup.put(channel, id);
 				}
