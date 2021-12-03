@@ -453,7 +453,6 @@ public abstract class TinyProtocol1_8 implements AbstractTinyProtocol {
 
 		Integer protocol = protocolLookup.get(channel);
 		if (protocol != null) {
-			System.out.println(player.getName() + ": " + protocol);
 			return protocol;
 		} else return -1;
 	}
@@ -544,7 +543,6 @@ public abstract class TinyProtocol1_8 implements AbstractTinyProtocol {
 				channelLookup.put(profile.getName(), channel);
 			} else if (PACKET_SET_PROTOCOL.getParent().isInstance(msg)) {
 				WrappedHandshakingInSetProtocol protocol = new WrappedHandshakingInSetProtocol(msg);
-				System.out.println("PacketPlayInSetProtocol: " + protocol.enumProtocol + ";" + protocol.a);
 				if (protocol.enumProtocol == WrappedEnumProtocol.LOGIN) {
 					System.out.println("Enum protocol matched");
 					protocolLookup.put(channel, protocol.a);

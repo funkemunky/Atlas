@@ -260,7 +260,7 @@ public class MinecraftReflection {
     }
 
     public static int getPing(Player player) {
-        return player.spigot().getPing();
+        return -1;
     }
 
     public static <T> T getServerConnection() {

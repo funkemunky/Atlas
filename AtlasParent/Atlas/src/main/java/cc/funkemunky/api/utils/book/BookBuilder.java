@@ -4,7 +4,7 @@ import cc.funkemunky.api.tinyprotocol.api.TinyProtocolHandler;
 import cc.funkemunky.api.tinyprotocol.packet.out.WrappedOutCustomPayload;
 import cc.funkemunky.api.tinyprotocol.packet.out.WrappedOutSetSlotPacket;
 import cc.funkemunky.api.utils.XMaterial;
-import cc.funkemunky.api.utils.msg.ChatBuilder;
+import cc.funkemunky.api.utils.compiler.msg.ChatBuilder;
 import net.md_5.bungee.api.chat.BaseComponent;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;

@@ -1,4 +1,4 @@
-package cc.funkemunky.api.utils.msg;
+package cc.funkemunky.api.utils.compiler.msg;
 
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.*;
