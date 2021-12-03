@@ -9,10 +9,13 @@ import cc.funkemunky.api.utils.XMaterial;
 import cc.funkemunky.api.utils.world.blocks.*;
 import cc.funkemunky.api.utils.world.types.*;
 import lombok.val;
+import net.minecraft.core.EnumDirection;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
+import org.bukkit.block.data.Directional;
+import org.bukkit.craftbukkit.v1_17_R1.block.impl.CraftAmethystCluster;
 import org.bukkit.material.Cake;
 import org.bukkit.material.Gate;
 import org.bukkit.material.MaterialData;
@@ -426,6 +429,106 @@ public enum BlockData {
         }
         return NoCollisionBox.INSTANCE;
     }, XMaterial.LEVER.parseMaterial()),
+
+    _AMETHYST_CLUSTER((version, block) -> {
+        Directional blockDir = (Directional) block.getBlockData();
+
+        //var1=3 var0=7
+        int var1 = 3, var0 = 7;
+        switch(blockDir.getFacing()) {
+            case NORTH:
+                // Block.a((double)var1, (double)var1, (double)(16 - var0), (double)(16 - var1), (double)(16 - var1), 16.0D);
+                return new SimpleCollisionBox(var1 / 16D, var1 / 16D, (16 - var0) / 16D, (16 - var1) / 16D, (16 - var1) / 16D, 1);
+            case SOUTH:
+                return new SimpleCollisionBox(var1 / 16D, var1 / 16D, 0, (16 - var1) / 16D, (16 - var1) / 16D, var0 / 16D);
+            case EAST:
+                return new SimpleCollisionBox(0, var1 / 16D, var1 / 16D, (16 - var1) / 16D, (16 - var1) / 16D, 1);
+            case WEST:
+                return new SimpleCollisionBox((16 - var0) / 16D, var1 / 16D, var1 / 16D, 1, (16 - var1) / 16D, (16 - var1) / 16D);
+            case DOWN:
+                return new SimpleCollisionBox(var1 / 16D, (16 - var0) / 16D, (16 - var1) / 16D, (16 - var1) / 16D, 1, (16 - var1) / 16D);
+            case UP:
+            default:
+                return new SimpleCollisionBox(var1 / 16D, 0, (var1) / 16D, (16 - var1) / 16D, var0 / 16D, (16 - var1) / 16D);
+        }
+
+
+    }, XMaterial.AMETHYST_CLUSTER.parseMaterial()),
+
+    _LARGE_AMETHYST_BUD((version, block) -> {
+        Directional blockDir = (Directional) block.getBlockData();
+
+        //var1=3 var0=7
+        int var1 = 3, var0 = 5;
+        switch(blockDir.getFacing()) {
+            case NORTH:
+                // Block.a((double)var1, (double)var1, (double)(16 - var0), (double)(16 - var1), (double)(16 - var1), 16.0D);
+                return new SimpleCollisionBox(var1 / 16D, var1 / 16D, (16 - var0) / 16D, (16 - var1) / 16D, (16 - var1) / 16D, 1);
+            case SOUTH:
+                return new SimpleCollisionBox(var1 / 16D, var1 / 16D, 0, (16 - var1) / 16D, (16 - var1) / 16D, var0 / 16D);
+            case EAST:
+                return new SimpleCollisionBox(0, var1 / 16D, var1 / 16D, (16 - var1) / 16D, (16 - var1) / 16D, 1);
+            case WEST:
+                return new SimpleCollisionBox((16 - var0) / 16D, var1 / 16D, var1 / 16D, 1, (16 - var1) / 16D, (16 - var1) / 16D);
+            case DOWN:
+                return new SimpleCollisionBox(var1 / 16D, (16 - var0) / 16D, (16 - var1) / 16D, (16 - var1) / 16D, 1, (16 - var1) / 16D);
+            case UP:
+            default:
+                return new SimpleCollisionBox(var1 / 16D, 0, (var1) / 16D, (16 - var1) / 16D, var0 / 16D, (16 - var1) / 16D);
+        }
+
+
+    }, XMaterial.LARGE_AMETHYST_BUD.parseMaterial()),
+
+    _MEDIUM_AMETHYST_BUD((version, block) -> {
+        Directional blockDir = (Directional) block.getBlockData();
+
+        //var1=3 var0=7
+        int var1 = 3, var0 = 4;
+        switch(blockDir.getFacing()) {
+            case NORTH:
+                // Block.a((double)var1, (double)var1, (double)(16 - var0), (double)(16 - var1), (double)(16 - var1), 16.0D);
+                return new SimpleCollisionBox(var1 / 16D, var1 / 16D, (16 - var0) / 16D, (16 - var1) / 16D, (16 - var1) / 16D, 1);
+            case SOUTH:
+                return new SimpleCollisionBox(var1 / 16D, var1 / 16D, 0, (16 - var1) / 16D, (16 - var1) / 16D, var0 / 16D);
+            case EAST:
+                return new SimpleCollisionBox(0, var1 / 16D, var1 / 16D, (16 - var1) / 16D, (16 - var1) / 16D, 1);
+            case WEST:
+                return new SimpleCollisionBox((16 - var0) / 16D, var1 / 16D, var1 / 16D, 1, (16 - var1) / 16D, (16 - var1) / 16D);
+            case DOWN:
+                return new SimpleCollisionBox(var1 / 16D, (16 - var0) / 16D, (16 - var1) / 16D, (16 - var1) / 16D, 1, (16 - var1) / 16D);
+            case UP:
+            default:
+                return new SimpleCollisionBox(var1 / 16D, 0, (var1) / 16D, (16 - var1) / 16D, var0 / 16D, (16 - var1) / 16D);
+        }
+
+
+    }, XMaterial.MEDIUM_AMETHYST_BUD.parseMaterial()),
+
+    _SMALL_AMETHYST_BUD((version, block) -> {
+        Directional blockDir = (Directional) block.getBlockData();
+
+        //var1=3 var0=7
+        int var1 = 4, var0 = 3;
+        switch(blockDir.getFacing()) {
+            case NORTH:
+                // Block.a((double)var1, (double)var1, (double)(16 - var0), (double)(16 - var1), (double)(16 - var1), 16.0D);
+                return new SimpleCollisionBox(var1 / 16D, var1 / 16D, (16 - var0) / 16D, (16 - var1) / 16D, (16 - var1) / 16D, 1);
+            case SOUTH:
+                return new SimpleCollisionBox(var1 / 16D, var1 / 16D, 0, (16 - var1) / 16D, (16 - var1) / 16D, var0 / 16D);
+            case EAST:
+                return new SimpleCollisionBox(0, var1 / 16D, var1 / 16D, (16 - var1) / 16D, (16 - var1) / 16D, 1);
+            case WEST:
+                return new SimpleCollisionBox((16 - var0) / 16D, var1 / 16D, var1 / 16D, 1, (16 - var1) / 16D, (16 - var1) / 16D);
+            case DOWN:
+                return new SimpleCollisionBox(var1 / 16D, (16 - var0) / 16D, (16 - var1) / 16D, (16 - var1) / 16D, 1, (16 - var1) / 16D);
+            case UP:
+            default:
+                return new SimpleCollisionBox(var1 / 16D, 0, (var1) / 16D, (16 - var1) / 16D, var0 / 16D, (16 - var1) / 16D);
+        }
+
+
+    }, XMaterial.SMALL_AMETHYST_BUD.parseMaterial()),
 
     _NONE(NoCollisionBox.INSTANCE, Stream.of(XMaterial.TORCH, XMaterial.REDSTONE_TORCH,
             XMaterial.REDSTONE_WIRE, XMaterial.REDSTONE_WALL_TORCH, XMaterial.POWERED_RAIL, XMaterial.WALL_TORCH,
