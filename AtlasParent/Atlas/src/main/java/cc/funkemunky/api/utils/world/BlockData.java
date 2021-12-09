@@ -28,25 +28,21 @@ public enum BlockData {
     _DEFAULT(new SimpleCollisionBox(0, 0, 0, 1, 1, 1),
             XMaterial.STONE.parseMaterial()),
     _VINE((v, block) -> {
-        Vine data = (Vine) block.getType().getNewData(block.getData());
+        byte data = block.getData();
 
-        if(data.isOnFace(BlockFace.UP))
-            return new SimpleCollisionBox(0., 0.9375, 0.,
-                    1., 1., 1.);
-
-        if(data.isOnFace(BlockFace.NORTH))
+        if((data & 4) == 4)
             return new SimpleCollisionBox(0., 0., 0.,
                     1., 1., 0.0625);
 
-        if(data.isOnFace(BlockFace.EAST))
+        if((data & 8) == 8)
             return new SimpleCollisionBox(0.9375, 0., 0.,
                     1., 1., 1.);
 
-        if(data.isOnFace(BlockFace.SOUTH))
+        if((data & 1) == 1)
             return new SimpleCollisionBox(0., 0., 0.9375,
                     1., 1., 1.);
 
-        if(data.isOnFace(BlockFace.WEST))
+        if((data & 2) == 2)
             return new SimpleCollisionBox(0., 0., 0.,
                     0.0625, 1., 1.);
 
@@ -114,12 +110,11 @@ public enum BlockData {
 
     _HOPPER(new HopperBounding(), XMaterial.HOPPER.parseMaterial()),
     _CAKE((protocol, block) -> {
-        Cake cake = (Cake) block.getType().getNewData(block.getData());
 
-        double f1 = (1 + cake.getSlicesEaten() * 2) / 16D;
+        double f1 = (1 + block.getData() * 2) / 16D;
 
         return new SimpleCollisionBox(f1, 0, 0.0625, 1 - 0.0625, 0.5, 1 - 0.0625);
-    }, MiscUtils.match("CAKE"), MiscUtils.match("CAKE_BLOCK")),
+    }, MiscUtils.match("CAKE"), XMaterial.CAKE.parseMaterial()),
 
     _LADDER((protocol, b) -> {
         CollisionBox box = NoCollisionBox.INSTANCE;

@@ -1,6 +1,8 @@
 package cc.funkemunky.api.tinyprotocol.packet.types;
 
 import cc.funkemunky.api.reflections.Reflections;
+import cc.funkemunky.api.reflections.impl.CraftReflection;
+import cc.funkemunky.api.reflections.impl.MinecraftReflection;
 import cc.funkemunky.api.reflections.types.WrappedClass;
 import cc.funkemunky.api.reflections.types.WrappedConstructor;
 import cc.funkemunky.api.reflections.types.WrappedMethod;
@@ -8,6 +10,7 @@ import cc.funkemunky.api.tinyprotocol.api.NMSObject;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import lombok.Getter;
+import org.bukkit.inventory.ItemStack;
 
 @Getter
 public class WrappedPacketDataSerializer extends NMSObject {
@@ -63,5 +66,15 @@ public class WrappedPacketDataSerializer extends NMSObject {
 
     public void writeBoolean(boolean bool) {
         vanillaClass.getMethod("writeBoolean", boolean.class).invoke(getObject(), bool);
+    }
+
+    public ItemStack getItemStack() {
+        return MinecraftReflection.toBukkitItemStack(vanillaClass
+                .getMethodByType(MinecraftReflection.itemStack.getParent(), 0).invoke(getObject()));
+    }
+
+    public void writeItemStack(ItemStack stack) {
+        vanillaClass.getMethod("a", MinecraftReflection.itemStack.getParent()).invoke(getObject(),
+                CraftReflection.getVanillaItemStack(stack));
     }
 }

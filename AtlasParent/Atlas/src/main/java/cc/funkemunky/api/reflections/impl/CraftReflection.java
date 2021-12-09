@@ -42,8 +42,7 @@ public class CraftReflection {
     private static WrappedMethod methodGetBlockFromMaterial = ProtocolVersion.getGameVersion()
             .isOrAbove(ProtocolVersion.V1_13) ? craftMagicNumbers.getMethod("getBlock", Material.class)
             : craftMagicNumbers.getMethod("getBlock", int.class);
-    private static final WrappedMethod fromComponent = craftChatMessage.getMethod("fromComponent",
-            MinecraftReflection.iChatBaseComponent.getParent());
+    private static WrappedMethod fromComponent;
 
     public static <T> T getVanillaItemStack(ItemStack stack) {
         return itemStackInstance.invoke(null, stack);
@@ -94,6 +93,14 @@ public class CraftReflection {
     }
 
     public static String getMessageFromComp(Object ichatcomp, String defaultColor) {
+        if(fromComponent == null) return "Not a usable version (1.8+ only)";
         return fromComponent.invoke(null, ichatcomp);
+    }
+
+    static {
+        if(ProtocolVersion.getGameVersion().isOrAbove(ProtocolVersion.V1_8)) {
+            fromComponent = craftChatMessage.getMethod("fromComponent",
+                    MinecraftReflection.iChatBaseComponent.getParent());
+        }
     }
 }

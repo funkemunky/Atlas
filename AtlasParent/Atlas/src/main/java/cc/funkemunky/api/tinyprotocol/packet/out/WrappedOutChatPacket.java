@@ -72,17 +72,22 @@ public class WrappedOutChatPacket extends NMSObject {
     public void process(Player player, ProtocolVersion version) {
         //Getting the message
 
-        BaseComponent[] components = fetch(fieldComponents);
-
-        if(components != null) {
-            message = new TextComponent(components);
+        if(ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.V1_8)) {
+            message = new TextComponent(ComponentSerializer.parse(getTextMethod.invoke(getObject())));
         } else {
-            Object chatComp = fetch(chatCompField);
+            BaseComponent[] components = fetch(fieldComponents);
 
-            if(chatComp != null) {
-                message = new TextComponent(CraftReflection.getMessageFromComp(chatComp, "WHITE"));
+            if (components != null) {
+                message = new TextComponent(components);
+            } else {
+                Object chatComp = fetch(chatCompField);
+
+                if (chatComp != null) {
+                    message = new TextComponent(CraftReflection.getMessageFromComp(chatComp, "WHITE"));
+                }
             }
         }
+
 
         //Getting the chat type.
         chatType = WrappedChatMessageType.fromNMS(fetch(chatTypeField));
