@@ -1,6 +1,9 @@
 package cc.funkemunky.api.utils.menu;
 
 import cc.funkemunky.api.Atlas;
+import cc.funkemunky.api.reflections.types.WrappedClass;
+import cc.funkemunky.api.reflections.types.WrappedMethod;
+import cc.funkemunky.api.tinyprotocol.api.ProtocolVersion;
 import cc.funkemunky.api.utils.Color;
 import cc.funkemunky.api.utils.Init;
 import cc.funkemunky.api.utils.XMaterial;
@@ -109,7 +112,11 @@ public class MenuListener implements Listener {
         if(inventory instanceof AnvilInventory && anvils.containsKey(inventory)) {
             AnvilInventory anvil = (AnvilInventory) inventory;
 
-            anvils.get(anvil).consumer.accept(event.getPlayer(), Color.translate(anvil.getName()));
+            WrappedMethod method = new WrappedClass(ProtocolVersion.getGameVersion().isOrAbove(ProtocolVersion.V1_11)
+                    ? AnvilInventory.class : Inventory.class)
+                    .getMethod(ProtocolVersion.getGameVersion().isOrAbove(ProtocolVersion.V1_11)
+                                    ? "getRenameText" : "getName");
+            anvils.get(anvil).consumer.accept(event.getPlayer(), Color.translate(method.invoke(anvil)));
             anvils.remove(anvil);
         }
     }

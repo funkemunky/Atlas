@@ -14,14 +14,16 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.util.Vector;
 
+import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.Map;
 
 public class EntityData {
-    private static Map<EntityType, CollisionBox> entityBounds = new HashMap<>();
+    private static final EnumMap<EntityType, CollisionBox> entityBounds = new EnumMap<>(EntityType.class);
 
-    private static WrappedClass entity = Reflections.getNMSClass("Entity"), entitySize;
-    private static WrappedField fieldWidth, fieldLength, fieldSize;
+    private static final WrappedClass entity = Reflections.getNMSClass("Entity");
+    private static final WrappedField fieldWidth;
+    private static final WrappedField fieldLength;
 
     public static CollisionBox bounds(Entity entity) {
         return entityBounds.computeIfAbsent(entity.getType(), type -> {
@@ -80,10 +82,9 @@ public class EntityData {
             fieldWidth = entity.getFieldByName("width");
             fieldLength = entity.getFieldByName("length");
         } else {
-            entitySize = Reflections.getNMSClass("EntitySize");
+            WrappedClass entitySize = Reflections.getNMSClass("EntitySize");
             fieldWidth = entitySize.getFieldByName("width");
             fieldLength = entitySize.getFieldByName("length");
-            fieldSize = entity.getFieldByType(entitySize.getParent(), 0);
         }
     }
 }

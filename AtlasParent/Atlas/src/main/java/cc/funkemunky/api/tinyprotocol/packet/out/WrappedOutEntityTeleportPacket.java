@@ -7,14 +7,19 @@ import cc.funkemunky.api.reflections.types.WrappedField;
 import cc.funkemunky.api.tinyprotocol.api.NMSObject;
 import cc.funkemunky.api.tinyprotocol.api.Packet;
 import cc.funkemunky.api.tinyprotocol.api.ProtocolVersion;
+import cc.funkemunky.api.tinyprotocol.packet.types.WrappedPacketDataSerializer;
 import cc.funkemunky.api.utils.MathHelper;
+import io.netty.buffer.ByteBuf;
+import io.netty.buffer.ByteBufAllocator;
+import io.netty.buffer.PooledByteBufAllocator;
+import io.netty.buffer.Unpooled;
 import org.bukkit.entity.Player;
 
 public class WrappedOutEntityTeleportPacket extends NMSObject {
 
     private static WrappedField fieldEntityId, fieldX, fieldY, fieldZ, fieldYaw, fieldPitch, fieldOnGround;
     private static WrappedClass classEntityTeleport = Reflections.getNMSClass(Packet.Server.ENTITY_TELEPORT);
-    private static WrappedConstructor emptyConstructor = classEntityTeleport.getConstructor();
+    private static WrappedConstructor emptyConstructor;
 
     public int entityId;
     public double x, y, z;
@@ -27,7 +32,6 @@ public class WrappedOutEntityTeleportPacket extends NMSObject {
 
     public WrappedOutEntityTeleportPacket(int entityId, double x, double y, double z, float yaw, float pitch,
                                           boolean onGround) {
-        setObject(emptyConstructor.newInstance());
         this.entityId = entityId;
         this.x = x;
         this.y = y;
@@ -35,7 +39,23 @@ public class WrappedOutEntityTeleportPacket extends NMSObject {
         this.yaw = yaw;
         this.pitch = pitch;
         this.onGround = onGround;
-        updateObject();
+
+        if(ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.v1_17)) {
+            setObject(emptyConstructor.newInstance());
+            updateObject();
+        } else {
+            WrappedPacketDataSerializer buf = new WrappedPacketDataSerializer(Unpooled.buffer());
+            buf.d(entityId);
+            buf.writeDouble(x);
+            buf.writeDouble(y);
+            buf.writeDouble(z);
+            buf.writeFloat(yaw);
+            buf.writeFloat(pitch);
+            buf.writeBoolean(onGround);
+
+            setObject(classEntityTeleport.getConstructor(WrappedPacketDataSerializer.vanillaClass.getParent())
+                    .newInstance(buf.getObject()));
+        }
     }
 
     @Override
@@ -88,6 +108,10 @@ public class WrappedOutEntityTeleportPacket extends NMSObject {
             fieldX = fetchField(classEntityTeleport, double.class, 0);
             fieldY = fetchField(classEntityTeleport, double.class, 1);
             fieldZ = fetchField(classEntityTeleport, double.class, 2);
+
+            if(ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.v1_17)) {
+                emptyConstructor = classEntityTeleport.getConstructor();
+            }
         }
     }
 }

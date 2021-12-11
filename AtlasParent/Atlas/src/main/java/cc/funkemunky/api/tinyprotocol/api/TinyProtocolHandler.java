@@ -90,6 +90,10 @@ public class TinyProtocolHandler {
 
             boolean result = Atlas.getInstance().getPacketProcessor().call(sender, packet, packetName);
 
+            if(ProtocolVersion.getGameVersion().isOrAbove(ProtocolVersion.v1_17)) {
+                packetName = packetName.replace("ClientboundPingPacket", Packet.Server.TRANSACTION);
+            }
+
             if(legacyListeners) {
                 PacketSendEvent event = new PacketSendEvent(sender, packet, packetName);
 
@@ -116,6 +120,10 @@ public class TinyProtocolHandler {
             if(ProtocolVersion.getGameVersion().isOrAbove(ProtocolVersion.V1_9)) {
                 packetName = packetName.replace("BlockPlace", "BlockPlace_19")
                         .replace("UseItem", "BlockPlace");
+            }
+
+            if(ProtocolVersion.getGameVersion().isOrAbove(ProtocolVersion.v1_17)) {
+                packetName = packetName.replace("ServerboundPongPacket", Packet.Client.TRANSACTION);
             }
 
             boolean result = Atlas.getInstance().getPacketProcessor().call(sender, packet, packetName);

@@ -18,9 +18,9 @@ public class WrappedHandshakingInSetProtocol extends NMSObject {
     public String hostname;
     public WrappedEnumProtocol enumProtocol;
 
-    private static WrappedField aField = packet.getFieldByType(int.class, 0),
+    private static WrappedField aField = packet.getFieldByType(int.class, ProtocolVersion.getGameVersion().isOrAbove(ProtocolVersion.v1_17) ? 1 :0),
             hostField = packet.getFieldByType(String.class, 0),
-            portField = packet.getFieldByType(int.class, 1),
+            portField = packet.getFieldByType(int.class, ProtocolVersion.getGameVersion().isOrAbove(ProtocolVersion.v1_17) ? 2 : 1),
             protocolField = packet.getFieldByType(WrappedEnumProtocol.enumProtocol.getParent(), 0);
 
     @Override

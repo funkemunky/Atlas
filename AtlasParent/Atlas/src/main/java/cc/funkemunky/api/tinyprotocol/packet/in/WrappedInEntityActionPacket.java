@@ -28,7 +28,7 @@ public class WrappedInEntityActionPacket extends NMSObject {
         if (ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.V1_8)) {
             action = EnumPlayerAction.values()[Math.min(8, fetch(fieldAction1_7) - 1)];
         } else {
-            action = EnumPlayerAction.values()[fetch(fieldAction1_8).ordinal()];
+            action = EnumPlayerAction.values()[((Enum)fetch(fieldAction1_8)).ordinal()];
         }
     }
 

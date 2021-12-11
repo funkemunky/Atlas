@@ -1,6 +1,9 @@
 package cc.funkemunky.api.tinyprotocol.packet.in;
 
+import cc.funkemunky.api.reflections.Reflections;
 import cc.funkemunky.api.reflections.impl.CraftReflection;
+import cc.funkemunky.api.reflections.impl.MinecraftReflection;
+import cc.funkemunky.api.reflections.types.WrappedField;
 import cc.funkemunky.api.tinyprotocol.api.NMSObject;
 import cc.funkemunky.api.tinyprotocol.api.ProtocolVersion;
 import cc.funkemunky.api.tinyprotocol.reflection.FieldAccessor;
@@ -16,8 +19,11 @@ public class WrappedInWindowClickPacket extends NMSObject {
     private static FieldAccessor<Integer> fieldId = fetchField(packet, int.class, 0);
     private static FieldAccessor<Integer> fieldSlot = fetchField(packet, int.class, 1);
     private static FieldAccessor<Integer> fieldButton = fetchField(packet, int.class, 2);
-    private static FieldAccessor<Short> fieldAction = fetchField(packet, short.class, 0);
-    private static FieldAccessor<Object> fieldItemStack = fetchField(packet, Type.ITEMSTACK, 0);
+    private static WrappedField fieldAction = fetchField(Reflections.getNMSClass(packet), (ProtocolVersion.getGameVersion()
+            .isOrAbove(ProtocolVersion.v1_17) ? int.class : short.class), ProtocolVersion.getGameVersion()
+            .isOrAbove(ProtocolVersion.v1_17) ? 3 : 0);
+    private static FieldAccessor<Object> fieldItemStack = fetchField(packet,
+            MinecraftReflection.itemStack.getParent(), 0);
 
     // Decoded data
     private int id;
@@ -37,7 +43,7 @@ public class WrappedInWindowClickPacket extends NMSObject {
         id = fetch(fieldId);
         slot = fetch(fieldSlot).shortValue();
         byte button = (byte)(this.button = fetch(fieldButton));
-        counter = fetch(fieldAction);
+        counter = (ProtocolVersion.getGameVersion().isOrAbove(ProtocolVersion.v1_17) ? ((Integer)fetch(fieldAction)).shortValue() : fetch(fieldAction));
         item = toBukkitStack(fetch(fieldItemStack));
 
         if (ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.V1_9)) {
@@ -98,7 +104,8 @@ public class WrappedInWindowClickPacket extends NMSObject {
         if(ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.V1_9)) {
             setPacket(packet, id, slot, button, counter, CraftReflection.getVanillaItemStack(item), mode);
         } else {
-            setPacket(packet, id, slot, button, counter, CraftReflection.getVanillaItemStack(item));
+            setPacket(packet, id, slot, button, ProtocolVersion.getGameVersion().isOrAbove(ProtocolVersion.v1_17)
+                    ? (int)counter : counter, CraftReflection.getVanillaItemStack(item));
         }
     }
 

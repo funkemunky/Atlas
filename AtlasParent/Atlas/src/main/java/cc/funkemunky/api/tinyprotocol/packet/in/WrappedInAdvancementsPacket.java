@@ -9,6 +9,7 @@ import cc.funkemunky.api.tinyprotocol.packet.types.WrappedMinecraftKey;
 import org.bukkit.entity.Player;
 
 //TODO Test to see if this works at all.
+//TODO Test on 1.17
 public class WrappedInAdvancementsPacket extends NMSObject {
 
     private static final WrappedClass packet = Reflections.getNMSClass(Client.ADVANCEMENTS);
@@ -17,6 +18,10 @@ public class WrappedInAdvancementsPacket extends NMSObject {
 
     public Status status;
     public WrappedMinecraftKey key;
+
+    public WrappedInAdvancementsPacket(Object object, Player player) {
+        super(object, player);
+    }
 
     private static WrappedField fieldStatus = fetchField(packet, statusClass.getParent(), 0),
             fieldKey = fetchField(packet, WrappedMinecraftKey.vanilla.getParent(), 0);

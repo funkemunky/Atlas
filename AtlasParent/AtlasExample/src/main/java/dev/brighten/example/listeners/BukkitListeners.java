@@ -8,6 +8,7 @@ import cc.funkemunky.api.utils.world.CollisionBox;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
+import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 
 import java.util.Collections;
@@ -23,5 +24,10 @@ public class BukkitListeners implements Listener {
 
             box.draw(WrappedEnumParticle.FLAME, Collections.singleton(event.getPlayer()));
         }
+    }
+
+    @EventHandler
+    public void onInv(InventoryOpenEvent event) {
+        event.getPlayer().closeInventory();
     }
 }

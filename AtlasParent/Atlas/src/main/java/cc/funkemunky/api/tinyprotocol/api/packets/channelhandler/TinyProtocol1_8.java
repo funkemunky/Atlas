@@ -16,6 +16,8 @@ import cc.funkemunky.api.reflections.types.WrappedField;
 import cc.funkemunky.api.reflections.types.WrappedMethod;
 import cc.funkemunky.api.tinyprotocol.api.ProtocolVersion;
 import cc.funkemunky.api.tinyprotocol.api.packets.AbstractTinyProtocol;
+import cc.funkemunky.api.tinyprotocol.packet.login.WrappedHandshakingInSetProtocol;
+import cc.funkemunky.api.tinyprotocol.packet.types.enums.WrappedEnumProtocol;
 import cc.funkemunky.api.tinyprotocol.reflection.Reflection;
 import cc.funkemunky.api.utils.RunUtils;
 import com.google.common.collect.Lists;
@@ -450,18 +452,6 @@ public abstract class TinyProtocol1_8 implements AbstractTinyProtocol {
 		}
 
 		Integer protocol = protocolLookup.get(channel);
-		int protocolVersion;
-		try {
-			Class<?> Via = Class.forName("us.myles.ViaVersion.api.Via");
-			Class<?> clazzViaAPI = Class.forName("us.myles.ViaVersion.api.ViaAPI");
-			Object ViaAPI = Via.getMethod("getAPI").invoke(null);
-			Method getPlayerVersion = clazzViaAPI.getMethod("getPlayerVersion", Object.class);
-			protocolVersion = (int) getPlayerVersion.invoke(ViaAPI, player);
-			protocolLookup.put(channel, protocolVersion);
-			return protocolVersion;
-		} catch (Throwable e) {
-
-		}
 		if (protocol != null) {
 			return protocol;
 		} else return -1;
@@ -473,6 +463,7 @@ public abstract class TinyProtocol1_8 implements AbstractTinyProtocol {
 	 * @param player - the injected player.
 	 */
 	public void uninjectPlayer(Player player) {
+		channelLookup.remove(player.getName());
 		uninjectChannel(getChannel(player));
 	}
 
@@ -551,10 +542,10 @@ public abstract class TinyProtocol1_8 implements AbstractTinyProtocol {
 				GameProfile profile = getGameProfile.get(msg);
 				channelLookup.put(profile.getName(), channel);
 			} else if (PACKET_SET_PROTOCOL.getParent().isInstance(msg)) {
-				String protocol = ((Enum)protocolType.get(msg)).name();
-				if (protocol.equalsIgnoreCase("LOGIN")) {
-					int id = protocolId.get(msg);
-					protocolLookup.put(channel, id);
+				WrappedHandshakingInSetProtocol protocol = new WrappedHandshakingInSetProtocol(msg);
+				if (protocol.enumProtocol == WrappedEnumProtocol.LOGIN) {
+					System.out.println("Enum protocol matched");
+					protocolLookup.put(channel, protocol.a);
 				}
 			}
 
@@ -573,7 +564,7 @@ public abstract class TinyProtocol1_8 implements AbstractTinyProtocol {
 		public void write(ChannelHandlerContext ctx, Object msg, ChannelPromise promise) throws Exception {
 
 			if(player != null) {
-				onPacketOutAsync(player, msg);
+				msg = onPacketOutAsync(player, msg);
 			}
 
 			if (msg != null) {

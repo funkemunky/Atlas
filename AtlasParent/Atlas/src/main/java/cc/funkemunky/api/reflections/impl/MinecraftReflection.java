@@ -38,7 +38,8 @@ public class MinecraftReflection {
     public static WrappedClass block = Reflections.getNMSClass("Block");
     public static WrappedClass iBlockData, blockBase,
             chunkProviderServer = Reflections.getNMSClass("ChunkProviderServer");
-    public static WrappedClass itemClass = Reflections.getNMSClass("Item");
+    public static WrappedClass itemClass = Reflections.getNMSClass("Item"),
+            enumChatFormat = Reflections.getNMSClass("EnumChatFormat");;
     public static WrappedClass world = Reflections.getNMSClass("World");
     public static WrappedClass worldServer = Reflections.getNMSClass("WorldServer");
     public static WrappedClass playerInventory = Reflections.getNMSClass("PlayerInventory");
@@ -259,7 +260,7 @@ public class MinecraftReflection {
     }
 
     public static int getPing(Player player) {
-        return player.spigot().getPing();
+        return -1;
     }
 
     public static <T> T getServerConnection() {
@@ -464,7 +465,8 @@ public class MinecraftReflection {
             blockPos = Reflections.getNMSClass("BlockPosition");
             blockPosConstructor = blockPos.getConstructor(int.class, int.class, int.class);
             getBlock = iBlockData.getMethod("getBlock");
-            blockData = block.getFieldByName("blockData");
+            blockData = ProtocolVersion.getGameVersion().isOrAbove(ProtocolVersion.v1_17)
+                    ? block.getFieldByType(iBlockData.getParent(), 0) :  block.getFieldByName("blockData");
             blockPosConstructor = blockPos.getConstructor(int.class, int.class, int.class);
             getBlockData = block.getMethod("getBlockData");
             aabbConstructor = axisAlignedBB
@@ -533,9 +535,13 @@ public class MinecraftReflection {
                 ProtocolVersion.getGameVersion().isAbove(ProtocolVersion.V1_8_9)
                         ? iBlockData.getParent() : itemClass.getParent())
                 : itemStack.getMethod("canDestroySpecialBlock", iBlockData.getParent());
-        frictionFactor = (ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.v1_16)
-                ? block : blockBase).getFieldByName("frictionFactor");
-        strength = ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.v1_16)
-                ? block.getFieldByName("strength") : blockBase.getFieldByName("durability");
+        if(ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.v1_17)) {
+            frictionFactor = (ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.v1_16)
+                    ? block : blockBase).getFieldByName("frictionFactor");
+        } else frictionFactor = blockBase.getFieldByType(float.class, 1);
+        strength = ProtocolVersion.getGameVersion().isOrAbove(ProtocolVersion.v1_17)
+                ? blockBase.getFieldByType(float.class, 0)
+                : (ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.v1_16)
+                    ? block.getFieldByName("strength") : blockBase.getFieldByName("durability"));
     }
 }

@@ -1,7 +1,10 @@
 package cc.funkemunky.api.utils;
 
 import cc.funkemunky.api.Atlas;
+import cc.funkemunky.api.reflections.Reflections;
+import cc.funkemunky.api.reflections.impl.MinecraftReflection;
 import cc.funkemunky.api.tinyprotocol.api.ProtocolVersion;
+import cc.funkemunky.api.tinyprotocol.reflection.Reflection;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -581,7 +584,7 @@ public class ReflectionsUtil {
     }
 
     public static Class<?> getNMSClass(String string) {
-        return getClass("net.minecraft.server." + version + "." + string);
+        return Reflections.getNMSClass(string).getParent();
     }
 
     static {
