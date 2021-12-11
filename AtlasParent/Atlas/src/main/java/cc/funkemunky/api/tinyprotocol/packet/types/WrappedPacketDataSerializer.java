@@ -12,12 +12,14 @@ import io.netty.buffer.Unpooled;
 import lombok.Getter;
 import org.bukkit.inventory.ItemStack;
 
+import java.nio.charset.Charset;
+
 @Getter
 public class WrappedPacketDataSerializer extends NMSObject {
 
     public static WrappedClass vanillaClass = Reflections.getNMSClass("PacketDataSerializer");
-    private static WrappedMethod readBytesMethod = vanillaClass.getMethod("array");
-    private static WrappedMethod hasArray = vanillaClass.getMethod("hasArray");
+    private static final WrappedMethod readBytesMethod = vanillaClass.getMethod("array"),
+            hasArray = vanillaClass.getMethod("hasArray"), readableBytes = vanillaClass.getMethod("readableBytes");
     private static WrappedConstructor byteConst = vanillaClass.getConstructor(ByteBuf.class);
 
     private byte[] data;
@@ -27,8 +29,9 @@ public class WrappedPacketDataSerializer extends NMSObject {
 
         boolean hasArray = WrappedPacketDataSerializer.hasArray.invoke(object);
 
-        if(hasArray)
-        data = readBytesMethod.invoke(object);
+        if(hasArray && (int)readableBytes.invoke(object) > 0) {
+            data = readBytesMethod.invoke(object);
+        }
         else data = new byte[0];
     }
 
@@ -68,6 +71,9 @@ public class WrappedPacketDataSerializer extends NMSObject {
         vanillaClass.getMethod("writeBoolean", boolean.class).invoke(getObject(), bool);
     }
 
+    public String toString(Charset set) {
+       return vanillaClass.getMethod("toString", Charset.class).invoke(getObject(), set);
+    }
     public ItemStack getItemStack() {
         return MinecraftReflection.toBukkitItemStack(vanillaClass
                 .getMethodByType(MinecraftReflection.itemStack.getParent(), 0).invoke(getObject()));
