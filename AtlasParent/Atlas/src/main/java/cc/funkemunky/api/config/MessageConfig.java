@@ -46,7 +46,7 @@ public class MessageConfig {
         }
 
         file.getLines().stream().map(line -> {
-            String[] split = line.replace("\"", "").split(": ", 2);
+            String[] split = line.replace("\"", "").split(": ", 1);
 
             return new Pair<>(split[0], split[1]);
         }).forEach(pair -> messages.put(pair.key, pair.value));
