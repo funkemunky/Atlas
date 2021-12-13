@@ -31,6 +31,7 @@
                     <source>8</source>
                     <target>8</target>
                     <compilerArgument>-XDignore.symbol.file</compilerArgument>
+                    <useIncrementalCompilation>false</useIncrementalCompilation>
                     <annotationProcessorPaths>
                         <path>
                             <groupId>org.projectlombok</groupId>

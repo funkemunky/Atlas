@@ -3,7 +3,7 @@
 // (powered by FernFlower decompiler)
 //
 
-package cc.funkemunky.api.utils;
+package cc.funkemunky.api.utils.msg;
 
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.BaseComponent;

@@ -3,6 +3,7 @@ package cc.funkemunky.api.utils.menu.type.impl;
 import cc.funkemunky.api.utils.XMaterial;
 import cc.funkemunky.api.utils.menu.Menu;
 import cc.funkemunky.api.utils.menu.button.Button;
+import cc.funkemunky.api.utils.menu.button.UpdatingButton;
 import cc.funkemunky.api.utils.menu.type.BukkitInventoryHolder;
 import cc.funkemunky.api.utils.menu.util.ArrayIterator;
 import lombok.Getter;
@@ -55,6 +56,11 @@ public class ChestMenu implements Menu {
     public void setItem(int index, Button button) {
         checkBounds(index);
         contents[index] = button;
+
+        if(button instanceof UpdatingButton) {
+            ((UpdatingButton)button).setMenu(this);
+            ((UpdatingButton)button).setIndex(index);
+        }
     }
 
     @Override
@@ -104,6 +110,10 @@ public class ChestMenu implements Menu {
             Button button = contents[i];
             if (button != null) {
                 holder.getInventory().setItem(i, button.getStack());
+
+                if(button instanceof UpdatingButton) {
+                    ((UpdatingButton)button).startUpdate();
+                }
             }
         });
     }
