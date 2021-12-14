@@ -8,6 +8,9 @@
  */
 package cc.funkemunky.api.reflections.types;
 
+import cc.funkemunky.api.utils.RunUtils;
+import com.google.common.cache.Cache;
+import com.google.common.cache.CacheBuilder;
 import lombok.Getter;
 import lombok.val;
 
@@ -17,18 +20,30 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
+import java.util.concurrent.TimeUnit;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 @Getter
 public class WrappedClass {
     private final Class parent;
+    private final Cache<String, WrappedMethod> methodCache = CacheBuilder.newBuilder()
+            .expireAfterAccess(2, TimeUnit.MINUTES).maximumSize(200L).build();
+    private final Cache<String, WrappedField> fieldCache = CacheBuilder.newBuilder()
+            .expireAfterAccess(2, TimeUnit.MINUTES).maximumSize(200L).build();
 
     public WrappedClass(Class parent) {
         this.parent = parent;
     }
 
     public WrappedField getFieldByName(String name) {
+        Optional<WrappedField> cached = Optional.ofNullable(fieldCache.getIfPresent(name));
+
+        if(cached.isPresent()) {
+            return cached.get();
+        }
+
         Field tempField = null;
 
         Class<?> clazz = this.parent;
@@ -42,7 +57,9 @@ public class WrappedClass {
             }
             if (tempField != null) {
                 tempField.setAccessible(true);
-                return new WrappedField(this, tempField);
+                WrappedField toReturn = new WrappedField(this, tempField);
+                fieldCache.put(name, toReturn);
+                return toReturn;
             }
 
             if(clazz.equals(this.parent.getSuperclass())) {
@@ -111,13 +128,23 @@ public class WrappedClass {
     }
 
     public WrappedField getFieldByType(Class<?> type, int index) {
+        String key = type.getName() + ";;" + index;
+        Optional<WrappedField> cached = Optional.ofNullable(fieldCache.getIfPresent(key));
+
+        if(cached.isPresent()) {
+            return cached.get();
+        }
+
         Class<?> clazz = this.parent;
 
         do {
-            for (Field[] fields : new Field[][]{clazz.getDeclaredFields(), clazz.getFields()}) {
+            for (Field[] fields : new Field[][]{clazz.getDeclaredFields()}) {
                 for (Field field : fields) {
                     if (type.isAssignableFrom(field.getType()) && index-- <= 0) {
-                        return new WrappedField(this, field);
+                        WrappedField toReturn = new WrappedField(this, field);
+
+                        fieldCache.put(key, toReturn);
+                        return toReturn;
                     }
                 }
             }
@@ -135,52 +162,83 @@ public class WrappedClass {
     }
 
     public WrappedMethod getMethod(String name, Class... parameters) {
-        for (Method method : this.parent.getDeclaredMethods()) {
-            if (!method.getName().equals(name) || parameters.length != method.getParameterTypes().length) {
-                continue;
-            }
-            boolean same = true;
-            for (int x = 0; x < method.getParameterTypes().length; x++) {
-                if (method.getParameterTypes()[x] != parameters[x]) {
-                    same = false;
-                    break;
+        String key = name + ";;" + Arrays.stream(parameters).map(Class::getName)
+                .collect(Collectors.joining(","));
+        Optional<WrappedMethod> cached = Optional.ofNullable(methodCache.getIfPresent(key));
+
+        if(cached.isPresent()) return cached.get();
+        else {
+            for (Method method : this.parent.getDeclaredMethods()) {
+                if (!method.getName().equals(name) || parameters.length != method.getParameterTypes().length) {
+                    continue;
+                }
+                boolean same = true;
+                for (int x = 0; x < method.getParameterTypes().length; x++) {
+                    if (method.getParameterTypes()[x] != parameters[x]) {
+                        same = false;
+                        break;
+                    }
+                }
+                if (same) {
+                    WrappedMethod toReturn = new WrappedMethod(this, method);
+                    methodCache.put(key, toReturn);
+                    return toReturn;
                 }
             }
-            if (same) {
-                return new WrappedMethod(this, method);
-            }
-        }
-        for (Method method : this.parent.getMethods()) {
-            if (!method.getName().equals(name) || parameters.length != method.getParameterTypes().length) {
-                continue;
-            }
-            boolean same = true;
-            for (int x = 0; x < method.getParameterTypes().length; x++) {
-                if (method.getParameterTypes()[x] != parameters[x]) {
-                    same = false;
-                    break;
+            for (Method method : this.parent.getMethods()) {
+                if (!method.getName().equals(name) || parameters.length != method.getParameterTypes().length) {
+                    continue;
                 }
-            }
-            if (same) {
-                return new WrappedMethod(this, method);
+                boolean same = true;
+                for (int x = 0; x < method.getParameterTypes().length; x++) {
+                    if (method.getParameterTypes()[x] != parameters[x]) {
+                        same = false;
+                        break;
+                    }
+                }
+                if (same) {
+                    WrappedMethod toReturn = new WrappedMethod(this, method);
+                    methodCache.put(key, toReturn);
+                    return toReturn;
+                }
             }
         }
         throw new NullPointerException("Could not find method in " + getParent().getSimpleName() + " with name " + name);
     }
 
     public WrappedMethod getDeclaredMethodByType(Class<?> type, int index) {
+        String key = "declared:" + type.getName() + ";;" + index;
+        Optional<WrappedMethod> cached = Optional.ofNullable(methodCache.getIfPresent(key));
+
+        if(cached.isPresent()) {
+            return cached.get();
+        }
+
         for (Method method : this.parent.getDeclaredMethods()) {
             if(type.isAssignableFrom(method.getReturnType()) && index-- <= 0) {
-                return new WrappedMethod(this, method);
+                WrappedMethod toReturn = new WrappedMethod(this, method);
+
+                methodCache.put(key, toReturn);
+                return toReturn;
             }
         }
         throw new NullPointerException("Could not find method with return type " + type.getSimpleName() + " at index " + index);
     }
 
     public WrappedMethod getMethodByType(Class<?> type, int index) throws NullPointerException {
+        String key = "nondeclared:" + type.getName() + ";;" + index;
+        Optional<WrappedMethod> cached = Optional.ofNullable(methodCache.getIfPresent(key));
+
+        if(cached.isPresent()) {
+            return cached.get();
+        }
+
         for (Method method : this.parent.getMethods()) {
             if(type.isAssignableFrom(method.getReturnType()) && index-- <= 0) {
-                return new WrappedMethod(this, method);
+                WrappedMethod toReturn = new WrappedMethod(this, method);
+
+                methodCache.put(key, toReturn);
+                return toReturn;
             }
         }
         throw new NullPointerException("Could not find method with return type " + type.getName()

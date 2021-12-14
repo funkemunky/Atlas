@@ -197,6 +197,14 @@ public abstract class NMSObject {
         return field.get(object);
     }
 
+    public <T> T fetch(WrappedMethod method) {
+        return method.invoke(getObject());
+    }
+
+    public <T> T fetch(WrappedMethod method, Object... args) {
+        return method.invoke(getObject(), args);
+    }
+
     public <T> T fetch(WrappedField field, Object obj) {
         return field.get(obj);
     }

@@ -19,20 +19,12 @@ public class WrappedPacketDataSerializer extends NMSObject {
 
     public static WrappedClass vanillaClass = Reflections.getNMSClass("PacketDataSerializer");
     private static final WrappedMethod readBytesMethod = vanillaClass.getMethod("array"),
-            hasArray = vanillaClass.getMethod("hasArray"), readableBytes = vanillaClass.getMethod("readableBytes");
+            hasArray = vanillaClass.getMethod("hasArray"),
+            readableBytes = vanillaClass.getMethod("readableBytes");
     private static WrappedConstructor byteConst = vanillaClass.getConstructor(ByteBuf.class);
-
-    private byte[] data;
 
     public WrappedPacketDataSerializer(Object object) {
         super(object);
-
-        boolean hasArray = WrappedPacketDataSerializer.hasArray.invoke(object);
-
-        if(hasArray && (int)readableBytes.invoke(object) > 0) {
-            data = readBytesMethod.invoke(object);
-        }
-        else data = new byte[0];
     }
 
     public WrappedPacketDataSerializer(ByteBuf buf) {
@@ -47,8 +39,19 @@ public class WrappedPacketDataSerializer extends NMSObject {
     public WrappedPacketDataSerializer(byte[] data) {
         Object pds = byteConst.newInstance(Unpooled.wrappedBuffer(data));
 
-        this.data = data;
         setObject(pds);
+    }
+
+    public int readableBytes() {
+        return fetch(readableBytes);
+    }
+
+    public byte[] getData() {
+        return fetch(readBytesMethod);
+    }
+
+    public int getRefCount() {
+        return fetch(vanillaClass.getMethod("refCnt"));
     }
 
     public void d(int dint) {
