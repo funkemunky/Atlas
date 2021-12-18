@@ -63,9 +63,7 @@ public class WrappedInCustomPayload extends NMSObject {
             if(packetData != null) {
                 WrappedPacketDataSerializer wpds = new WrappedPacketDataSerializer((Object) dataSerializer.get(getObject()));
 
-                if(wpds.getRefCount() > 0) {
-                    data = wpds.getData();
-                } else data = new byte[0];
+                data = wpds.getData();
             } else data = new byte[0];
             length = data.length;
 

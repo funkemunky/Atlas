@@ -45,6 +45,7 @@ public class WrappedOutCustomPayload extends NMSObject {
 
     @Override
     public void process(Player player, ProtocolVersion version) {
+        System.out.println("Processing WrappedOutCustomPayload");
         if(ProtocolVersion.getGameVersion().isOrAbove(ProtocolVersion.V1_13)) {
             Object mk = tagField.get(getObject());
             tag = keyOne.get(mk) + ":" + keyTwo.get(mk);
