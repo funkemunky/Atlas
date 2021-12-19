@@ -51,7 +51,7 @@ public enum ProtocolVersion {
     v1_16_5(754, "v1_16_R3"),
     v1_17(755, "v1_17_R1"),
     v1_17_1(756, "v1_17_R1"),
-    v1_18(757, "v_18_R1"),
+    v1_18(757, "v1_18_R1"),
     UNKNOWN(-1, "UNKNOWN");
 
     @Getter
@@ -77,6 +77,7 @@ public enum ProtocolVersion {
             String version = mv.getFieldByType(String.class, 1).get(mvObject);
 
             switch(version) {
+                case "1.18.1":
                 case "1.18": {
                     toReturn = v1_18;
                     Bukkit.getLogger().log(Level.INFO, "Version is 1.18");
