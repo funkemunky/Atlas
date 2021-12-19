@@ -86,7 +86,7 @@
         </dependency>
         <dependency>
             <groupId>cc.funkemunky.utils</groupId>
-            <artifactId>Atlas</artifactId>
+            <artifactId>AtlasBase</artifactId>
             <version>1.10.0</version>
             <scope>provided</scope>
         </dependency>
