@@ -53,11 +53,10 @@ public abstract class TinyProtocol1_8 implements AbstractTinyProtocol {
 
 	// Looking up ServerConnection
 	private static final WrappedClass packetClass = Reflections.getNMSClass("Packet");
-	private static final WrappedClass playerConnection = ProtocolVersion.getGameVersion().isOrAbove(ProtocolVersion.v1_17)
-			? Reflections.getClass("net.minecraft.server.network.PlayerConnection")
-			: Reflections.getNMSClass("PlayerConnection");
+	private static final WrappedClass playerConnection = Reflections.getNMSClass("PlayerConnection");
 	private static final WrappedMethod methodSendPacket = playerConnection
-			.getMethod("sendPacket", packetClass.getParent());
+			.getMethod(ProtocolVersion.getGameVersion().isOrAbove(ProtocolVersion.v1_18) ? "a" : "sendPacket",
+					packetClass.getParent());
 
 	// Packets we have to intercept
 	private static final WrappedClass PACKET_SET_PROTOCOL = Reflections.getNMSClass("PacketHandshakingInSetProtocol");
