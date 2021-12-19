@@ -43,7 +43,8 @@ public class MinecraftReflection {
     public static WrappedClass world = Reflections.getNMSClass("World");
     public static WrappedClass worldServer = Reflections.getNMSClass("WorldServer");
     public static WrappedClass playerInventory = Reflections.getNMSClass("PlayerInventory");
-    public static WrappedClass itemStack = Reflections.getNMSClass("ItemStack");
+    public static WrappedClass itemStack = Reflections.getNMSClass("ItemStack"),
+            item = Reflections.getNMSClass("Item");
     public static WrappedClass chunk = Reflections.getNMSClass("Chunk");
     public static WrappedClass classBlockInfo;
     public static WrappedClass minecraftServer = Reflections.getNMSClass("MinecraftServer");
@@ -86,7 +87,7 @@ public class MinecraftReflection {
     //ItemStack methods and fields
     private static WrappedMethod enumAnimationStack;
     private static final WrappedField activeItemField;
-    private static final WrappedMethod getItemMethod = itemStack.getMethod("getItem");
+    private static final WrappedMethod getItemMethod = itemStack.getMethodByType(item.getParent(), 0);
     private static final WrappedMethod getAnimationMethod = itemClass.getMethodByType(enumAnimation.getParent(), 0);
     private static final WrappedMethod canDestroyMethod;
 
@@ -309,9 +310,11 @@ public class MinecraftReflection {
                     .map(MinecraftReflection::fromAABB)
                     .collect(Collectors.toList());
         } else {
-            Object voxelShape = ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.v1_16)
+            Object voxelShape = ProtocolVersion.getGameVersion().isOrAbove(ProtocolVersion.v1_17)
+                    ? getCubes.invoke(vWorld, null, box.toAxisAlignedBB())
+                    : (ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.v1_16)
                     ? getCubes.invoke(vWorld, null, box.toAxisAlignedBB(), 0D, 0D, 0D)
-                    : getCubes.invoke(vWorld, null, box.toAxisAlignedBB(), (Predicate<Object>)obj -> true);
+                    : getCubes.invoke(vWorld, null, box.toAxisAlignedBB(), (Predicate<Object>)obj -> true));
 
             if(ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.V1_13_2)) {
                 List<Object> aabbs = getCubesFromVoxelShape.invoke(voxelShape);
@@ -464,14 +467,14 @@ public class MinecraftReflection {
             iBlockData = Reflections.getNMSClass("IBlockData");
             blockPos = Reflections.getNMSClass("BlockPosition");
             blockPosConstructor = blockPos.getConstructor(int.class, int.class, int.class);
-            getBlock = iBlockData.getMethod("getBlock");
+            getBlock = iBlockData.getMethodByType(block.getParent(), 0);
             blockData = ProtocolVersion.getGameVersion().isOrAbove(ProtocolVersion.v1_17)
                     ? block.getFieldByType(iBlockData.getParent(), 0) :  block.getFieldByName("blockData");
             blockPosConstructor = blockPos.getConstructor(int.class, int.class, int.class);
-            getBlockData = block.getMethod("getBlockData");
+            getBlockData = block.getMethodByType(iBlockData.getParent(), 0);
             aabbConstructor = axisAlignedBB
                     .getConstructor(double.class, double.class, double.class, double.class, double.class, double.class);
-            worldGetType = worldServer.getMethod("getType", blockPos.getParent());
+            worldGetType = worldServer.getMethodByType(iBlockData.getParent(), 0, blockPos.getParent());
         } else {
             idioticOldStaticConstructorAABB = axisAlignedBB.getMethod("a",
                     double.class, double.class, double.class, double.class, double.class, double.class);
@@ -511,13 +514,15 @@ public class MinecraftReflection {
                     ? Reflections.getNMSClass("BlockBase$Info") : Reflections.getNMSClass("Block$Info");
             worldReader = Reflections.getNMSClass("IWorldReader");
             //1.13 and 1.13.1 returns just VoxelShape while 1.13.2+ returns a Stream<VoxelShape>
-            getCubes = ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.v1_16) ?
+            getCubes = ProtocolVersion.getGameVersion().isOrAbove(ProtocolVersion.v1_17)
+                    ? worldReader.getMethodByType(List.class, 0, entity.getParent(), axisAlignedBB.getParent())
+                    : (ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.v1_16) ?
                     worldReader.getMethod("a", entity.getParent(), axisAlignedBB.getParent(),
                             double.class, double.class, double.class)
-                    : world.getMethod("c", entity.getParent(), axisAlignedBB.getParent(), Predicate.class);
+                    : world.getMethod("c", entity.getParent(), axisAlignedBB.getParent(), Predicate.class));
             voxelShape = Reflections.getNMSClass("VoxelShape");
             getCubesFromVoxelShape = voxelShape.getMethodByType(List.class, 0);
-            fluidMethod = world.getMethod("getFluid", blockPos.getParent());
+            fluidMethod = world.getMethodByType(Reflections.getNMSClass("Fluid").getParent(), 0, blockPos.getParent());
             getFlowMethod = Reflections.getNMSClass("Fluid").getMethodByType(vec3D.getParent(), 0);
         }
 
@@ -534,7 +539,7 @@ public class MinecraftReflection {
                 ? playerInventory.getMethod("b",
                 ProtocolVersion.getGameVersion().isAbove(ProtocolVersion.V1_8_9)
                         ? iBlockData.getParent() : itemClass.getParent())
-                : itemStack.getMethod("canDestroySpecialBlock", iBlockData.getParent());
+                : itemStack.getMethodByType(boolean.class, 0, iBlockData.getParent());
         if(ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.v1_17)) {
             frictionFactor = (ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.v1_16)
                     ? block : blockBase).getFieldByName("frictionFactor");

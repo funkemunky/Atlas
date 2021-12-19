@@ -245,6 +245,44 @@ public class WrappedClass {
                 + " at index " + index);
     }
 
+    public WrappedMethod getMethodByType(Class<?> type, int index, Class<?>... parameters) throws NullPointerException {
+        for (Method method : this.parent.getMethods()) {
+            if(type.isAssignableFrom(method.getReturnType()) && parameters.length == method.getParameterCount()) {
+                boolean same = true;
+                for (int x = 0; x < method.getParameterTypes().length; x++) {
+                    if (method.getParameterTypes()[x] != parameters[x]) {
+                        same = false;
+                        break;
+                    }
+                }
+
+                if(same &&  index-- <= 0)
+                    return new WrappedMethod(this, method);
+            }
+        }
+        throw new NullPointerException("Could not find method with return type " + type.getName()
+                + " at index " + index);
+    }
+
+    public WrappedMethod getDeclaredMethodByType(Class<?> type, int index, Class<?>... parameters) throws NullPointerException {
+        for (Method method : this.parent.getDeclaredMethods()) {
+            if(type.isAssignableFrom(method.getReturnType()) && parameters.length == method.getParameterCount()) {
+                boolean same = true;
+                for (int x = 0; x < method.getParameterTypes().length; x++) {
+                    if (method.getParameterTypes()[x] != parameters[x]) {
+                        same = false;
+                        break;
+                    }
+                }
+
+                if(same &&  index-- <= 0)
+                    return new WrappedMethod(this, method);
+            }
+        }
+        throw new NullPointerException("Could not find method with return type " + type.getName()
+                + " at index " + index);
+    }
+
     //We have a separate method instead of just calling WrappedClass#getMethods(boolean, boolean)
     //for performance reasons.
     public List<WrappedMethod> getMethods() {

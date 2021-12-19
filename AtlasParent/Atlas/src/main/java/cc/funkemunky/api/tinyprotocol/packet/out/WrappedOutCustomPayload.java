@@ -26,6 +26,7 @@ public class WrappedOutCustomPayload extends NMSObject {
 
             updateObject();
         } else {
+            System.out.println("New custom payload out: " + tag);
             setObject(payloadClass.getConstructor(minecraftKeyWrapper.getParent(),
                     WrappedPacketDataSerializer.vanillaClass.getParent())
                     .newInstance(minecraftKeyWrapper.getConstructor(String.class)
@@ -45,7 +46,6 @@ public class WrappedOutCustomPayload extends NMSObject {
 
     @Override
     public void process(Player player, ProtocolVersion version) {
-        System.out.println("Processing WrappedOutCustomPayload");
         if(ProtocolVersion.getGameVersion().isOrAbove(ProtocolVersion.V1_13)) {
             Object mk = tagField.get(getObject());
             tag = keyOne.get(mk) + ":" + keyTwo.get(mk);
