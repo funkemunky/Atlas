@@ -9,7 +9,9 @@ import cc.funkemunky.api.utils.Init;
 import cc.funkemunky.api.utils.XMaterial;
 import cc.funkemunky.api.utils.menu.button.Button;
 import cc.funkemunky.api.utils.menu.button.ClickAction;
+import cc.funkemunky.api.utils.menu.button.UpdatingButton;
 import cc.funkemunky.api.utils.menu.type.BukkitInventoryHolder;
+import cc.funkemunky.api.utils.menu.type.impl.ChestMenu;
 import cc.funkemunky.api.utils.menu.type.impl.ValueMenu;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
@@ -96,6 +98,17 @@ public class MenuListener implements Listener {
 
             if (menu != null) {
                 menu.handleClose((Player) event.getPlayer());
+                if(menu instanceof ChestMenu) {
+                    ChestMenu cmenu = (ChestMenu) menu;
+
+                    for (int i = 0; i < cmenu.contents.length; i++) {
+                        Button button = cmenu.contents[i];
+
+                        if(button instanceof UpdatingButton) {
+                            ((UpdatingButton)button).cancelUpdate();
+                        }
+                    }
+                }
 
                 menu.getParent().ifPresent(buttons -> new BukkitRunnable() {
                     public void run() {

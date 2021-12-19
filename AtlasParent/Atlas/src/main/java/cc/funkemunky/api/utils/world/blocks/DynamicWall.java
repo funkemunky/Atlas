@@ -1,6 +1,8 @@
 package cc.funkemunky.api.utils.world.blocks;
 
 import cc.funkemunky.api.tinyprotocol.api.ProtocolVersion;
+import cc.funkemunky.api.utils.BlockUtils;
+import cc.funkemunky.api.utils.Materials;
 import cc.funkemunky.api.utils.world.CollisionBox;
 import cc.funkemunky.api.utils.world.types.CollisionFactory;
 import cc.funkemunky.api.utils.world.types.SimpleCollisionBox;
@@ -9,6 +11,8 @@ import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
 import org.bukkit.material.Stairs;
+
+import java.util.Optional;
 
 @SuppressWarnings("Duplicates")
 public class DynamicWall implements CollisionFactory {
@@ -58,14 +62,16 @@ public class DynamicWall implements CollisionFactory {
 
 
     private static boolean wallConnects(ProtocolVersion v, Block fenceBlock, BlockFace direction) {
-        Block targetBlock = fenceBlock.getRelative(direction,1);
-        BlockState sTarget = targetBlock.getState();
+        Optional<Block> targetBlock = BlockUtils.getRelativeAsync(fenceBlock, direction, 1);
+
+        if(!targetBlock.isPresent()) return false;
+        BlockState sTarget = targetBlock.get().getState();
         Material target = sTarget.getType();
 
         if (!isWall(target)&&DynamicFence.isBlacklisted(target))
             return false;
 
-        if(target.name().contains("STAIRS")) {
+        if(Materials.checkFlag(target, Materials.STAIRS)) {
             if (v.isBelow(ProtocolVersion.V1_12)) return false;
             Stairs stairs = (Stairs) sTarget.getData();
             return stairs.getFacing() == direction;

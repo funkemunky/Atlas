@@ -3,25 +3,38 @@ package cc.funkemunky.api.utils;
 import cc.funkemunky.api.reflections.impl.MinecraftReflection;
 import cc.funkemunky.api.reflections.types.WrappedField;
 import cc.funkemunky.api.tinyprotocol.api.ProtocolVersion;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 public class BlockUtils {
 
     public static Map<Material, BoundingBox> collisionBoundingBoxes = new HashMap<>();
 
+    @Deprecated
     public static Block getBlock(Location location) {
         if (location.getWorld().isChunkLoaded(location.getBlockX() >> 4, location.getBlockZ() >> 4)) {
             return location.getBlock();
         } else {
             return null;
         }
+    }
+
+    public static Optional<Block> getBlockAsync(Location location) {
+        if(Bukkit.isPrimaryThread()
+                || location.getWorld().isChunkLoaded(location.getBlockX() >> 4, location.getBlockZ() >> 4))  {
+            return Optional.of(location.getBlock());
+        }
+
+        return Optional.empty();
     }
 
     private static WrappedField fieldBlocksMovement;
@@ -31,6 +44,22 @@ public class BlockUtils {
 
     public static boolean blocksMovement(Material material) {
         return material.isSolid();
+    }
+
+
+    public static Optional<Block> getRelativeAsync(Block block, BlockFace face) {
+        return getRelativeAsync(block, face.getModX(), face.getModY(), face.getModZ());
+    }
+
+    public static Optional<Block> getRelativeAsync(Block block, BlockFace face, int distance) {
+        return getRelativeAsync(block,
+                face.getModX() * distance, face.getModY() * distance, face.getModZ() * distance);
+    }
+
+    public static Optional<Block> getRelativeAsync(Block block, int modX, int modY, int modZ) {
+        if(block == null) return Optional.empty();
+
+        return getBlockAsync(block.getLocation().clone().add(modX, modY, modZ));
     }
 
     public static float getFriction(XMaterial material) {

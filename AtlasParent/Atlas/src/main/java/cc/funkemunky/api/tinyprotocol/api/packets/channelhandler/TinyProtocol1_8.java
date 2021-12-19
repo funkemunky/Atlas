@@ -542,7 +542,6 @@ public abstract class TinyProtocol1_8 implements AbstractTinyProtocol {
 			} else if (PACKET_SET_PROTOCOL.getParent().isInstance(msg)) {
 				WrappedHandshakingInSetProtocol protocol = new WrappedHandshakingInSetProtocol(msg);
 				if (protocol.enumProtocol == WrappedEnumProtocol.LOGIN) {
-					System.out.println("Enum protocol matched");
 					protocolLookup.put(channel, protocol.a);
 				}
 			}

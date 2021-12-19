@@ -24,10 +24,13 @@ public class WrappedOutTransaction extends NMSObject {
         if(ProtocolVersion.getGameVersion().isOrAbove(ProtocolVersion.v1_17)) {
             setObject(rawIntConstructor
                     .newInstance((int)((accept ? 1 : 0) << 30) | (id << 16) | (action & 0xFFFF)));
-        } else setPacket(packet, id, action, accept);
-        this.id = id;
-        this.action = action;
-        this.accept = accept;
+        } else {
+            setPacket(packet);
+            this.id = id;
+            this.action = action;
+            this.accept = accept;
+            updateObject();
+        }
     }
 
     public WrappedOutTransaction(Object packet, Player player) {

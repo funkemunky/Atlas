@@ -1,6 +1,7 @@
 package cc.funkemunky.api.utils.world.blocks;
 
 import cc.funkemunky.api.tinyprotocol.api.ProtocolVersion;
+import cc.funkemunky.api.utils.BlockUtils;
 import cc.funkemunky.api.utils.world.CollisionBox;
 import cc.funkemunky.api.utils.world.types.CollisionFactory;
 import cc.funkemunky.api.utils.world.types.NoCollisionBox;
@@ -10,13 +11,18 @@ import org.bukkit.block.BlockFace;
 import org.bukkit.material.Door;
 import org.bukkit.material.MaterialData;
 
+import java.util.Optional;
+
 public class DoorHandler implements CollisionFactory {
     @Override
     public CollisionBox fetch(ProtocolVersion version, Block b) {
         Door state = (Door) b.getState().getData();
         byte data = state.getData();
         if (( data & 0b01000 ) != 0) {
-            MaterialData state2 = b.getRelative(BlockFace.DOWN).getState().getData();
+            Optional<Block> rel = BlockUtils.getRelativeAsync(b, BlockFace.DOWN);
+
+            if(!rel.isPresent()) return NoCollisionBox.INSTANCE;
+            MaterialData state2 = rel.get().getState().getData();
             if (state2 instanceof Door) {
                 data = state2.getData();
             }
@@ -24,7 +30,10 @@ public class DoorHandler implements CollisionFactory {
                 return NoCollisionBox.INSTANCE;
             }
         } else {
-            MaterialData state2 = b.getRelative(BlockFace.UP).getState().getData();
+            Optional<Block> rel = BlockUtils.getRelativeAsync(b, BlockFace.UP);
+
+            if(!rel.isPresent()) return NoCollisionBox.INSTANCE;
+            MaterialData state2 = rel.get().getState().getData();
             if (state2 instanceof Door) {
                 state = (Door) state2;
             }

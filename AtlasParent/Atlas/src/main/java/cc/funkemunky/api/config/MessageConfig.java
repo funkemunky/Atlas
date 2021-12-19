@@ -53,9 +53,13 @@ public class MessageConfig {
     }
 
     public String msg(String key, String def) {
-        boolean contains = messages.containsKey(key);
-        String string = Color.translate(messages.computeIfAbsent(key, stringKey -> def.replace("\n", "\\n")));
-        if(!contains) save();
+        String string = Color.translate(messages.computeIfAbsent(key, stringKey -> {
+            String nstring = def.replace("\n", "\\n");
+
+            file.addLine(key + ": " + "" + nstring + "");
+            file.write();
+            return nstring;
+        }));
         return string.replace("\\n", "\n");
     }
 

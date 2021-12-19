@@ -1,6 +1,7 @@
 package cc.funkemunky.api.utils.world.blocks;
 
 import cc.funkemunky.api.tinyprotocol.api.ProtocolVersion;
+import cc.funkemunky.api.utils.BlockUtils;
 import cc.funkemunky.api.utils.Materials;
 import cc.funkemunky.api.utils.world.CollisionBox;
 import cc.funkemunky.api.utils.world.types.CollisionFactory;
@@ -12,6 +13,8 @@ import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
 import org.bukkit.material.Gate;
 import org.bukkit.material.Stairs;
+
+import java.util.Optional;
 
 public class DynamicFence implements CollisionFactory {
 
@@ -50,9 +53,12 @@ public class DynamicFence implements CollisionFactory {
     }
 
     private static boolean fenceConnects(ProtocolVersion v,Block fenceBlock, BlockFace direction) {
-        Block targetBlock = fenceBlock.getRelative(direction,1);
+        BlockUtils.getRelativeAsync(fenceBlock, direction, 1);
+        Optional<Block> targetBlock = BlockUtils.getRelativeAsync(fenceBlock, direction, 1);
+
+        if(!targetBlock.isPresent()) return false;
         BlockState sFence = fenceBlock.getState();
-        BlockState sTarget = targetBlock.getState();
+        BlockState sTarget = targetBlock.get().getState();
         Material target = sTarget.getType();
         Material fence = sFence.getType();
 

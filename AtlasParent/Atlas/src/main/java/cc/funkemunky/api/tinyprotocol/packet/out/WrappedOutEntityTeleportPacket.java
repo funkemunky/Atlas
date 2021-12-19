@@ -108,10 +108,9 @@ public class WrappedOutEntityTeleportPacket extends NMSObject {
             fieldX = fetchField(classEntityTeleport, double.class, 0);
             fieldY = fetchField(classEntityTeleport, double.class, 1);
             fieldZ = fetchField(classEntityTeleport, double.class, 2);
-
-            if(ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.v1_17)) {
-                emptyConstructor = classEntityTeleport.getConstructor();
-            }
+        }
+        if(ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.v1_17)) {
+            emptyConstructor = classEntityTeleport.getConstructor();
         }
     }
 }
