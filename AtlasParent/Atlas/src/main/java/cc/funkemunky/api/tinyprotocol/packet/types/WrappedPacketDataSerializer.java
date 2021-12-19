@@ -27,9 +27,7 @@ public class WrappedPacketDataSerializer extends NMSObject {
     private boolean empty;
 
     public WrappedPacketDataSerializer(Object object) {
-        super(byteBufClass.getParent().isInstance(object) ? byteConst.newInstance(object) : object);
-
-        empty = emptyByteBuf.getParent().isInstance(object);
+        super(!vanillaClass.getParent().isInstance(object) ? byteConst.newInstance(object) : object);
     }
 
     @Override

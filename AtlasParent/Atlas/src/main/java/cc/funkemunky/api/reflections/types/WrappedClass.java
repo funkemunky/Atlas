@@ -247,7 +247,7 @@ public class WrappedClass {
 
     public WrappedMethod getMethodByType(Class<?> type, int index, Class<?>... parameters) throws NullPointerException {
         for (Method method : this.parent.getMethods()) {
-            if(type.isAssignableFrom(method.getReturnType())) {
+            if(type.isAssignableFrom(method.getReturnType()) && parameters.length == method.getParameterCount()) {
                 boolean same = true;
                 for (int x = 0; x < method.getParameterTypes().length; x++) {
                     if (method.getParameterTypes()[x] != parameters[x]) {
@@ -266,7 +266,7 @@ public class WrappedClass {
 
     public WrappedMethod getDeclaredMethodByType(Class<?> type, int index, Class<?>... parameters) throws NullPointerException {
         for (Method method : this.parent.getDeclaredMethods()) {
-            if(type.isAssignableFrom(method.getReturnType())) {
+            if(type.isAssignableFrom(method.getReturnType()) && parameters.length == method.getParameterCount()) {
                 boolean same = true;
                 for (int x = 0; x < method.getParameterTypes().length; x++) {
                     if (method.getParameterTypes()[x] != parameters[x]) {

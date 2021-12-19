@@ -71,7 +71,7 @@ public class WrappedInUseEntityPacket extends NMSObject {
                 action = EnumEntityUseAction.INTERACT;
             } else if(actionField.getClass().isAssignableFrom(actionTwo.getParent())) {
                 enumHand = WrappedEnumHand.getFromVanilla(fieldHandTwo.get(actionField));
-                vec = new Vec3D(fieldVec.get(actionField));
+                vec = new Vec3D((Object)fieldVec.get(actionField));
 
                 action = EnumEntityUseAction.INTERACT_AT;
             }
