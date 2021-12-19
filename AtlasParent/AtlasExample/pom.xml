@@ -3,14 +3,14 @@
     <parent>
         <artifactId>atlas-parent</artifactId>
         <groupId>cc.funkemunky.utils</groupId>
-        <version>1.10.0</version>
+        <version>1.11.0</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>cc.funkemunky.example</groupId>
     <artifactId>AtlasExample</artifactId>
-    <version>1.10.0</version>
+    <version>1.11.0</version>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -86,8 +86,8 @@
         </dependency>
         <dependency>
             <groupId>cc.funkemunky.utils</groupId>
-            <artifactId>AtlasBase</artifactId>
-            <version>1.10.0</version>
+            <artifactId>Atlas</artifactId>
+            <version>1.11.0</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>

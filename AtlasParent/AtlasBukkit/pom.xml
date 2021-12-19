@@ -5,7 +5,7 @@
     <parent>
         <artifactId>atlas-parent</artifactId>
         <groupId>cc.funkemunky.utils</groupId>
-        <version>1.10.0</version>
+        <version>1.11.0</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -62,6 +62,62 @@
                         </goals>
                         <configuration>
                             <minimizeJar>false</minimizeJar>
+                            <filters>
+                                <filter>
+                                    <artifact>dev.brighten.db:Assembly</artifact>
+                                    <includes>
+                                        <include>**</include>
+                                    </includes>
+                                </filter>
+                                <filter>
+                                    <artifact>com.h2database:h2</artifact>
+                                    <includes>
+                                        <include>**</include>
+                                    </includes>
+                                </filter>
+                                <filter>
+                                    <artifact>acf-bukkit:acf-bukkit</artifact>
+                                    <includes>
+                                        <include>**</include>
+                                    </includes>
+                                </filter>
+                                <filter>
+                                    <artifact>cc.funkemunky.utils:Atlas</artifact>
+                                    <includes>
+                                        <incude>**</incude>
+                                    </includes>
+                                </filter>
+                                <filter>
+                                    <artifact>org.ow2.asm:asm</artifact>
+                                    <includes>
+                                        <include>**</include>
+                                    </includes>
+                                </filter>
+                                <filter>
+                                    <artifact>org.ow2.asm:asm-tree</artifact>
+                                    <includes>
+                                        <include>**</include>
+                                    </includes>
+                                </filter>
+                                <filter>
+                                    <artifact>com.google.code.gson:gson</artifact>
+                                    <includes>
+                                        <include>**</include>
+                                    </includes>
+                                </filter>
+                                <filter>
+                                    <artifact>org.ow2.asm:asm-tree</artifact>
+                                    <includes>
+                                        <include>**</include>
+                                    </includes>
+                                </filter>
+                                <filter>
+                                    <artifact>club.minnced:discord-webhooks</artifact>
+                                    <includes>
+                                        <include>**</include>
+                                    </includes>
+                                </filter>
+                            </filters>
                         </configuration>
                     </execution>
                 </executions>
