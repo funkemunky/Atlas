@@ -51,7 +51,12 @@ public class WrappedOutCustomPayload extends NMSObject {
             tag = keyOne.get(mk) + ":" + keyTwo.get(mk);
         } else tag = tagField.get(getObject());
         if(ProtocolVersion.getGameVersion().isOrAbove(ProtocolVersion.V1_8)) {
-            data = new WrappedPacketDataSerializer((Object)fetch(dataField)).getData();
+            WrappedPacketDataSerializer serial = new WrappedPacketDataSerializer((Object)fetch(dataField));
+
+            if(serial.getRefCount() > 0) {
+                serial.copy();
+                data = serial.getData();
+            } else data = new byte[0];
 
         } else data = dataField.get(getObject());
     }
