@@ -28,6 +28,5 @@ public class RollingAverageLong {
         average += value;
         array[index] = value;
         index = (index + 1) % size;
-        //System.out.println(Arrays.stream(array).mapToObj(d -> String.format("%.2f", d)).collect(Collectors.joining(",")));
     }
 }

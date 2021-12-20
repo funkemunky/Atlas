@@ -514,7 +514,7 @@ public class MinecraftReflection {
                     ? Reflections.getNMSClass("BlockBase$Info") : Reflections.getNMSClass("Block$Info");
             worldReader = Reflections.getNMSClass("IWorldReader");
             //1.13 and 1.13.1 returns just VoxelShape while 1.13.2+ returns a Stream<VoxelShape>
-            getCubes = ProtocolVersion.getGameVersion().isOrAbove(ProtocolVersion.v1_17)
+            getCubes = ProtocolVersion.getGameVersion().isOrAbove(ProtocolVersion.v1_18)
                     ? worldReader.getMethodByType(List.class, 0, entity.getParent(), axisAlignedBB.getParent())
                     : (ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.v1_16) ?
                     worldReader.getMethod("a", entity.getParent(), axisAlignedBB.getParent(),

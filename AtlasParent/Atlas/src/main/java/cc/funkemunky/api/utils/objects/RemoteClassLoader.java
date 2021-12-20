@@ -1,5 +1,7 @@
 package cc.funkemunky.api.utils.objects;
 
+import org.bukkit.Bukkit;
+
 import java.io.*;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -34,7 +36,7 @@ public class RemoteClassLoader extends ClassLoader {
                     e.printStackTrace();
                 }
             });
-        } else System.out.println("names null.");
+        } else Bukkit.getLogger().warning("names null.");
     }
 
     /**
@@ -86,23 +88,18 @@ public class RemoteClassLoader extends ClassLoader {
     @Override
     public Class findClass(String name) throws ClassNotFoundException {
         if(!classes.containsKey(name)) {
-            System.out.println("Finding " + name);
             byte[] b = loadClassFromFile(name);
-            System.out.println("byte length: " + b.length);
             return defineClass(name, b, 0, b.length);
         } else return classes.get(name);
     }
 
     private Class getClass(String name) throws ClassNotFoundException {
-        System.out.println("Finding " + name);
         byte[] b = loadClassFromFile(name);
-        System.out.println("byte length: " + b.length);
         return defineClass(name, b, 0, b.length);
     }
 
     private byte[] loadClassFromFile(String fileName)  {
-        String name = fileName.replace(".class", "shitnibba123@").replace('.', File.separatorChar).replace("shitnibba123@", ".class") + (!fileName.contains(".class") ? ".class" : "");
-        System.out.println("Loading " + name);
+        String name = fileName.replace(".class", "shitguy123@").replace('.', File.separatorChar).replace("shitguy123@", ".class") + (!fileName.contains(".class") ? ".class" : "");
         InputStream inputStream = getResourceAsStream(name);
         byte[] buffer;
         ByteArrayOutputStream byteStream = new ByteArrayOutputStream();

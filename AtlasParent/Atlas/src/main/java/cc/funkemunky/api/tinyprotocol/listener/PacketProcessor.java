@@ -29,7 +29,6 @@ public class PacketProcessor {
         ListenerEntry entry = new ListenerEntry(plugin, priority, listener);
         synchronized (processors) {
             for (String type : types) {
-                System.out.println("Registering: " + type + " for plugin " + plugin.getName());
                 processors.compute(type, (key, list) -> {
                     if(list == null) list = new CopyOnWriteArrayList<>();
 

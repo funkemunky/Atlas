@@ -7,6 +7,7 @@ import cc.funkemunky.api.tinyprotocol.api.NMSObject;
 import cc.funkemunky.api.tinyprotocol.api.ProtocolVersion;
 import cc.funkemunky.api.tinyprotocol.packet.types.WrappedPacketDataSerializer;
 import lombok.Getter;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 //TODO Make this compatible with 1.13 and newer.
@@ -26,7 +27,6 @@ public class WrappedOutCustomPayload extends NMSObject {
 
             updateObject();
         } else {
-            System.out.println("New custom payload out: " + tag);
             setObject(payloadClass.getConstructor(minecraftKeyWrapper.getParent(),
                     WrappedPacketDataSerializer.vanillaClass.getParent())
                     .newInstance(minecraftKeyWrapper.getConstructor(String.class)
@@ -69,7 +69,7 @@ public class WrappedOutCustomPayload extends NMSObject {
                 keyOne.set(mk, split[0]);
                 keyTwo.set(mk, split[1]);
             } else {
-                System.out.println("Tag (" + tag + ") must contain a ':' to be valid.");
+                Bukkit.getLogger().warning("Tag (" + tag + ") must contain a ':' to be valid.");
             }
         } else tagField.set(getObject(), tag);
     }

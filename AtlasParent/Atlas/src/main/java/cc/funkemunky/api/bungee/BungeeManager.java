@@ -50,7 +50,7 @@ public class BungeeManager implements PluginMessageListener {
 
             isBungee = wrappedClass.getFieldByName("bungee").get(null);
         } catch(ClassNotFoundException e) {
-            System.out.println("Class not found");
+            Bukkit.getLogger().severe("Class not found");
             //empty
             isBungee = false;
         }

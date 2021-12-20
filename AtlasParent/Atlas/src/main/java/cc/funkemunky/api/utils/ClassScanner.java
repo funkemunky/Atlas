@@ -44,7 +44,7 @@ public class ClassScanner {
     }
 
     public static Set<String> scanFile2(String file, Class<?> clazz) {
-        Bukkit.getLogger().info("URL: " + clazz.getProtectionDomain().getCodeSource().getLocation().toString());
+        Bukkit.getLogger().info("Found file: " + clazz.getProtectionDomain().getCodeSource().getLocation().toString());
         return scanFile2(file, new URL[]{clazz.getProtectionDomain().getCodeSource().getLocation()});
     }
 
@@ -250,7 +250,7 @@ public class ClassScanner {
 
             return classNode.name.replace('/', '.');
         } catch (Exception e) {
-            System.out.println("Failed to scan: " + in.toString());
+            Bukkit.getLogger().severe("Failed to scan: " + in.toString());
         }
         return null;
     }

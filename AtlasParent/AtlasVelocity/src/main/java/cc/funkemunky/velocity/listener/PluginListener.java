@@ -10,7 +10,6 @@ public class PluginListener {
 
     @Subscribe
     public void onEvent(PluginMessageEvent event) {
-        System.out.println("Received plugin message " + event.getIdentifier().getId() + ".");
         if(event.getIdentifier().equals(AtlasVelocity.INSTANCE.getIncoming())) {
             try {
                 ByteArrayInputStream bis = new ByteArrayInputStream(event.getData());

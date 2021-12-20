@@ -98,7 +98,7 @@ public abstract class TinyProtocol1_7 implements AbstractTinyProtocol {
         registerBukkitEvents();
 
         try {
-            System.out.println("Attempting to inject into netty");
+            Bukkit.getLogger().info("Attempting to inject into netty");
             registerChannelHandler();
             registerPlayers(plugin);
         } catch (IllegalArgumentException ex) {
@@ -214,7 +214,7 @@ public abstract class TinyProtocol1_7 implements AbstractTinyProtocol {
 
                 serverChannels.add(serverChannel);;
                 serverChannel.pipeline().addFirst(serverChannelHandler);
-                System.out.println("Server channel handler injected (" + serverChannel + ")");
+                Bukkit.getLogger().severe("Server channel handler injected (" + serverChannel + ")");
                 looking = false;
             }
         }
@@ -372,7 +372,6 @@ public abstract class TinyProtocol1_7 implements AbstractTinyProtocol {
                     channel.pipeline().addBefore("packet_handler", handlerName, interceptor);
                     uninjectedChannels.remove(channel);
                 } else {
-                    System.out.println("Context was null. Adding channel to injected!");
                     uninjectedChannels.add(channel);
                 }
             }

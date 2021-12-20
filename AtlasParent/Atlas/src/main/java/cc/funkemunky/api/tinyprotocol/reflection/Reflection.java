@@ -86,7 +86,7 @@ public final class Reflection {
         try {
             return getField(Reflections.getNMSClass(className).getParent(), fieldType, index);
         } catch (Exception e) {
-            System.out.println("[WARN] Failed to find field at " + index + " in " + className + " with type " + fieldType.getSimpleName());
+            Bukkit.getLogger().warning("Failed to find field at " + index + " in " + className + " with type " + fieldType.getSimpleName());
             return null;
         }
     }

@@ -22,7 +22,6 @@ public class ExpTimer {
 
         previousExp = player.getExp();
         previousLevel = player.getLevel();
-        System.out.println("Running exp timer");
         levelTask = RunUtils.taskTimer(() -> {
             if(getMillisLeft() <= 0) {
                 levelTask.cancel();

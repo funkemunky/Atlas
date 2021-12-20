@@ -18,6 +18,7 @@ import cc.funkemunky.api.tinyprotocol.reflection.Reflection;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -83,7 +84,7 @@ public abstract class NMSObject {
             }
             return p;
         } catch (Exception e) {
-            System.out.println("The plugin cannot work as protocol incompatibilities were detected... Disabling...");
+            Bukkit.getLogger().severe("The plugin cannot work as protocol incompatibilities were detected... Disabling...");
             e.printStackTrace();
         }
         return null;
@@ -105,7 +106,7 @@ public abstract class NMSObject {
             }
             return p;
         } catch (Exception e) {
-            System.out.println("The plugin cannot work as protocol incompatibilities were detected... Disabling...");
+            Bukkit.getLogger().severe("The plugin cannot work as protocol incompatibilities were detected... Disabling...");
             e.printStackTrace();
         }
         return null;
@@ -136,7 +137,7 @@ public abstract class NMSObject {
             }
             return p;
         } catch (Exception e) {
-            System.out.println("The plugin cannot work as protocol incompatibilities were detected... Disabling...");
+            Bukkit.getLogger().severe("The plugin cannot work as protocol incompatibilities were detected... Disabling...");
             e.printStackTrace();
         }
         return null;

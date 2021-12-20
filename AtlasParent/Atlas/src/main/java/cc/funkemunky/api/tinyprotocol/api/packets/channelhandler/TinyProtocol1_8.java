@@ -25,6 +25,7 @@ import com.google.common.collect.MapMaker;
 import com.mojang.authlib.GameProfile;
 import io.netty.channel.*;
 import lombok.val;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -107,7 +108,7 @@ public abstract class TinyProtocol1_8 implements AbstractTinyProtocol {
 		registerBukkitEvents();
 
 		try {
-			System.out.println("Attempting to inject into netty");
+			Bukkit.getLogger().info("Attempting to inject into netty");
 			registerChannelHandler();
 
 			RunUtils.taskLater(() -> registerPlayers(plugin), 2);
@@ -247,7 +248,7 @@ public abstract class TinyProtocol1_8 implements AbstractTinyProtocol {
 
 				serverChannels.add(serverChannel);
 				serverChannel.pipeline().addFirst(serverChannelHandler);
-				System.out.println("Server channel handler injected (" + serverChannel + ")");
+				Bukkit.getLogger().info("Server channel handler injected (" + serverChannel + ")");
 				looking = false;
 			}
 		}
@@ -407,7 +408,6 @@ public abstract class TinyProtocol1_8 implements AbstractTinyProtocol {
 					channel.pipeline().addBefore("packet_handler", handlerName, interceptor);
 					uninjectedChannels.remove(channel);
 				} else {
-					System.out.println("Context was null. Adding channel to injected!");
 					uninjectedChannels.add(channel);
 				}
 			}

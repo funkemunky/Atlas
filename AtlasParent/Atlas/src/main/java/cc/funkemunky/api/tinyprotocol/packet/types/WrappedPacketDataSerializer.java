@@ -5,6 +5,7 @@ import cc.funkemunky.api.reflections.impl.CraftReflection;
 import cc.funkemunky.api.reflections.impl.MinecraftReflection;
 import cc.funkemunky.api.reflections.types.WrappedClass;
 import cc.funkemunky.api.reflections.types.WrappedConstructor;
+import cc.funkemunky.api.reflections.types.WrappedField;
 import cc.funkemunky.api.reflections.types.WrappedMethod;
 import cc.funkemunky.api.tinyprotocol.api.NMSObject;
 import lombok.Getter;
@@ -15,19 +16,22 @@ import java.nio.charset.Charset;
 @Getter
 public class WrappedPacketDataSerializer extends NMSObject {
 
-    public static WrappedClass vanillaClass = Reflections.getNMSClass("PacketDataSerializer");
-    private static final WrappedMethod readBytesMethod = vanillaClass.getMethod("array"),
-            hasArray = vanillaClass.getMethod("hasArray"),
-            readableBytes = vanillaClass.getMethod("readableBytes");
-    private static WrappedClass byteBufClass = Reflections.getUtilClass("io.netty.buffer.ByteBuf"),
+    public static WrappedClass vanillaClass = Reflections.getNMSClass("PacketDataSerializer"),
+            byteBufClass = Reflections.getUtilClass("io.netty.buffer.ByteBuf"),
             unpooledClass = Reflections.getUtilClass("io.netty.buffer.Unpooled"),
             emptyByteBuf = Reflections.getUtilClass("io.netty.buffer.EmptyByteBuf");
+    private static final WrappedMethod readBytesMethod = vanillaClass.getMethod("array"),
+            hasArray = vanillaClass.getMethod("hasArray"),
+            readableBytes = vanillaClass.getMethod("readableBytes"),
+            copyMethod = byteBufClass.getMethod("copy");
+    private static final WrappedField fieldByteBuf = vanillaClass.getFieldByType(byteBufClass.getParent(), 0);
     private static WrappedConstructor byteConst = vanillaClass.getConstructor(byteBufClass.getParent());
 
     private boolean empty;
 
     public WrappedPacketDataSerializer(Object object) {
-        super(!vanillaClass.getParent().isInstance(object) ? byteConst.newInstance(object) : object);
+        super(!vanillaClass.getParent().isInstance(object) ? byteConst.newInstance(object)
+                : object);
     }
 
     @Override
@@ -42,13 +46,17 @@ public class WrappedPacketDataSerializer extends NMSObject {
         setObject(pds);
     }
 
+    public void copy() {
+        setObject(byteConst.newInstance(
+                byteBufClass.getParent().cast(fetch(copyMethod))));
+    }
+
     public int readableBytes() {
         if(empty) return 0;
         return fetch(readableBytes);
     }
 
     public byte[] getData() {
-        if(empty) return new byte[0];
         byte[] bytes = new byte[readableBytes()];
         if(bytes.length > 0)
         vanillaClass.getMethod("readBytes", byte[].class).invoke(getObject(), bytes);

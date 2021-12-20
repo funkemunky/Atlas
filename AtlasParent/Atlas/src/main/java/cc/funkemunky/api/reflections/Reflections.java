@@ -41,7 +41,6 @@ public class Reflections {
         craftBukkitString = "org.bukkit.craftbukkit." + version + ".";
         netMinecraftServerString = "net.minecraft.server." + version + ".";
 
-        System.out.println("Scanning all Bukkit files...");
         classNames = ClassScanner.scanFile2(null, Main.class);
     }
 
