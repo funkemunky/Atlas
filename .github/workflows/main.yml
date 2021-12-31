@@ -16,5 +16,6 @@ jobs:
  
       - name: Compile
         run: mvn -B -Pclean install
+        working-directory: AtlasParent/
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
