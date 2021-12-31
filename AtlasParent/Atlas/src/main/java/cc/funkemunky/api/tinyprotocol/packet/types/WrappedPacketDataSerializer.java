@@ -40,7 +40,7 @@ public class WrappedPacketDataSerializer extends NMSObject {
     }
 
     public WrappedPacketDataSerializer(byte[] data) {
-        Object pds = byteConst.newInstance(unpooledClass.getMethod("wrappedBuffer", byte[].class)
+        Object pds = byteConst.newInstance((Object)unpooledClass.getMethod("wrappedBuffer", byte[].class)
                 .invoke(null, data));
 
         setObject(pds);

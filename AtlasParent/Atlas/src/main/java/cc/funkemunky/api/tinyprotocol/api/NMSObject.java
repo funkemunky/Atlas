@@ -284,7 +284,7 @@ public abstract class NMSObject {
         public static final String ENTITY_METADATA = SERVER + "EntityMetadata";
         public static final String ENTITY_VELOCITY = SERVER + "EntityVelocity";
         public static final String ENTITY_DESTROY = SERVER + "EntityDestroy";
-        public static final String ATTACH = SERVER + "EntityAttach";
+        public static final String ATTACH = SERVER + "AttachEntity";
 
         public static final String ENTITY = SERVER + "Entity";
         public static final String REL_POSITION = ENTITY + "$" + SERVER + "RelEntityMove";

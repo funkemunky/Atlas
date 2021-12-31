@@ -14,6 +14,7 @@ import org.bukkit.plugin.messaging.PluginMessageListener;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.io.ByteArrayOutputStream;
+import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.util.Arrays;
@@ -53,9 +54,8 @@ public class ForgeHandler implements Listener, PluginMessageListener {
                 new BukkitRunnable() {
                     @Override
                     public void run() {
-                        sendFmlPacket(player, (byte) -2, (byte) 0);
+                        sendFmlPacket(player, (byte) -2);
                         sendFmlPacket(player, (byte) 0, (byte) 2, (byte) 0, (byte) 0, (byte) 0, (byte) 0);
-                        sendFmlPacket(player, (byte) 2, (byte) 0, (byte) 0, (byte) 0, (byte) 0);
                     }
                 }.runTaskLater(Atlas.getInstance(), 20L);
             } else {
@@ -88,6 +88,7 @@ public class ForgeHandler implements Listener, PluginMessageListener {
             if(modData != null && modData.getMods().size() > 0) {
                 mods.put(player, modData);
             }
+            sendFmlPacket(player, (byte) 2, (byte) 0, (byte) 0, (byte) 0, (byte) 0);
         }
     }
 
@@ -127,28 +128,13 @@ public class ForgeHandler implements Listener, PluginMessageListener {
     }
 
     public static ModData getMods(Player player) {
-        val modData = mods.computeIfAbsent(player, key -> {
+        return mods.computeIfAbsent(player, key -> {
             if(Atlas.getInstance().getBungeeManager().isBungee()) {
                 ForgeHandler.INSTANCE.queryBungeeMods(player);
-            } else {
-                sendFmlPacket(player, (byte) -2, (byte) 0);
-                sendFmlPacket(player, (byte) 0, (byte) 2, (byte) 0, (byte) 0, (byte) 0, (byte) 0);
-                sendFmlPacket(player, (byte) 2, (byte) 0, (byte) 0, (byte) 0, (byte) 0);
             }
 
             return null;
         });
-
-        if(mods.containsKey(player) && modData == null) {
-            if(Atlas.getInstance().getBungeeManager().isBungee()) {
-                ForgeHandler.INSTANCE.queryBungeeMods(player);
-            } else {
-                sendFmlPacket(player, (byte) -2, (byte) 0);
-                sendFmlPacket(player, (byte) 0, (byte) 2, (byte) 0, (byte) 0, (byte) 0, (byte) 0);
-                sendFmlPacket(player, (byte) 2, (byte) 0, (byte) 0, (byte) 0, (byte) 0);
-            }
-        }
-        return modData;
     }
 
     public static void runBungeeModChecker(Player player, Map<String, String> modStrings) {
