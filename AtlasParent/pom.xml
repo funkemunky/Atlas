@@ -67,7 +67,7 @@
         </repository>
         <repository>
             <id>aikar</id>
-            <url>http://repo.aikar.co/nexus/content/groups/aikar/</url>
+            <url>https://repo.aikar.co/nexus/content/groups/aikar/</url>
         </repository>
     </repositories>
 
