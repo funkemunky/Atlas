@@ -36,7 +36,7 @@ public class Materials {
             if(material.name().contains("SKULL"))
                 MATERIAL_FLAGS[i] = SOLID;
 
-            if(material.name().contains("STATIONARY")) {
+            if(material.name().contains("STATIONARY") || material.name().contains("LAVA") || material.name().contains("WATER")) {
                 if(material.name().contains("LAVA")) {
                     MATERIAL_FLAGS[i] |= LIQUID | LAVA;
                 } else MATERIAL_FLAGS[i] |= LIQUID | WATER;

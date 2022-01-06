@@ -5,6 +5,7 @@ import cc.funkemunky.api.tinyprotocol.api.Packet;
 import cc.funkemunky.api.tinyprotocol.listener.functions.PacketListener;
 import cc.funkemunky.api.utils.RunUtils;
 import lombok.val;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventPriority;
 import org.bukkit.plugin.Plugin;
@@ -92,6 +93,22 @@ public class PacketProcessor {
                 }
             }
         }
+        synchronized (asyncProcessors) {
+            int iterations = 0;
+            for (List<ListenerEntry> list : processors.values()) {
+                for (Iterator<ListenerEntry> it = list.iterator(); it.hasNext(); ) {
+                    ListenerEntry entry = it.next();
+
+                    iterations++;
+                    if(entry.getListener() == listener) {
+                        it.remove();
+                        Atlas.getInstance().getLogger().info("Removed listener in " + iterations + " iterations.");
+                        removedListener = true;
+                        break;
+                    }
+                }
+            }
+        }
 
         return removedListener;
     }
@@ -99,7 +116,12 @@ public class PacketProcessor {
     public void removeListeners(Plugin plugin) {
         synchronized (processors) {
             for (List<ListenerEntry> list : processors.values()) {
-                list.removeIf(entry -> entry.getPlugin() == plugin);
+                list.removeIf(entry -> entry.getPlugin().getName().equals(plugin.getName()));
+            }
+        }
+        synchronized (asyncProcessors) {
+            for (List<ListenerEntry> list : asyncProcessors.values()) {
+                list.removeIf(entry -> entry.getPlugin().getName().equals(plugin.getName()));
             }
         }
     }
