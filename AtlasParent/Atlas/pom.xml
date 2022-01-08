@@ -416,7 +416,7 @@
         <dependency>
             <groupId>org.github.spigot</groupId>
             <artifactId>1.11.2</artifactId>
-            <version>1.11.2.1</version>
+            <version>1.11.2</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
