@@ -3,6 +3,7 @@ package cc.funkemunky.api.utils.world.blocks;
 import cc.funkemunky.api.tinyprotocol.api.ProtocolVersion;
 import cc.funkemunky.api.utils.BlockUtils;
 import cc.funkemunky.api.utils.Materials;
+import cc.funkemunky.api.utils.XMaterial;
 import cc.funkemunky.api.utils.world.CollisionBox;
 import cc.funkemunky.api.utils.world.types.CollisionFactory;
 import cc.funkemunky.api.utils.world.types.ComplexCollisionBox;
@@ -37,18 +38,20 @@ public class DynamicFence implements CollisionFactory {
     }
 
     static boolean isBlacklisted(Material m) {
-        switch(m.ordinal()) {
-            case 138:
-            case 280:
-            case 86:
-            case 103:
-            case 166:
+        XMaterial material = XMaterial.matchXMaterial(m);
+        switch(material) {
+            case BEACON:
+            case STICK:
+            case SNOW_BLOCK:
+            case MELON:
+            case BARRIER:
                 return true;
             default:
-                return Materials.checkFlag(m, Materials.STAIRS)
+                return !Materials.checkFlag(m, Materials.SOLID)
+                        || Materials.checkFlag(m, Materials.STAIRS)
                         || Materials.checkFlag(m, Materials.WALL)
-                        || m.name().contains("DAYLIGHT")
-                        || Materials.checkFlag(m, Materials.FENCE);
+                        || Materials.checkFlag(m, Materials.FENCE)
+                        || m.name().contains("DAYLIGHT");
         }
     }
 
@@ -58,12 +61,13 @@ public class DynamicFence implements CollisionFactory {
 
         if(!targetBlock.isPresent()) return false;
         BlockState sFence = fenceBlock.getState();
-        BlockState sTarget = targetBlock.get().getState();
-        Material target = sTarget.getType();
+        Material target = targetBlock.get().getType();
         Material fence = sFence.getType();
 
         if (!isFence(target)&&isBlacklisted(target))
             return false;
+
+        BlockState sTarget = targetBlock.get().getState();
 
         if(Materials.checkFlag(target, Materials.STAIRS)) {
             if (v.isBelow(ProtocolVersion.V1_12)) return false;

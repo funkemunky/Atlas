@@ -1,6 +1,8 @@
 package cc.funkemunky.api.utils.world.blocks;
 
 import cc.funkemunky.api.tinyprotocol.api.ProtocolVersion;
+import cc.funkemunky.api.utils.Materials;
+import cc.funkemunky.api.utils.XMaterial;
 import cc.funkemunky.api.utils.world.CollisionBox;
 import cc.funkemunky.api.utils.world.types.CollisionFactory;
 import cc.funkemunky.api.utils.world.types.ComplexCollisionBox;
@@ -43,15 +45,14 @@ public class DynamicPane implements CollisionFactory {
 
     private static boolean fenceConnects(ProtocolVersion v, Block fenceBlock, BlockFace direction) {
         Block targetBlock = fenceBlock.getRelative(direction,1);
-        BlockState sFence = fenceBlock.getState();
-        BlockState sTarget = targetBlock.getState();
-        Material target = sTarget.getType();
-        Material fence = sFence.getType();
+        Material target = targetBlock.getType();
 
         if (!isPane(target)&&DynamicFence.isBlacklisted(target))
             return false;
 
-        if(target.name().contains("STAIRS")) {
+        BlockState sTarget = targetBlock.getState();
+
+        if(Materials.checkFlag(target, Materials.STAIRS)) {
             if (v.isBelow(ProtocolVersion.V1_12)) return false;
             Stairs stairs = (Stairs) sTarget.getData();
             return stairs.getFacing() == direction;
@@ -59,8 +60,10 @@ public class DynamicPane implements CollisionFactory {
     }
 
     private static boolean isPane(Material m) {
-        int id = m.getId();
-        return id == 101 || id == 102 || id == 160;
+        final XMaterial mat = XMaterial.matchXMaterial(m);
+
+        return mat == XMaterial.IRON_BARS || mat.name().contains("PANE")
+                || mat.name().contains("THIN");
     }
 
 }

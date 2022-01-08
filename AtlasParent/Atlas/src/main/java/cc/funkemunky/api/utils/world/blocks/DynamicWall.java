@@ -3,6 +3,7 @@ package cc.funkemunky.api.utils.world.blocks;
 import cc.funkemunky.api.tinyprotocol.api.ProtocolVersion;
 import cc.funkemunky.api.utils.BlockUtils;
 import cc.funkemunky.api.utils.Materials;
+import cc.funkemunky.api.utils.XMaterial;
 import cc.funkemunky.api.utils.world.CollisionBox;
 import cc.funkemunky.api.utils.world.types.CollisionFactory;
 import cc.funkemunky.api.utils.world.types.SimpleCollisionBox;
@@ -65,11 +66,12 @@ public class DynamicWall implements CollisionFactory {
         Optional<Block> targetBlock = BlockUtils.getRelativeAsync(fenceBlock, direction, 1);
 
         if(!targetBlock.isPresent()) return false;
-        BlockState sTarget = targetBlock.get().getState();
-        Material target = sTarget.getType();
+        Material target = targetBlock.get().getType();
 
         if (!isWall(target)&&DynamicFence.isBlacklisted(target))
             return false;
+
+        BlockState sTarget = targetBlock.get().getState();
 
         if(Materials.checkFlag(target, Materials.STAIRS)) {
             if (v.isBelow(ProtocolVersion.V1_12)) return false;
@@ -79,7 +81,7 @@ public class DynamicWall implements CollisionFactory {
     }
 
     private static boolean isWall(Material m) {
-        return m.name().contains("WALL");
+        return Materials.checkFlag(m, Materials.WALL);
     }
 
 }
