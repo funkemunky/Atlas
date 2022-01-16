@@ -220,7 +220,8 @@ public enum BlockData {
     _FRAME(new SimpleCollisionBox(0, 0, 0, 1, 1 - (0.0625 * 3), 1),
             MiscUtils.match("ENDER_PORTAL_FRAME")),
 
-    _CARPET(new SimpleCollisionBox(0.0F, 0.0F, 0.0F, 1.0F, 0.0625F, 1.0F), MiscUtils.match("CARPET")),
+    _CARPET(new SimpleCollisionBox(0.0F, 0.0F, 0.0F, 1.0F, 0.0625F, 1.0F),
+            Arrays.stream(Material.values()).filter(m -> m.name().contains("CARPET")).toArray(Material[]::new)),
     _Daylight(new SimpleCollisionBox(0.0F, 0.0F, 0.0F, 1.0F, 0.375, 1.0F),
             MiscUtils.match("DAYLIGHT_DETECTOR"), MiscUtils.match("DAYLIGHT_DETECTOR_INVERTED")),
     _LILIPAD((v, b) -> {
