@@ -42,7 +42,6 @@ public class DynamicFence implements CollisionFactory {
         switch(material) {
             case BEACON:
             case STICK:
-            case SNOW_BLOCK:
             case MELON:
             case BARRIER:
                 return true;

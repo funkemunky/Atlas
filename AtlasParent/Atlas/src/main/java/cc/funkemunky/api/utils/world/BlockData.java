@@ -110,11 +110,10 @@ public enum BlockData {
 
     _HOPPER(new HopperBounding(), XMaterial.HOPPER.parseMaterial()),
     _CAKE((protocol, block) -> {
-
         double f1 = (1 + block.getData() * 2) / 16D;
 
         return new SimpleCollisionBox(f1, 0, 0.0625, 1 - 0.0625, 0.5, 1 - 0.0625);
-    }, MiscUtils.match("CAKE"), XMaterial.CAKE.parseMaterial()),
+    }, Arrays.stream(Material.values()).filter(m -> m.name().contains("CAKE")).toArray(Material[]::new)),
 
     _LADDER((protocol, b) -> {
         CollisionBox box = NoCollisionBox.INSTANCE;
