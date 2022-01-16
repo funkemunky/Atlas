@@ -43,11 +43,11 @@ public class DynamicFence implements CollisionFactory {
             case BEACON:
             case STICK:
             case MELON:
+            case DAYLIGHT_DETECTOR:
             case BARRIER:
                 return true;
             default:
                 return !Materials.checkFlag(m, Materials.SOLID)
-                        || Materials.checkFlag(m, Materials.STAIRS)
                         || Materials.checkFlag(m, Materials.WALL)
                         || Materials.checkFlag(m, Materials.FENCE)
                         || m.name().contains("DAYLIGHT");

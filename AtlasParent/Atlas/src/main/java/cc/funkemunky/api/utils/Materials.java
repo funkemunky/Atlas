@@ -59,8 +59,7 @@ public class Materials {
         for (Material mat : Material.values()) {
             if(!mat.isBlock()) continue;
             if (mat.name().contains("FENCE")) {
-                if(!mat.name().contains("GATE")) MATERIAL_FLAGS[mat.ordinal()] |= FENCE | WALL;
-                else MATERIAL_FLAGS[mat.ordinal()] |= WALL;
+                if(!mat.name().contains("GATE")) MATERIAL_FLAGS[mat.ordinal()] |= FENCE;
             }
             if(mat.name().contains("WALL")) MATERIAL_FLAGS[mat.ordinal()] |= WALL;
             if(mat.name().contains("PLATE")) MATERIAL_FLAGS[mat.ordinal()] = 0;
