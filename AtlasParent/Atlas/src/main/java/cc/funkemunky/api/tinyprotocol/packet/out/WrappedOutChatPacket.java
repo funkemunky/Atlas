@@ -36,7 +36,11 @@ public class WrappedOutChatPacket extends NMSObject {
 
     //Constructor (ichatbase, chattype);
     public WrappedOutChatPacket(TextComponent message, WrappedChatMessageType type) {
-        setObject(constructor.newInstance());
+        if(ProtocolVersion.getGameVersion().isOrAbove(ProtocolVersion.v1_17)) {
+            setObject(constructor.newInstance(null, type.toNMS(), null));
+        } else {
+            setObject(constructor.newInstance());
+        }
         this.message = message;
         this.chatType = type;
         updateObject();
@@ -44,7 +48,11 @@ public class WrappedOutChatPacket extends NMSObject {
 
     //1.16+ only
     public WrappedOutChatPacket(TextComponent message, WrappedChatMessageType chatType, UUID uuid) {
-        setObject(constructor.newInstance());
+        if(ProtocolVersion.getGameVersion().isOrAbove(ProtocolVersion.v1_17)) {
+            setObject(constructor.newInstance(null, chatType.toNMS(), uuid));
+        } else {
+            setObject(constructor.newInstance());
+        }
         this.message = message;
         this.chatType = chatType;
         this.uuid = uuid;
@@ -58,7 +66,7 @@ public class WrappedOutChatPacket extends NMSObject {
 
     private static WrappedClass chatBaseComp = Reflections.getNMSClass("IChatBaseComponent");
     private static WrappedClass outChatClass = Reflections.getNMSClass(packet);
-    private static WrappedConstructor constructor = outChatClass.getConstructor();
+    private static WrappedConstructor constructor = outChatClass.getConstructorAtIndex(0);
     private static WrappedClass chatSerialClass = Reflections.getNMSClass("IChatBaseComponent$ChatSerializer");
     private static WrappedMethod stcToComponent = chatSerialClass.getMethod("a", String.class);
     private static WrappedMethod getTextMethod = chatBaseComp.getMethod("getText");

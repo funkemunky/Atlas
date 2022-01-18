@@ -6,6 +6,7 @@ import cc.funkemunky.api.tinyprotocol.api.ProtocolVersion;
 import cc.funkemunky.api.utils.MiscUtils;
 import cc.funkemunky.api.utils.ReflectionsUtil;
 import cc.funkemunky.api.utils.XMaterial;
+import cc.funkemunky.api.utils.math.IntVector;
 import cc.funkemunky.api.utils.world.blocks.*;
 import cc.funkemunky.api.utils.world.types.*;
 import lombok.val;
@@ -564,7 +565,17 @@ public enum BlockData {
     public CollisionBox getBox(Block block, ProtocolVersion version) {
         if (this.box != null)
             return this.box.copy().offset(block.getX(), block.getY(), block.getZ());
-        return new DynamicCollisionBox(dynamic, block, version).offset(block.getX(), block.getY(), block.getZ());
+        return new DynamicCollisionBox(dynamic, new WrappedBlock(block.getLocation(),
+                XMaterial.matchXMaterial(block.getType()), block.getState().getData().getData()), version)
+                .offset(block.getX(), block.getY(), block.getZ());
+    }
+
+    public CollisionBox getBox(WrappedBlock block, ProtocolVersion version) {
+        if (this.box != null)
+            return this.box.copy().offset(block.getLocation().getX(), block.getLocation().getY(),
+                    block.getLocation().getZ());
+        return new DynamicCollisionBox(dynamic, block, version).offset(block.getLocation().getX(),
+                block.getLocation().getY(), block.getLocation().getZ());
     }
 
     private static BlockData[] lookup = new BlockData[Material.values().length];

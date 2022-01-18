@@ -2,8 +2,12 @@ package cc.funkemunky.api.utils.world.types;
 
 import cc.funkemunky.api.tinyprotocol.api.ProtocolVersion;
 import cc.funkemunky.api.tinyprotocol.packet.types.enums.WrappedEnumParticle;
+import cc.funkemunky.api.utils.XMaterial;
+import cc.funkemunky.api.utils.math.IntVector;
 import cc.funkemunky.api.utils.world.CollisionBox;
+import cc.funkemunky.api.utils.world.WrappedBlock;
 import lombok.Setter;
+import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 
@@ -14,12 +18,12 @@ public class DynamicCollisionBox implements CollisionBox {
 
     private CollisionFactory box;
     @Setter
-    private Block block;
+    private WrappedBlock block;
     @Setter
     private ProtocolVersion version;
     private double x,y,z;
 
-    public DynamicCollisionBox(CollisionFactory box, Block block, ProtocolVersion version) {
+    public DynamicCollisionBox(CollisionFactory box, WrappedBlock block, ProtocolVersion version) {
         this.box = box;
         this.block = block;
         this.version = version;
@@ -42,7 +46,7 @@ public class DynamicCollisionBox implements CollisionBox {
 
     @Override
     public DynamicCollisionBox copy() {
-        return new DynamicCollisionBox(box,block,version).offset(x,y,z);
+        return new DynamicCollisionBox(box,block,data,version).offset(x,y,z);
     }
 
     @Override

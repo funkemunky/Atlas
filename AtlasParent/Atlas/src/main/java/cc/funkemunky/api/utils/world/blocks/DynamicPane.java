@@ -1,9 +1,11 @@
 package cc.funkemunky.api.utils.world.blocks;
 
 import cc.funkemunky.api.tinyprotocol.api.ProtocolVersion;
+import cc.funkemunky.api.utils.BlockUtils;
 import cc.funkemunky.api.utils.Materials;
 import cc.funkemunky.api.utils.XMaterial;
 import cc.funkemunky.api.utils.world.CollisionBox;
+import cc.funkemunky.api.utils.world.WrappedBlock;
 import cc.funkemunky.api.utils.world.types.CollisionFactory;
 import cc.funkemunky.api.utils.world.types.ComplexCollisionBox;
 import cc.funkemunky.api.utils.world.types.SimpleCollisionBox;
@@ -21,7 +23,7 @@ public class DynamicPane implements CollisionFactory {
     private static final double max = .5 + width;
 
     @Override
-    public CollisionBox fetch(ProtocolVersion version, Block b) {
+    public CollisionBox fetch(ProtocolVersion version, WrappedBlock b){
         ComplexCollisionBox box = new ComplexCollisionBox(new SimpleCollisionBox(min, 0, min, max, 1, max));
         boolean east =  fenceConnects(version,b, BlockFace.EAST );
         boolean north = fenceConnects(version,b, BlockFace.NORTH);
@@ -43,8 +45,11 @@ public class DynamicPane implements CollisionFactory {
     }
 
 
-    private static boolean fenceConnects(ProtocolVersion v, Block fenceBlock, BlockFace direction) {
-        Block targetBlock = fenceBlock.getRelative(direction,1);
+    private static boolean fenceConnects(ProtocolVersion v, WrappedBlock fenceBlock, BlockFace direction) {
+        Block targetBlock = BlockUtils.getRelativeAsync(fenceBlock.getLocation(), direction).orElse(null);
+
+        if(targetBlock == null) return false;
+
         Material target = targetBlock.getType();
 
         if (!isPane(target)&&DynamicFence.isBlacklisted(target))

@@ -46,6 +46,14 @@ public class BlockUtils {
         return material.isSolid();
     }
 
+    public static Optional<Block> getRelativeAsync(Location loc, BlockFace face) {
+        return getRelativeAsync(loc, face.getModX(), face.getModY(), face.getModZ());
+    }
+
+    public static Optional<Block> getRelativeAsync(Location block, BlockFace face, int distance) {
+        return getRelativeAsync(block,
+                face.getModX() * distance, face.getModY() * distance, face.getModZ() * distance);
+    }
 
     public static Optional<Block> getRelativeAsync(Block block, BlockFace face) {
         return getRelativeAsync(block, face.getModX(), face.getModY(), face.getModZ());
@@ -60,6 +68,12 @@ public class BlockUtils {
         if(block == null) return Optional.empty();
 
         return getBlockAsync(block.getLocation().clone().add(modX, modY, modZ));
+    }
+
+    public static Optional<Block> getRelativeAsync(Location loc, int modX, int modY, int modZ) {
+        if(block == null) return Optional.empty();
+
+        return getBlockAsync(loc.clone().add(modX, modY, modZ));
     }
 
     public static float getFriction(XMaterial material) {

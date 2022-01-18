@@ -1778,6 +1778,16 @@ public enum XMaterial {
         return Optional.empty();
     }
 
+    @Nonnull
+    @Deprecated
+    public static Optional<XMaterial> matchXMaterial(int id) {
+        if (id < 0 || id > MAX_ID) return Optional.empty();
+        for (XMaterial materials : VALUES) {
+            if (materials.getId() == id) return Optional.of(materials);
+        }
+        return Optional.empty();
+    }
+
     /**
      * Attempts to build the string like an enum name.
      * Removes all the spaces, and extra non-English characters. Also removes some config/in-game based strings.

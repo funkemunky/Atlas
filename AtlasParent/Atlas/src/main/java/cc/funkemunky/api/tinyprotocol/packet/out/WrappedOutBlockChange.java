@@ -11,7 +11,9 @@ import cc.funkemunky.api.tinyprotocol.api.ProtocolVersion;
 import cc.funkemunky.api.tinyprotocol.packet.types.BaseBlockPosition;
 import cc.funkemunky.api.tinyprotocol.reflection.FieldAccessor;
 import cc.funkemunky.api.utils.ReflectionsUtil;
+import cc.funkemunky.api.utils.XMaterial;
 import lombok.Getter;
+import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 
@@ -20,10 +22,7 @@ public class WrappedOutBlockChange extends NMSObject {
     private static final String packet = Packet.Server.BLOCK_CHANGE;
 
     //1.7.10 and below
-    private static FieldAccessor<Integer> legacyX;
-    private static FieldAccessor<Integer> legacyY;
-    private static FieldAccessor<Integer> legacyZ;
-    private static WrappedField blockChangeBlockField;
+    private static WrappedField legacyX, legacyY, legacyZ, blockChangeBlockField;
     private static WrappedField blockDataIntField;
     private static WrappedMethod getDataMethod;
 
@@ -35,6 +34,8 @@ public class WrappedOutBlockChange extends NMSObject {
     private static WrappedClass nmsBlockClass;
 
     private BaseBlockPosition position;
+    private XMaterial material;
+    private byte data;
 
     public WrappedOutBlockChange(Object packet, Player player) {
         super(packet, player);
@@ -54,8 +55,14 @@ public class WrappedOutBlockChange extends NMSObject {
     public void process(Player player, ProtocolVersion version) {
         if (ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.V1_8)) {
             position = new BaseBlockPosition(fetch(legacyX), fetch(legacyY), fetch(legacyZ));
+            data = (byte)(int)fetch(iBlockDataField);
         } else {
             position = new BaseBlockPosition(fetch(blockPosAccessor));
+            Object iBlockData = fetch(iBlockDataField);
+            material = XMaterial.matchXMaterial(MinecraftReflection
+                    .getMaterialFromVanillaBlock(MinecraftReflection
+                            .getBlockFromData(iBlockData)));
+            data = MinecraftReflection.toLegacyData(material.parseMaterial(), iBlockData);
         }
     }
 
@@ -66,9 +73,10 @@ public class WrappedOutBlockChange extends NMSObject {
 
     static {
         if(ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.V1_8)) {
-            legacyX = fetchField(packet, int.class, 0);
-            legacyY = fetchField(packet, int.class, 1);
-            legacyZ = fetchField(packet, int.class, 2);
+            legacyX = fetchField(blockChangeClass, int.class, 0);
+            legacyY = fetchField(blockChangeClass, int.class, 1);
+            legacyZ = fetchField(blockChangeClass, int.class, 2);
+            iBlockDataField = fetchField(blockChangeClass, int.class, 3);
 
             nmsBlockClass = Reflections.getNMSClass("Block");
             blockChangeBlockField = blockChangeClass.getFirstFieldByType(nmsBlockClass.getParent());

@@ -16,6 +16,7 @@ import cc.funkemunky.api.utils.exceptions.Validate;
 import cc.funkemunky.api.utils.world.CollisionBox;
 import cc.funkemunky.api.utils.world.types.NoCollisionBox;
 import cc.funkemunky.api.utils.world.types.SimpleCollisionBox;
+import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
@@ -195,13 +196,15 @@ public class MinecraftReflection {
 
     public static <T> T getBlock(Block block) {
         if(ProtocolVersion.getGameVersion().isOrAbove(ProtocolVersion.V1_8)) {
-            Object blockData = getBlockData(block);
-
-            return getBlock.invoke(blockData);
+            return getBlockFromData(getBlockData(block));
         } else {
             return worldGetType.invoke(CraftReflection.getVanillaWorld(block.getWorld()),
                     block.getX(), block.getY(), block.getZ());
         }
+    }
+
+    public static <T> T getBlockFromData(Object iBlockData) {
+        return getBlock.invoke(blockData);
     }
 
     //Can use either a Bukkit or vanilla object
@@ -429,6 +432,29 @@ public class MinecraftReflection {
             }
         }
         return new Vec3D(0,0,0);
+    }
+
+    private static final WrappedClass craftMagicNumbers = Reflections.getCBClass("util.CraftMagicNumbers"),
+            craftLegacy = ProtocolVersion.getGameVersion().isOrAbove(ProtocolVersion.V1_13)
+                    ? Reflections.getCBClass("legacy.CraftLegacy") : null;
+    private static final WrappedMethod methodGetMaterial = craftMagicNumbers
+            .getMethod("getMaterial", block.getParent()),
+            getBlockFromMaterial = craftMagicNumbers.getMethod("getBlock", Material.class),
+            toLegacyData = ProtocolVersion.getGameVersion()
+                    .isAbove(ProtocolVersion.V1_7_10)
+                    ? (ProtocolVersion.getGameVersion()
+                    .isOrAbove(ProtocolVersion.V1_13) ? craftLegacy : block)
+                    .getMethod("toLegacyData", iBlockData.getParent()) : null;
+
+    public static Material getMaterialFromVanillaBlock(Object vanillaBlock) {
+        return methodGetMaterial.invoke(null, vanillaBlock);
+    }
+
+    public static byte toLegacyData(Material material, Object iBlockData) {
+        assert toLegacyData != null : "Trying to run MinecraftReflection#toLegacyData in a version older than 1.8!";
+        if(ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.V1_13)) {
+            return toLegacyData.invoke(getBlockFromMaterial.invoke(null, material), iBlockData);
+        } else return toLegacyData.invoke(null, iBlockData);
     }
 
     public static ItemStack toBukkitItemStack(Object vanillaItemStack) {

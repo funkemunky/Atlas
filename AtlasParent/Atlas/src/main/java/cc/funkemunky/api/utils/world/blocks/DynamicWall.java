@@ -5,6 +5,7 @@ import cc.funkemunky.api.utils.BlockUtils;
 import cc.funkemunky.api.utils.Materials;
 import cc.funkemunky.api.utils.XMaterial;
 import cc.funkemunky.api.utils.world.CollisionBox;
+import cc.funkemunky.api.utils.world.WrappedBlock;
 import cc.funkemunky.api.utils.world.types.CollisionFactory;
 import cc.funkemunky.api.utils.world.types.SimpleCollisionBox;
 import org.bukkit.Material;
@@ -23,7 +24,7 @@ public class DynamicWall implements CollisionFactory {
     private static final double max = .5 + width;
 
     @Override
-    public CollisionBox fetch(ProtocolVersion version, Block b) {
+    public CollisionBox fetch(ProtocolVersion version, WrappedBlock b){
         boolean var3 = wallConnects(version, b, BlockFace.NORTH);
         boolean var4 = wallConnects(version, b, BlockFace.SOUTH);
         boolean var5 = wallConnects(version, b, BlockFace.WEST);
@@ -62,8 +63,8 @@ public class DynamicWall implements CollisionFactory {
     }
 
 
-    private static boolean wallConnects(ProtocolVersion v, Block fenceBlock, BlockFace direction) {
-        Optional<Block> targetBlock = BlockUtils.getRelativeAsync(fenceBlock, direction, 1);
+    private static boolean wallConnects(ProtocolVersion v, WrappedBlock fenceBlock, BlockFace direction) {
+        Optional<Block> targetBlock = BlockUtils.getRelativeAsync(fenceBlock.getLocation(), direction, 1);
 
         if(!targetBlock.isPresent()) return false;
         Material target = targetBlock.get().getType();

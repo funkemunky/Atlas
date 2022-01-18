@@ -2,10 +2,13 @@ package cc.funkemunky.api.utils.world.blocks;
 
 import cc.funkemunky.api.tinyprotocol.api.ProtocolVersion;
 import cc.funkemunky.api.utils.BlockUtils;
+import cc.funkemunky.api.utils.math.IntVector;
 import cc.funkemunky.api.utils.world.CollisionBox;
+import cc.funkemunky.api.utils.world.WrappedBlock;
 import cc.funkemunky.api.utils.world.types.CollisionFactory;
 import cc.funkemunky.api.utils.world.types.NoCollisionBox;
 import cc.funkemunky.api.utils.world.types.SimpleCollisionBox;
+import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.material.Door;
@@ -15,11 +18,10 @@ import java.util.Optional;
 
 public class DoorHandler implements CollisionFactory {
     @Override
-    public CollisionBox fetch(ProtocolVersion version, Block b) {
-        Door state = (Door) b.getState().getData();
-        byte data = state.getData();
+    public CollisionBox fetch(ProtocolVersion version, WrappedBlock b){
+        byte data = b.getData(), endData = b.getData();
         if (( data & 0b01000 ) != 0) {
-            Optional<Block> rel = BlockUtils.getRelativeAsync(b, BlockFace.DOWN);
+            Optional<Block> rel = BlockUtils.getRelativeAsync(b.getLocation(), BlockFace.DOWN);
 
             if(!rel.isPresent()) return NoCollisionBox.INSTANCE;
             MaterialData state2 = rel.get().getState().getData();
@@ -30,12 +32,12 @@ public class DoorHandler implements CollisionFactory {
                 return NoCollisionBox.INSTANCE;
             }
         } else {
-            Optional<Block> rel = BlockUtils.getRelativeAsync(b, BlockFace.UP);
+            Optional<Block> rel = BlockUtils.getRelativeAsync(b.getLocation(), BlockFace.UP);
 
             if(!rel.isPresent()) return NoCollisionBox.INSTANCE;
             MaterialData state2 = rel.get().getState().getData();
             if (state2 instanceof Door) {
-                state = (Door) state2;
+                endData = state2.getData();
             }
             else {
                 return NoCollisionBox.INSTANCE;
@@ -46,7 +48,7 @@ public class DoorHandler implements CollisionFactory {
         float offset = 0.1875F;
         int direction = (data & 0b11);
         boolean open = (data & 0b100) != 0;
-        boolean hinge = (state.getData() & 1) == 1;
+        boolean hinge = (endData & 1) == 1;
 
 
         if (direction == 0) {

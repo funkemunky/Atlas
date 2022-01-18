@@ -189,6 +189,7 @@ public abstract class Packet {
         public static final String LEGACY_REL_POSITION_LOOK = SERVER + "RelEntityMoveLook";
         public static final String LEGACY_REL_LOOK = SERVER + "EntityLook";
         public static final String BLOCK_CHANGE = SERVER + "BlockChange";
+        public static final String MULTI_BLOCK_CHANGE = SERVER + "MultiBlockChange";
         public static final String CLOSE_WINDOW = SERVER + "CloseWindow";
         public static final String HELD_ITEM = SERVER + "HeldItemSlot";
         public static final String TAB_COMPLETE = SERVER + "TabComplete";
