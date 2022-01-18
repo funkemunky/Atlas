@@ -33,7 +33,7 @@ public class WrappedInAbilitiesPacket extends NMSObject {
         //clientbound Abilities packets
         flying = fetch(flyingField);
 
-        if(ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.v1_17)) {
+        if(ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.v1_16)) {
             invulnerable = fetch(invulnerableField);
             allowedFlight = fetch(allowedFlightField);
             creativeMode = fetch(creativeModeField);
@@ -49,7 +49,7 @@ public class WrappedInAbilitiesPacket extends NMSObject {
     }
 
     static {
-        if(ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.v1_17)) {
+        if(ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.v1_16)) {
             invulnerableField = fetchField(packet, boolean.class, 0);
             flyingField = fetchField(packet, boolean.class, 1);
             allowedFlightField = fetchField(packet, boolean.class, 2);
