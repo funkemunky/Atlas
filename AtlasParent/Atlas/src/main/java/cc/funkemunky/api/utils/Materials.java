@@ -51,6 +51,10 @@ public class Materials {
 
         if(ProtocolVersion.getGameVersion().isOrAbove(ProtocolVersion.V1_8)) {
             MATERIAL_FLAGS[XMaterial.SLIME_BLOCK.parseMaterial().ordinal()] = SOLID;
+
+            if(ProtocolVersion.getGameVersion().isOrAbove(ProtocolVersion.V1_14)) {
+                MATERIAL_FLAGS[XMaterial.SCAFFOLDING.parseMaterial().ordinal()] = SOLID;
+            }
         }
 
         // ladders
