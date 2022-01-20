@@ -23,6 +23,7 @@ import org.bukkit.material.Gate;
 import org.bukkit.material.MaterialData;
 import org.bukkit.material.Vine;
 
+import javax.xml.crypto.dsig.SignatureMethod;
 import java.util.*;
 import java.util.stream.Stream;
 
@@ -296,7 +297,14 @@ public enum BlockData {
     _CAMPFIRE((version, block) -> version.isOrAbove(ProtocolVersion.V1_14)
             ? new SimpleCollisionBox(0,0,0, 1, 0.4375, 1)
             : NoCollisionBox.INSTANCE, XMaterial.CAMPFIRE.parseMaterial()),
-    _LECTERN(new DynamicLectern(), XMaterial.LECTERN.parseMaterial()),
+    _LECTERN((version, block) -> {
+        if(ProtocolVersion.getGameVersion().isOrAbove(ProtocolVersion.V1_14)) {
+            return new ComplexCollisionBox(
+                    new SimpleCollisionBox(0, 0.9375, 0, 1, 0.9375, 1),
+                    new SimpleCollisionBox(0, 0, 0, 1, 0.125, 1),
+                    new SimpleCollisionBox(0.25, 0.125, 0.25, 0.75, 0.875, 0.75));
+        } else return NoCollisionBox.INSTANCE;
+    }, XMaterial.LECTERN.parseMaterial()),
     _POT(new SimpleCollisionBox(0.3125, 0.0, 0.3125, 0.6875, 0.375, 0.6875),
             XMaterial.FLOWER_POT.parseMaterial()),
 
