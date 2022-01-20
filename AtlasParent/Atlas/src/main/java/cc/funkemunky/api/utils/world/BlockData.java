@@ -7,9 +7,11 @@ import cc.funkemunky.api.utils.MiscUtils;
 import cc.funkemunky.api.utils.ReflectionsUtil;
 import cc.funkemunky.api.utils.XMaterial;
 import cc.funkemunky.api.utils.world.blocks.*;
+import cc.funkemunky.api.utils.world.state.BlockStateManager;
 import cc.funkemunky.api.utils.world.types.*;
 import lombok.val;
 import net.minecraft.core.EnumDirection;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
@@ -251,8 +253,6 @@ public enum BlockData {
     _CAULDRON(new CouldronBounding(), XMaterial.CAULDRON.parseMaterial()),
     _CACTUS(new SimpleCollisionBox(0.0625, 0, 0.0625, 
             1 - 0.0625, 1 - 0.0625, 1 - 0.0625), XMaterial.CACTUS.parseMaterial()),
-
-
     _PISTON_BASE(new PistonBaseCollision(), m(XMaterial.PISTON), m(XMaterial.STICKY_PISTON)),
 
     _PISTON_ARM(new PistonDickCollision(), m(XMaterial.PISTON_HEAD)),
@@ -283,6 +283,20 @@ public enum BlockData {
         }
         return NoCollisionBox.INSTANCE;
     }, XMaterial.SEA_PICKLE.parseMaterial()),
+    _LANTERN((version, block) -> {
+        if(version.isOrAbove(ProtocolVersion.V1_14)) {
+            Boolean bool = (Boolean) BlockStateManager.getInterface("hanging", block);
+
+            if(bool == null || !bool) {
+                return new SimpleCollisionBox(0.3125, 0, 0.3125, 0.6875, 0.4375, 0.6875);
+            } else return new SimpleCollisionBox(0.3125, 0.0625, 0.3125, 0.6875, 0.5, 0.6875);
+        }
+        return NoCollisionBox.INSTANCE;
+    }, XMaterial.LANTERN.parseMaterial()),
+    _CAMPFIRE((version, block) -> version.isOrAbove(ProtocolVersion.V1_14)
+            ? new SimpleCollisionBox(0,0,0, 1, 0.4375, 1)
+            : NoCollisionBox.INSTANCE, XMaterial.CAMPFIRE.parseMaterial()),
+    _LECTERN(new DynamicLectern(), XMaterial.LECTERN.parseMaterial()),
     _POT(new SimpleCollisionBox(0.3125, 0.0, 0.3125, 0.6875, 0.375, 0.6875),
             XMaterial.FLOWER_POT.parseMaterial()),
 
@@ -554,7 +568,6 @@ public enum BlockData {
 
     BlockData(CollisionFactory dynamic, Material... materials) {
         this.dynamic = dynamic;
-        this.box = box;
         Set<Material> mList = new HashSet<>();
         mList.addAll(Arrays.asList(materials));
         mList.remove(null); // Sets can contain one null

@@ -50,10 +50,9 @@ public class DynamicPane implements CollisionFactory {
         if (!isPane(target)&&DynamicFence.isBlacklisted(target))
             return false;
 
-        BlockState sTarget = targetBlock.getState();
-
         if(Materials.checkFlag(target, Materials.STAIRS)) {
             if (v.isBelow(ProtocolVersion.V1_12)) return false;
+            BlockState sTarget = targetBlock.getState();
             Stairs stairs = (Stairs) sTarget.getData();
             return stairs.getFacing() == direction;
         } else return isPane(target) || (target.isSolid() && !target.isTransparent());

@@ -66,13 +66,15 @@ public class DynamicFence implements CollisionFactory {
         if (!isFence(target)&&isBlacklisted(target))
             return false;
 
-        BlockState sTarget = targetBlock.get().getState();
-
         if(Materials.checkFlag(target, Materials.STAIRS)) {
             if (v.isBelow(ProtocolVersion.V1_12)) return false;
+
+            BlockState sTarget = targetBlock.get().getState();
             Stairs stairs = (Stairs) sTarget.getData();
             return stairs.getFacing() == direction;
         } else if(target.name().contains("GATE")) {
+
+            BlockState sTarget = targetBlock.get().getState();
             Gate gate = (Gate) sTarget.getData();
             BlockFace f1 = gate.getFacing();
             BlockFace f2 = f1.getOppositeFace();
