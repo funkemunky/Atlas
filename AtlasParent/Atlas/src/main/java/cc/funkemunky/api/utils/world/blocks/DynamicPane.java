@@ -52,10 +52,9 @@ public class DynamicPane implements CollisionFactory {
 
         if(Materials.checkFlag(target, Materials.STAIRS)) {
             if (v.isBelow(ProtocolVersion.V1_12)) return false;
-            BlockState sTarget = targetBlock.getState();
-            Stairs stairs = (Stairs) sTarget.getData();
-            return stairs.getFacing() == direction;
-        } else return isPane(target) || (target.isSolid() && !target.isTransparent());
+
+            return dir(fenceBlock.getData()).getOppositeFace() == direction;
+        }  else return isPane(target) || (target.isSolid() && !target.isTransparent());
     }
 
     private static boolean isPane(Material m) {
@@ -63,6 +62,20 @@ public class DynamicPane implements CollisionFactory {
 
         return mat == XMaterial.IRON_BARS || mat.name().contains("PANE")
                 || mat.name().contains("THIN");
+    }
+
+    private static BlockFace dir(byte data) {
+        switch(data & 3) {
+            case 0:
+            default:
+                return BlockFace.EAST;
+            case 1:
+                return BlockFace.WEST;
+            case 2:
+                return BlockFace.SOUTH;
+            case 3:
+                return BlockFace.NORTH;
+        }
     }
 
 }

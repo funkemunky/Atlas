@@ -66,9 +66,7 @@ public enum BlockData {
             .toArray(Material[]::new)),
 
     _ANVIL((protocol, b) -> {
-        BlockState state = b.getState();
-        b.setType(XMaterial.ANVIL.parseMaterial());
-        int dir = state.getData().getData() & 0b01;
+        int dir = b.getData() & 0b01;
         CollisionBox box;
         if (dir == 1) {
             box = new SimpleCollisionBox(0.0, 0.0, 0.12, 1.0, 1.0, 0.875);
@@ -84,7 +82,7 @@ public enum BlockData {
             .toArray(Material[]::new)),
 
     _SKULL((protocol, b) -> {
-        int rotation = b.getState().getData().getData() & 7;
+        int rotation = b.getData() & 7;
 
         CollisionBox box;
         switch (rotation) {
@@ -122,7 +120,7 @@ public enum BlockData {
         CollisionBox box = NoCollisionBox.INSTANCE;
         float var3 = 0.125F;
 
-        byte data = b.getState().getData().getData();
+        byte data = b.getData();
         if (data == 2) {
             box = new SimpleCollisionBox(0.0F, 0.0F, 1.0F - var3, 1.0F, 1.0F, 1.0F);
         } else if (data == 3) {
@@ -136,10 +134,10 @@ public enum BlockData {
     }, XMaterial.LADDER.parseMaterial()),
 
     _FENCE_GATE((protocol, b) -> {
-        byte var5 = b.getState().getData().getData();
+        byte var5 = b.getData();
 
         CollisionBox box = NoCollisionBox.INSTANCE;
-        if (!((Gate) b.getState().getData()).isOpen()) {
+        if ((var5 & 4) <= 0) {
             if (var5 != 2 && var5 != 0) {
                 box = new SimpleCollisionBox(0.375F, 0.0F, 0.0F, 0.625F, 1.5F, 1.0F);
             } else {
@@ -160,15 +158,13 @@ public enum BlockData {
 
 
     _SNOW((protocol, b) -> {
-        MaterialData state = b.getState().getData();
-        int height = (state.getData() & 0b1111);
+        int height = (b.getData() & 0b1111);
         if (height == 0) return new SimpleCollisionBox(0, 0, 0, 1, 0, 1); // return NoCollisionBox.INSTANCE;
         return new SimpleCollisionBox(0, 0, 0, 1, height * 0.125, 1);
     }, XMaterial.SNOW.parseMaterial()),
 
     _SLAB((protocol, b) -> {
-        MaterialData state = b.getState().getData();
-        if ((state.getData() & 8) == 0)
+        if ((b.getData() & 8) == 0)
             return new SimpleCollisionBox(0, 0, 0, 1, .5, 1);
         else return new SimpleCollisionBox(0, .5, 0, 1, 1, 1);
     }, Arrays.stream(Material.values()).filter(mat ->
@@ -177,9 +173,8 @@ public enum BlockData {
             .toArray(Material[]::new)),
 
     _STAIR((protocol, b) -> {
-        MaterialData state = b.getState().getData();
-        boolean inverted = (state.getData() & 4) != 0;
-        int dir = (state.getData() & 0b11);
+        boolean inverted = (b.getData() & 4) != 0;
+        int dir = (b.getData() & 0b11);
         SimpleCollisionBox top;
         SimpleCollisionBox bottom = new SimpleCollisionBox(0, 0, 0, 1, .5, 1);
         if (dir == 0) top = new SimpleCollisionBox(.5, .5, 0, 1, 1, 1);
@@ -262,10 +257,9 @@ public enum BlockData {
             XMaterial.SOUL_SAND.parseMaterial()),
     _PICKLE((version, block) -> {
         if(version.isOrAbove(ProtocolVersion.V1_13)) {
-            val pickleClass = Reflections.getNMSClass("SeaPickle");
-            Object pickle = MinecraftReflection.getBlockData(block);
+            val pickleClass = Reflections.getClass("org.bukkit.block.data.type.SeaPickle");
 
-            int pickles = pickleClass.getMethod("getPickles").invoke(pickle);
+            int pickles = pickleClass.getMethod("getPickles").invoke(block.getBlockData());
 
             switch (pickles) {
                 case 1:

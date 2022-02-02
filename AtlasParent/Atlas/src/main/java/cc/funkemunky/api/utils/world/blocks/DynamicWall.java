@@ -74,9 +74,8 @@ public class DynamicWall implements CollisionFactory {
 
         if(Materials.checkFlag(target, Materials.STAIRS)) {
             if (v.isBelow(ProtocolVersion.V1_12)) return false;
-            BlockState sTarget = targetBlock.get().getState();
-            Stairs stairs = (Stairs) sTarget.getData();
-            return stairs.getFacing() == direction;
+
+            return dir(fenceBlock.getData()).getOppositeFace() == direction;
         } else return isWall(target) || (target.isSolid() && !target.isTransparent());
     }
 
@@ -84,4 +83,17 @@ public class DynamicWall implements CollisionFactory {
         return Materials.checkFlag(m, Materials.WALL);
     }
 
+    private static BlockFace dir(byte data) {
+        switch(data & 3) {
+            case 0:
+            default:
+                return BlockFace.EAST;
+            case 1:
+                return BlockFace.WEST;
+            case 2:
+                return BlockFace.SOUTH;
+            case 3:
+                return BlockFace.NORTH;
+        }
+    }
 }

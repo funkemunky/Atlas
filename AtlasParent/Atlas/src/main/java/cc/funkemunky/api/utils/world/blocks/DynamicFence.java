@@ -69,14 +69,10 @@ public class DynamicFence implements CollisionFactory {
         if(Materials.checkFlag(target, Materials.STAIRS)) {
             if (v.isBelow(ProtocolVersion.V1_12)) return false;
 
-            BlockState sTarget = targetBlock.get().getState();
-            Stairs stairs = (Stairs) sTarget.getData();
-            return stairs.getFacing() == direction;
+            return dir(fenceBlock.getData()).getOppositeFace() == direction;
         } else if(target.name().contains("GATE")) {
 
-            BlockState sTarget = targetBlock.get().getState();
-            Gate gate = (Gate) sTarget.getData();
-            BlockFace f1 = gate.getFacing();
+            BlockFace f1 = dir(targetBlock.get().getData());
             BlockFace f2 = f1.getOppositeFace();
             return direction == f1 || direction == f2;
         } else {
@@ -89,6 +85,20 @@ public class DynamicFence implements CollisionFactory {
 
     private static boolean isFence(Material material) {
         return Materials.checkFlag(material, Materials.FENCE) && material.name().contains("FENCE");
+    }
+
+    private static BlockFace dir(byte data) {
+        switch(data & 3) {
+            case 0:
+            default:
+                return BlockFace.EAST;
+            case 1:
+                return BlockFace.WEST;
+            case 2:
+                return BlockFace.SOUTH;
+            case 3:
+                return BlockFace.NORTH;
+        }
     }
 
 }
