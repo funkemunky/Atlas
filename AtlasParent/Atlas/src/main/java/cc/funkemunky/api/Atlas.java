@@ -40,6 +40,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.simpleyaml.configuration.file.YamlFile;
 
 import java.io.File;
 import java.io.IOException;
@@ -71,7 +72,7 @@ public class Atlas extends JavaPlugin {
     private boolean done;
     private ExecutorService service;
     private File file;
-    private final Map<String, Map<String, Configuration>> pluginConfigs = new HashMap<>();
+    private final Map<String, Map<String, YamlFile>> pluginConfigs = new HashMap<>();
     @Deprecated
     private final Map<UUID, Entity> entities = Collections.synchronizedMap(new HashMap<>());
     @Deprecated
@@ -205,30 +206,40 @@ public class Atlas extends JavaPlugin {
         schedular.shutdown();
     }
 
-    public Configuration registerConfig(Plugin plugin) {
+    public YamlFile registerConfig(Plugin plugin) {
         return registerConfig(plugin, "config");
     }
 
-    public Configuration registerConfig(Plugin plugin, String name) {
+    public YamlFile getConfig(Plugin plugin, String name) {
+        if(!pluginConfigs.containsKey(plugin.getName())) return null;
+
+        Map<String, YamlFile> configMap = pluginConfigs.get(plugin.getName());
+
+        if(!configMap.containsKey(name)) return null;
+
+        return configMap.get(name);
+    }
+
+    public YamlFile registerConfig(Plugin plugin, String name) {
         File configFile = new File(plugin.getDataFolder(), name +".yml");
         if(!configFile.exists()){
             configFile.getParentFile().mkdirs();
             MiscUtils.copy(plugin.getResource(name + ".yml"), configFile);
         }
         try {
-            Configuration yaml = ConfigurationProvider
-                    .getProvider(YamlConfiguration.class)
-                    .load(configFile);
+            YamlFile file = new YamlFile(configFile);
+
+            if(!file.exists()) file.createNewFile(true);
 
             pluginConfigs.compute(plugin.getName(), (key, value) -> {
                 if(value == null) return new HashMap<>();
 
-                value.put(name, yaml);
+                value.put(name, file);
 
                 return value;
             });
 
-            return yaml;
+            return file;
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -415,16 +426,38 @@ public class Atlas extends JavaPlugin {
                                     field.getField().getName(),
                                     (setting.hide() ? "HIDDEN" : field.get(obj)));
 
+                            String configName = setting.configName();
 
-                            if(plugin.getConfig().get(setting.path() + "." + name) == null) {
-                                alog(true,"&7Value not set in config! Setting value...");
-                                plugin.getConfig().set(setting.path() + "." + name, field.get(obj));
-                                plugin.saveConfig();
+                            if(setting.configName().equals("")) {
+                                configName = "config";
+                            }
+
+                            YamlFile config = getConfig(plugin, configName);
+
+                            if(config == null) config = registerConfig(plugin, configName);
+
+                            //Checking too see if config is still null
+                            if(config != null) {
+                                if(config.get(setting.path() + "." + name) == null) {
+                                    alog(true,"&7Value not set in config! Setting value...");
+                                    config.set(setting.path() + "." + name, field.get(obj));
+                                    try {
+                                        config.save();
+                                    } catch (IOException e) {
+                                        e.printStackTrace();
+                                    }
+                                } else {
+                                    Object configObj = plugin.getConfig().get(setting.path() + "." + name);
+                                    alog(true, "&7Set field to value &e%s&7.",
+                                            (setting.hide() ? "HIDDEN" : configObj));
+                                    field.set(obj, configObj);
+                                }
+
+                                if(setting.comment().length() > 0)
+                                    config.setComment(setting.path() + "." + name, setting.comment(),
+                                            setting.commentType());
                             } else {
-                                Object configObj = plugin.getConfig().get(setting.path() + "." + name);
-                                alog(true, "&7Set field to value &e%s&7.",
-                                        (setting.hide() ? "HIDDEN" : configObj));
-                                field.set(obj, configObj);
+                                alog(true, "&cCould not set field as config could not be created!");
                             }
                         }
                     }

@@ -4,7 +4,7 @@
 
     <parent>
         <groupId>cc.funkemunky.utils</groupId>
-        <version>1.11.4</version>
+        <version>1.11.5</version>
         <artifactId>atlas-parent</artifactId>
         <relativePath>../pom.xml</relativePath>
     </parent>
@@ -13,7 +13,7 @@
 
     <scm>
         <developerConnection>scm:git:https://github.com/funkemunky/Atlas</developerConnection>
-        <tag>1.11.3</tag>
+        <tag>1.11.5</tag>
     </scm>
 
     <properties>
@@ -280,6 +280,12 @@
             <artifactId>1.16.2</artifactId>
             <version>1.16.2</version>
             <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>me.carleslc.Simple-YAML</groupId>
+            <artifactId>Simple-Yaml</artifactId>
+            <version>1.7.3</version>
+            <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>club.minnced</groupId>
