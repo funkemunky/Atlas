@@ -192,6 +192,8 @@ public abstract class Packet {
         public static final String CLOSE_WINDOW = SERVER + "CloseWindow";
         public static final String HELD_ITEM = SERVER + "HeldItemSlot";
         public static final String TAB_COMPLETE = SERVER + "TabComplete";
+        public static final String MAP_CHUNK = SERVER + "MapChunk";
+        public static final String MULTI_BLOCK_CHANGE = SERVER + "MultiBlockChange";
         public static final String RESPAWN = SERVER + "Respawn";
         public static final String WORLD_PARTICLE = SERVER + "WorldParticles";
         public static final String COMMANDS = SERVER + "Commands";
