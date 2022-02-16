@@ -532,7 +532,7 @@ public abstract class TinyProtocol1_8 implements AbstractTinyProtocol {
 		public Player player;
 
 		@Override
-		public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
+		public void channelRead(ChannelHandlerContext ctx, Object msg) {
 			// Intercept channel
 			final Channel channel = ctx.channel();
 
@@ -553,19 +553,27 @@ public abstract class TinyProtocol1_8 implements AbstractTinyProtocol {
 			}
 
 			if (msg != null) {
-				super.channelRead(ctx, msg);
+				try {
+					super.channelRead(ctx, msg);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
 			}
 		}
 
 		@Override
-		public void write(ChannelHandlerContext ctx, Object msg, ChannelPromise promise) throws Exception {
+		public void write(ChannelHandlerContext ctx, Object msg, ChannelPromise promise) {
 
 			if(player != null) {
 				msg = onPacketOutAsync(player, msg);
 			}
 
 			if (msg != null) {
-				super.write(ctx, msg, promise);
+				try {
+					super.write(ctx, msg, promise);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
 			}
 		}
 	}
