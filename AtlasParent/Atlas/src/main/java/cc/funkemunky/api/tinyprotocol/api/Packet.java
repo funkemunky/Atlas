@@ -179,6 +179,8 @@ public abstract class Packet {
         public static final String ENTITY_METADATA = SERVER + "EntityMetadata";
         public static final String ENTITY_VELOCITY = SERVER + "EntityVelocity";
         public static final String ENTITY_DESTROY = SERVER + "EntityDestroy";
+        public static final String SCOREBOARD_DISPLAY_OBJECTIVE = "ScoreboardDisplayObjective";
+        public static final String SCOREBOARD_OBJECTIVE = "ScoreboardObjective";
         public static final String ENTITY_HEAD_ROTATION = SERVER + "EntityHeadRotation";
         public static final String ENTITY_TELEPORT = SERVER + "EntityTeleport";
         public static final String ENTITY = SERVER + "Entity";

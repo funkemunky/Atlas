@@ -94,6 +94,16 @@ public class WrappedPacketDataSerializer extends NMSObject {
         vanillaClass.getMethod("writeBoolean", boolean.class).invoke(getObject(), bool);
     }
 
+    public void writeByte(int field) {
+        if(empty) return;
+        vanillaClass.getMethod("writeByte", int.class).invoke(getObject(), field);
+    }
+
+    public void writeString(String string, int sizeMax) {
+        if(empty) return;
+        vanillaClass.getMethod("a", String.class, int.class).invoke(getObject(), string, sizeMax);
+    }
+
     public String toString(Charset set) {
         if(empty) return "";
        return vanillaClass.getMethod("toString", Charset.class).invoke(getObject(), set);

@@ -60,13 +60,14 @@ public class MinecraftReflection {
     private static final WrappedClass propertyMap = Reflections.getUtilClass("com.mojang.authlib.properties.PropertyMap");
     private static final WrappedClass forwardMultiMap = Reflections.getUtilClass("com.google.common.collect.ForwardingMultimap");
     public static WrappedClass iChatBaseComponent = Reflections.getNMSClass("IChatBaseComponent"),
-            chatComponentSerializer =  Reflections.getNMSClass("IChatBaseComponent");
+            chatComponentText =  Reflections.getNMSClass("ChatComponentText");
     public static WrappedClass vec3D = Reflections.getNMSClass("Vec3D");
 
     private static final WrappedMethod getProfile = CraftReflection.craftPlayer.getMethod("getProfile");
     private static final WrappedMethod methodGetServerConnection = minecraftServer
             .getMethodByType(serverConnection.getParent(), ProtocolVersion.getGameVersion()
                     .isBelow(ProtocolVersion.V1_13) ? 1 : 0);
+    private static final WrappedConstructor chatComponentTextConst = chatComponentText.getConstructor(String.class);
     private static final WrappedMethod getProperties = gameProfile.getMethod("getProperties");
     private static final WrappedMethod removeAll = forwardMultiMap.getMethod("removeAll", Object.class);
     private static final WrappedMethod putAll = propertyMap.getMethod("putAll", Object.class, Iterable.class);
@@ -258,6 +259,10 @@ public class MinecraftReflection {
         } else vBlock = block;
 
         return frictionFactor.get(vBlock);
+    }
+
+    public static Object getChatComponentFromText(String string) {
+        return chatComponentTextConst.newInstance(string);
     }
 
     public static int getPing(Player player) {
