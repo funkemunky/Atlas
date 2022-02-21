@@ -42,7 +42,7 @@ public class WrappedOutRespawnPacket extends NMSObject {
 
     private int dimension;
     private WrappedEnumGameMode gamemode;
-    private WrappedEnumDifficulty difficulty;
+    private WrappedEnumDifficulty difficulty = WrappedEnumDifficulty.NORMAL;
     private WorldType worldType;
 
     public WrappedOutRespawnPacket() {
@@ -68,8 +68,8 @@ public class WrappedOutRespawnPacket extends NMSObject {
             dimension = fetch(dimensionAccesor);
         }
         gamemode = WrappedEnumGameMode.fromObject(fetch(gamemodeAccessor));
-        difficulty = WrappedEnumDifficulty.fromObject(fetch(difficultyAcessor));
         if(ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.v1_16)) {
+            difficulty = WrappedEnumDifficulty.fromObject(fetch(difficultyAcessor));
             worldType = WorldType.getByName(worldTypeNameField.get(fetch(worldTypeAccessor)));
         } else worldType = fetch(worldTypeNameField) ? WorldType.NORMAL : WorldType.FLAT;
     }
