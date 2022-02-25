@@ -32,7 +32,7 @@ public class WrappedInUseEntityPacket extends NMSObject {
     private int id;
     private EnumEntityUseAction action;
     private Entity entity;
-    private Vec3D vec = new Vec3D(-1,-1,-1);
+    private Vec3D vec;
     private WrappedEnumHand enumHand = WrappedEnumHand.MAIN_HAND;
     private boolean sneaking;
 
@@ -52,14 +52,8 @@ public class WrappedInUseEntityPacket extends NMSObject {
             Enum fieldAct = fetch(fieldAction);
             action = fieldAct == null ? EnumEntityUseAction.INTERACT_AT : EnumEntityUseAction.valueOf(fieldAct.name());
 
-            if(ProtocolVersion.getGameVersion().isOrAbove(ProtocolVersion.V1_8)) {
-                Object vec = fetch(fieldVec);
-                if(vec != null)
-                    this.vec = new Vec3D(vec);
-
-                if(ProtocolVersion.getGameVersion().isOrAbove(ProtocolVersion.V1_9)) {
-                    enumHand = WrappedEnumHand.getFromVanilla(fetch(fieldHand));
-                }
+            if(ProtocolVersion.getGameVersion().isOrAbove(ProtocolVersion.V1_9)) {
+                enumHand = WrappedEnumHand.getFromVanilla(fetch(fieldHand));
             }
         } else { //1.17 specific code
             Object actionField = fetch(fieldAction);
@@ -79,6 +73,13 @@ public class WrappedInUseEntityPacket extends NMSObject {
         if(ProtocolVersion.getGameVersion().isOrAbove(ProtocolVersion.v1_16)) {
             sneaking = fetch(fieldSneaking);
         } else sneaking = player.isSneaking();
+
+        if(action == EnumEntityUseAction.INTERACT_AT) {
+            Object vec = fetch(fieldVec);
+            if(vec != null) {
+                this.vec = new Vec3D(vec);
+            }
+        }
     }
 
     @Override

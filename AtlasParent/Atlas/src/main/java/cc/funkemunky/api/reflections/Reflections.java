@@ -11,6 +11,7 @@ package cc.funkemunky.api
 
 import cc.funkemunky.api.reflections.types.WrappedClass;
 import cc.funkemunky.api.tinyprotocol.api.ProtocolVersion;
+import cc.funkemunky.api.tinyprotocol.reflection.Reflection;
 import cc.funkemunky.api.utils.ClassScanner;
 import cc.funkemunky.api.utils.objects.QuadFunction;
 import cc.funkemunky.api.utils.objects.TriFunction;
@@ -24,6 +25,7 @@ import java.lang.invoke.LambdaMetafactory;
 import java.lang.invoke.MethodHandles;
 import java.lang.invoke.MethodType;
 import java.lang.reflect.Method;
+import java.util.Collections;
 import java.util.Set;
 import java.util.function.BiFunction;
 import java.util.function.Function;
@@ -41,7 +43,12 @@ public class Reflections {
         craftBukkitString = "org.bukkit.craftbukkit." + version + ".";
         netMinecraftServerString = "net.minecraft.server." + version + ".";
 
-        classNames = ClassScanner.scanFile2(null, Main.class);
+        try {
+            classNames = ClassScanner.scanFile2(null,
+                    Class.forName("org.bukkit.craftbukkit.Main"));
+        } catch(ClassNotFoundException e) {
+            classNames = Collections.emptySet();
+        }
     }
 
     public static boolean classExists(String name) {
