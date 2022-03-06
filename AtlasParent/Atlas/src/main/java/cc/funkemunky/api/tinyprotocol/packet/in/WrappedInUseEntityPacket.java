@@ -55,6 +55,13 @@ public class WrappedInUseEntityPacket extends NMSObject {
             if(ProtocolVersion.getGameVersion().isOrAbove(ProtocolVersion.V1_9)) {
                 enumHand = WrappedEnumHand.getFromVanilla(fetch(fieldHand));
             }
+
+            if(action == EnumEntityUseAction.INTERACT_AT) {
+                Object vec = fetch(fieldVec);
+                if(vec != null) {
+                    this.vec = new Vec3D(vec);
+                }
+            }
         } else { //1.17 specific code
             Object actionField = fetch(fieldAction);
 
@@ -73,13 +80,6 @@ public class WrappedInUseEntityPacket extends NMSObject {
         if(ProtocolVersion.getGameVersion().isOrAbove(ProtocolVersion.v1_16)) {
             sneaking = fetch(fieldSneaking);
         } else sneaking = player.isSneaking();
-
-        if(action == EnumEntityUseAction.INTERACT_AT) {
-            Object vec = fetch(fieldVec);
-            if(vec != null) {
-                this.vec = new Vec3D(vec);
-            }
-        }
     }
 
     @Override
