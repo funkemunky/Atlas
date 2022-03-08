@@ -44,6 +44,15 @@ public class SimpleCollisionBox implements CollisionBox {
         }
     }
 
+    public SimpleCollisionBox(double width, double height) {
+        xMin = -(width / 2);
+        yMin = 0;
+        zMin = -(width / 2);
+        xMax = width / 2;
+        yMax = height;
+        zMax = width / 2;
+    }
+
     public SimpleCollisionBox(Vector min, Vector max) {
         this(min.getX(), min.getY(), min.getZ(), max.getX(), max.getY(), max.getZ());
     }
@@ -328,9 +337,8 @@ public class SimpleCollisionBox implements CollisionBox {
         return new BoundingBox(new Vector(xMin, yMin, zMin), new Vector(xMax, yMax, zMax));
     }
 
-    //TODO Make this perform much better with an updated util.
     public <T> T toAxisAlignedBB() {
-        return (T) ReflectionsUtil.newAxisAlignedBB(xMin, yMin, zMin, xMax, yMax, zMax);
+        return MinecraftReflection.toAABB(this);
     }
 
     public double distance(SimpleCollisionBox box) {

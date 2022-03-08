@@ -451,6 +451,17 @@ public class MinecraftReflection {
                         (double)box.maxX, (double)box.maxY, (double)box.maxZ);
     }
 
+    public static <T> T toAABB(SimpleCollisionBox box) {
+        if(ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.V1_8)) {
+            return idioticOldStaticConstructorAABB
+                    .invoke(null,
+                            box.xMin, box.yMin, box.zMin,
+                            box.xMax, box.yMax, box.zMax);
+        } else return aabbConstructor
+                .newInstance(box.xMin, box.yMin, box.zMin,
+                        box.xMax, box.yMax, box.zMax);
+    }
+
     //Either bukkit or vanilla world object can be used.
     public static <T> T getChunkProvider(Object world) {
         Object vanillaWorld;
