@@ -103,7 +103,8 @@ public enum BlockData {
                 box = new SimpleCollisionBox(0.0F, 0.25F, 0.25F, 0.5F, 0.75F, 0.75F);
         }
         return box;
-    }, Arrays.stream(Material.values()).filter(mat -> mat.name().contains("SKULL")).toArray(Material[]::new)),
+    }, Arrays.stream(Material.values()).filter(mat -> mat.name().contains("SKULL")
+            || mat.name().contains("HEAD")).toArray(Material[]::new)),
 
     _DOOR(new DoorHandler(), Arrays.stream(Material.values())
             .filter(mat -> !mat.name().contains("TRAP") && mat.name().contains("DOOR"))
