@@ -6,11 +6,12 @@ import cc.funkemunky.api.reflections.types.WrappedField;
 import cc.funkemunky.api.tinyprotocol.api.NMSObject;
 import cc.funkemunky.api.tinyprotocol.api.ProtocolVersion;
 import org.bukkit.entity.Player;
+import oshi.jna.platform.windows.NtDll;
 
 public class WrappedOutEntityEffectPacket extends NMSObject {
 
     public int entityId;
-    public byte effectId;
+    public int effectId;
     public byte amplifier;
     public int duration;
     public byte flags;
@@ -36,21 +37,37 @@ public class WrappedOutEntityEffectPacket extends NMSObject {
 
     @Override
     public void process(Player player, ProtocolVersion version) {
-        entityId = fieldEntityId.get(getObject());
-        effectId = fieldEffectId.get(getObject());
+        if(ProtocolVersion.getGameVersion().isOrAbove(ProtocolVersion.v1_18_2)) {
+            entityId = fieldEntityId.get(getObject());
+            effectId = fieldEffectId.get(getObject());
+        } else {
+            entityId = fieldEntityId.get(getObject());
+            effectId = ((byte)fieldEffectId.get(getObject()));
+        }
         amplifier = fieldAmplifier.get(getObject());
         duration = ProtocolVersion.getGameVersion().isAbove(ProtocolVersion.V1_7_10)
                 ? fieldDuration.get(getObject()) : (short) fieldDuration.get(getObject());
-        if(ProtocolVersion.getGameVersion().isAbove(ProtocolVersion.V1_7_10))flags = fieldFlags.get(getObject());
+        if(ProtocolVersion.getGameVersion().isAbove(ProtocolVersion.V1_7_10))
+            flags = fieldFlags.get(getObject());
     }
 
     static {
-        fieldEntityId = wrapped.getFieldByType(int.class, ProtocolVersion.getGameVersion().isOrAbove(ProtocolVersion.v1_17) ? 3 : 0);
-        fieldEffectId = wrapped.getFieldByType(byte.class, 0);
-        fieldAmplifier = wrapped.getFieldByType(byte.class, 1);
-        if(ProtocolVersion.getGameVersion().isAbove(ProtocolVersion.V1_7_10)) {
-            fieldDuration = wrapped.getFieldByType(int.class, 1 + (ProtocolVersion.getGameVersion().isOrAbove(ProtocolVersion.v1_17) ? 3 : 0));
-            fieldFlags = wrapped.getFieldByType(byte.class, 2);
-        } else  fieldDuration = wrapped.getFieldByType(short.class, 0);
+        if(ProtocolVersion.getGameVersion().isOrAbove(ProtocolVersion.v1_18_2)) {
+            fieldEntityId = wrapped.getFieldByType(int.class, 3);
+            fieldEffectId = wrapped.getFieldByType(int.class, 4);
+            fieldDuration = wrapped.getFieldByType(int.class, 5);
+            fieldAmplifier = wrapped.getFieldByType(byte.class, 0);
+            fieldFlags = wrapped.getFieldByType(byte.class, 1);
+        } else {
+            fieldEntityId = wrapped.getFieldByType(int.class,
+                    ProtocolVersion.getGameVersion().isOrAbove(ProtocolVersion.v1_17) ? 3 : 0);
+            fieldEffectId = wrapped.getFieldByType(byte.class, 0);
+            fieldAmplifier = wrapped.getFieldByType(byte.class, 1);
+            if(ProtocolVersion.getGameVersion().isAbove(ProtocolVersion.V1_7_10)) {
+                fieldDuration = wrapped.getFieldByType(int.class, 1
+                        + (ProtocolVersion.getGameVersion().isOrAbove(ProtocolVersion.v1_17) ? 3 : 0));
+                fieldFlags = wrapped.getFieldByType(byte.class, 2);
+            } else  fieldDuration = wrapped.getFieldByType(short.class, 0);
+        }
     }
 }
