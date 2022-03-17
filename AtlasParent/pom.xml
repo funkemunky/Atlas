@@ -57,6 +57,7 @@
         <module>AtlasExample</module>
         <module>AtlasVelocity</module>
         <module>Atlas_Compat_1_18</module>
+        <module>Atlas_Compat_1_18_R2</module>
         <module>AtlasBukkit</module>
     </modules>
 
