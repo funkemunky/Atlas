@@ -154,7 +154,7 @@ public enum BlockData {
             .map(BlockData::m)
             .toArray(Material[]::new)),
     _PANE(new DynamicPane(), MiscUtils.match("THIN_GLASS"), MiscUtils.match("STAINED_GLASS_PANE"),
-            MiscUtils.match("IRON_FENCE")),
+            MiscUtils.match("IRON_FENCE"), MiscUtils.match("IRON_BARS")),
 
 
     _SNOW((protocol, b) -> {
@@ -235,7 +235,8 @@ public enum BlockData {
 
 
     _TRAPDOOR(new TrapDoorHandler(), Arrays.stream(Material.values())
-            .filter(mat -> mat.name().contains("TRAP_DOOR")).toArray(Material[]::new)),
+            .filter(mat -> mat.name().contains("TRAP_DOOR")
+                    || mat.name().contains("TRAPDOOR")).toArray(Material[]::new)),
 
     _STUPID(new SimpleCollisionBox(0.0F, 0.0F, 0.0F, 1.0F, 0.125F, 1.0F),
             MiscUtils.match("DIODE_BLOCK_OFF"), MiscUtils.match("DIODE_BLOCK_ON"),
