@@ -83,8 +83,8 @@ public class EntityData {
             fieldLength = entity.getFieldByName("length");
         } else {
             WrappedClass entitySize = Reflections.getNMSClass("EntitySize");
-            fieldWidth = entitySize.getFieldByName("width");
-            fieldLength = entitySize.getFieldByName("length");
+            fieldWidth = entitySize.getFieldByType(float.class, 0);
+            fieldLength = entitySize.getFieldByType(float.class, 1);
         }
     }
 }

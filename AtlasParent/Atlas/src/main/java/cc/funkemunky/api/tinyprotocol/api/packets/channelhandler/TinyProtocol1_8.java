@@ -546,10 +546,14 @@ public abstract class TinyProtocol1_8 implements AbstractTinyProtocol {
 				}
 			}
 
-			if(player != null) {
-				msg = onPacketInAsync(player, msg);
-			} else {
-				msg = onHandshake(ctx.channel().remoteAddress(), msg);
+			try {
+				if(player != null) {
+					msg = onPacketInAsync(player, msg);
+				} else {
+					msg = onHandshake(ctx.channel().remoteAddress(), msg);
+				}
+			} catch(Exception e) {
+				RunUtils.task(e::printStackTrace);
 			}
 
 			if (msg != null) {
@@ -565,7 +569,11 @@ public abstract class TinyProtocol1_8 implements AbstractTinyProtocol {
 		public void write(ChannelHandlerContext ctx, Object msg, ChannelPromise promise) {
 
 			if(player != null) {
-				msg = onPacketOutAsync(player, msg);
+				try {
+					msg = onPacketOutAsync(player, msg);
+				} catch(Exception e) {
+					RunUtils.task(e::printStackTrace);
+				}
 			}
 
 			if (msg != null) {
