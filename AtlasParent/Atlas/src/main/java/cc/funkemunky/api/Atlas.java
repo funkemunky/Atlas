@@ -20,9 +20,7 @@ import cc.funkemunky.api.tinyprotocol.listener.PacketProcessor;
 import cc.funkemunky.api.updater.Updater;
 import cc.funkemunky.api.utils.*;
 import cc.funkemunky.api.utils.blockbox.BlockBoxManager;
-import cc.funkemunky.api.utils.config.Configuration;
-import cc.funkemunky.api.utils.config.ConfigurationProvider;
-import cc.funkemunky.api.utils.config.YamlConfiguration;
+import cc.funkemunky.api.utils.config.comment.Configuration;
 import cc.funkemunky.api.utils.objects.RemoteClassLoader;
 import cc.funkemunky.api.utils.world.WorldInfo;
 import co.aikar.commands.BaseCommand;
@@ -42,7 +40,6 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.*;
 import java.util.concurrent.*;
 import java.util.logging.Level;
@@ -102,7 +99,6 @@ public class Atlas extends JavaPlugin {
     public void onEnable() {
         instance = this;
 
-        ConfigurationProvider.providers.size(); //Just to load the static fields in class
         registerConfig(this);
         consoleSender = Bukkit.getConsoleSender();
 
@@ -215,24 +211,17 @@ public class Atlas extends JavaPlugin {
             configFile.getParentFile().mkdirs();
             MiscUtils.copy(plugin.getResource(name + ".yml"), configFile);
         }
-        try {
-            Configuration yaml = ConfigurationProvider
-                    .getProvider(YamlConfiguration.class)
-                    .load(configFile);
+        Configuration yaml = new Configuration((JavaPlugin) plugin, name + ".yml");
 
-            pluginConfigs.compute(plugin.getName(), (key, value) -> {
-                if(value == null) return new HashMap<>();
+        pluginConfigs.compute(plugin.getName(), (key, value) -> {
+            if(value == null) return new HashMap<>();
 
-                value.put(name, yaml);
+            value.put(name, yaml);
 
-                return value;
-            });
+            return value;
+        });
 
-            return yaml;
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return null;
+        return yaml;
     }
 
     @Deprecated
