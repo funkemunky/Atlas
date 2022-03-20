@@ -34,6 +34,7 @@ import lombok.SneakyThrows;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.command.ConsoleCommandSender;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.HandlerList;
@@ -446,15 +447,12 @@ public class Atlas extends JavaPlugin {
                                     (setting.hide() ? "HIDDEN" : field.get(obj)));
 
 
-                            Configuration config = getConfig(plugin);
+                            FileConfiguration config = plugin.getConfig();
 
-                            if(config == null) {
-                                config = loadConfig(plugin);
-                            }
                             if(config.get((setting.path().length() > 0 ? setting.path() + "." : "") + name) == null) {
                                 alog(true,"&7Value not set in config! Setting value...");
                                 config.set((setting.path().length() > 0 ? setting.path() + "." : "") + name, field.get(obj));
-                                saveConfig(plugin);
+                                plugin.saveConfig();
                             } else {
                                 Object configObj = config.get((setting.path().length() > 0 ? setting.path() + "." : "") + name);
                                 alog(true, "&7Set field to value &e%s&7.",
