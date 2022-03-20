@@ -82,6 +82,12 @@
                                     </includes>
                                 </filter>
                                 <filter>
+                                    <artifact>com.h2database:h2</artifact>
+                                    <includes>
+                                        <include>**</include>
+                                    </includes>
+                                </filter>
+                                <filter>
                                     <artifact>cc.funkemunky.utils:Atlas_Compat_1_18</artifact>
                                     <includes>
                                         <incude>**</incude>

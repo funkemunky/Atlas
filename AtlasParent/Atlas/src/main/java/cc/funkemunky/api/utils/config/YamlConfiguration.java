@@ -1,20 +1,24 @@
 package cc.funkemunky.api.utils.config;
 
-import com.google.common.base.Charsets;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
+import lombok.SneakyThrows;
+import org.bukkit.configuration.file.YamlRepresenter;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import org.bukkit.configuration.serialization.ConfigurationSerialization;
 import org.yaml.snakeyaml.DumperOptions;
+import org.yaml.snakeyaml.LoaderOptions;
 import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.constructor.Constructor;
+import org.yaml.snakeyaml.error.YAMLException;
 import org.yaml.snakeyaml.nodes.Node;
 import org.yaml.snakeyaml.representer.Represent;
 import org.yaml.snakeyaml.representer.Representer;
 
 import java.io.*;
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
+import java.util.*;
 
 @NoArgsConstructor(access = AccessLevel.PACKAGE)
 public class YamlConfiguration extends ConfigurationProvider
@@ -28,24 +32,23 @@ public class YamlConfiguration extends ConfigurationProvider
             Representer representer = new Representer()
             {
                 {
-                    representers.put( Configuration.class, new Represent()
-                    {
+                    representers.put( Configuration.class, data -> represent( ( (Configuration) data ).self ));
+                    representers.put(ConfigurationSerializable.class, new Represent() {
                         @Override
-                        public Node representData(Object data)
-                        {
-                            ConfigurationSerializable serializable = (ConfigurationSerializable) data;
-                            Map<String, Object> values = ((Configuration) data ).self;
-                            values.put(ConfigurationSerialization.SERIALIZED_TYPE_KEY, ConfigurationSerialization.getAlias(serializable.getClass()));
+                        public Node representData(Object data) {
+                            ConfigurationSerializable serializable = (ConfigurationSerializable)data;
+                            Map<String, Object> values = new LinkedHashMap();
+                            values.put("==", ConfigurationSerialization.getAlias(serializable.getClass()));
                             values.putAll(serializable.serialize());
                             return represent(values);
                         }
-                    } );
+                    });
                 }
             };
 
             DumperOptions options = new DumperOptions();
             options.setDefaultFlowStyle( DumperOptions.FlowStyle.BLOCK );
-
+            representer.setDefaultFlowStyle(DumperOptions.FlowStyle.BLOCK);
             return new Yaml( new Constructor(), representer, options );
         }
     };
@@ -53,7 +56,7 @@ public class YamlConfiguration extends ConfigurationProvider
     @Override
     public void save(Configuration config, File file) throws IOException
     {
-        try ( Writer writer = new OutputStreamWriter( new FileOutputStream( file ), Charsets.UTF_8 ) )
+        try ( Writer writer = new OutputStreamWriter( new FileOutputStream( file ), StandardCharsets.UTF_8 ) )
         {
             save( config, writer );
         }
@@ -62,9 +65,57 @@ public class YamlConfiguration extends ConfigurationProvider
     @Override
     public void save(Configuration config, Writer writer)
     {
-        yaml.get().dump( config.self, writer );
-    }
+        String contents = this.yaml.get().dump(config.self);
 
+
+        List<String> list = new ArrayList<>();
+        Collections.addAll(list, contents.split("\n"));
+
+        int currentLayer = 0;
+        StringBuilder currentPath = new StringBuilder();
+
+        StringBuilder sb = new StringBuilder();
+
+        int lineNumber = 0;
+        for(Iterator<String> iterator = list.iterator(); iterator.hasNext(); lineNumber++) {
+            String line = iterator.next();
+            sb.append(line);
+            sb.append('\n');
+
+            if (!line.isEmpty()) {
+                if (line.contains(":")) {
+
+                    int layerFromLine = config.getLayerFromLine(line, lineNumber);
+
+                    if (layerFromLine < currentLayer) {
+                        currentPath = new StringBuilder(config.regressPathBy(currentLayer - layerFromLine, currentPath.toString()));
+                    }
+
+                    String key = config.getKeyFromLine(line);
+
+                    if (currentLayer == 0) {
+                        currentPath = new StringBuilder(key);
+                    } else {
+                        currentPath.append("." + key);
+                    }
+
+                    String path = currentPath.toString();
+                    if (config.comments.containsKey(path)) {
+                        config.comments.get(path).forEach(string -> {
+                            sb.append(string);
+                            sb.append('\n');
+                        });
+                    }
+                }
+            }
+        }
+
+        try {
+            writer.write(sb.toString());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
     @Override
     public Configuration load(File file) throws IOException
     {
@@ -86,34 +137,37 @@ public class YamlConfiguration extends ConfigurationProvider
         return load( reader, null );
     }
 
+    @SneakyThrows
     @Override
-    @SuppressWarnings("unchecked")
     public Configuration load(Reader reader, Configuration defaults)
     {
-        Map<String, Object> map = yaml.get().loadAs( reader, LinkedHashMap.class );
-        if ( map == null )
-        {
-            map = new LinkedHashMap<>();
+        BufferedReader input = reader instanceof BufferedReader ? (BufferedReader)reader : new BufferedReader(reader);
+        StringBuilder builder = new StringBuilder();
+
+        String line;
+        try {
+            while((line = input.readLine()) != null) {
+                builder.append(line);
+                builder.append('\n');
+            }
+        } finally {
+            input.close();
         }
-        return new Configuration( map, defaults );
+
+
+        return load(builder.toString(), defaults);
     }
 
     @Override
     public Configuration load(InputStream is)
     {
-        return load( is, null );
+        return this.load(new InputStreamReader(is, Charset.defaultCharset()));
     }
 
     @Override
-    @SuppressWarnings("unchecked")
     public Configuration load(InputStream is, Configuration defaults)
     {
-        Map<String, Object> map = yaml.get().loadAs( is, LinkedHashMap.class );
-        if ( map == null )
-        {
-            map = new LinkedHashMap<>();
-        }
-        return new Configuration( map, defaults );
+        return this.load(new InputStreamReader(is, Charset.defaultCharset()), defaults);
     }
 
     @Override
@@ -122,15 +176,20 @@ public class YamlConfiguration extends ConfigurationProvider
         return load( string, null );
     }
 
+
     @Override
     @SuppressWarnings("unchecked")
-    public Configuration load(String string, Configuration defaults)
+    public Configuration load(String contents, Configuration defaults)
     {
-        Map<String, Object> map = yaml.get().loadAs( string, LinkedHashMap.class );
-        if ( map == null )
-        {
-            map = new LinkedHashMap<>();
-        }
-        return new Configuration( map, defaults );
+        Map<String, Object> map;
+        LoaderOptions loaderOptions = new LoaderOptions();
+        loaderOptions.setMaxAliasesForCollections(2147483647);
+        map = this.yaml.get().loadAs(contents, LinkedHashMap.class);
+
+        Configuration config = new Configuration( map, defaults );
+        config.loadFromString(contents);
+
+        return config;
     }
+
 }

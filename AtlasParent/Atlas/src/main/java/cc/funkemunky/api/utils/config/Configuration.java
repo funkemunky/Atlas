@@ -6,7 +6,8 @@ public final class Configuration
 {
 
     private static final char SEPARATOR = '.';
-    final Map<String, Object> self;
+    public final Map<String, Object> self;
+    final Map<String, List<String>> comments;
     private final Configuration defaults;
 
     public Configuration()
@@ -23,7 +24,9 @@ public final class Configuration
     {
         this.self = new LinkedHashMap<>();
         this.defaults = defaults;
+        comments = new HashMap<>();
 
+        if(map != null)
         for ( Map.Entry<?, ?> entry : map.entrySet() )
         {
             String key = ( entry.getKey() == null ) ? "null" : entry.getKey().toString();
@@ -36,6 +39,103 @@ public final class Configuration
                 this.self.put( key, entry.getValue() );
             }
         }
+    }
+
+    public void loadFromString(String contents) {
+
+        List<String> list = new ArrayList<>();
+        Collections.addAll(list, contents.split("\n"));
+
+        int currentLayer = 0;
+        String currentPath = "";
+
+        int lineNumber = 0;
+        for(Iterator<String> iterator = list.iterator(); iterator.hasNext(); lineNumber++) {
+            String line = iterator.next();
+
+            String trimmed = line.trim();
+            if(trimmed.startsWith("#") || trimmed.isEmpty()) {
+                addCommentLine(currentPath, line);
+                continue;
+            }
+
+            if(!line.isEmpty()) {
+                if(line.contains(":")) {
+
+                    int layerFromLine = getLayerFromLine(line, lineNumber);
+
+                    if(layerFromLine < currentLayer) {
+                        currentPath = regressPathBy(currentLayer - layerFromLine, currentPath);
+                    }
+
+                    String key = getKeyFromLine(line);
+
+                    if(currentLayer == 0) {
+                        currentPath = key;
+                    }
+                    else {
+                        currentPath += "." + key;
+                    }
+                }
+            }
+        }
+    }
+
+    private void addCommentLine(String currentPath, String line) {
+
+        List<String> list = comments.get(currentPath);
+        if(list == null) {
+            list = new ArrayList<>();
+        }
+        list.add(line);
+
+        comments.put(currentPath, list);
+    }
+
+    String getKeyFromLine(String line) {
+        String key = null;
+
+        for(int i = 0; i < line.length(); i++) {
+            if(line.charAt(i) == ':') {
+                key = line.substring(0, i);
+                break;
+            }
+        }
+
+        return key == null ? null : key.trim();
+    }
+
+    String regressPathBy(int i, String currentPath) {
+        if(i <= 0) {
+            return currentPath;
+        }
+        String[] split = currentPath.split("\\.");
+
+        String rebuild = "";
+        for(int j = 0; j < split.length - i; j++) {
+            rebuild += split[j];
+            if(j <= (split.length - j)) {
+                rebuild += ".";
+            }
+        }
+
+        return rebuild;
+    }
+
+    int getLayerFromLine(String line, int lineNumber) {
+
+        double d = 0;
+        for(int i = 0; i < line.length(); i++) {
+            if(line.charAt(i) == ' ') {
+                d += 0.5;
+            }
+            else {
+                break;
+            }
+        }
+
+        return (int) d;
+
     }
 
     private Configuration getSectionFor(String path)
