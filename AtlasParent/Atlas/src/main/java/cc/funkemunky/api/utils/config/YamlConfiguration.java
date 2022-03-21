@@ -3,14 +3,11 @@ package cc.funkemunky.api.utils.config;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import lombok.SneakyThrows;
-import org.bukkit.configuration.file.YamlRepresenter;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import org.bukkit.configuration.serialization.ConfigurationSerialization;
 import org.yaml.snakeyaml.DumperOptions;
-import org.yaml.snakeyaml.LoaderOptions;
 import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.constructor.Constructor;
-import org.yaml.snakeyaml.error.YAMLException;
 import org.yaml.snakeyaml.nodes.Node;
 import org.yaml.snakeyaml.representer.Represent;
 import org.yaml.snakeyaml.representer.Representer;
@@ -182,8 +179,6 @@ public class YamlConfiguration extends ConfigurationProvider
     public Configuration load(String contents, Configuration defaults)
     {
         Map<String, Object> map;
-        LoaderOptions loaderOptions = new LoaderOptions();
-        loaderOptions.setMaxAliasesForCollections(2147483647);
         map = this.yaml.get().loadAs(contents, LinkedHashMap.class);
 
         Configuration config = new Configuration( map, defaults );
