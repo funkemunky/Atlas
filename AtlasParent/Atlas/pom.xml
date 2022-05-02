@@ -4,7 +4,7 @@
 
     <parent>
         <groupId>cc.funkemunky.utils</groupId>
-        <version>1.11.6</version>
+        <version>1.11.7</version>
         <artifactId>atlas-parent</artifactId>
         <relativePath>../pom.xml</relativePath>
     </parent>
@@ -59,6 +59,10 @@
                                 <relocation>
                                     <pattern>com.google.gson</pattern>
                                     <shadedPattern>cc.funkemunky.api.utils.com.google.gson</shadedPattern>
+                                </relocation>
+                                <relocation>
+                                    <pattern>co.aikar</pattern>
+                                    <shadedPattern>cc.funkemunky.api.utils.co.aikar</shadedPattern>
                                 </relocation>
                                 <relocation>
                                     <pattern>org.objectweb.asm</pattern>
