@@ -16,6 +16,7 @@ public class PluginShutdownListeners implements Listener {
             Atlas.getInstance().alog("&c" + event.getPlugin().getName() + "" +
                     " &7has been shutdown. Removing its hooks and listeners...");
             Atlas.getInstance().getFunkeCommandManager().removeAll(event.getPlugin());
+            Atlas.getInstance().getCommandManager(event.getPlugin()).unregisterCommands();
             Atlas.getInstance().getPacketProcessor().removeListeners(event.getPlugin());
             Atlas.getInstance().getBukkitCommandManager(event.getPlugin()).unregisterCommands();
             Atlas.getInstance().removePluginInstances(event.getPlugin());
