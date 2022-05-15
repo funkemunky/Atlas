@@ -3,7 +3,6 @@ package cc.funkemunky.api.utils.menu.button;
 import cc.funkemunky.api.utils.RunUtils;
 import cc.funkemunky.api.utils.menu.Menu;
 import cc.funkemunky.api.utils.menu.type.impl.ChestMenu;
-import lombok.NonNull;
 import lombok.Setter;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitTask;

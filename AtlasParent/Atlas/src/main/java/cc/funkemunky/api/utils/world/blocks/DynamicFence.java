@@ -12,8 +12,6 @@ import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
-import org.bukkit.material.Gate;
-import org.bukkit.material.Stairs;
 
 import java.util.Optional;
 

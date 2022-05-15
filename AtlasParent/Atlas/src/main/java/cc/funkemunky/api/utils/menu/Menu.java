@@ -1,6 +1,7 @@
 package cc.funkemunky.api.utils.menu;
 
 import cc.funkemunky.api.utils.menu.button.Button;
+import cc.funkemunky.api.utils.menu.type.BukkitInventoryHolder;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;

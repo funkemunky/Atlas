@@ -15,8 +15,6 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.util.Vector;
 
 import java.util.EnumMap;
-import java.util.HashMap;
-import java.util.Map;
 
 public class EntityData {
     private static final EnumMap<EntityType, CollisionBox> entityBounds = new EnumMap<>(EntityType.class);
