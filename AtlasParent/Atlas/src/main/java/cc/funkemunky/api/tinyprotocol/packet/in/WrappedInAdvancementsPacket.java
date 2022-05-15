@@ -14,7 +14,7 @@ public class WrappedInAdvancementsPacket extends NMSObject {
 
     private static final WrappedClass packet = Reflections.getNMSClass(Client.ADVANCEMENTS);
 
-    private static WrappedClass statusClass = Reflections.getNMSClass(Client.ADVANCEMENTS + "$Status");
+    private static final WrappedClass statusClass = Reflections.getNMSClass(Client.ADVANCEMENTS + "$Status");
 
     public Status status;
     public WrappedMinecraftKey key;
@@ -23,7 +23,7 @@ public class WrappedInAdvancementsPacket extends NMSObject {
         super(object, player);
     }
 
-    private static WrappedField fieldStatus = fetchField(packet, statusClass.getParent(), 0),
+    private final static WrappedField fieldStatus = fetchField(packet, statusClass.getParent(), 0),
             fieldKey = fetchField(packet, WrappedMinecraftKey.vanilla.getParent(), 0);
 
     @Override

@@ -16,14 +16,14 @@ import java.util.List;
 public class WrappedOutRelativePosition extends NMSObject {
     private static final String packet = Server.ENTITY;
 
-    private static boolean useLegacy = ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.V1_8);
-    private static WrappedClass packetClass = Reflections.getNMSClass(packet),
+    private static final boolean useLegacy = ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.V1_8);
+    private static final WrappedClass packetClass = Reflections.getNMSClass(packet),
             posClass = Reflections.getNMSClass(useLegacy ? Server.LEGACY_REL_POSITION : Server.REL_POSITION),
             posLookClass = Reflections.getNMSClass(useLegacy
                     ? Server.LEGACY_REL_POSITION_LOOK : Server.REL_POSITION_LOOK),
             lookClass = Reflections.getNMSClass(useLegacy ? Server.LEGACY_REL_LOOK : Server.REL_LOOK);
     private static WrappedConstructor emptyConst = packetClass.getConstructor(), posLookConst, posConst, lookConst;
-    private static WrappedField fieldId, fieldX, fieldY, fieldZ, fieldYaw, fieldPitch, fieldGround;
+    private static final WrappedField fieldId, fieldX, fieldY, fieldZ, fieldYaw, fieldPitch, fieldGround;
 
     // Decoded data
     private int id;

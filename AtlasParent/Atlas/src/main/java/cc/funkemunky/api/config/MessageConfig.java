@@ -12,8 +12,8 @@ import java.util.function.Consumer;
 public class MessageConfig {
 
     public String language;
-    private FunkeFile file;
-    private Map<String, String> messages = new HashMap<>();
+    private final FunkeFile file;
+    private final Map<String, String> messages = new HashMap<>();
 
     public MessageConfig(FunkeFile file, String language) {
         this.file = file;

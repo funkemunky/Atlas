@@ -9,11 +9,11 @@ import org.bukkit.entity.Player;
 
 @NoArgsConstructor
 public class WrappedPlayerInfoData extends NMSObject {
-    private static String type = Type.PLAYERINFODATA;
+    private static final String type = Type.PLAYERINFODATA;
 
-    private static FieldAccessor<Enum> enumGamemodeAccessor = fetchField(type, Enum.class, 0);
-    private static FieldAccessor<Object> profileAcessor = fetchFieldByName(type, "d", Object.class);
-    private static FieldAccessor<Integer> pingAcessor = fetchField(type, Integer.class, 0);
+    private static final FieldAccessor<Enum> enumGamemodeAccessor = fetchField(type, Enum.class, 0);
+    private static final FieldAccessor<Object> profileAcessor = fetchFieldByName(type, "d", Object.class);
+    private static final FieldAccessor<Integer> pingAcessor = fetchField(type, Integer.class, 0);
 
     private int ping;
     private WrappedEnumGameMode gameMode;

@@ -12,7 +12,7 @@ import java.util.Map;
 @Deprecated
 public class SpigotCompleter implements TabCompleter {
 
-    private Map<String, List<String>> completers = new HashMap<>();
+    private final Map<String, List<String>> completers = new HashMap<>();
 
     public void addCompleter(String label, String completer) {
         List<String> completers = this.completers.getOrDefault(label, new ArrayList<>());

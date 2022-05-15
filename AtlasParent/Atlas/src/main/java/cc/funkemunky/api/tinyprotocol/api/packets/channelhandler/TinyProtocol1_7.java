@@ -59,24 +59,24 @@ public abstract class TinyProtocol1_7 implements AbstractTinyProtocol {
 
 
     // Speedup channel lookup
-    private Map<String, Channel> channelLookup = new MapMaker().weakValues().makeMap();
-    private Map<Channel, Integer> protocolLookup = new MapMaker().weakKeys().makeMap();
+    private final Map<String, Channel> channelLookup = new MapMaker().weakValues().makeMap();
+    private final Map<Channel, Integer> protocolLookup = new MapMaker().weakKeys().makeMap();
     private Listener listener;
 
     // Channels that have already been removed
-    private Set<Channel> uninjectedChannels = Collections.newSetFromMap(new MapMaker().weakKeys().<Channel, Boolean>makeMap());
+    private final Set<Channel> uninjectedChannels = Collections.newSetFromMap(new MapMaker().weakKeys().makeMap());
 
     // List of network markers
     private List<Object> networkManagers;
 
     // Injected channel handlers
-    private List<Channel> serverChannels = new ArrayList<>();
+    private final List<Channel> serverChannels = new ArrayList<>();
     private ChannelInboundHandlerAdapter serverChannelHandler;
     private ChannelInitializer<Channel> beginInitProtocol;
     private ChannelInitializer<Channel> endInitProtocol;
 
     // Current handler name
-    private String handlerName;
+    private final String handlerName;
 
     protected volatile boolean closed;
     protected Plugin plugin;
@@ -167,7 +167,7 @@ public abstract class TinyProtocol1_7 implements AbstractTinyProtocol {
         listener = new Listener() {
 
             @EventHandler(priority = EventPriority.LOWEST)
-            public final void onPlayerLogin(PlayerJoinEvent e) {
+            public void onPlayerLogin(PlayerJoinEvent e) {
                 if (closed)
                     return;
 
@@ -180,7 +180,7 @@ public abstract class TinyProtocol1_7 implements AbstractTinyProtocol {
             }
 
             @EventHandler
-            public final void onPluginDisable(PluginDisableEvent e) {
+            public void onPluginDisable(PluginDisableEvent e) {
                 if (e.getPlugin().equals(plugin)) {
                     close();
                 }
@@ -212,7 +212,7 @@ public abstract class TinyProtocol1_7 implements AbstractTinyProtocol {
                 // Channel future that contains the server connection
                 Channel serverChannel = ((ChannelFuture) item).channel();
 
-                serverChannels.add(serverChannel);;
+                serverChannels.add(serverChannel);
                 serverChannel.pipeline().addFirst(serverChannelHandler);
                 Bukkit.getLogger().severe("Server channel handler injected (" + serverChannel + ")");
                 looking = false;

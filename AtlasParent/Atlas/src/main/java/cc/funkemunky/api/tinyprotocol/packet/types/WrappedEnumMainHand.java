@@ -32,6 +32,6 @@ public enum WrappedEnumMainHand {
 
     static {
         if(ProtocolVersion.getGameVersion().isAbove(ProtocolVersion.V1_8_9))
-        vanillaClass = Reflections.getNMSClass("EnumMainHand");
+            vanillaClass = Reflections.getNMSClass("EnumMainHand");
     }
 }

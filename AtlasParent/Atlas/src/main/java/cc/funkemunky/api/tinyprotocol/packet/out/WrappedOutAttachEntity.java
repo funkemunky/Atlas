@@ -20,7 +20,7 @@ public class WrappedOutAttachEntity extends NMSObject {
 
     private static final WrappedClass packet = Reflections.getNMSClass(Server.ATTACH);
     private static final WrappedField fieldA = fetchField(packet, int.class, 0),
-            fieldB = fetchField(packet, int.class, 1);;
+            fieldB = fetchField(packet, int.class, 1);
     private static WrappedField fieldC;
     private static final WrappedConstructor packetConst = packet.getConstructorAtIndex(ProtocolVersion.getGameVersion()
             .isOrAbove(ProtocolVersion.v1_17) ? 0 : 1);

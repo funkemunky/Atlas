@@ -21,16 +21,16 @@ import java.util.stream.Collectors;
 public class WrappedOutPositionPacket extends NMSObject {
     private static final String packet = Server.POSITION;
 
-    private static WrappedClass packetClass = Reflections.getNMSClass(packet);
-    private static WrappedField fieldFlags;
+    private static final WrappedClass packetClass = Reflections.getNMSClass(packet);
+    private static final WrappedField fieldFlags;
     private static final WrappedClass enumTeleportFlag;
 
     // Fields
-    private static FieldAccessor<Double> fieldX = fetchField(packet, double.class, 0);
-    private static FieldAccessor<Double> fieldY = fetchField(packet, double.class, 1);
-    private static FieldAccessor<Double> fieldZ = fetchField(packet, double.class, 2);
-    private static FieldAccessor<Float> fieldYaw = fetchField(packet, float.class, 0);
-    private static FieldAccessor<Float> fieldPitch = fetchField(packet, float.class, 1);
+    private static final FieldAccessor<Double> fieldX = fetchField(packet, double.class, 0);
+    private static final FieldAccessor<Double> fieldY = fetchField(packet, double.class, 1);
+    private static final FieldAccessor<Double> fieldZ = fetchField(packet, double.class, 2);
+    private static final FieldAccessor<Float> fieldYaw = fetchField(packet, float.class, 0);
+    private static final FieldAccessor<Float> fieldPitch = fetchField(packet, float.class, 1);
     private static WrappedField fieldTeleportAwait;
 
     // Decoded data
@@ -176,7 +176,7 @@ public class WrappedOutPositionPacket extends NMSObject {
         Y_ROT(3),
         X_ROT(4);
 
-        private int f;
+        private final int f;
 
         private EnumPlayerTeleportFlags(int var3) {
             this.f = var3;

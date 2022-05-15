@@ -13,7 +13,7 @@ import java.util.*;
 public class TabHandler implements AtlasListener {
 
     public static TabHandler INSTANCE;
-    private Map<String[], Set<String>> tabArgs = new HashMap<>();
+    private final Map<String[], Set<String>> tabArgs = new HashMap<>();
     private static DontImportIfNotLatestThanks stuff;
 
     public TabHandler() {

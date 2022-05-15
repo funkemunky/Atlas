@@ -14,8 +14,8 @@ import org.bukkit.inventory.ItemStack;
 //TODO Test
 public class WrappedInSetCreativeSlotPacket extends NMSObject {
 
-    private static WrappedClass setCreativeClass = Reflections.getNMSClass(Client.CREATIVE_SLOT);
-    private static WrappedField slotField = setCreativeClass.getFieldByType(int.class, 0),
+    private static final WrappedClass setCreativeClass = Reflections.getNMSClass(Client.CREATIVE_SLOT);
+    private final static WrappedField slotField = setCreativeClass.getFieldByType(int.class, 0),
             itemStackField = setCreativeClass.getFieldByType(MinecraftReflection.itemStack.getParent(), 0);
 
     public WrappedInSetCreativeSlotPacket(Object object, Player player) {

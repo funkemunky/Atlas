@@ -38,7 +38,7 @@ public class ForgeHandler implements Listener, PluginMessageListener {
     @ConfigSetting(path = "forge", name = "bungee")
     public static boolean fromBungee = false;
 
-    private static Map<Player, ModData> mods = new HashMap<>();
+    private static final Map<Player, ModData> mods = new HashMap<>();
 
     private static ForgeHandler INSTANCE;
 
@@ -83,7 +83,7 @@ public class ForgeHandler implements Listener, PluginMessageListener {
         if (data[0] == 2)
         {
             ModData modData = getModData(data);
-            if(modData != null && modData.getMods().size() > 0) {
+            if(modData != null && !modData.getMods().isEmpty()) {
                 mods.put(player, modData);
             }
             sendFmlPacket(player, (byte) 2, (byte) 0, (byte) 0, (byte) 0, (byte) 0);

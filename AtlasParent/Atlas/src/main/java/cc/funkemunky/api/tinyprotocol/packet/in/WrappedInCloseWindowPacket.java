@@ -11,7 +11,7 @@ public class WrappedInCloseWindowPacket extends NMSObject {
     private static final String packet = Client.CLOSE_WINDOW;
 
     // Fields
-    private static FieldAccessor<Integer> fieldId = fetchField(packet, int.class, 0);
+    private static final FieldAccessor<Integer> fieldId = fetchField(packet, int.class, 0);
 
     // Decoded data
     private int id;

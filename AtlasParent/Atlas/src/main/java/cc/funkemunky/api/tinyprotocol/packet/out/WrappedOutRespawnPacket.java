@@ -21,15 +21,15 @@ public class WrappedOutRespawnPacket extends NMSObject {
         super(object, player);
     }
 
-    private static String packet = Server.RESPAWN;
+    private static final String packet = Server.RESPAWN;
 
     private static FieldAccessor<Enum> difficultyAcessor;
     private static FieldAccessor<Enum> gamemodeAccessor;
     private static FieldAccessor<Object> worldTypeAccessor;
     private static WrappedClass worldTypeClass, respawnClass = Reflections.getNMSClass(packet);
-    private static WrappedField worldTypeNameField;
+    private static final WrappedField worldTypeNameField;
     private static WrappedMethod getTypeWorldType;
-    private static WrappedConstructor emptyConstructor = respawnClass.getConstructor();
+    private static final WrappedConstructor emptyConstructor = respawnClass.getConstructor();
 
     //Before 1.13
     private static FieldAccessor<Integer> dimensionAccesor;

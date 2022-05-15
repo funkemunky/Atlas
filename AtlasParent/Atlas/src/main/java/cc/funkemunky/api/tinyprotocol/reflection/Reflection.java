@@ -28,7 +28,7 @@ public final class Reflection {
             .replace(".", "");
 
     // Variable replacement
-    private static Pattern MATCH_VARIABLE = Pattern.compile("\\{([^\\}]+)\\}");
+    private static final Pattern MATCH_VARIABLE = Pattern.compile("\\{([^\\}]+)\\}");
 
     private Reflection() {
         // Seal class

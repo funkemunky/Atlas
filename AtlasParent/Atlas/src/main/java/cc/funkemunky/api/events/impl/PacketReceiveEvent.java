@@ -9,13 +9,13 @@ import org.bukkit.entity.Player;
 @Getter
 @Deprecated
 public class PacketReceiveEvent extends AtlasEvent implements Cancellable {
-    private Player player;
+    private final Player player;
     @Setter
     private Object packet;
     @Setter
     private boolean cancelled;
-    private String type;
-    private long timeStamp;
+    private final String type;
+    private final long timeStamp;
 
     public PacketReceiveEvent(Player player, Object packet, String type) {
         this.player = player;

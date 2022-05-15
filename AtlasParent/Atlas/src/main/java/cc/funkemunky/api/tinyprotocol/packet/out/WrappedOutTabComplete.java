@@ -11,9 +11,9 @@ import org.bukkit.entity.Player;
 
 public class WrappedOutTabComplete extends NMSObject {
 
-    private static String packet = Server.TAB_COMPLETE;
-    private static WrappedClass tabClass = Reflections.getNMSClass(packet);
-    private static WrappedClass suggestionsClass = WrappedSuggestions.suggestionsClass;
+    private static final String packet = Server.TAB_COMPLETE;
+    private static final WrappedClass tabClass = Reflections.getNMSClass(packet);
+    private static final WrappedClass suggestionsClass = WrappedSuggestions.suggestionsClass;
     private static DontImportIfNotLatestThanks stuff;
 
     public String[] suggestions;
@@ -21,7 +21,7 @@ public class WrappedOutTabComplete extends NMSObject {
     //1.13 only
     public int id = -1;
 
-    private static WrappedField suggestionsAccessor;
+    private static final WrappedField suggestionsAccessor;
 
     //1.13 and above
     private static WrappedField idAccessor;

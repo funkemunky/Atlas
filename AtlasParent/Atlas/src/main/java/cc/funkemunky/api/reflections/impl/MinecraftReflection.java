@@ -39,7 +39,7 @@ public class MinecraftReflection {
     public static WrappedClass iBlockData, blockBase,
             chunkProviderServer = Reflections.getNMSClass("ChunkProviderServer");
     public static WrappedClass itemClass = Reflections.getNMSClass("Item"),
-            enumChatFormat = Reflections.getNMSClass("EnumChatFormat");;
+            enumChatFormat = Reflections.getNMSClass("EnumChatFormat");
     public static WrappedClass world = Reflections.getNMSClass("World");
     public static WrappedClass worldServer = Reflections.getNMSClass("WorldServer");
     public static WrappedClass playerInventory = Reflections.getNMSClass("PlayerInventory");
@@ -330,8 +330,7 @@ public class MinecraftReflection {
 
                 ((List<Object>) voxelShape).stream()
                         .map(ob -> {
-                            List<Object> aabbList = getCubesFromVoxelShape.invoke(ob);
-                            return aabbList;
+                            return getCubesFromVoxelShape.<List<Object>>invoke(ob);
                         }).forEach(aabbs::addAll);
 
                 boxes = aabbs.stream().map(MinecraftReflection::fromAABB).collect(Collectors.toList());

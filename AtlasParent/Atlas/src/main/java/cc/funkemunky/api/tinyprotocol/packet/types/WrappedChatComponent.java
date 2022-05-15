@@ -10,7 +10,7 @@ import org.bukkit.entity.Player;
 @Getter
 public class WrappedChatComponent extends NMSObject {
 
-    private static WrappedMethod getText = MinecraftReflection.iChatBaseComponent.getMethod("getText");
+    private static final WrappedMethod getText = MinecraftReflection.iChatBaseComponent.getMethod("getText");
 
     public WrappedChatComponent(Object object) {
         super(object);

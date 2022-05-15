@@ -16,10 +16,10 @@ public class WrappedOutVelocityPacket extends NMSObject {
     private static final String packet = Server.ENTITY_VELOCITY;
 
     // Fields
-    private static FieldAccessor<Integer> fieldId = fetchField(packet, int.class, 0);
-    private static FieldAccessor<Integer> fieldX = fetchField(packet, int.class, 1);
-    private static FieldAccessor<Integer> fieldY = fetchField(packet, int.class, 2);
-    private static FieldAccessor<Integer> fieldZ = fetchField(packet, int.class, 3);
+    private static final FieldAccessor<Integer> fieldId = fetchField(packet, int.class, 0);
+    private static final FieldAccessor<Integer> fieldX = fetchField(packet, int.class, 1);
+    private static final FieldAccessor<Integer> fieldY = fetchField(packet, int.class, 2);
+    private static final FieldAccessor<Integer> fieldZ = fetchField(packet, int.class, 3);
 
     // Decoded data
     private int id;

@@ -20,7 +20,7 @@ public class WrappedOutNamedEntitySpawnPacket extends NMSObject {
         super(object, player);
     }
 
-    private static WrappedClass packet = Reflections.getNMSClass(Server.NAMED_ENTITY_SPAWN);
+    private static final WrappedClass packet = Reflections.getNMSClass(Server.NAMED_ENTITY_SPAWN);
 
     public int entityId;
     public UUID uuid;

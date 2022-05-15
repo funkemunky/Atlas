@@ -25,7 +25,7 @@ public class WrappedPacketDataSerializer extends NMSObject {
             readableBytes = vanillaClass.getMethod("readableBytes"),
             copyMethod = byteBufClass.getMethod("copy");
     private static final WrappedField fieldByteBuf = vanillaClass.getFieldByType(byteBufClass.getParent(), 0);
-    private static WrappedConstructor byteConst = vanillaClass.getConstructor(byteBufClass.getParent());
+    private static final WrappedConstructor byteConst = vanillaClass.getConstructor(byteBufClass.getParent());
 
     private boolean empty;
 
@@ -59,7 +59,7 @@ public class WrappedPacketDataSerializer extends NMSObject {
     public byte[] getData() {
         byte[] bytes = new byte[readableBytes()];
         if(bytes.length > 0)
-        vanillaClass.getMethod("readBytes", byte[].class).invoke(getObject(), bytes);
+            vanillaClass.getMethod("readBytes", byte[].class).invoke(getObject(), bytes);
 
         return bytes;
     }

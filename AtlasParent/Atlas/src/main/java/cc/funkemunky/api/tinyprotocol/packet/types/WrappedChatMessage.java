@@ -10,14 +10,14 @@ import org.bukkit.entity.Player;
 
 @Getter
 public class WrappedChatMessage extends NMSObject {
-    private static String type = Type.CHATMESSAGE;
+    private static final String type = Type.CHATMESSAGE;
 
     private String chatMessage;
     private Object[] objects;
 
-    private static WrappedClass chatMessageClass = Reflections.getNMSClass("ChatMessage");
-    private static WrappedField messageField = chatMessageClass.getFieldByType(String.class, 0);
-    private static WrappedField objectsField = chatMessageClass.getFieldByType(Object[].class, 0);
+    private static final WrappedClass chatMessageClass = Reflections.getNMSClass("ChatMessage");
+    private static final WrappedField messageField = chatMessageClass.getFieldByType(String.class, 0);
+    private static final WrappedField objectsField = chatMessageClass.getFieldByType(Object[].class, 0);
 
     public WrappedChatMessage(String chatMessage, Object... object) {
         this.chatMessage = chatMessage;

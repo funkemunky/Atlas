@@ -14,8 +14,8 @@ import org.bukkit.entity.Player;
 
 public class WrappedOutEntityTeleportPacket extends NMSObject {
 
-    private static WrappedField fieldEntityId, fieldX, fieldY, fieldZ, fieldYaw, fieldPitch, fieldOnGround;
-    private static WrappedClass classEntityTeleport = Reflections.getNMSClass(Packet.Server.ENTITY_TELEPORT);
+    private static final WrappedField fieldEntityId, fieldX, fieldY, fieldZ, fieldYaw, fieldPitch, fieldOnGround;
+    private static final WrappedClass classEntityTeleport = Reflections.getNMSClass(Packet.Server.ENTITY_TELEPORT);
     private static WrappedConstructor emptyConstructor;
 
     public int entityId;

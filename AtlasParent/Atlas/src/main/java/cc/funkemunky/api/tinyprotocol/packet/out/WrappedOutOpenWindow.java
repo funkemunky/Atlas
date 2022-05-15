@@ -12,7 +12,7 @@ import org.bukkit.entity.Player;
 @Getter
 public class WrappedOutOpenWindow extends NMSObject {
 
-    private static String packet = Server.OPEN_WINDOW;
+    private static final String packet = Server.OPEN_WINDOW;
 
     public WrappedOutOpenWindow(Object object, Player player) {
         super(object, player);
@@ -22,10 +22,10 @@ public class WrappedOutOpenWindow extends NMSObject {
         setPacket(packet, id, name, msg.getObject(), size);
     }
 
-    private static FieldAccessor<Integer> idField = fetchField(packet, int.class, 0);
+    private static final FieldAccessor<Integer> idField = fetchField(packet, int.class, 0);
     private static FieldAccessor<String> nameField;
     private static FieldAccessor<Object> chatCompField;
-    private static FieldAccessor<Integer> inventorySize = fetchField(packet, int.class, 1);
+    private static final FieldAccessor<Integer> inventorySize = fetchField(packet, int.class, 1);
 
     private int id;
     private String name; //Not a thing in 1.14 and above.

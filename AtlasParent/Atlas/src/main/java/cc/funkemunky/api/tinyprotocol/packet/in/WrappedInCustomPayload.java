@@ -30,7 +30,7 @@ public class WrappedInCustomPayload extends NMSObject {
         super(event);
     }
 
-    private static WrappedClass wrapped = Reflections.getNMSClass(Client.CUSTOM_PAYLOAD);
+    private static final WrappedClass wrapped = Reflections.getNMSClass(Client.CUSTOM_PAYLOAD);
 
     private static WrappedField tagField;
 

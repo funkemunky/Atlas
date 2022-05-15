@@ -13,7 +13,7 @@ import cc.funkemunky.api.utils.Init;
 @Init
 public class AtlasConnectionListeners implements AtlasListener {
 
-    private boolean bungeeMode;
+    private final boolean bungeeMode;
 
     public AtlasConnectionListeners() {
         bungeeMode = BukkitReflection.isBungeeMode();

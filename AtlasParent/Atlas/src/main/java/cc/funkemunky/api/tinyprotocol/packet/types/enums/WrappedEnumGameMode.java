@@ -11,10 +11,10 @@ public enum WrappedEnumGameMode {
     ADVENTURE(2, "adventure"),
     SPECTATOR(3, "spectator");
 
-    int f;
-    String g;
+    final int f;
+    final String g;
 
-    private static WrappedClass enumGamemode = Reflections.getNMSClass((ProtocolVersion.getGameVersion()
+    private static final WrappedClass enumGamemode = Reflections.getNMSClass((ProtocolVersion.getGameVersion()
             .isOrAbove(ProtocolVersion.V1_8_5) && ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.V1_10)
                     ? "WorldSettings$" : "") +
             "EnumGamemode");

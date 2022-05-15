@@ -19,9 +19,9 @@ public class WrappedGameProfile extends NMSObject {
     private static final String type = Type.GAMEPROFILE;
 
     // Fields
-    private static FieldAccessor<UUID> fieldId = fetchField(type, UUID.class, 0);
-    private static FieldAccessor<String> fieldName = fetchField(type, String.class, 0);
-    private static FieldAccessor<?> fieldPropertyMap = fetchField(type, Reflection.getClass(Type.PROPERTYMAP), 0);
+    private static final FieldAccessor<UUID> fieldId = fetchField(type, UUID.class, 0);
+    private static final FieldAccessor<String> fieldName = fetchField(type, String.class, 0);
+    private static final FieldAccessor<?> fieldPropertyMap = fetchField(type, Reflection.getClass(Type.PROPERTYMAP), 0);
 
     // Decoded data
     public UUID id;

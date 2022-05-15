@@ -17,7 +17,7 @@ public class WrappedMinecraftKey extends NMSObject {
 
     public String namespace = "N/A", key = "N/A";
 
-    private static WrappedField fieldNameSpace = fetchField(vanilla, String.class, 0),
+    private static final WrappedField fieldNameSpace = fetchField(vanilla, String.class, 0),
             fieldKey = fetchField(vanilla, String.class, 1);
 
     @Override

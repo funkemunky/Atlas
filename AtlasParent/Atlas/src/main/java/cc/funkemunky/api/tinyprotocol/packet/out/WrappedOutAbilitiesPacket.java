@@ -12,22 +12,22 @@ import org.bukkit.entity.Player;
 public class WrappedOutAbilitiesPacket extends NMSObject {
     private static final String packet = Server.ABILITIES;
 
-    private static FieldAccessor<Boolean>
+    private final static FieldAccessor<Boolean>
             invulnerableField = fetchField(packet, boolean.class, 0),
             flyingField = fetchField(packet, boolean.class, 1),
             allowedFlightField = fetchField(packet, boolean.class, 2),
             creativeModeField = fetchField(packet, boolean.class, 3);
-    private static FieldAccessor<Float>
+    private final static FieldAccessor<Float>
             flySpeedField = fetchField(packet, float.class, 0),
             walkSpeedField = fetchField(packet, float.class, 1);
 
-    private static WrappedClass abilitiesClass = Reflections.getNMSClass("PlayerAbilities");
-    private static WrappedField invulnerableAcc = abilitiesClass.getFieldByType(boolean.class, 0);
-    private static WrappedField flyingAcc = abilitiesClass.getFieldByType(boolean.class, 1);
-    private static WrappedField allowedFlightAcc = abilitiesClass.getFieldByType(boolean.class, 2);
-    private static WrappedField creativeModeAcc = abilitiesClass.getFieldByType(boolean.class, 3);
-    private static WrappedField flySpeedAcc = abilitiesClass.getFieldByType(float.class, 0);
-    private static WrappedField walkSpeedAcc = abilitiesClass.getFieldByType(float.class, 1);
+    private static final WrappedClass abilitiesClass = Reflections.getNMSClass("PlayerAbilities");
+    private static final WrappedField invulnerableAcc = abilitiesClass.getFieldByType(boolean.class, 0);
+    private static final WrappedField flyingAcc = abilitiesClass.getFieldByType(boolean.class, 1);
+    private static final WrappedField allowedFlightAcc = abilitiesClass.getFieldByType(boolean.class, 2);
+    private static final WrappedField creativeModeAcc = abilitiesClass.getFieldByType(boolean.class, 3);
+    private static final WrappedField flySpeedAcc = abilitiesClass.getFieldByType(float.class, 0);
+    private static final WrappedField walkSpeedAcc = abilitiesClass.getFieldByType(float.class, 1);
     @Getter
     private boolean invulnerable, flying, allowedFlight, creativeMode;
     @Getter

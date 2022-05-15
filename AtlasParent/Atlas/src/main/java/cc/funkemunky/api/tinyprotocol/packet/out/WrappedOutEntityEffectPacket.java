@@ -15,7 +15,7 @@ public class WrappedOutEntityEffectPacket extends NMSObject {
     public int duration;
     public byte flags;
 
-    private static WrappedClass wrapped = Reflections.getNMSClass(Server.ENTITY_EFFECT);
+    private static final WrappedClass wrapped = Reflections.getNMSClass(Server.ENTITY_EFFECT);
     private static WrappedField fieldEntityId,
             fieldEffectId,
             fieldAmplifier,

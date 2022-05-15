@@ -10,8 +10,8 @@ public enum WrappedEnumPlayerInfoAction {
     UPDATE_DISPLAY_NAME("updateDisplayName"),
     REMOVE_PLAYER("removePlayer");
 
-    public String legacyMethodName;
-    public static WrappedClass enumPlayerInfoAction =
+    public final String legacyMethodName;
+    public static final WrappedClass enumPlayerInfoAction =
             Reflections.getNMSClass("PacketPlayOutPlayerInfo$EnumPlayerInfoAction");
 
     WrappedEnumPlayerInfoAction(String legacyMethodName) {

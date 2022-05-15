@@ -13,9 +13,9 @@ import org.bukkit.entity.Player;
 public class WrappedInSettingsPacket extends NMSObject {
 
     //Reflection fields
-    private static WrappedClass packet = Reflections.getNMSClass(Client.SETTINGS);
+    private static final WrappedClass packet = Reflections.getNMSClass(Client.SETTINGS);
 
-    private static WrappedField fieldLocale, fieldView, fieldChatVisibility, fieldChatColors;
+    private final static WrappedField fieldLocale, fieldView, fieldChatVisibility, fieldChatColors;
     //1.7.10 only
     private static WrappedField fieldVersion, fieldFlags, fieldShowCape;
     //1.9+ only
@@ -82,7 +82,7 @@ public class WrappedInSettingsPacket extends NMSObject {
         SYSTEM(1, "options.chat.visibility.system"),
         HIDDEN(2, "options.chat.visibility.hidden");
 
-        static WrappedClass chatVisibilityClass = Reflections.getNMSClass(ProtocolVersion.getGameVersion()
+        static final WrappedClass chatVisibilityClass = Reflections.getNMSClass(ProtocolVersion.getGameVersion()
                 .isOrBelow(ProtocolVersion.V1_7_10)
                 || ProtocolVersion.getGameVersion().isOrAbove(ProtocolVersion.V1_14)
                 ? "EnumChatVisibility" : "EntityHuman$EnumChatVisibility");
