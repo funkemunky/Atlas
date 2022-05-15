@@ -14,7 +14,7 @@ import java.util.List;
 @Getter
 @RequiredArgsConstructor
 public class GeneralWrapper {
-    private List<GeneralField> fields = new ArrayList<>();
+    private final List<GeneralField> fields = new ArrayList<>();
     private List<WrappedMethod> methods;
     private final WrappedClass objectClass;
 

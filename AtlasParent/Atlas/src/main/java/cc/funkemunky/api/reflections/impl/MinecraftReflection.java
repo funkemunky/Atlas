@@ -329,9 +329,7 @@ public class MinecraftReflection {
                 List<Object> aabbs = new ArrayList<>();
 
                 ((List<Object>) voxelShape).stream()
-                        .map(ob -> {
-                            return getCubesFromVoxelShape.<List<Object>>invoke(ob);
-                        }).forEach(aabbs::addAll);
+                        .map(ob -> getCubesFromVoxelShape.<List<Object>>invoke(ob)).forEach(aabbs::addAll);
 
                 boxes = aabbs.stream().map(MinecraftReflection::fromAABB).collect(Collectors.toList());
             }

@@ -191,7 +191,7 @@ public class WrappedOutPositionPacket extends NMSObject {
         }
 
         public static Set<EnumPlayerTeleportFlags> a(int var0) {
-            EnumSet var1 = EnumSet.noneOf(EnumPlayerTeleportFlags.class);
+            EnumSet<EnumPlayerTeleportFlags> var1 = EnumSet.noneOf(EnumPlayerTeleportFlags.class);
             EnumPlayerTeleportFlags[] var2 = values();
             int var3 = var2.length;
 
@@ -209,8 +209,8 @@ public class WrappedOutPositionPacket extends NMSObject {
             int var1 = 0;
 
             EnumPlayerTeleportFlags var3;
-            for(Iterator var2 = var0.iterator(); var2.hasNext(); var1 |= var3.a()) {
-                var3 = (EnumPlayerTeleportFlags)var2.next();
+            for(Iterator<EnumPlayerTeleportFlags> var2 = var0.iterator(); var2.hasNext(); var1 |= var3.a()) {
+                var3 = var2.next();
             }
 
             return var1;

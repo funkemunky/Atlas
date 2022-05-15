@@ -25,7 +25,7 @@ public class Updater {
     private File pluginLocation;
 
     @ConfigSetting(path = "updater")
-    private static boolean checkForUpdates = true;
+    private static final boolean checkForUpdates = true;
 
     public Updater() {
         runUpdateCheck();

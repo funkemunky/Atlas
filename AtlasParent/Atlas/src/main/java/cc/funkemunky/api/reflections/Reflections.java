@@ -33,7 +33,7 @@ import java.util.regex.Pattern;
 public class Reflections {
     private static final String craftBukkitString;
     private static final String netMinecraftServerString;
-    private static MethodHandles.Lookup lookup = MethodHandles.lookup();
+    private static final MethodHandles.Lookup lookup = MethodHandles.lookup();
     private static Set<String> classNames;
 
     static {
