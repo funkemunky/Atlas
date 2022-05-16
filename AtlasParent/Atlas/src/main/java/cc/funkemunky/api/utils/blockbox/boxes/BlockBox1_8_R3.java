@@ -4,6 +4,7 @@ import cc.funkemunky.api.utils.blockbox.BlockBox;
 import cc.funkemunky.api.utils.blockbox.BlockBoxManager;
 import cc.funkemunky.api.utils.world.CollisionBox;
 import cc.funkemunky.api.utils.world.types.ComplexCollisionBox;
+import cc.funkemunky.api.utils.world.types.NoCollisionBox;
 import cc.funkemunky.api.utils.world.types.SimpleCollisionBox;
 import net.minecraft.server.v1_8_R3.AxisAlignedBB;
 import net.minecraft.server.v1_8_R3.BlockPosition;
@@ -67,7 +68,9 @@ public class BlockBox1_8_R3 implements BlockBox {
         if (boxes.size() == 0) {
             AxisAlignedBB box = vblock.a(world, blockPos, vblock.getBlockData());
 
-            return new SimpleCollisionBox(box.a, box.b, box.c, box.d, box.e, box.f);
+            if(box != null) {
+                return new SimpleCollisionBox(box.a, box.b, box.c, box.d, box.e, box.f);
+            } else return NoCollisionBox.INSTANCE;
         } else if (boxes.size() == 1) {
             AxisAlignedBB box = boxes.get(0);
 

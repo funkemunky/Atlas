@@ -48,6 +48,7 @@ import java.io.IOException;
 import java.util.*;
 import java.util.concurrent.*;
 import java.util.logging.Level;
+import java.util.stream.Collectors;
 
 @Getter
 @Setter
@@ -191,13 +192,32 @@ public class Atlas extends JavaPlugin {
 
         alog(Color.Gray
                 + "Disabling all plugins that depend on Atlas to prevent any errors...");
-        Arrays.stream(Bukkit.getPluginManager().getPlugins())
+        List<Plugin> plugins = Arrays.stream(Bukkit.getPluginManager().getPlugins())
                 .filter(plugin -> plugin.getDescription().getDepend().contains("Atlas")
                         || plugin.getDescription().getSoftDepend().contains("Atlas"))
-                .forEach(plugin -> MiscUtils.unloadPlugin(plugin.getName()));
+                .collect(Collectors.toCollection(CopyOnWriteArrayList::new));
+
+        for (Plugin plugin : plugins) {
+            unloadPluginAndDepends(plugin, plugins);
+        }
         shutdownExecutor();
 
         alog(Color.Red + "Completed shutdown process.");
+    }
+
+    private void unloadPluginAndDepends(Plugin toCheck, List<Plugin> plugins) {
+        if(toCheck == null) return;
+        for (Plugin plugin : plugins) {
+            if(plugin.getDescription().getDepend().contains(toCheck.getName())
+                    || plugin.getDescription().getSoftDepend().contains(toCheck.getName())) {
+                unloadPluginAndDepends(plugin, plugins);
+                plugins.remove(plugin);
+            }
+        }
+
+        if(Bukkit.getPluginManager().isPluginEnabled(toCheck.getName()))
+            MiscUtils.unloadPlugin(toCheck.getName());
+        plugins.remove(toCheck);
     }
 
 
