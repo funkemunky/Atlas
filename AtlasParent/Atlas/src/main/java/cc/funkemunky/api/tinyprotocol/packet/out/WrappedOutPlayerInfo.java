@@ -21,15 +21,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class WrappedOutPlayerInfo extends NMSObject {
-    private static String packet = Server.PLAYER_INFO;
+    private static final String packet = Server.PLAYER_INFO;
 
-    private static WrappedClass playerInfoClass = Reflections.getNMSClass(packet);
+    private static final WrappedClass playerInfoClass = Reflections.getNMSClass(packet);
     private static WrappedClass playerInfoDataClass;
     private static WrappedConstructor constructor;
-    private static WrappedClass chatBaseComp = Reflections.getNMSClass("IChatBaseComponent");
-    private static WrappedClass chatSerialClass = Reflections.getNMSClass("IChatBaseComponent$ChatSerializer");
+    private static final WrappedClass chatBaseComp = Reflections.getNMSClass("IChatBaseComponent");
+    private static final WrappedClass chatSerialClass = Reflections.getNMSClass("IChatBaseComponent$ChatSerializer");
 
-    private static WrappedMethod stcToComponent = chatSerialClass.getMethod("a", new Class[]{String.class});
+    private static final WrappedMethod stcToComponent = chatSerialClass.getMethod("a", new Class[]{String.class});
 
     public WrappedOutPlayerInfo(Object object, Player player) {
         super(object, player);
@@ -63,7 +63,7 @@ public class WrappedOutPlayerInfo extends NMSObject {
     private static FieldAccessor<Integer> pingAcessor;
 
 
-    private List<WrappedPlayerInfoData> playerInfo = new ArrayList<>();
+    private final List<WrappedPlayerInfoData> playerInfo = new ArrayList<>();
     private WrappedEnumPlayerInfoAction action;
 
     @Override

@@ -18,7 +18,7 @@ import java.util.Set;
 public class PluginLoaderHandler implements Listener {
 
     @Getter
-    private Set<Plugin> loadedPlugins = new HashSet<>();
+    private final Set<Plugin> loadedPlugins = new HashSet<>();
 
     @EventHandler(priority = EventPriority.HIGH)
     public void onEvent(PluginEnableEvent event) {

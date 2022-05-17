@@ -11,7 +11,7 @@ public class WrappedInClientCommandPacket extends NMSObject {
     private static final String packet = Client.CLIENT_COMMAND;
 
     // Fields
-    private static FieldAccessor<Enum> fieldCommand = fetchField(packet, Enum.class, 0);
+    private static final FieldAccessor<Enum> fieldCommand = fetchField(packet, Enum.class, 0);
 
     // Decoded data
     EnumClientCommand command;

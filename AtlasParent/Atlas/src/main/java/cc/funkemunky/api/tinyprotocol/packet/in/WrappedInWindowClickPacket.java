@@ -16,13 +16,13 @@ public class WrappedInWindowClickPacket extends NMSObject {
     private static final String packet = Client.WINDOW_CLICK;
 
     // Fields
-    private static FieldAccessor<Integer> fieldId = fetchField(packet, int.class, 0);
-    private static FieldAccessor<Integer> fieldSlot = fetchField(packet, int.class, 1);
-    private static FieldAccessor<Integer> fieldButton = fetchField(packet, int.class, 2);
-    private static WrappedField fieldAction = fetchField(Reflections.getNMSClass(packet), (ProtocolVersion.getGameVersion()
+    private static final FieldAccessor<Integer> fieldId = fetchField(packet, int.class, 0);
+    private static final FieldAccessor<Integer> fieldSlot = fetchField(packet, int.class, 1);
+    private static final FieldAccessor<Integer> fieldButton = fetchField(packet, int.class, 2);
+    private static final WrappedField fieldAction = fetchField(Reflections.getNMSClass(packet), (ProtocolVersion.getGameVersion()
             .isOrAbove(ProtocolVersion.v1_17) ? int.class : short.class), ProtocolVersion.getGameVersion()
             .isOrAbove(ProtocolVersion.v1_17) ? 3 : 0);
-    private static FieldAccessor<Object> fieldItemStack = fetchField(packet,
+    private static final FieldAccessor<Object> fieldItemStack = fetchField(packet,
             MinecraftReflection.itemStack.getParent(), 0);
 
     // Decoded data

@@ -32,7 +32,7 @@ public class WrappedInTeleportAccept extends NMSObject {
     @Override
     public void updateObject() {
         if(ProtocolVersion.getGameVersion().isOrAbove(ProtocolVersion.V1_9))
-        set(fieldId, id);
+            set(fieldId, id);
     }
 
     static {

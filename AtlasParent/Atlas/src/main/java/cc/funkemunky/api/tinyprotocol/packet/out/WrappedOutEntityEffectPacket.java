@@ -6,7 +6,6 @@ import cc.funkemunky.api.reflections.types.WrappedField;
 import cc.funkemunky.api.tinyprotocol.api.NMSObject;
 import cc.funkemunky.api.tinyprotocol.api.ProtocolVersion;
 import org.bukkit.entity.Player;
-import oshi.jna.platform.windows.NtDll;
 
 public class WrappedOutEntityEffectPacket extends NMSObject {
 
@@ -16,7 +15,7 @@ public class WrappedOutEntityEffectPacket extends NMSObject {
     public int duration;
     public byte flags;
 
-    private static WrappedClass wrapped = Reflections.getNMSClass(Server.ENTITY_EFFECT);
+    private static final WrappedClass wrapped = Reflections.getNMSClass(Server.ENTITY_EFFECT);
     private static WrappedField fieldEntityId,
             fieldEffectId,
             fieldAmplifier,

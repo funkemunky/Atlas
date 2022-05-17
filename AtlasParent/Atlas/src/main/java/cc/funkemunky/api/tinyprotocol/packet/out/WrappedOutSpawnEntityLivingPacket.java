@@ -20,7 +20,7 @@ public class WrappedOutSpawnEntityLivingPacket extends NMSObject {
         super(object, player);
     }
 
-    private static WrappedClass packet = Reflections.getNMSClass(Server.SPAWN_ENTITY_LIVING);
+    private static final WrappedClass packet = Reflections.getNMSClass(Server.SPAWN_ENTITY_LIVING);
 
     public Optional<Entity> entity = Optional.empty();
     public int entityId, type;

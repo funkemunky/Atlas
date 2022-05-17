@@ -34,8 +34,8 @@ public class WrappedOutCustomPayload extends NMSObject {
         }
     }
 
-    private static WrappedClass payloadClass = Reflections.getNMSClass(Server.CUSTOM_PAYLOAD);
-    private static WrappedField tagField, dataField;
+    private static final WrappedClass payloadClass = Reflections.getNMSClass(Server.CUSTOM_PAYLOAD);
+    private static final WrappedField tagField, dataField;
 
     private String tag;
     private byte[] data;

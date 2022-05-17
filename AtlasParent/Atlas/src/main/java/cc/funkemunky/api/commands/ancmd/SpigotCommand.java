@@ -12,9 +12,9 @@ import java.util.List;
 @Deprecated
 public class SpigotCommand extends org.bukkit.command.Command {
 
-    private Plugin owningPlugin;
+    private final Plugin owningPlugin;
     protected SpigotCompleter completer;
-    private CommandExecutor executor;
+    private final CommandExecutor executor;
     private boolean notAno = false;
 
 

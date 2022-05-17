@@ -9,7 +9,7 @@ import cc.funkemunky.api.tinyprotocol.packet.types.enums.WrappedEnumProtocol;
 import org.bukkit.entity.Player;
 
 public class WrappedHandshakingInSetProtocol extends NMSObject {
-    private static WrappedClass packet = Reflections.getNMSClass(Login.HANDSHAKE);
+    private static final WrappedClass packet = Reflections.getNMSClass(Login.HANDSHAKE);
     public WrappedHandshakingInSetProtocol(Object object) {
         super(object);
     }
@@ -18,7 +18,7 @@ public class WrappedHandshakingInSetProtocol extends NMSObject {
     public String hostname;
     public WrappedEnumProtocol enumProtocol;
 
-    private static WrappedField aField = packet.getFieldByType(int.class, ProtocolVersion.getGameVersion().isOrAbove(ProtocolVersion.v1_17) ? 1 :0),
+    private final static WrappedField aField = packet.getFieldByType(int.class, ProtocolVersion.getGameVersion().isOrAbove(ProtocolVersion.v1_17) ? 1 :0),
             hostField = packet.getFieldByType(String.class, 0),
             portField = packet.getFieldByType(int.class, ProtocolVersion.getGameVersion().isOrAbove(ProtocolVersion.v1_17) ? 2 : 1),
             protocolField = packet.getFieldByType(WrappedEnumProtocol.enumProtocol.getParent(), 0);

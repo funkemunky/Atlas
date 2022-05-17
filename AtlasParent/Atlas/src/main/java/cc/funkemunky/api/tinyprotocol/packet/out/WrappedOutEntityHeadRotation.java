@@ -10,9 +10,9 @@ import org.bukkit.entity.Player;
 
 @Getter
 public class WrappedOutEntityHeadRotation extends NMSObject {
-    private static WrappedClass headRotationClass = Reflections.getNMSClass(Server.ENTITY_HEAD_ROTATION);
-    private static WrappedField entityIdField = headRotationClass.getFirstFieldByType(int.class);
-    private static WrappedField yawField = headRotationClass.getFirstFieldByType(byte.class);
+    private static final WrappedClass headRotationClass = Reflections.getNMSClass(Server.ENTITY_HEAD_ROTATION);
+    private static final WrappedField entityIdField = headRotationClass.getFirstFieldByType(int.class);
+    private static final WrappedField yawField = headRotationClass.getFirstFieldByType(byte.class);
 
     private int entityId;
     private byte yaw;

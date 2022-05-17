@@ -5,7 +5,6 @@ import cc.funkemunky.api.tinyprotocol.api.ProtocolVersion;
 import cc.funkemunky.api.utils.ConfigSetting;
 import cc.funkemunky.api.utils.Init;
 import cc.funkemunky.api.utils.RunUtils;
-import lombok.val;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -14,7 +13,6 @@ import org.bukkit.plugin.messaging.PluginMessageListener;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.io.ByteArrayOutputStream;
-import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.util.Arrays;
@@ -40,7 +38,7 @@ public class ForgeHandler implements Listener, PluginMessageListener {
     @ConfigSetting(path = "forge", name = "bungee")
     public static boolean fromBungee = false;
 
-    private static Map<Player, ModData> mods = new HashMap<>();
+    private static final Map<Player, ModData> mods = new HashMap<>();
 
     private static ForgeHandler INSTANCE;
 
@@ -85,7 +83,7 @@ public class ForgeHandler implements Listener, PluginMessageListener {
         if (data[0] == 2)
         {
             ModData modData = getModData(data);
-            if(modData != null && modData.getMods().size() > 0) {
+            if(modData != null && !modData.getMods().isEmpty()) {
                 mods.put(player, modData);
             }
             sendFmlPacket(player, (byte) 2, (byte) 0, (byte) 0, (byte) 0, (byte) 0);

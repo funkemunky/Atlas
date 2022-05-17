@@ -42,7 +42,7 @@ public class Step {
 
     public static class GenericStepper<T> implements Iterator<T>, Iterable<T> {
 
-        private Link<T> first;
+        private final Link<T> first;
         private Link<T> link;
 
         public GenericStepper(Link<T> link) {

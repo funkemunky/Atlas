@@ -12,7 +12,7 @@ import java.util.List;
 public class MessageHandler {
 
     public List<MessageConfig> messageConfigs = new ArrayList<>();
-    private Plugin plugin;
+    private final Plugin plugin;
     @Setter
     private String currentLang;
 

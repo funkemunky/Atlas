@@ -16,6 +16,6 @@ public class PacketLoginEvent extends AtlasEvent implements Cancellable {
 
     public final SocketAddress address;
     @Setter
-    private final Object packet;
+    private final Object packet; // Setters cannot be generated for final fields.
     private final String packetType;
 }

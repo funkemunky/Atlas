@@ -250,7 +250,7 @@ public class MathHelper {
     public static double b(double var0, double var2) {
         double var4 = var2 * var2 + var0 * var0;
         if (Double.isNaN(var4)) {
-            return 0.0D / 0.0;
+            return Double.NaN;
         } else {
             boolean var6 = var0 < 0.0D;
             if (var6) {

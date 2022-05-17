@@ -28,7 +28,7 @@ public final class Reflection {
             .replace(".", "");
 
     // Variable replacement
-    private static Pattern MATCH_VARIABLE = Pattern.compile("\\{([^\\}]+)\\}");
+    private static final Pattern MATCH_VARIABLE = Pattern.compile("\\{([^\\}]+)\\}");
 
     private Reflection() {
         // Seal class
@@ -233,17 +233,12 @@ public final class Reflection {
                     && Arrays.equals(method.getParameterTypes(), params)) {
                 method.setAccessible(true);
 
-                return new MethodInvoker() {
-
-                    @Override
-                    public Object invoke(Object target, Object... arguments) {
-                        try {
-                            return method.invoke(target, arguments);
-                        } catch (Exception e) {
-                            throw new RuntimeException("Cannot invoke method " + method, e);
-                        }
+                return (target, arguments) -> {
+                    try {
+                        return method.invoke(target, arguments);
+                    } catch (Exception e) {
+                        throw new RuntimeException("Cannot invoke method " + method, e);
                     }
-
                 };
             }
         }
@@ -261,17 +256,12 @@ public final class Reflection {
                     && Arrays.equals(method.getParameterTypes(), params) && index-- <= 0) {
                 method.setAccessible(true);
 
-                return new MethodInvoker() {
-
-                    @Override
-                    public Object invoke(Object target, Object... arguments) {
-                        try {
-                            return method.invoke(target, arguments);
-                        } catch (Exception e) {
-                            throw new RuntimeException("Cannot invoke method " + method, e);
-                        }
+                return (target, arguments) -> {
+                    try {
+                        return method.invoke(target, arguments);
+                    } catch (Exception e) {
+                        throw new RuntimeException("Cannot invoke method " + method, e);
                     }
-
                 };
             }
         }
@@ -308,17 +298,12 @@ public final class Reflection {
             if (Arrays.equals(constructor.getParameterTypes(), params)) {
                 constructor.setAccessible(true);
 
-                return new ConstructorInvoker() {
-
-                    @Override
-                    public Object invoke(Object... arguments) {
-                        try {
-                            return constructor.newInstance(arguments);
-                        } catch (Exception e) {
-                            throw new RuntimeException("Cannot invoke constructor " + constructor, e);
-                        }
+                return arguments -> {
+                    try {
+                        return constructor.newInstance(arguments);
+                    } catch (Exception e) {
+                        throw new RuntimeException("Cannot invoke constructor " + constructor, e);
                     }
-
                 };
             }
         }

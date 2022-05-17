@@ -11,7 +11,8 @@ public class WrappedInBlockPlace1_9 extends NMSObject {
 
     private static final String packet = Client.BLOCK_PLACE_1_9;
 
-    private static WrappedClass blockPlace = Reflections.getNMSClass(packet), enumHandClass;
+    private static final WrappedClass blockPlace = Reflections.getNMSClass(packet);
+    private static WrappedClass enumHandClass;
     private static WrappedField enumHand, timeStampField;
 
     public WrappedInBlockPlace1_9(Object object, Player player) {

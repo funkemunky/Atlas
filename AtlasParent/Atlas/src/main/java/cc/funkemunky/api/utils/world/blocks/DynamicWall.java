@@ -3,16 +3,12 @@ package cc.funkemunky.api.utils.world.blocks;
 import cc.funkemunky.api.tinyprotocol.api.ProtocolVersion;
 import cc.funkemunky.api.utils.BlockUtils;
 import cc.funkemunky.api.utils.Materials;
-import cc.funkemunky.api.utils.XMaterial;
 import cc.funkemunky.api.utils.world.CollisionBox;
 import cc.funkemunky.api.utils.world.types.CollisionFactory;
 import cc.funkemunky.api.utils.world.types.SimpleCollisionBox;
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
-import org.bukkit.block.BlockState;
-import org.bukkit.material.Stairs;
 
 import java.util.Optional;
 

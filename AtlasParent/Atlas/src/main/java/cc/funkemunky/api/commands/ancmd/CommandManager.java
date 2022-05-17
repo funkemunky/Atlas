@@ -31,8 +31,8 @@ import java.util.stream.IntStream;
 @Getter
 @Deprecated
 public class CommandManager implements CommandExecutor {
-    private Map<String, CommandRegister> commands = new ConcurrentHashMap<>();
-    private Plugin plugin;
+    private final Map<String, CommandRegister> commands = new ConcurrentHashMap<>();
+    private final Plugin plugin;
     @Getter
     public SimpleCommandMap map;
     public List<SpigotCommand> registered = new ArrayList<>();
@@ -108,8 +108,8 @@ public class CommandManager implements CommandExecutor {
         commands.clear();
     }
 
-    private static WrappedClass scmClass = new WrappedClass(SimpleCommandMap.class);
-    private static WrappedField fieldKnownCommands = scmClass.getFieldByType(Map.class, 0);
+    private static final WrappedClass scmClass = new WrappedClass(SimpleCommandMap.class);
+    private static final WrappedField fieldKnownCommands = scmClass.getFieldByType(Map.class, 0);
 
     public void unregisterCommand(String name) {
         registered.stream()

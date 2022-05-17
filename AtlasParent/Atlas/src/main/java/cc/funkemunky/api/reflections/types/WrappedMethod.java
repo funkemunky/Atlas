@@ -27,7 +27,7 @@ public class WrappedMethod {
     private final String name;
     private MethodFunction mfunc;
     private final List<Class<?>> parameters;
-    private boolean isVoid;
+    private final boolean isVoid;
 
     public WrappedMethod(WrappedClass parent, Method method) {
         this.name = method.getName();

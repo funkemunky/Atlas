@@ -14,7 +14,6 @@ import cc.funkemunky.api.reflections.impl.MinecraftReflection;
 import cc.funkemunky.api.reflections.types.WrappedClass;
 import cc.funkemunky.api.reflections.types.WrappedField;
 import cc.funkemunky.api.reflections.types.WrappedMethod;
-import cc.funkemunky.api.tinyprotocol.api.ProtocolVersion;
 import cc.funkemunky.api.tinyprotocol.api.packets.AbstractTinyProtocol;
 import cc.funkemunky.api.tinyprotocol.packet.login.WrappedHandshakingInSetProtocol;
 import cc.funkemunky.api.tinyprotocol.packet.types.enums.WrappedEnumProtocol;
@@ -68,24 +67,24 @@ public abstract class TinyProtocol1_8 implements AbstractTinyProtocol {
 	private List<ChannelFuture> gList;
 
 	// Speedup channel lookup
-	private Map<String, Channel> channelLookup = new MapMaker().weakValues().makeMap();
-	private Map<Channel, Integer> protocolLookup = new MapMaker().weakKeys().makeMap();
+	private final Map<String, Channel> channelLookup = new MapMaker().weakValues().makeMap();
+	private final Map<Channel, Integer> protocolLookup = new MapMaker().weakKeys().makeMap();
 	private Listener listener;
 
 	// Channels that have already been removed
-	private Set<Channel> uninjectedChannels = Collections.newSetFromMap(new MapMaker().weakKeys().<Channel, Boolean>makeMap());
+	private final Set<Channel> uninjectedChannels = Collections.newSetFromMap(new MapMaker().weakKeys().makeMap());
 
 	// List of network markers
-	private List<Object> networkManagers = new ArrayList<>();
+	private final List<Object> networkManagers = new ArrayList<>();
 
 	// Injected channel handlers
-	private List<Channel> serverChannels = Lists.newArrayList();
+	private final List<Channel> serverChannels = Lists.newArrayList();
 	private ChannelInboundHandlerAdapter serverChannelHandler;
 	private ChannelInitializer<Channel> beginInitProtocol;
 	private ChannelInitializer<Channel> endInitProtocol;
 
 	// Current handler name
-	private String handlerName;
+	private final String handlerName;
 
 	protected volatile boolean closed;
 	protected Plugin plugin;
@@ -185,7 +184,7 @@ public abstract class TinyProtocol1_8 implements AbstractTinyProtocol {
 		listener = new Listener() {
 
 			@EventHandler(priority = EventPriority.LOWEST)
-			public final void onPlayerLogin(PlayerJoinEvent e) {
+			public void onPlayerLogin(PlayerJoinEvent e) {
 				if (closed)
 					return;
 
@@ -202,7 +201,7 @@ public abstract class TinyProtocol1_8 implements AbstractTinyProtocol {
 			}
 
 			@EventHandler
-			public final void onPluginDisable(PluginDisableEvent e) {
+			public void onPluginDisable(PluginDisableEvent e) {
 				if (e.getPlugin().equals(plugin)) {
 					close();
 				}

@@ -28,18 +28,18 @@ public class CraftReflection {
     public static WrappedClass craftChatMessage = Reflections.getCBClass("util.CraftChatMessage");
 
     //Vanilla Instances
-    private static WrappedMethod itemStackInstance = craftItemStack.getMethod("asNMSCopy", ItemStack.class); //1.7-1.14
-    private static WrappedMethod humanEntityInstance = craftHumanEntity.getMethod("getHandle"); //1.7-1.14
-    private static WrappedMethod entityInstance = craftEntity.getMethod("getHandle"); //1.7-1.14
-    private static WrappedMethod blockInstance = craftBlock.getMethod(ProtocolVersion.getGameVersion()
+    private static final WrappedMethod itemStackInstance = craftItemStack.getMethod("asNMSCopy", ItemStack.class); //1.7-1.14
+    private static final WrappedMethod humanEntityInstance = craftHumanEntity.getMethod("getHandle"); //1.7-1.14
+    private static final WrappedMethod entityInstance = craftEntity.getMethod("getHandle"); //1.7-1.14
+    private static final WrappedMethod blockInstance = craftBlock.getMethod(ProtocolVersion.getGameVersion()
             .isOrAbove(ProtocolVersion.v1_17_1) ? "getNMS" : "getNMSBlock"); //1.7-1.14
-    private static WrappedMethod worldInstance = craftWorld.getMethod("getHandle"); //1.7-1.14
-    private static WrappedMethod bukkitEntity = MinecraftReflection.entity.getMethod("getBukkitEntity"); //1.7-1.14
-    private static WrappedMethod getInventory = craftInventoryPlayer.getMethod("getInventory"); //1.7-1.14
-    private static WrappedMethod mcServerInstance = craftServer.getMethod("getServer"); //1.7-1.14
-    private static WrappedMethod entityPlayerInstance = craftPlayer.getMethod("getHandle");
-    private static WrappedMethod chunkInstance = craftChunk.getMethod("getHandle");
-    private static WrappedMethod methodGetBlockFromMaterial = ProtocolVersion.getGameVersion()
+    private static final WrappedMethod worldInstance = craftWorld.getMethod("getHandle"); //1.7-1.14
+    private static final WrappedMethod bukkitEntity = MinecraftReflection.entity.getMethod("getBukkitEntity"); //1.7-1.14
+    private static final WrappedMethod getInventory = craftInventoryPlayer.getMethod("getInventory"); //1.7-1.14
+    private static final WrappedMethod mcServerInstance = craftServer.getMethod("getServer"); //1.7-1.14
+    private static final WrappedMethod entityPlayerInstance = craftPlayer.getMethod("getHandle");
+    private static final WrappedMethod chunkInstance = craftChunk.getMethod("getHandle");
+    private static final WrappedMethod methodGetBlockFromMaterial = ProtocolVersion.getGameVersion()
             .isOrAbove(ProtocolVersion.V1_13) ? craftMagicNumbers.getMethod("getBlock", Material.class)
             : craftMagicNumbers.getMethod("getBlock", int.class);
     private static WrappedMethod fromComponent;

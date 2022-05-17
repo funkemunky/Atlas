@@ -74,7 +74,7 @@ public class BungeeManager implements PluginMessageListener {
 
         if(isBungee)
         //If no players are online, we'll have to wait to send things
-        serverCheckTask = RunUtils.taskTimerAsync(() -> {
+            serverCheckTask = RunUtils.taskTimerAsync(() -> {
             if(receivedHeartbeat) {
                 receivedHeartbeat = false;
                 try {
@@ -222,7 +222,7 @@ public class BungeeManager implements PluginMessageListener {
         }
 
         if(!sent)
-        toSend.add(new Tuple<>(out, data));
+            toSend.add(new Tuple<>(out, data));
     }
 
     public void sendData(byte[] data) {

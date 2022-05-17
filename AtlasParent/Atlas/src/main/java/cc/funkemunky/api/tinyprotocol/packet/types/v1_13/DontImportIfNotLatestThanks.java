@@ -15,10 +15,10 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 public class DontImportIfNotLatestThanks {
 
-    private static WrappedClass commandDispatcherClass = Reflections.getNMSClass("CommandDispatcher");
+    private static final WrappedClass commandDispatcherClass = Reflections.getNMSClass("CommandDispatcher");
     private Object commandDispatcher;
-    private CommandDispatcher bukkitDispatcher;
-    private WrappedMethod updateCommands = new WrappedClass(Player.class).getMethod("updateCommands");
+    private final CommandDispatcher bukkitDispatcher;
+    private final WrappedMethod updateCommands = new WrappedClass(Player.class).getMethod("updateCommands");
 
     public DontImportIfNotLatestThanks() {
         commandDispatcher =

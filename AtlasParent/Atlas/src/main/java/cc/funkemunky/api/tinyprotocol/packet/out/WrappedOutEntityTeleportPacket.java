@@ -9,16 +9,13 @@ import cc.funkemunky.api.tinyprotocol.api.Packet;
 import cc.funkemunky.api.tinyprotocol.api.ProtocolVersion;
 import cc.funkemunky.api.tinyprotocol.packet.types.WrappedPacketDataSerializer;
 import cc.funkemunky.api.utils.MathHelper;
-import io.netty.buffer.ByteBuf;
-import io.netty.buffer.ByteBufAllocator;
-import io.netty.buffer.PooledByteBufAllocator;
 import io.netty.buffer.Unpooled;
 import org.bukkit.entity.Player;
 
 public class WrappedOutEntityTeleportPacket extends NMSObject {
 
-    private static WrappedField fieldEntityId, fieldX, fieldY, fieldZ, fieldYaw, fieldPitch, fieldOnGround;
-    private static WrappedClass classEntityTeleport = Reflections.getNMSClass(Packet.Server.ENTITY_TELEPORT);
+    private static final WrappedField fieldEntityId, fieldX, fieldY, fieldZ, fieldYaw, fieldPitch, fieldOnGround;
+    private static final WrappedClass classEntityTeleport = Reflections.getNMSClass(Packet.Server.ENTITY_TELEPORT);
     private static WrappedConstructor emptyConstructor;
 
     public int entityId;

@@ -6,10 +6,10 @@ import cc.funkemunky.api.tinyprotocol.api.NMSObject;
 import cc.funkemunky.api.tinyprotocol.reflection.FieldAccessor;
 
 public class Vec3D extends NMSObject {
-    private static FieldAccessor<Double> fieldX = fetchField("Vec3D", double.class, 0);
-    private static FieldAccessor<Double> fieldY = fetchField("Vec3D", double.class, 1);
-    private static FieldAccessor<Double> fieldZ = fetchField("Vec3D", double.class, 2);
-    private static WrappedConstructor vec3dConst = MinecraftReflection.vec3D
+    private static final FieldAccessor<Double> fieldX = fetchField("Vec3D", double.class, 0);
+    private static final FieldAccessor<Double> fieldY = fetchField("Vec3D", double.class, 1);
+    private static final FieldAccessor<Double> fieldZ = fetchField("Vec3D", double.class, 2);
+    private static final WrappedConstructor vec3dConst = MinecraftReflection.vec3D
             .getConstructor(double.class, double.class, double.class);
     public final double a;
     public final double b;

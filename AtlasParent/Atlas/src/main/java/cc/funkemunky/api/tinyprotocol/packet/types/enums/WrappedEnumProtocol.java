@@ -13,8 +13,8 @@ public enum WrappedEnumProtocol {
     LOGIN(2),
     UNKNOWN(-69); //Not an actual vanilla object.
 
-    public static WrappedClass enumProtocol = Reflections.getNMSClass("EnumProtocol");
-    int id;
+    public static final WrappedClass enumProtocol = Reflections.getNMSClass("EnumProtocol");
+    final int id;
 
     WrappedEnumProtocol(int id) {
         this.id = id;

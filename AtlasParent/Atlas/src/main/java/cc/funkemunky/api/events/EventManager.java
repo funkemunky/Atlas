@@ -58,7 +58,7 @@ public class EventManager {
         for (Class<?> aClass : listenerMethods.keySet()) {
             listenerMethods.compute(aClass, (key, list) -> {
                 if(list != null)
-                list.removeIf(listenerMethod -> listenerMethod.plugin == plugin);
+                    list.removeIf(listenerMethod -> listenerMethod.plugin == plugin);
 
                 return list;
             });
@@ -69,7 +69,7 @@ public class EventManager {
         for (Class<?> aClass : listenerMethods.keySet()) {
             listenerMethods.compute(aClass, (key, list) -> {
                 if(list != null)
-                list.removeIf(listenerMethod -> listenerMethod.listener == listener);
+                    list.removeIf(listenerMethod -> listenerMethod.listener == listener);
 
                 return list;
             });

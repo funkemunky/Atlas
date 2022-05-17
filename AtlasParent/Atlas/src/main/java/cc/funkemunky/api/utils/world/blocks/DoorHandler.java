@@ -7,7 +7,6 @@ import cc.funkemunky.api.utils.world.state.BlockStateManager;
 import cc.funkemunky.api.utils.world.types.CollisionFactory;
 import cc.funkemunky.api.utils.world.types.NoCollisionBox;
 import cc.funkemunky.api.utils.world.types.SimpleCollisionBox;
-import org.bukkit.Bukkit;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.material.Door;

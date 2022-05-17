@@ -19,7 +19,7 @@ public class WrappedInTabComplete extends NMSObject {
         super(object, player);
     }
 
-    private static FieldAccessor<String> messageAccessor = fetchField(packet, String.class, 0);
+    private static final FieldAccessor<String> messageAccessor = fetchField(packet, String.class, 0);
     private static FieldAccessor<Boolean> hasToolTipAccessor;
     private static FieldAccessor<Object> blockPositionAcessor;
     private static FieldAccessor<Integer> idAccessor;

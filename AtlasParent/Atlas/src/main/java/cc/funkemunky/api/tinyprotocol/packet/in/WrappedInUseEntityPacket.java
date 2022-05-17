@@ -106,7 +106,7 @@ public class WrappedInUseEntityPacket extends NMSObject {
         INTERACT_AT("INTERACT_AT");
 
         @Getter
-        private String name;
+        private final String name;
 
         EnumEntityUseAction(String name) {
             this.name = name;

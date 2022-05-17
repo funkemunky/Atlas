@@ -11,7 +11,7 @@ public class WrappedInHeldItemSlotPacket extends NMSObject {
     private static final String packet = Client.HELD_ITEM;
 
     // Fields
-    private static FieldAccessor<Integer> fieldHeldSlot = fetchField(packet, int.class, 0);
+    private static final FieldAccessor<Integer> fieldHeldSlot = fetchField(packet, int.class, 0);
 
     // Decoded data
     private int slot;

@@ -12,7 +12,7 @@ public enum WrappedEnumAnimation {
     SPEAR,
     CROSSBOW;
 
-    private static WrappedClass enumAnimation;
+    private static final WrappedClass enumAnimation;
 
     public static WrappedEnumAnimation fromNMS(Object vanillaObject) {
         Enum vanilla = (Enum) vanillaObject;

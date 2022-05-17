@@ -8,9 +8,9 @@ import lombok.Setter;
 import org.bukkit.entity.Player;
 
 public class WrappedInChatPacket extends NMSObject {
-    private static String packet = Client.CHAT;
+    private static final String packet = Client.CHAT;
 
-    private static FieldAccessor<String> messageAccessor = fetchField(packet, String.class, 0);
+    private static final FieldAccessor<String> messageAccessor = fetchField(packet, String.class, 0);
 
     public WrappedInChatPacket(Object object, Player player) {
         super(object, player);

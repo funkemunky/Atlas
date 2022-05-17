@@ -1,6 +1,5 @@
 package cc.funkemunky.api.utils.world.state;
 
-import cc.funkemunky.api.utils.Init;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 

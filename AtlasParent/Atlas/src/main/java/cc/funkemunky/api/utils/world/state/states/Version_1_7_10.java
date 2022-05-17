@@ -4,7 +4,6 @@ import cc.funkemunky.api.tinyprotocol.api.ProtocolVersion;
 import cc.funkemunky.api.utils.Init;
 import cc.funkemunky.api.utils.world.state.BlockStateManager;
 import org.bukkit.Material;
-import org.bukkit.block.data.Bisected;
 import org.bukkit.material.Door;
 
 import java.util.Arrays;

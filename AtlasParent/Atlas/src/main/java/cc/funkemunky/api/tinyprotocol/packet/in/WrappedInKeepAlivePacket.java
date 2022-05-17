@@ -11,7 +11,7 @@ import org.bukkit.entity.Player;
 public class WrappedInKeepAlivePacket extends NMSObject {
     private static final String packet = Client.KEEP_ALIVE;
 
-    private static WrappedField timeField;
+    private static final WrappedField timeField;
 
     private long time;
 
