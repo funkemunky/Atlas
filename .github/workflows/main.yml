@@ -32,11 +32,11 @@ jobs:
       - name:  Upload AtlasBungee
         uses: actions/upload-artifact@v2
         with:
-          name: Kauri Without Detections
+          name: AtlasBungee
           path: AtlasParent/AtlasBungee/target/AtlasBungee-*.jar
       - name: Upload AtlasVelocity
         uses: actions/upload-artifact@v2
         with:
           name: Upload AtlasVelocity
-          path: AtlasParent/AtlasVelocity/target/Atlas-*.jar
+          path: AtlasParent/AtlasVelocity/target/AtlasVelocity-*.jar
 
