@@ -128,7 +128,7 @@ public class PacketListeners implements AtlasListener {
                         break;
                     }
                 }
-            }, Packet.Server.ENTITY_HEAD_ROTATION, Packet.Server.ENTITY_METADATA, Packet.Server.ENTITY_TELEPORT);
+            }, Packet.Server.ENTITY_HEAD_ROTATION, Packet.Server.SPAWN_ENTITY_LIVING, Packet.Server.ENTITY_METADATA, Packet.Server.KEEP_ALIVE);
 
 
     /*@Listen
