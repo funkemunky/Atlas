@@ -15,6 +15,7 @@ jobs:
  
       - name: Compile
         run: mvn -B clean package -DskipTests
+        working-directory: AtlasParent/
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Upload Atlas
@@ -31,5 +32,5 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: Upload AtlasVelocity
-          path: AtlasVelocity/target/AtlasVelocity-*.jar
+          path: AtlasVelocity/target/Atlas-*.jar
 
