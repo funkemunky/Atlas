@@ -110,17 +110,25 @@ public class PacketListeners implements AtlasListener {
                         break;
                     }
                     case Packet.Server.KEEP_ALIVE: {
-                        WrappedOutEntityTeleportPacket packet = new WrappedOutEntityTeleportPacket(listener.getPacket(),
+                        WrappedOutKeepAlivePacket packet = new WrappedOutKeepAlivePacket(listener.getPacket(),
                                 listener.getPlayer());
 
-                        Atlas.getInstance().alog("&c%s: &f[%s, %s, %s, %s]", listener.getType(),
-                                packet.entityId, packet.x, packet.y, packet.z);
+                        Atlas.getInstance().alog("&c%s: &f[%s]", listener.getType(),
+                                packet.getTime());
 
                         packet.updateObject();
                         break;
                     }
+                    case Packet.Server.SPAWN_ENTITY_LIVING: {
+                        WrappedOutSpawnEntityLivingPacket packet = new WrappedOutSpawnEntityLivingPacket
+                                (listener.getPacket(), listener.getPlayer());
+
+                        Atlas.getInstance().alog("&c%s: &f[%s, %s]", listener.getType(),
+                                packet.entityId, packet.type);
+                        break;
+                    }
                 }
-            }, Packet.Server.ENTITY_HEAD_ROTATION, Packet.Server.ENTITY_METADATA, Packet.Server.ENTITY_TELEPORT);
+            }, Packet.Server.ENTITY_HEAD_ROTATION, Packet.Server.SPAWN_ENTITY_LIVING, Packet.Server.ENTITY_METADATA, Packet.Server.KEEP_ALIVE);
 
 
     /*@Listen
