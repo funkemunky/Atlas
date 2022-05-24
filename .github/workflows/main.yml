@@ -1,9 +1,8 @@
-on:
-  push:
-    branches: ["**"]
+name: "CI/CD"
+on: [push]
  
 jobs:
-  build:
+  CI:
  
     runs-on: ubuntu-latest
  
@@ -15,7 +14,22 @@ jobs:
           java-version: 17.0
  
       - name: Compile
-        run: mvn -B -Pclean install
-        working-directory: AtlasParent/
+        run: mvn -B clean package -DskipTests
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Upload Atlas
+        uses: actions/upload-artifact@v2
+        with:
+          name: AtlasBukkit
+          path: AtlasBukkit/target/AtlasBukkit-*.jar
+      - name:  Upload AtlasBungee
+        uses: actions/upload-artifact@v2
+        with:
+          name: Kauri Without Detections
+          path: AtlasBungee/target/AtlasBungee-*.jar
+      - name: Upload AtlasVelocity
+        uses: actions/upload-artifact@v2
+        with:
+          name: Upload AtlasVelocity
+          path: AtlasVelocity/target/AtlasVelocity-*.jar
+
