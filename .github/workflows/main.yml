@@ -13,13 +13,12 @@ jobs:
         with:
           java-version: 17.0
  
-      - name: Cache m2 dependencies
+      - name: Cache Maven packages
         uses: actions/cache@v2
         with:
-          path: ~/.m2/repository
-          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
-          restore-keys: |
-            ${{ runner.os }}-maven-
+          path: ~/.m2
+          key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
+          restore-keys: ${{ runner.os }}-m2-
       - name: Compile
         run: mvn -B clean package -DskipTests
         working-directory: AtlasParent/
