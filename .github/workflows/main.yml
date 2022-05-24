@@ -37,6 +37,6 @@ jobs:
       - name: Upload AtlasVelocity
         uses: actions/upload-artifact@v2
         with:
-          name: Upload AtlasVelocity
+          name: AtlasVelocity
           path: AtlasParent/AtlasVelocity/target/AtlasVelocity-*.jar
 
