@@ -36,7 +36,7 @@ public class MathUtils {
     public static boolean isSameLocation(KLocation one, KLocation two) {
         return one.x == two.x && one.y == two.y && one.z == two.z;
     }
-    
+
 
     public static double max(double... values) {
         return Arrays.stream(values).max().orElse(Double.MAX_VALUE);

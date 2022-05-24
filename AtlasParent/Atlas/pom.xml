@@ -4,7 +4,7 @@
 
     <parent>
         <groupId>cc.funkemunky.utils</groupId>
-        <version>1.11.6</version>
+        <version>1.11.7</version>
         <artifactId>atlas-parent</artifactId>
         <relativePath>../pom.xml</relativePath>
     </parent>
