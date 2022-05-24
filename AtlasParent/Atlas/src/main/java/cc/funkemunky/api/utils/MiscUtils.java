@@ -1,7 +1,10 @@
 package cc.funkemunky.api.utils;
 
 import cc.funkemunky.api.Atlas;
+import cc.funkemunky.api.reflections.impl.CraftReflection;
+import cc.funkemunky.api.reflections.impl.MinecraftReflection;
 import cc.funkemunky.api.reflections.types.WrappedClass;
+import cc.funkemunky.api.reflections.types.WrappedField;
 import cc.funkemunky.api.tinyprotocol.api.ProtocolVersion;
 import cc.funkemunky.api.tinyprotocol.api.TinyProtocolHandler;
 import cc.funkemunky.api.tinyprotocol.packet.out.WrappedPacketPlayOutWorldParticle;
@@ -12,8 +15,10 @@ import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.command.CommandSender;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.command.SimpleCommandMap;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -25,9 +30,11 @@ import org.bukkit.util.Vector;
 
 import java.io.*;
 import java.lang.reflect.Field;
+import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
+import java.util.stream.LongStream;
 
 public class MiscUtils {
 
@@ -39,6 +46,81 @@ public class MiscUtils {
 
     public static boolean containsIgnoreCase(String toCheck, String contains) {
         return toCheck.toLowerCase().contains(contains.toLowerCase());
+    }
+
+    public static boolean endsWith(double value, String string) {
+        return String.valueOf(value).endsWith(string);
+    }
+
+    public static List<Entity> getNearbyEntities(Player player, double horz, double vert) {
+        final List<Entity> nearbyEntities = new ArrayList<>();
+
+        final SimpleCollisionBox playerBox = new SimpleCollisionBox(player.getLocation(), 0.6, 1.8);
+
+        for(Entity entity : Atlas.getInstance().getTrackedEntities().values()) {
+            if(!entity.getWorld().getUID().equals(player.getWorld().getUID())
+                    || player.getEntityId() == entity.getEntityId()) continue;
+
+            SimpleCollisionBox box = new SimpleCollisionBox(entity.getLocation(), horz * 2, vert / 2)
+                    .expandMin(0, -(vert / 2), 0);
+
+            if(box.isCollided(playerBox)) nearbyEntities.add(entity);
+        }
+
+        return nearbyEntities;
+    }
+
+    public static void sendMessage(CommandSender player, String message, Object... objects) {
+        String toSend = String.format(Color.translate(message), objects);
+        if(player instanceof Player) {
+            ((Player)player).spigot().sendMessage(TextComponent.fromLegacyText(toSend));
+        } else player.sendMessage(toSend);
+    }
+
+    private static final WrappedField ticksField = MinecraftReflection.minecraftServer.getFieldByName(ProtocolVersion
+            .getGameVersion().isOrAbove(ProtocolVersion.v1_17) ? "V" : "ticks");
+    private static Object minecraftServer = null;
+    //TODO Make this use the new abstraction system.
+    public static int currentTick() {
+        if(minecraftServer == null) minecraftServer = CraftReflection.getMinecraftServer();
+        return ticksField.get(minecraftServer);
+    }
+
+
+    public static <K, V extends Comparable<? super V>> Map<K, V> sortByValue(Map<K, V> map) {
+        List<Map.Entry<K, V>> list = new ArrayList<>(map.entrySet());
+        list.sort(Map.Entry.comparingByValue());
+
+        return list.stream().collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (a, b) -> b, LinkedHashMap::new));
+    }
+
+    public static LongStream listToStream(Collection<Long> collection) {
+        LongStream.Builder longBuilder = LongStream.builder();
+        collection.forEach(longBuilder::add);
+        return longBuilder.build();
+    }
+
+    /** Nik's method **/
+    public static <E> E randomElement(final Collection<? extends E> collection) {
+        if (collection.size() == 0) return null;
+        int index = new Random().nextInt(collection.size());
+
+        if (collection instanceof List) {
+            return ((List<? extends E>) collection).get(index);
+        } else {
+            Iterator<? extends E> iter = collection.iterator();
+            for (int i = 0; i < index; i++) iter.next();
+            return iter.next();
+        }
+    }
+
+    public static String timeStampToDate(long timeStamp) {
+        SimpleDateFormat format = new SimpleDateFormat("MM/dd/YYYY (hh:mm)");
+
+        format.setTimeZone(TimeZone.getTimeZone("America/New_York"));
+        Date date = new Date(timeStamp);
+
+        return format.format(date);
     }
 
     public static void copy(InputStream in, File file) {
