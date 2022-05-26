@@ -41,7 +41,7 @@ public class ConcurrentEvictingMap<K, V> extends ConcurrentSkipListMap<K, V> {
     }
 
     private boolean checkAndRemove() {
-        if(size() >= size) {
+        if(size() > size) {
             entrySet().remove(firstEntry());
             return true;
         }
