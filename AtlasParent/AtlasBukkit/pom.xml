@@ -25,6 +25,12 @@
         </dependency>
         <dependency>
             <groupId>cc.funkemunky.utils</groupId>
+            <artifactId>Atlas_Compat_1_19</artifactId>
+            <version>${project.version}</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>cc.funkemunky.utils</groupId>
             <artifactId>Atlas_Compat_1_18_R2</artifactId>
             <version>${project.version}</version>
             <scope>compile</scope>
