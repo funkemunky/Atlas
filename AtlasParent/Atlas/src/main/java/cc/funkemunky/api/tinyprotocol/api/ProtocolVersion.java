@@ -53,6 +53,7 @@ public enum ProtocolVersion {
     v1_17_1(756, "v1_17_R1"),
     v1_18(757, "v1_18_R1"),
     v1_18_2(758, "v1_18_R2"),
+    v1_19(759, "v1_19_R1"),
 
     UNKNOWN(-1, "UNKNOWN");
 
@@ -79,6 +80,10 @@ public enum ProtocolVersion {
             String version = mv.getFieldByType(String.class, 1).get(mvObject);
 
             switch(version) {
+                case "1.19": {
+                    toReturn = v1_19;
+                    break;
+                }
                 case "1.18.2": {
                     toReturn = v1_18_2;
                     break;
