@@ -209,6 +209,12 @@
             <scope>compile</scope>
         </dependency>
         <dependency>
+            <groupId>org.github.spigot</groupId>
+            <artifactId>1.17.1</artifactId>
+            <version>1.17.1</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
             <groupId>org.spigotmc</groupId>
             <artifactId>spigot</artifactId>
             <version>1.19-R0.1-SNAPSHOT</version>
@@ -218,12 +224,6 @@
             <groupId>org.spigotmc</groupId>
             <artifactId>spigot-api</artifactId>
             <version>1.19-R0.1-SNAPSHOT</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.github.spigot</groupId>
-            <artifactId>1.17.1</artifactId>
-            <version>1.17.1</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
