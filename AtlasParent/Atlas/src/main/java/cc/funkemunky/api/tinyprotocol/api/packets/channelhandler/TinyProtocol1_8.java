@@ -12,17 +12,16 @@ import cc.funkemunky.api.reflections.Reflections;
 import cc.funkemunky.api.reflections.impl.CraftReflection;
 import cc.funkemunky.api.reflections.impl.MinecraftReflection;
 import cc.funkemunky.api.reflections.types.WrappedClass;
-import cc.funkemunky.api.reflections.types.WrappedField;
 import cc.funkemunky.api.reflections.types.WrappedMethod;
-import cc.funkemunky.api.tinyprotocol.api.ProtocolVersion;
+import cc.funkemunky.api.tinyprotocol.api.Packet;
 import cc.funkemunky.api.tinyprotocol.api.packets.AbstractTinyProtocol;
 import cc.funkemunky.api.tinyprotocol.packet.login.WrappedHandshakingInSetProtocol;
+import cc.funkemunky.api.tinyprotocol.packet.login.WrappedPacketLoginInStart;
 import cc.funkemunky.api.tinyprotocol.packet.types.enums.WrappedEnumProtocol;
 import cc.funkemunky.api.tinyprotocol.reflection.Reflection;
 import cc.funkemunky.api.utils.RunUtils;
 import com.google.common.collect.Lists;
 import com.google.common.collect.MapMaker;
-import com.mojang.authlib.GameProfile;
 import io.netty.channel.*;
 import lombok.val;
 import org.bukkit.Bukkit;
@@ -57,13 +56,6 @@ public abstract class TinyProtocol1_8 implements AbstractTinyProtocol {
 	private static final WrappedClass playerConnection = Reflections.getNMSClass("PlayerConnection");
 	private static final WrappedMethod methodSendPacket = playerConnection.getMethodByType(void.class,
 			0, packetClass.getParent());
-
-	// Packets we have to intercept
-	private static final WrappedClass PACKET_SET_PROTOCOL = Reflections.getNMSClass("PacketHandshakingInSetProtocol");
-	private static final WrappedClass PACKET_LOGIN_IN_START = Reflections.getNMSClass("PacketLoginInStart");
-	private static final WrappedField getGameProfile = PACKET_LOGIN_IN_START.getFieldByType(GameProfile.class, 0),
-			protocolId = PACKET_SET_PROTOCOL.getFieldByType(int.class, 0),
-			protocolType = PACKET_SET_PROTOCOL.getFieldByType(Enum.class, 0);
 
 	private List<ChannelFuture> gList;
 
@@ -536,10 +528,15 @@ public abstract class TinyProtocol1_8 implements AbstractTinyProtocol {
 			// Intercept channel
 			final Channel channel = ctx.channel();
 
-			if (PACKET_LOGIN_IN_START.getParent().isInstance(msg)) {
-				GameProfile profile = getGameProfile.get(msg);
-				channelLookup.put(profile.getName(), channel);
-			} else if (PACKET_SET_PROTOCOL.getParent().isInstance(msg)) {
+			String name = msg.getClass().getName();
+			int index = name.lastIndexOf(".");
+			String packetName = name.substring(index + 1);
+
+			if (packetName.equals(Packet.Login.LOGIN_START)) {
+				WrappedPacketLoginInStart protocol = new WrappedPacketLoginInStart(msg);
+
+				channelLookup.put(protocol.getGameProfile().getName(), channel);
+			} else if (packetName.equals(Packet.Login.HANDSHAKE)) {
 				WrappedHandshakingInSetProtocol protocol = new WrappedHandshakingInSetProtocol(msg);
 				if (protocol.enumProtocol == WrappedEnumProtocol.LOGIN) {
 					protocolLookup.put(channel, protocol.a);

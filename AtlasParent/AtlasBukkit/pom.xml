@@ -105,6 +105,12 @@
                                         <incude>**</incude>
                                     </includes>
                                 </filter>
+                                <filter>
+                                    <artifact>cc.funkemunky.utils:Atlas_Compat_1_19</artifact>
+                                    <includes>
+                                        <incude>**</incude>
+                                    </includes>
+                                </filter>
                             </filters>
                         </configuration>
                     </execution>
