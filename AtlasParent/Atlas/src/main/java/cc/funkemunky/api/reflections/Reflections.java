@@ -68,7 +68,7 @@ public class Reflections {
     public static WrappedClass getNMSClass(String name) {
         try {
             return getClass(netMinecraftServerString + name);
-        } catch(Exception e) {
+        } catch(Throwable e) {
             Pattern toTest = Pattern.compile("\\." + name.replace("$", ".") + "$");
             for (String className : classNames) {
                 if(!className.startsWith("net.minecraft")) continue;

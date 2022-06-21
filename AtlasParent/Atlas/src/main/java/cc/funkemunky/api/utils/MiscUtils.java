@@ -77,8 +77,28 @@ public class MiscUtils {
         } else player.sendMessage(toSend);
     }
 
-    private static final WrappedField ticksField = MinecraftReflection.minecraftServer.getFieldByName(ProtocolVersion
-            .getGameVersion().isOrAbove(ProtocolVersion.v1_17) ? "V" : "ticks");
+    private static final WrappedField ticksField;
+
+    static {
+        switch (ProtocolVersion.getGameVersion()) {
+            case v1_19: {
+                ticksField = MinecraftReflection.minecraftServer
+                        .getFieldByName("S");
+                break;
+            }
+            case v1_18_2:
+            case v1_18:
+            case v1_17_1:
+            case v1_17: {
+                ticksField = MinecraftReflection.minecraftServer.getFieldByName("V");
+                break;
+            }
+            default: {
+                ticksField = MinecraftReflection.minecraftServer.getFieldByName("ticks");
+                break;
+            }
+        }
+    }
     private static Object minecraftServer = null;
     //TODO Make this use the new abstraction system.
     public static int currentTick() {
