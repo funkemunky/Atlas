@@ -31,7 +31,6 @@ public class WrappedOutOpenWindow extends NMSObject {
     @Override
     public void process(Player player, ProtocolVersion version) {
         id = fetch(idField);
-        size = fetch(inventorySize);
 
         if(ProtocolVersion.getGameVersion().isOrBelow(ProtocolVersion.V1_13_2)) {
             name = fetch(nameField);
@@ -46,7 +45,7 @@ public class WrappedOutOpenWindow extends NMSObject {
 
     }
 
-    private static WrappedClass iReg, resourceKey;
+    private static WrappedClass iReg;
     private static WrappedField rkeyContainers;
     private static Object resourceKeyContainers;
     private static WrappedMethod getId;
@@ -65,11 +64,10 @@ public class WrappedOutOpenWindow extends NMSObject {
         }
         if(ProtocolVersion.getGameVersion().isOrAbove(ProtocolVersion.v1_19)) {
             iReg = Reflections.getNMSClass("IRegistry");
-            rkeyContainers = iReg.getFieldByName("t");
+            rkeyContainers = iReg.getFieldByName("ah");
             resourceKeyContainers = rkeyContainers.get(null);
-            resourceKey = Reflections.getClass("net.minecraft.resources.ResourceKey");
-            getId = resourceKey.getMethod("getId", Object.class);
-
+            getId = iReg.getMethod("a", Object.class);
+            inventorySize = fetchField(packet, Reflections.getClass("net.minecraft.world.inventory.Containers").getParent(), 0);
         } else {
             inventorySize = fetchField(packet, int.class, 1);
         }
