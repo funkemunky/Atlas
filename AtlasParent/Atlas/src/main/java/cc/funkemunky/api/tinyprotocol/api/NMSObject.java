@@ -229,8 +229,12 @@ public abstract class NMSObject {
         public static final String DATAWATCHEROBJECT = Reflection.NMS_PREFIX + ".DataWatcherObject";
         public static final String CHATMESSAGE = Reflection.NMS_PREFIX + ".ChatMessage";
         public static final String CRAFTITEMSTACK = Reflection.OBC_PREFIX + ".inventory.CraftItemStack";
-        public static final String GAMEPROFILE = (Reflection.VERSION.startsWith("v1_7") ? "net.minecraft.util." : "") + "com.mojang.authlib.GameProfile";
-        public static final String PROPERTYMAP = (Reflection.VERSION.startsWith("v1_7") ? "net.minecraft.util." : "") + "com.mojang.authlib.PropertyMap";
+        public static final String GAMEPROFILE = (Reflection.VERSION.startsWith("v1_7") ? "net.minecraft.util." : "")
+                + "com.mojang.authlib.GameProfile";
+        public static final String PROPERTYMAP = (Reflection.VERSION.startsWith("v1_7") ? "net.minecraft.util." : "")
+                + (ProtocolVersion.getGameVersion().isOrAbove(ProtocolVersion.v1_19)
+                ? "com.mojang.authlib.properties.PropertyMap"
+                : "com.mojang.authlib.PropertyMap");
         public static final String VEC3D = Reflection.NMS_PREFIX + ".Vec3D";
         public static final String PLAYERINFODATA = Reflection.NMS_PREFIX + Server.PLAYER_INFO + ".PlayerInfoData";
     }
