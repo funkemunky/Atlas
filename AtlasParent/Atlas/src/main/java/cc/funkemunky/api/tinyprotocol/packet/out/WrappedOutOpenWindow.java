@@ -1,35 +1,31 @@
 package cc.funkemunky.api.tinyprotocol.packet.out;
 
+import cc.funkemunky.api.reflections.Reflections;
 import cc.funkemunky.api.reflections.impl.MinecraftReflection;
+import cc.funkemunky.api.reflections.types.WrappedClass;
+import cc.funkemunky.api.reflections.types.WrappedField;
+import cc.funkemunky.api.reflections.types.WrappedMethod;
 import cc.funkemunky.api.tinyprotocol.api.NMSObject;
 import cc.funkemunky.api.tinyprotocol.api.ProtocolVersion;
-import cc.funkemunky.api.tinyprotocol.packet.types.WrappedChatComponent;
-import cc.funkemunky.api.tinyprotocol.packet.types.WrappedChatMessage;
-import cc.funkemunky.api.tinyprotocol.reflection.FieldAccessor;
 import lombok.Getter;
 import org.bukkit.entity.Player;
 
 @Getter
 public class WrappedOutOpenWindow extends NMSObject {
 
-    private static String packet = Server.OPEN_WINDOW;
+    private static WrappedClass packet = Reflections.getNMSClass(Server.OPEN_WINDOW);
 
     public WrappedOutOpenWindow(Object object, Player player) {
         super(object, player);
     }
 
-    public WrappedOutOpenWindow(int id, String name, WrappedChatMessage msg, int size) {
-        setPacket(packet, id, name, msg.getObject(), size);
-    }
-
-    private static FieldAccessor<Integer> idField = fetchField(packet, int.class, 0);
-    private static FieldAccessor<String> nameField;
-    private static FieldAccessor<Object> chatCompField;
-    private static FieldAccessor<Integer> inventorySize = fetchField(packet, int.class, 1);
+    private static WrappedField idField = fetchField(packet, int.class, 0);
+    private static WrappedField nameField;
+    private static WrappedField chatCompField;
+    private static WrappedField inventorySize;
 
     private int id;
     private String name; //Not a thing in 1.14 and above.
-    private WrappedChatComponent chatComponent;
     private int size;
 
     @Override
@@ -40,11 +36,23 @@ public class WrappedOutOpenWindow extends NMSObject {
         if(ProtocolVersion.getGameVersion().isOrBelow(ProtocolVersion.V1_13_2)) {
             name = fetch(nameField);
         }
+        if(ProtocolVersion.getGameVersion().isOrAbove(ProtocolVersion.v1_19)) {
+            size = getId(fetch(inventorySize));
+        } else  size = fetch(inventorySize);
     }
 
     @Override
     public void updateObject() {
 
+    }
+
+    private static WrappedClass iReg, resourceKey;
+    private static WrappedField rkeyContainers;
+    private static Object resourceKeyContainers;
+    private static WrappedMethod getId;
+
+    private static int getId(Object container) {
+        return getId.invoke(resourceKeyContainers, container);
     }
 
     static {
@@ -54,6 +62,16 @@ public class WrappedOutOpenWindow extends NMSObject {
         }
         if(ProtocolVersion.getGameVersion().isOrBelow(ProtocolVersion.V1_13_2)) {
             nameField = fetchField(packet, String.class, 0);
+        }
+        if(ProtocolVersion.getGameVersion().isOrAbove(ProtocolVersion.v1_19)) {
+            iReg = Reflections.getNMSClass("IRegistry");
+            rkeyContainers = iReg.getFieldByName("t");
+            resourceKeyContainers = rkeyContainers.get(null);
+            resourceKey = Reflections.getClass("net.minecraft.resources.ResourceKey");
+            getId = resourceKey.getMethod("getId", Object.class);
+
+        } else {
+            inventorySize = fetchField(packet, int.class, 1);
         }
     }
 }
