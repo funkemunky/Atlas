@@ -15,20 +15,22 @@ public class WrappedChatMessage extends NMSObject {
     private String chatMessage;
     private Object[] objects;
 
-    private static WrappedClass chatMessageClass = Reflections.getNMSClass("ChatMessage");
-    private static WrappedField messageField = chatMessageClass.getFieldByType(String.class, 0);
-    private static WrappedField objectsField = chatMessageClass.getFieldByType(Object[].class, 0);
+    private static WrappedClass chatMessageClass;
+    private static WrappedField messageField;
+    private static WrappedField objectsField;
 
     public WrappedChatMessage(String chatMessage, Object... object) {
         this.chatMessage = chatMessage;
         this.objects = object;
 
-        if(ProtocolVersion.getGameVersion().isOrAbove(ProtocolVersion.v1_16)) {
-            if(object.length > 0)
-            setObject(chatMessageClass.getConstructorAtIndex(1).newInstance(chatMessage, new Object[]{object}));
-            else setObject(chatMessageClass.getConstructorAtIndex(0).newInstance(chatMessage));
-        } else {
-            setObject(chatMessageClass.getConstructorAtIndex(0).newInstance(chatMessage, new Object[]{object}));
+        if(ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.v1_19)) {
+            if(ProtocolVersion.getGameVersion().isOrAbove(ProtocolVersion.v1_16)) {
+                if(object.length > 0)
+                    setObject(chatMessageClass.getConstructorAtIndex(1).newInstance(chatMessage, new Object[]{object}));
+                else setObject(chatMessageClass.getConstructorAtIndex(0).newInstance(chatMessage));
+            } else {
+                setObject(chatMessageClass.getConstructorAtIndex(0).newInstance(chatMessage, new Object[]{object}));
+            }
         }
     }
 
@@ -42,13 +44,27 @@ public class WrappedChatMessage extends NMSObject {
 
     @Override
     public void process(Player player, ProtocolVersion version) {
+        if(ProtocolVersion.getGameVersion().isOrAbove(ProtocolVersion.v1_19))
+            return;
+
         chatMessage = fetch(messageField);
         objects = fetch(objectsField);
     }
 
     @Override
     public void updateObject() {
+        if(ProtocolVersion.getGameVersion().isOrAbove(ProtocolVersion.v1_19))
+            return;
+
         messageField.set(getObject(), chatMessage);
         objectsField.set(getObject(), objects);
+    }
+
+    static {
+        if(ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.v1_19)) {
+            chatMessageClass = Reflections.getNMSClass("ChatMessage");
+            messageField = chatMessageClass.getFieldByType(String.class, 0);
+            objectsField = chatMessageClass.getFieldByType(Object[].class, 0);
+        }
     }
 }

@@ -60,14 +60,14 @@ public class MinecraftReflection {
     private static final WrappedClass propertyMap = Reflections.getUtilClass("com.mojang.authlib.properties.PropertyMap");
     private static final WrappedClass forwardMultiMap = Reflections.getUtilClass("com.google.common.collect.ForwardingMultimap");
     public static WrappedClass iChatBaseComponent = Reflections.getNMSClass("IChatBaseComponent"),
-            chatComponentText =  Reflections.getNMSClass("ChatComponentText");
+            chatComponentText;
     public static WrappedClass vec3D = Reflections.getNMSClass("Vec3D");
 
     private static final WrappedMethod getProfile = CraftReflection.craftPlayer.getMethod("getProfile");
     private static final WrappedMethod methodGetServerConnection = minecraftServer
             .getMethodByType(serverConnection.getParent(), ProtocolVersion.getGameVersion()
                     .isBelow(ProtocolVersion.V1_13) ? 1 : 0);
-    private static final WrappedConstructor chatComponentTextConst = chatComponentText.getConstructor(String.class);
+    private static WrappedConstructor chatComponentTextConst;
     private static final WrappedMethod getProperties = gameProfile.getMethod("getProperties");
     private static final WrappedMethod removeAll = forwardMultiMap.getMethod("removeAll", Object.class);
     private static final WrappedMethod putAll = propertyMap.getMethod("putAll", Object.class, Iterable.class);
@@ -540,6 +540,11 @@ public class MinecraftReflection {
             getCubesFromVoxelShape = voxelShape.getMethodByType(List.class, 0);
             fluidMethod = world.getMethodByType(Reflections.getNMSClass("Fluid").getParent(), 0, blockPos.getParent());
             getFlowMethod = Reflections.getNMSClass("Fluid").getMethodByType(vec3D.getParent(), 0);
+
+            if(ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.v1_19)) {
+                chatComponentText =  Reflections.getNMSClass("ChatComponentText");
+                chatComponentTextConst = chatComponentText.getConstructor(String.class);
+            }
         }
 
         if(ProtocolVersion.getGameVersion().isOrAbove(ProtocolVersion.v1_16)) {

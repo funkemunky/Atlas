@@ -179,7 +179,8 @@ public class WrappedOutRelativePosition extends NMSObject {
     static {
         List<WrappedField> fields = packetClass.getFields(true);
 
-        int addIndex = ProtocolVersion.getGameVersion().isOrAbove(ProtocolVersion.v1_17) ? 1 : 0;
+        int addIndex = ProtocolVersion.getGameVersion().isOrAbove(ProtocolVersion.v1_17)
+                && ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.v1_19) ? 1 : 0;
 
         fieldId = fields.get(0 + addIndex);
         fieldX = fields.get(1 + addIndex);

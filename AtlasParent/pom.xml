@@ -5,7 +5,7 @@
     <groupId>cc.funkemunky.utils</groupId>
     <artifactId>atlas-parent</artifactId>
     <packaging>pom</packaging>
-    <version>1.11.7</version>
+    <version>1.12.0</version>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -58,6 +58,7 @@
         <module>AtlasVelocity</module>
         <module>Atlas_Compat_1_18</module>
         <module>Atlas_Compat_1_18_R2</module>
+        <module>Atlas_Compat_1_19</module>
         <module>AtlasBukkit</module>
     </modules>
 

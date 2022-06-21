@@ -209,7 +209,8 @@ public abstract class Packet {
     public static class Login {
         public static final String HANDSHAKE = "PacketHandshakingInSetProtocol";
         public static final String PING = "PacketStatusInPing";
-        public static final String START = "PacketStatusInStart";
+        public static final String STATUS_START = "PacketStatusInStart";
+        public static final String LOGIN_START = "PacketLoginInStart";
     }
 
     public static final Set<String> incomingPackets = new HashSet<>(), outgoingPackets = new HashSet<>(),

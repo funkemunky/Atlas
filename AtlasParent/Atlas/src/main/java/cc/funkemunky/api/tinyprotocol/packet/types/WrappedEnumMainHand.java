@@ -5,18 +5,18 @@ import cc.funkemunky.api.reflections.types.WrappedClass;
 import cc.funkemunky.api.tinyprotocol.api.ProtocolVersion;
 
 public enum WrappedEnumMainHand {
-    LEFT(new WrappedChatMessage("options.mainHand.left")),
-    RIGHT(new WrappedChatMessage("options.mainHand.right"));
+    LEFT("options.mainHand.left"),
+    RIGHT("options.mainHand.right");
 
-    private final WrappedChatMessage c;
+    private final String c;
     public static WrappedClass vanillaClass;
 
-    WrappedEnumMainHand(WrappedChatMessage var2) {
+    WrappedEnumMainHand(String var2) {
         this.c = var2;
     }
 
     public String toString() {
-        return this.c.getChatMessage();
+        return c;
     }
 
     public <T> T toVanilla() {
@@ -32,6 +32,6 @@ public enum WrappedEnumMainHand {
 
     static {
         if(ProtocolVersion.getGameVersion().isAbove(ProtocolVersion.V1_8_9))
-        vanillaClass = Reflections.getNMSClass("EnumMainHand");
+            vanillaClass = Reflections.getNMSClass("EnumMainHand");
     }
 }

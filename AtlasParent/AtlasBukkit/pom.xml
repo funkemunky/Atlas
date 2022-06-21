@@ -5,7 +5,7 @@
     <parent>
         <artifactId>atlas-parent</artifactId>
         <groupId>cc.funkemunky.utils</groupId>
-        <version>1.11.7</version>
+        <version>1.12.0</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -20,6 +20,12 @@
         <dependency>
             <groupId>cc.funkemunky.utils</groupId>
             <artifactId>Atlas</artifactId>
+            <version>${project.version}</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>cc.funkemunky.utils</groupId>
+            <artifactId>Atlas_Compat_1_19</artifactId>
             <version>${project.version}</version>
             <scope>compile</scope>
         </dependency>
@@ -95,6 +101,12 @@
                                 </filter>
                                 <filter>
                                     <artifact>cc.funkemunky.utils:Atlas_Compat_1_18_R2</artifact>
+                                    <includes>
+                                        <incude>**</incude>
+                                    </includes>
+                                </filter>
+                                <filter>
+                                    <artifact>cc.funkemunky.utils:Atlas_Compat_1_19</artifact>
                                     <includes>
                                         <incude>**</incude>
                                     </includes>
