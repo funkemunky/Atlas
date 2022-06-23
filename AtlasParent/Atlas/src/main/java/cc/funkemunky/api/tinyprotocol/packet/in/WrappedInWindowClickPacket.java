@@ -12,6 +12,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 @Getter
+@Deprecated
 public class WrappedInWindowClickPacket extends NMSObject {
     private static final String packet = Client.WINDOW_CLICK;
 

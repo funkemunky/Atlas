@@ -7,6 +7,7 @@ import cc.funkemunky.api.tinyprotocol.GeneralObject;
 import cc.funkemunky.api.tinyprotocol.api.ProtocolVersion;
 
 //Add Message object for tooltip functionality later.
+@Deprecated
 public class WrappedSuggestion extends GeneralObject {
     public static WrappedClass suggestionClass;
     private static WrappedField sRangeAccessor;

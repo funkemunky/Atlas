@@ -16,6 +16,7 @@ import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 
 @Getter
+@Deprecated
 public class WrappedOutBlockChange extends NMSObject {
     private static final String packet = Packet.Server.BLOCK_CHANGE;
 

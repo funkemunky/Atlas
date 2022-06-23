@@ -9,6 +9,7 @@ import lombok.Getter;
 import org.bukkit.entity.Player;
 
 @Getter
+@Deprecated
 public class WrappedInSteerVehiclePacket extends NMSObject {
     private static final WrappedClass packetClass = Reflections.getNMSClass(Client.STEER_VEHICLE);
 

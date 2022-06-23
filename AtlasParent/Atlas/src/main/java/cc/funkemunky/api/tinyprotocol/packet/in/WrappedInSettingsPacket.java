@@ -10,6 +10,7 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.bukkit.entity.Player;
 
+@Deprecated
 public class WrappedInSettingsPacket extends NMSObject {
 
     //Reflection fields

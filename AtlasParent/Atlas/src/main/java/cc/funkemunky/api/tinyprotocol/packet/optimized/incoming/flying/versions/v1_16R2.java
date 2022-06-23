@@ -3,6 +3,7 @@ package cc.funkemunky.api.tinyprotocol.packet.optimized.incoming.flying.versions
 import cc.funkemunky.api.tinyprotocol.packet.optimized.incoming.flying.AtlasPacketPlayInFlying;
 import net.minecraft.server.v1_16_R2.PacketPlayInFlying;
 
+@Deprecated
 public class v1_16R2 extends AtlasPacketPlayInFlying {
 
     public v1_16R2(Object packet) {

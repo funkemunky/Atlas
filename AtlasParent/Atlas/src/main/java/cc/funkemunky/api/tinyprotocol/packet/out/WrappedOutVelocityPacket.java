@@ -12,6 +12,7 @@ import lombok.Getter;
 import org.bukkit.entity.Player;
 
 @Getter
+@Deprecated
 public class WrappedOutVelocityPacket extends NMSObject {
     private static final String packet = Server.ENTITY_VELOCITY;
 

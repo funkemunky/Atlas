@@ -14,6 +14,7 @@ import org.bukkit.entity.Player;
 import java.util.UUID;
 
 //TODO Add the ability to use this wrapper to spawn a fake entity and implement other field support.
+@Deprecated
 public class WrappedOutNamedEntitySpawnPacket extends NMSObject {
 
     public WrappedOutNamedEntitySpawnPacket(Object object, Player player) {

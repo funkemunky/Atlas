@@ -7,6 +7,7 @@ import org.bukkit.entity.Player;
 
 @RequiredArgsConstructor
 @Getter
+@Deprecated
 public class PacketInfo {
     private final Player player;
     private final Object packet;

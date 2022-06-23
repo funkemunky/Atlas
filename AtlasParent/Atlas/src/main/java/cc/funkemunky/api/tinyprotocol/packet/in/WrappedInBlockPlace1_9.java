@@ -7,6 +7,7 @@ import cc.funkemunky.api.tinyprotocol.api.NMSObject;
 import cc.funkemunky.api.tinyprotocol.api.ProtocolVersion;
 import org.bukkit.entity.Player;
 
+@Deprecated
 public class WrappedInBlockPlace1_9 extends NMSObject {
 
     private static final String packet = Client.BLOCK_PLACE_1_9;

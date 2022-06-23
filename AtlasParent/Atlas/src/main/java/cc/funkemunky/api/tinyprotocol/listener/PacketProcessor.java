@@ -16,6 +16,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 /*
     An asynchronous processor for packets.
  */
+@Deprecated
 public class PacketProcessor {
     private final Map<String, List<ListenerEntry>>
             processors = new HashMap<>();

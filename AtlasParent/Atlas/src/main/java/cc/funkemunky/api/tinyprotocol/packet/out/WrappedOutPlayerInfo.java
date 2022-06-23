@@ -20,6 +20,7 @@ import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
+@Deprecated
 public class WrappedOutPlayerInfo extends NMSObject {
     private static String packet = Server.PLAYER_INFO;
 

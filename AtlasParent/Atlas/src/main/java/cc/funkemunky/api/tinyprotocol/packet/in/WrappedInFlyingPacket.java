@@ -14,6 +14,7 @@ import lombok.Getter;
 import org.bukkit.entity.Player;
 
 @Getter
+@Deprecated
 public class WrappedInFlyingPacket extends NMSObject {
     private static final WrappedClass packet = Reflections.getNMSClass(Client.FLYING);
 

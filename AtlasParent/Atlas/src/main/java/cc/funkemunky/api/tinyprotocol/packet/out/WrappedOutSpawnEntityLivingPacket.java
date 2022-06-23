@@ -14,6 +14,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 //TODO Add the ability to use this wrapper to spawn a fake entity and implement other field support.
+@Deprecated
 public class WrappedOutSpawnEntityLivingPacket extends NMSObject {
 
     public WrappedOutSpawnEntityLivingPacket(Object object, Player player) {

@@ -9,6 +9,7 @@ import lombok.Getter;
 import org.bukkit.entity.Player;
 
 @Getter
+@Deprecated
 public class WrappedChatMessage extends NMSObject {
     private static String type = Type.CHATMESSAGE;
 

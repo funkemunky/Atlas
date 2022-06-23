@@ -9,6 +9,7 @@ import lombok.Getter;
 import org.bukkit.entity.Player;
 
 @Getter
+@Deprecated
 public class WrappedInTabComplete extends NMSObject {
 
     private static final String packet = Client.TAB_COMPLETE;

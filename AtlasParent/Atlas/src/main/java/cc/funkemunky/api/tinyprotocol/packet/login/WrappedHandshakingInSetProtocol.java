@@ -8,6 +8,7 @@ import cc.funkemunky.api.tinyprotocol.api.ProtocolVersion;
 import cc.funkemunky.api.tinyprotocol.packet.types.enums.WrappedEnumProtocol;
 import org.bukkit.entity.Player;
 
+@Deprecated
 public class WrappedHandshakingInSetProtocol extends NMSObject {
     private static WrappedClass packet = Reflections.getNMSClass(Login.HANDSHAKE);
     public WrappedHandshakingInSetProtocol(Object object) {

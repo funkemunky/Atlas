@@ -13,6 +13,7 @@ import org.bukkit.entity.Player;
 import java.util.List;
 
 @Getter
+@Deprecated
 public class WrappedOutRelativePosition extends NMSObject {
     private static final String packet = Server.ENTITY;
 

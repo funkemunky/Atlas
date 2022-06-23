@@ -4,6 +4,7 @@ import cc.funkemunky.api.reflections.types.WrappedClass;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
+@Deprecated
 public class Parameter {
     public final WrappedClass wrappedClass;
     public final Object object;

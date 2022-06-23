@@ -13,6 +13,7 @@ import lombok.Getter;
 import org.bukkit.entity.Player;
 
 @Getter
+@Deprecated
 public class WrappedInBlockDigPacket extends NMSObject {
     private static final WrappedClass packet = Reflections.getNMSClass(Client.BLOCK_DIG);
 

@@ -5,6 +5,7 @@ import cc.funkemunky.api.tinyprotocol.reflection.FieldAccessor;
 import cc.funkemunky.api.tinyprotocol.reflection.Reflection;
 import net.minecraft.server.v1_16_R3.PacketPlayInTransaction;
 
+@Deprecated
 public class v1_16R3 extends AtlasPacketPlayInTransaction {
 
     public v1_16R3(Object packet) {

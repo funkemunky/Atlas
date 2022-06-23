@@ -14,6 +14,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 //TODO 1.15+ compatibility.
+@Deprecated
 public class WrappedOutSpawnEntityPacket extends NMSObject {
 
     public Optional<Entity> entity = Optional.empty();

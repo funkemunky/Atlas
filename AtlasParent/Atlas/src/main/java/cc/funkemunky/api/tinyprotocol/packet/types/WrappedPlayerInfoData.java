@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import org.bukkit.entity.Player;
 
 @NoArgsConstructor
+@Deprecated
 public class WrappedPlayerInfoData extends NMSObject {
     private static String type = Type.PLAYERINFODATA;
 

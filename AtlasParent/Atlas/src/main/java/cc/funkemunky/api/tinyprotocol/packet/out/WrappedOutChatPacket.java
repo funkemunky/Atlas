@@ -26,6 +26,7 @@ import java.util.logging.Level;
 
 @Getter
 @Setter
+@Deprecated
 public class WrappedOutChatPacket extends NMSObject {
     private final static String packet = Server.CHAT;
     public static UUID b = new UUID(0L, 0L);

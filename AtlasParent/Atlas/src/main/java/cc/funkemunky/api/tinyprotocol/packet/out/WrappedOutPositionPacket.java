@@ -18,6 +18,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @Getter
+@Deprecated
 public class WrappedOutPositionPacket extends NMSObject {
     private static final String packet = Server.POSITION;
 

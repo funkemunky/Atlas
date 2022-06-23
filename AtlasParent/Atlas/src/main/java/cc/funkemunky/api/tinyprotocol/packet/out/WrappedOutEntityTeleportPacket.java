@@ -15,6 +15,7 @@ import io.netty.buffer.PooledByteBufAllocator;
 import io.netty.buffer.Unpooled;
 import org.bukkit.entity.Player;
 
+@Deprecated
 public class WrappedOutEntityTeleportPacket extends NMSObject {
 
     private static WrappedField fieldEntityId, fieldX, fieldY, fieldZ, fieldYaw, fieldPitch, fieldOnGround;

@@ -14,6 +14,7 @@ import org.bukkit.inventory.ItemStack;
 import java.nio.charset.Charset;
 
 @Getter
+@Deprecated
 public class WrappedPacketDataSerializer extends NMSObject {
 
     public static WrappedClass vanillaClass = Reflections.getNMSClass("PacketDataSerializer"),

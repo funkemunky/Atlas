@@ -7,6 +7,7 @@ import cc.funkemunky.api.tinyprotocol.api.NMSObject;
 import cc.funkemunky.api.tinyprotocol.api.ProtocolVersion;
 import org.bukkit.entity.Player;
 
+@Deprecated
 public class WrappedOutCloseWindowPacket extends NMSObject {
 
     private static final WrappedClass packet = Reflections.getNMSClass(Server.CLOSE_WINDOW);

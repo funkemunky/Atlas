@@ -9,6 +9,7 @@ import lombok.Getter;
 import org.bukkit.entity.Player;
 
 @Getter
+@Deprecated
 public class WrappedInArmAnimationPacket extends NMSObject {
     private static final String packet = Client.ARM_ANIMATION;
 

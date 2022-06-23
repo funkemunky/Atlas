@@ -9,6 +9,7 @@ import lombok.Getter;
 import org.bukkit.entity.Player;
 
 @Getter
+@Deprecated
 public class WrappedOutEntityHeadRotation extends NMSObject {
     private static WrappedClass headRotationClass = Reflections.getNMSClass(Server.ENTITY_HEAD_ROTATION);
     private static WrappedField entityIdField = headRotationClass.getFirstFieldByType(int.class);

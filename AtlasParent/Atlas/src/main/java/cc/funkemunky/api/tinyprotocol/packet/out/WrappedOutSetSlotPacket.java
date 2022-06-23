@@ -16,6 +16,7 @@ import org.bukkit.inventory.ItemStack;
 
 @Getter
 @Setter
+@Deprecated
 public class WrappedOutSetSlotPacket extends NMSObject {
 
     private static WrappedClass classSetSlot = Reflections.getNMSClass(Packet.Server.SET_SLOT);

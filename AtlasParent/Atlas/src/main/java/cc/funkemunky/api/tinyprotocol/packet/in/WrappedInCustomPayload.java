@@ -12,6 +12,7 @@ import lombok.Getter;
 import org.bukkit.entity.Player;
 
 @Getter
+@Deprecated
 public class WrappedInCustomPayload extends NMSObject {
 
     public WrappedInCustomPayload(Object object) {

@@ -9,6 +9,7 @@ import cc.funkemunky.api.tinyprotocol.packet.types.v1_13.DontImportIfNotLatestTh
 import cc.funkemunky.api.tinyprotocol.packet.types.v1_13.WrappedSuggestions;
 import org.bukkit.entity.Player;
 
+@Deprecated
 public class WrappedOutTabComplete extends NMSObject {
 
     private static String packet = Server.TAB_COMPLETE;

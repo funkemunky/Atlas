@@ -7,6 +7,7 @@ import cc.funkemunky.api.tinyprotocol.api.NMSObject;
 import cc.funkemunky.api.tinyprotocol.api.ProtocolVersion;
 import org.bukkit.entity.Player;
 
+@Deprecated
 public class WrappedStatusInPing extends NMSObject {
 
     public WrappedStatusInPing(Object object) {

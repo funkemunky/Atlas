@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.entity.Player;
 
+@Deprecated
 public class WrappedInChatPacket extends NMSObject {
     private static String packet = Client.CHAT;
 

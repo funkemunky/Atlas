@@ -8,6 +8,7 @@ import lombok.Getter;
 import org.bukkit.entity.Player;
 
 @Getter
+@Deprecated
 public class WrappedInKeepAlivePacket extends NMSObject {
     private static final String packet = Client.KEEP_ALIVE;
 

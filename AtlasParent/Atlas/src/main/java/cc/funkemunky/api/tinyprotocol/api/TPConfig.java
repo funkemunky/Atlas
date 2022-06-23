@@ -4,6 +4,7 @@ import cc.funkemunky.api.utils.ConfigSetting;
 import cc.funkemunky.api.utils.Init;
 
 @Init
+@Deprecated
 public class TPConfig {
 
     @ConfigSetting(path = "protocol", name = "useLegacy")

@@ -9,6 +9,7 @@ import cc.funkemunky.api.tinyprotocol.packet.types.enums.WrappedEnumParticle;
 import lombok.Getter;
 
 @Getter
+@Deprecated
 public class WrappedPacketPlayOutWorldParticle extends NMSObject {
 
     private WrappedEnumParticle type;

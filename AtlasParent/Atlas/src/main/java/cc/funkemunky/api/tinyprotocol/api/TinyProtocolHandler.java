@@ -16,6 +16,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
+@Deprecated
 public class TinyProtocolHandler {
     @Getter
     private static AbstractTinyProtocol instance;

@@ -16,6 +16,7 @@ import org.bukkit.entity.Player;
 import java.util.Objects;
 
 @Getter
+@Deprecated
 public class WrappedInUseEntityPacket extends NMSObject {
 
     private static final WrappedClass packetClass = Reflections.getNMSClass(Client.USE_ENTITY),

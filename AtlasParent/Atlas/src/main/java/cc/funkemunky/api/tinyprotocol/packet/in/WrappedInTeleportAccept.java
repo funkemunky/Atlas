@@ -12,6 +12,7 @@ import org.bukkit.entity.Player;
 
 @Getter
 @Setter
+@Deprecated
 public class WrappedInTeleportAccept extends NMSObject {
     private static WrappedClass packetClass;
     private static WrappedField fieldId;

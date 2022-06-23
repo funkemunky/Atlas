@@ -12,6 +12,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 //TODO Test
+@Deprecated
 public class WrappedInSetCreativeSlotPacket extends NMSObject {
 
     private static WrappedClass setCreativeClass = Reflections.getNMSClass(Client.CREATIVE_SLOT);

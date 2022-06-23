@@ -5,6 +5,7 @@ import cc.funkemunky.api.reflections.types.WrappedClass;
 import cc.funkemunky.api.reflections.types.WrappedField;
 import cc.funkemunky.api.tinyprotocol.packet.optimized.incoming.flying.AtlasPacketPlayInFlying;
 
+@Deprecated
 public class vReflection extends AtlasPacketPlayInFlying {
     public vReflection(Object packet) {
         super(packet);

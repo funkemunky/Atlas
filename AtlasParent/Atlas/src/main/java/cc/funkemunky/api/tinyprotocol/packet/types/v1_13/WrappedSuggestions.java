@@ -11,6 +11,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Deprecated
 public class WrappedSuggestions extends GeneralObject {
     public static WrappedClass suggestionsClass;
     private static WrappedField suggestionListField;

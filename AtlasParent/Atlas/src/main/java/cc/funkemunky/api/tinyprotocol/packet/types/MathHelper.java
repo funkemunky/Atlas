@@ -3,6 +3,7 @@ package cc.funkemunky.api.tinyprotocol.packet.types;
 import java.util.Random;
 import java.util.UUID;
 
+@Deprecated
 public class MathHelper {
     public static final float a = c(2.0F);
     private static final float[] b = new float[65536];

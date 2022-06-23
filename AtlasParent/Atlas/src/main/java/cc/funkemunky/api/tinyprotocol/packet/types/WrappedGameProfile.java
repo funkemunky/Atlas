@@ -19,6 +19,7 @@ import org.bukkit.entity.Player;
 import java.util.UUID;
 
 @Getter
+@Deprecated
 public class WrappedGameProfile extends NMSObject {
     private static final String type = Type.GAMEPROFILE;
     private static final WrappedClass gameProfile = Reflections.getClass(type);

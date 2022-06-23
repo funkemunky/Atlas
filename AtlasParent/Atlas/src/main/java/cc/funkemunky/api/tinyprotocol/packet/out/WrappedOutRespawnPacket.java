@@ -15,6 +15,7 @@ import org.bukkit.WorldType;
 import org.bukkit.entity.Player;
 
 @Getter
+@Deprecated
 public class WrappedOutRespawnPacket extends NMSObject {
 
     public WrappedOutRespawnPacket(Object object, Player player) {
