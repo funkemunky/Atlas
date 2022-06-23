@@ -16,6 +16,7 @@ import java.util.logging.Level;
 //Protocol Version numbers: https://wiki.vg/Protocol_version_numbers
 @Getter
 @AllArgsConstructor
+@Deprecated
 public enum ProtocolVersion {
     V1_7(4, "v1_7_R3"),
     V1_7_10(5, "v1_7_R4"),
