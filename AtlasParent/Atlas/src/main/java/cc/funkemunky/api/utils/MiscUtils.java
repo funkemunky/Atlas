@@ -11,6 +11,8 @@ import cc.funkemunky.api.tinyprotocol.packet.out.WrappedPacketPlayOutWorldPartic
 import cc.funkemunky.api.tinyprotocol.packet.types.enums.WrappedEnumParticle;
 import cc.funkemunky.api.utils.world.types.RayCollision;
 import cc.funkemunky.api.utils.world.types.SimpleCollisionBox;
+import com.github.retrooper.packetevents.protocol.packettype.PacketType;
+import com.github.retrooper.packetevents.protocol.packettype.PacketTypeCommon;
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
@@ -46,6 +48,13 @@ public class MiscUtils {
 
     public static boolean containsIgnoreCase(String toCheck, String contains) {
         return toCheck.toLowerCase().contains(contains.toLowerCase());
+    }
+
+    public static boolean isFlying(PacketTypeCommon packetType) {
+        return packetType == PacketType.Play.Client.PLAYER_FLYING
+                || packetType == PacketType.Play.Client.PLAYER_POSITION
+                || packetType == PacketType.Play.Client.PLAYER_POSITION_AND_ROTATION
+                || packetType == PacketType.Play.Client.PLAYER_ROTATION;
     }
 
     public static boolean endsWith(double value, String string) {

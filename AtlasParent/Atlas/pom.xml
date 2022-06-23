@@ -57,6 +57,14 @@
                                     <shadedPattern>cc.funkemunky.api.utils.com.google.common</shadedPattern>
                                 </relocation>
                                 <relocation>
+                                    <pattern>com.github.retrooper</pattern>
+                                    <shadedPattern>cc.funkemunky.api.com.github.retrooper</shadedPattern>
+                                </relocation>
+                                <relocation>
+                                    <pattern>io.github.retrooper</pattern>
+                                    <shadedPattern>cc.funkemunky.api.io.github.retrooper</shadedPattern>
+                                </relocation>
+                                <relocation>
                                     <pattern>com.google.gson</pattern>
                                     <shadedPattern>cc.funkemunky.api.utils.com.google.gson</shadedPattern>
                                 </relocation>
