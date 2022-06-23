@@ -100,6 +100,12 @@
                                     </includes>
                                 </filter>
                                 <filter>
+                                    <artifact>com.github.retrooper:packetevents-spigot</artifact>
+                                    <includes>
+                                        <incude>**</incude>
+                                    </includes>
+                                </filter>
+                                <filter>
                                     <artifact>cc.funkemunky.utils:Atlas_Compat_1_18_R2</artifact>
                                     <includes>
                                         <incude>**</incude>

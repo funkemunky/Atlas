@@ -27,7 +27,9 @@ import cc.funkemunky.api.utils.objects.RemoteClassLoader;
 import cc.funkemunky.api.utils.world.WorldInfo;
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.BukkitCommandManager;
+import com.github.retrooper.packetevents.PacketEvents;
 import dev.brighten.db.Carbon;
+import io.github.retrooper.packetevents.factory.spigot.SpigotPacketEventsBuilder;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.SneakyThrows;
@@ -120,6 +122,7 @@ public class Atlas extends JavaPlugin {
         tinyProtocolHandler =  new TinyProtocolHandler();
 
         packetProcessor = new PacketProcessor();
+        PacketEvents.setAPI(SpigotPacketEventsBuilder.build(Atlas.getInstance()));
 
         profileStart = System.currentTimeMillis();
         profile = new BaseProfiler();
