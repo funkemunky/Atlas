@@ -3,6 +3,7 @@ package cc.funkemunky.api.tinyprotocol.packet.types.enums;
 import cc.funkemunky.api.reflections.Reflections;
 import cc.funkemunky.api.reflections.types.WrappedClass;
 
+@Deprecated
 public enum WrappedEnumDifficulty {
     PEACEFUL(0, "options.difficulty.peaceful"),
     EASY(1, "options.difficulty.easy"),

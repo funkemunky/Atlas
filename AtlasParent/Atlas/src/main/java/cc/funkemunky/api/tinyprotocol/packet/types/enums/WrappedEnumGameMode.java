@@ -4,6 +4,7 @@ import cc.funkemunky.api.reflections.Reflections;
 import cc.funkemunky.api.reflections.types.WrappedClass;
 import cc.funkemunky.api.tinyprotocol.api.ProtocolVersion;
 
+@Deprecated
 public enum WrappedEnumGameMode {
     NOT_SET(-1, ""),
     SURVIVAL(0, "survival"),

@@ -4,6 +4,7 @@
 
 package cc.funkemunky.api.tinyprotocol.reflection;
 
+@Deprecated
 public interface ConstructorInvoker {
     /**
      * Invoke a constructor for a specific class.

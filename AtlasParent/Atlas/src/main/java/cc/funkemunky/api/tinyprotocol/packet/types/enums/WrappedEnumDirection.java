@@ -11,6 +11,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 
+@Deprecated
 public enum WrappedEnumDirection {
     DOWN(1, -1, "down", WrappedEnumDirection.EnumAxisDirection.NEGATIVE, WrappedEnumDirection.EnumAxis.Y, new IntVector(0, -1, 0)),
     UP(0, -1, "up", WrappedEnumDirection.EnumAxisDirection.POSITIVE, WrappedEnumDirection.EnumAxis.Y, new IntVector(0, 1, 0)),

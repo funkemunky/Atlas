@@ -5,6 +5,7 @@ import cc.funkemunky.api.reflections.types.WrappedClass;
 
 import java.util.Arrays;
 
+@Deprecated
 public enum WrappedEnumProtocol {
 
     HANDSHAKING(-1),
