@@ -28,6 +28,7 @@ import cc.funkemunky.api.utils.world.WorldInfo;
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.BukkitCommandManager;
 import com.github.retrooper.packetevents.PacketEvents;
+import com.github.retrooper.packetevents.util.TimeStampMode;
 import dev.brighten.db.Carbon;
 import io.github.retrooper.packetevents.factory.spigot.SpigotPacketEventsBuilder;
 import lombok.Getter;
@@ -122,7 +123,11 @@ public class Atlas extends JavaPlugin {
         tinyProtocolHandler =  new TinyProtocolHandler();
 
         packetProcessor = new PacketProcessor();
-        PacketEvents.setAPI(SpigotPacketEventsBuilder.build(Atlas.getInstance()));
+        PacketEvents.setAPI(SpigotPacketEventsBuilder.buildNoCache(Atlas.getInstance()));
+
+        PacketEvents.getAPI().getSettings().debug(true).bStats(true)
+                .checkForUpdates(true).timeStampMode(TimeStampMode.MILLIS).readOnlyListeners(false);
+        PacketEvents.getAPI().init();
 
         profileStart = System.currentTimeMillis();
         profile = new BaseProfiler();
@@ -182,6 +187,8 @@ public class Atlas extends JavaPlugin {
         eventManager.clearAllRegistered();
         eventManager = null;
         getCommandManager(this).unregisterCommands();
+
+        PacketEvents.setAPI(null);
 
         funkeCommandManager = null;
         tinyProtocolHandler.shutdown();
