@@ -1,6 +1,8 @@
 package cc.funkemunky.api.utils.trans;
 
 import com.github.retrooper.packetevents.PacketEvents;
+import com.github.retrooper.packetevents.event.PacketReceiveEvent;
+import com.github.retrooper.packetevents.protocol.packettype.PacketType;
 import com.github.retrooper.packetevents.protocol.player.ClientVersion;
 import com.github.retrooper.packetevents.wrapper.PacketWrapper;
 import com.github.retrooper.packetevents.wrapper.play.client.WrapperPlayClientPong;
@@ -30,21 +32,23 @@ public class WrappedServerboundTransactionPacket {
         }
     }
 
-    public WrappedServerboundTransactionPacket(PacketWrapper<?> packet) {
-        if (packet instanceof WrapperPlayClientWindowConfirmation) {
-            this.packet = packet;
+    public WrappedServerboundTransactionPacket(PacketReceiveEvent event) {
+        if (event.getPacketType() == PacketType.Play.Client.WINDOW_CONFIRMATION) {
+            WrapperPlayClientWindowConfirmation wrapper = new WrapperPlayClientWindowConfirmation(event);
 
-            this.actionId = ((WrapperPlayClientWindowConfirmation) packet).getActionId();
-            this.window = ((WrapperPlayClientWindowConfirmation) packet).getWindowId();
-            this.accept = ((WrapperPlayClientWindowConfirmation) packet).isAccepted();
-        } else if (packet instanceof WrapperPlayClientPong) {
-            WrapperPlayClientPong pongPacket = (WrapperPlayClientPong) packet;
+            this.packet = wrapper;
 
-            this.packet = pongPacket;
+            this.actionId = wrapper.getActionId();
+            this.window = wrapper.getWindowId();
+            this.accept = wrapper.isAccepted();
+        } else if (event.getPacketType() == PacketType.Play.Client.PONG) {
+            WrapperPlayClientPong wrapper = new WrapperPlayClientPong(event);
 
-            this.actionId = (short) (pongPacket.getId() & 0xFFFF);
-            this.window = (pongPacket.getId() >> 16) & 0xFF;
-            this.accept = (pongPacket.getId() & (1 << 30)) != 0;
+            this.packet = wrapper;
+
+            this.actionId = (short) (wrapper.getId() & 0xFFFF);
+            this.window = (wrapper.getId() >> 16) & 0xFF;
+            this.accept = (wrapper.getId() & (1 << 30)) != 0;
         } else {
             throw new IllegalArgumentException(
                     "Packet is not a WrapperPlayClientWindowConfirmation or WrapperPlayClientPong");

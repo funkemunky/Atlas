@@ -1,6 +1,8 @@
 package cc.funkemunky.api.utils.trans;
 
 import com.github.retrooper.packetevents.PacketEvents;
+import com.github.retrooper.packetevents.event.PacketSendEvent;
+import com.github.retrooper.packetevents.protocol.packettype.PacketType;
 import com.github.retrooper.packetevents.protocol.player.ClientVersion;
 import com.github.retrooper.packetevents.wrapper.PacketWrapper;
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerPing;
@@ -30,23 +32,26 @@ public class WrappedClientboundTransactionPacket {
         }
     }
 
-    public WrappedClientboundTransactionPacket(PacketWrapper<?> packet) {
-        if(packet instanceof WrapperPlayServerWindowConfirmation) {
-            this.packet = packet;
+    public WrappedClientboundTransactionPacket(PacketSendEvent event) {
+        if(event.getPacketType() == PacketType.Play.Server.WINDOW_CONFIRMATION) {
+            WrapperPlayServerWindowConfirmation wrapper = new WrapperPlayServerWindowConfirmation(event);
 
-            this.actionId = ((WrapperPlayServerWindowConfirmation) packet).getActionId();
-            this.window = ((WrapperPlayServerWindowConfirmation) packet).getWindowId();
-            this.accept = ((WrapperPlayServerWindowConfirmation) packet).isAccepted();
-        } else if(packet instanceof WrapperPlayServerPing) {
-            WrapperPlayServerPing pingPacket = (WrapperPlayServerPing) packet;
+            this.packet = wrapper;
 
-            this.actionId = (short) (pingPacket.getId() & 0xFFFF);
-            this.window = (pingPacket.getId() >> 16) & 0xFF;
-            this.accept = (pingPacket.getId() & (1 << 30)) != 0;
+            this.actionId = wrapper.getActionId();
+            this.window = wrapper.getWindowId();
+            this.accept = wrapper.isAccepted();
+        } else if(event.getPacketType() == PacketType.Play.Server.PING) {
+            WrapperPlayServerPing wrapper = new WrapperPlayServerPing(event);
+
+            this.packet = wrapper;
+
+            this.actionId = (short) (wrapper.getId() & 0xFFFF);
+            this.window = (wrapper.getId() >> 16) & 0xFF;
+            this.accept = (wrapper.getId() & (1 << 30)) != 0;
         } else {
             throw new IllegalArgumentException(
                     "Packet is not a WrapperPlayServerWindowConfirmation or WrapperPlayServerPing");
         }
-        this.packet = packet;
     }
 }

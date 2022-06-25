@@ -125,7 +125,7 @@ public class Atlas extends JavaPlugin {
         packetProcessor = new PacketProcessor();
         PacketEvents.setAPI(SpigotPacketEventsBuilder.buildNoCache(Atlas.getInstance()));
 
-        PacketEvents.getAPI().getSettings().debug(true).bStats(true)
+        PacketEvents.getAPI().getSettings().debug(true)
                 .checkForUpdates(true).timeStampMode(TimeStampMode.MILLIS).readOnlyListeners(false);
         PacketEvents.getAPI().init();
 
@@ -188,7 +188,7 @@ public class Atlas extends JavaPlugin {
         eventManager = null;
         getCommandManager(this).unregisterCommands();
 
-        PacketEvents.setAPI(null);
+        PacketEvents.getAPI().terminate();
 
         funkeCommandManager = null;
         tinyProtocolHandler.shutdown();
