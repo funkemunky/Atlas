@@ -105,6 +105,15 @@ public class Atlas extends JavaPlugin {
     @ConfigSetting(name = "debug")
     public static boolean debugMode = false;
 
+    @Override
+    public void onLoad() {
+        PacketEvents.setAPI(SpigotPacketEventsBuilder.build(this));
+        //Are all listeners read only?
+        PacketEvents.getAPI().getSettings().checkForUpdates(true)
+                .bStats(true);
+        PacketEvents.getAPI().load();
+    }
+
     public void onEnable() {
         instance = this;
 
@@ -119,15 +128,12 @@ public class Atlas extends JavaPlugin {
         eventManager = new EventManager();
         Carbon.setup();
 
+        PacketEvents.getAPI().init();
+
         pluginLoaderHandler = new PluginLoaderHandler();
         tinyProtocolHandler =  new TinyProtocolHandler();
 
         packetProcessor = new PacketProcessor();
-        PacketEvents.setAPI(SpigotPacketEventsBuilder.buildNoCache(Atlas.getInstance()));
-
-        PacketEvents.getAPI().getSettings().debug(true)
-                .checkForUpdates(true).timeStampMode(TimeStampMode.MILLIS).readOnlyListeners(false);
-        PacketEvents.getAPI().init();
 
         profileStart = System.currentTimeMillis();
         profile = new BaseProfiler();
