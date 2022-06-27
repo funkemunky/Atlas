@@ -110,7 +110,7 @@ public class Atlas extends JavaPlugin {
         PacketEvents.setAPI(SpigotPacketEventsBuilder.build(this));
         //Are all listeners read only?
         PacketEvents.getAPI().getSettings().checkForUpdates(true)
-                .bStats(true).;
+                .bStats(true);
         PacketEvents.getAPI().load();
     }
 
