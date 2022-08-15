@@ -39,4 +39,3 @@ jobs:
         with:
           name: AtlasVelocity
           path: AtlasParent/AtlasVelocity/target/AtlasVelocity-*.jar
-
