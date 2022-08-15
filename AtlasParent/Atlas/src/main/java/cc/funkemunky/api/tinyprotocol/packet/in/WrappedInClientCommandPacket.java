@@ -7,7 +7,6 @@ import lombok.Getter;
 import org.bukkit.entity.Player;
 
 @Getter
-@Deprecated
 public class WrappedInClientCommandPacket extends NMSObject {
     private static final String packet = Client.CLIENT_COMMAND;
 

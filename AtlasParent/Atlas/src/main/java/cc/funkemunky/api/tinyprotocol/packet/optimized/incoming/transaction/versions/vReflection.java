@@ -6,7 +6,6 @@ import cc.funkemunky.api.reflections.types.WrappedField;
 import cc.funkemunky.api.tinyprotocol.api.Packet;
 import cc.funkemunky.api.tinyprotocol.packet.optimized.incoming.transaction.AtlasPacketPlayInTransaction;
 
-@Deprecated
 public class vReflection extends AtlasPacketPlayInTransaction {
 
     private static final WrappedClass transactionClass = Reflections.getNMSClass(Packet.Client.TRANSACTION);

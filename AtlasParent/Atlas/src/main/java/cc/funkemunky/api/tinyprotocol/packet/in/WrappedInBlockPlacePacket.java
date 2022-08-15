@@ -16,7 +16,6 @@ import org.bukkit.inventory.ItemStack;
 
 @Getter
 //TODO Test 1.15
-@Deprecated
 public class WrappedInBlockPlacePacket extends NMSObject {
     private static final String packet = Client.BLOCK_PLACE;
 

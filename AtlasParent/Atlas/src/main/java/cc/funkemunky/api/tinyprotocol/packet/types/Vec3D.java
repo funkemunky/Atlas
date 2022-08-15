@@ -5,7 +5,6 @@ import cc.funkemunky.api.reflections.types.WrappedConstructor;
 import cc.funkemunky.api.tinyprotocol.api.NMSObject;
 import cc.funkemunky.api.tinyprotocol.reflection.FieldAccessor;
 
-@Deprecated
 public class Vec3D extends NMSObject {
     private static FieldAccessor<Double> fieldX = fetchField("Vec3D", double.class, 0);
     private static FieldAccessor<Double> fieldY = fetchField("Vec3D", double.class, 1);

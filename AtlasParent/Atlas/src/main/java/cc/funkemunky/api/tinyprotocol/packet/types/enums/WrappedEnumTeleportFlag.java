@@ -8,7 +8,6 @@ import java.util.EnumSet;
 import java.util.Iterator;
 import java.util.Set;
 
-@Deprecated
 public enum WrappedEnumTeleportFlag {
     X(0),
     Y(1),

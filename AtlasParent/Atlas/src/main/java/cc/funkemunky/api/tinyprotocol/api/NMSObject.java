@@ -29,7 +29,6 @@ import java.util.Map;
 @Getter
 @Setter
 @NoArgsConstructor
-@Deprecated
 public abstract class NMSObject {
     private static final WrappedMethod asCraftMirror = CraftReflection.craftItemStack
             .getMethod("asCraftMirror", MinecraftReflection.itemStack.getParent());

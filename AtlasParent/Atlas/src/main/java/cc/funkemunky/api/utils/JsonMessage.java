@@ -10,6 +10,7 @@ import org.bukkit.inventory.ItemStack;
 
 import java.util.*;
 
+@Deprecated
 public class JsonMessage {
     private final List<AMText> Text = new ArrayList<>();
 

@@ -21,7 +21,6 @@ import java.util.List;
  **/
 @Getter
 @Setter
-@Deprecated
 public class WrappedOutExplosionPacket extends NMSObject {
 
     private static final WrappedClass packetClass = Reflections.getNMSClass(Packet.Server.EXPLOSION);

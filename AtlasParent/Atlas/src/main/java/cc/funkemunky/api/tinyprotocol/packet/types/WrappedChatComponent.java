@@ -8,7 +8,6 @@ import lombok.Getter;
 import org.bukkit.entity.Player;
 
 @Getter
-@Deprecated
 public class WrappedChatComponent extends NMSObject {
 
     private static WrappedMethod getText = MinecraftReflection.iChatBaseComponent.getMethod("getText");

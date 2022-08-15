@@ -3,7 +3,6 @@ package cc.funkemunky.api.tinyprotocol.packet.types.enums;
 import cc.funkemunky.api.reflections.Reflections;
 import cc.funkemunky.api.reflections.types.WrappedClass;
 
-@Deprecated
 public enum WrappedEnumAnimation {
     NONE,
     EAT,

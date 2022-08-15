@@ -13,7 +13,6 @@ import org.bukkit.entity.Player;
 @AllArgsConstructor
 @Getter
 @Setter
-@Deprecated
 public class WrappedWatchableObject extends NMSObject {
     private static String type = Type.WATCHABLE_OBJECT;
     private static FieldAccessor<Integer> firstIntField;

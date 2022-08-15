@@ -13,7 +13,6 @@ import java.util.List;
 /* This class can be used for packets that do not have dedicated wrappers or change constantly between versions. */
 @Getter
 @RequiredArgsConstructor
-@Deprecated
 public class GeneralWrapper {
     private List<GeneralField> fields = new ArrayList<>();
     private List<WrappedMethod> methods;

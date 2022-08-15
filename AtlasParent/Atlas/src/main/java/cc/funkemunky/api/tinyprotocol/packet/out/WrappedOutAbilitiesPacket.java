@@ -9,7 +9,6 @@ import cc.funkemunky.api.tinyprotocol.reflection.FieldAccessor;
 import lombok.Getter;
 import org.bukkit.entity.Player;
 
-@Deprecated
 public class WrappedOutAbilitiesPacket extends NMSObject {
     private static final String packet = Server.ABILITIES;
 

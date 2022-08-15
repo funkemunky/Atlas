@@ -7,7 +7,6 @@ import cc.funkemunky.api.tinyprotocol.api.NMSObject;
 import cc.funkemunky.api.tinyprotocol.api.ProtocolVersion;
 import cc.funkemunky.api.tinyprotocol.reflection.FieldAccessor;
 
-@Deprecated
 public class BaseBlockPosition extends NMSObject {
     public static final BaseBlockPosition ZERO = new BaseBlockPosition(0, 0, 0);
     private static final FieldAccessor<Integer> fieldX, fieldY, fieldZ;

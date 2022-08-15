@@ -3,7 +3,6 @@ package cc.funkemunky.api.tinyprotocol.packet.types.enums;
 import cc.funkemunky.api.reflections.Reflections;
 import cc.funkemunky.api.reflections.types.WrappedClass;
 
-@Deprecated
 public enum WrappedEnumPlayerInfoAction {
     ADD_PLAYER("addPlayer"),
     UPDATE_GAME_MODE("updateGamemode"),

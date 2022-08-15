@@ -7,7 +7,6 @@ import lombok.Getter;
 import org.bukkit.entity.Player;
 
 @Getter
-@Deprecated
 public class WrappedInEntityActionPacket extends NMSObject {
 
     // Fields

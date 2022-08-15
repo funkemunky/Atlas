@@ -13,7 +13,6 @@ import org.bukkit.entity.Player;
 import java.util.UUID;
 
 @Getter
-@Deprecated
 public class WrappedPacketLoginInStart extends NMSObject {
 
     private static final WrappedClass packet = Reflections.getNMSClass(Login.LOGIN_START);

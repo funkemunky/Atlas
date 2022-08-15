@@ -13,7 +13,6 @@ import com.mojang.brigadier.suggestion.SuggestionsBuilder;
 import lombok.var;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
-@Deprecated
 public class DontImportIfNotLatestThanks {
 
     private static WrappedClass commandDispatcherClass = Reflections.getNMSClass("CommandDispatcher");

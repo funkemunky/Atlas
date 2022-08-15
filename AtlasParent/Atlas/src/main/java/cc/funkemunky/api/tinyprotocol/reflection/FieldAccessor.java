@@ -4,7 +4,6 @@
 
 package cc.funkemunky.api.tinyprotocol.reflection;
 
-@Deprecated
 public interface FieldAccessor<T> {
     /**
      * Retrieve the content of a field.
