@@ -27,10 +27,7 @@ import cc.funkemunky.api.utils.objects.RemoteClassLoader;
 import cc.funkemunky.api.utils.world.WorldInfo;
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.BukkitCommandManager;
-import com.github.retrooper.packetevents.PacketEvents;
-import com.github.retrooper.packetevents.util.TimeStampMode;
 import dev.brighten.db.Carbon;
-import io.github.retrooper.packetevents.factory.spigot.SpigotPacketEventsBuilder;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.SneakyThrows;
@@ -105,15 +102,6 @@ public class Atlas extends JavaPlugin {
     @ConfigSetting(name = "debug")
     public static boolean debugMode = false;
 
-    @Override
-    public void onLoad() {
-        PacketEvents.setAPI(SpigotPacketEventsBuilder.build(this));
-        //Are all listeners read only?
-        PacketEvents.getAPI().getSettings().checkForUpdates(true)
-                .bStats(true);
-        PacketEvents.getAPI().load();
-    }
-
     public void onEnable() {
         instance = this;
 
@@ -127,8 +115,6 @@ public class Atlas extends JavaPlugin {
         schedular = Executors.newSingleThreadScheduledExecutor();
         eventManager = new EventManager();
         Carbon.setup();
-
-        PacketEvents.getAPI().init();
 
         pluginLoaderHandler = new PluginLoaderHandler();
         tinyProtocolHandler =  new TinyProtocolHandler();
@@ -193,8 +179,6 @@ public class Atlas extends JavaPlugin {
         eventManager.clearAllRegistered();
         eventManager = null;
         getCommandManager(this).unregisterCommands();
-
-        PacketEvents.getAPI().terminate();
 
         funkeCommandManager = null;
         tinyProtocolHandler.shutdown();
