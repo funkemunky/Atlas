@@ -2,11 +2,14 @@ package cc.funkemunky.api.commands;
 
 import cc.funkemunky.api.Atlas;
 import cc.funkemunky.api.utils.Color;
-import cc.funkemunky.api.utils.JsonMessage;
 import cc.funkemunky.api.utils.MathUtils;
 import cc.funkemunky.api.utils.MiscUtils;
 import lombok.Getter;
 import lombok.Setter;
+import net.md_5.bungee.api.chat.BaseComponent;
+import net.md_5.bungee.api.chat.ComponentBuilder;
+import net.md_5.bungee.api.chat.HoverEvent;
+import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -148,7 +151,7 @@ public abstract class FunkeCommand
                 if (sender instanceof Player) {
                     for (int i = (page - 1) * 6; i < Math.min(page * 6, arguments.size()); i++) {
                         FunkeArgument argument = arguments.get(i);
-                        JsonMessage message = new JsonMessage();
+                        ComponentBuilder message = new ComponentBuilder();
 
                         StringBuilder aliasesFormatted = new StringBuilder();
                         List<String> aliases = argument.getAliases();
@@ -165,8 +168,10 @@ public abstract class FunkeCommand
 
                         String hoverText = Color.translate((argument.getPermission() != null && argument.getPermission().length > 0 ? commandMessages.getTitleColor() + "Permissions: " + commandMessages.getValueColor() + " " + Arrays.toString(argument.getPermission()) : commandMessages.getTitleColor() + "Permission: " + commandMessages.getValueColor() + "none")
                                 + "\n" + commandMessages.getTitleColor() +  "Aliases: " + commandMessages.getValueColor() + aliasesFormatted);
-                        message.addText(commandMessages.getPrimaryColor()+ "/" + label.toLowerCase() + commandMessages.getValueColor() + " " + argument.getDisplay() + commandMessages.getPrimaryColor() + " to " + argument.getDescription()).addHoverText(hoverText);
-                        message.sendToPlayer((Player) sender);
+                        BaseComponent[] msg = message.append(TextComponent.fromLegacyText(commandMessages.getPrimaryColor()+ "/" + label.toLowerCase() + commandMessages.getValueColor() + " " + argument.getDisplay() + commandMessages.getPrimaryColor() + " to " + argument.getDescription()))
+                                        .event(new HoverEvent(HoverEvent.Action.SHOW_TEXT, TextComponent.fromLegacyText(hoverText))).create();
+
+                        ((Player) sender).spigot().sendMessage(msg);
                     }
                 } else {
                     for (int i = (page - 1) * 6; i < Math.min(arguments.size(), page * 6); i++) {
