@@ -39,4 +39,16 @@ jobs:
         with:
           name: AtlasVelocity
           path: AtlasParent/AtlasVelocity/target/AtlasVelocity-*.jar
+      - name: Nexus Repo Publish
+        uses: sonatype-nexus-community/nexus-repo-github-action@master
+        with:
+          serverUrl: https://nexus.funkemunky.cc
+          username: ${{secrets.DEPLOY_USERNAME}}
+          password: ${{ secrets.DEPLOY_PASSWORD }}
+          format: maven2
+          repository: maven-snapshots
+          coordinates: groupId=cc.funkemunky.plugins artifactId=Atlas version=latest
+          assets: extension=jar
+          filename: AtlasParent/AtlasBukkit/target/AtlasBukkit-*.jar
+
 
