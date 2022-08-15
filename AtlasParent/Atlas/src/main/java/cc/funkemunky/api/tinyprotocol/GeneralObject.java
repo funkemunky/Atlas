@@ -9,7 +9,6 @@ import java.util.Arrays;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Deprecated
 public class GeneralObject {
 
     private Object object;

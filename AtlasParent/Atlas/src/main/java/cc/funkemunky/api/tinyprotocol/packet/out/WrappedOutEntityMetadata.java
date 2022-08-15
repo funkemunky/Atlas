@@ -13,7 +13,6 @@ import java.util.List;
 
 @Getter
 @Setter
-@Deprecated
 public class WrappedOutEntityMetadata extends NMSObject {
     private static final String packet = Packet.Server.ENTITY_METADATA;
 

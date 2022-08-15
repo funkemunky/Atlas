@@ -27,10 +27,8 @@ import cc.funkemunky.api.utils.objects.RemoteClassLoader;
 import cc.funkemunky.api.utils.world.WorldInfo;
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.BukkitCommandManager;
-import com.github.retrooper.packetevents.PacketEvents;
-import com.github.retrooper.packetevents.util.TimeStampMode;
 import dev.brighten.db.Carbon;
-import io.github.retrooper.packetevents.factory.spigot.SpigotPacketEventsBuilder;
+import io.github.retrooper.packetevents.PacketEvents;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.SneakyThrows;
@@ -107,11 +105,11 @@ public class Atlas extends JavaPlugin {
 
     @Override
     public void onLoad() {
-        PacketEvents.setAPI(SpigotPacketEventsBuilder.build(this));
+        PacketEvents.create(this);
         //Are all listeners read only?
-        PacketEvents.getAPI().getSettings().checkForUpdates(true)
+        PacketEvents.get().getSettings().checkForUpdates(true)
                 .bStats(true);
-        PacketEvents.getAPI().load();
+        PacketEvents.get().load();
     }
 
     public void onEnable() {

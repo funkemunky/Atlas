@@ -12,7 +12,6 @@ import org.bukkit.entity.Player;
 
 //TODO Make this compatible with 1.13 and newer.
 @Getter
-@Deprecated
 public class WrappedOutCustomPayload extends NMSObject {
 
     public WrappedOutCustomPayload(Object object, Player player) {

@@ -4,7 +4,6 @@
 
 package cc.funkemunky.api.tinyprotocol.reflection;
 
-@Deprecated
 public interface MethodInvoker {
     /**
      * Invoke a method on a specific target object.

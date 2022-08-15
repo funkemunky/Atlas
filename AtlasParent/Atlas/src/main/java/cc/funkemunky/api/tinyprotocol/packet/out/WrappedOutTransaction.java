@@ -9,7 +9,6 @@ import lombok.Getter;
 import org.bukkit.entity.Player;
 
 @Getter
-@Deprecated
 public class WrappedOutTransaction extends NMSObject {
     private static final String packet = Server.TRANSACTION;
     private static WrappedConstructor rawIntConstructor;

@@ -4,7 +4,6 @@ import cc.funkemunky.api.reflections.types.WrappedField;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-@Deprecated
 public class GeneralField {
     public final WrappedField field;
     private final Object object;

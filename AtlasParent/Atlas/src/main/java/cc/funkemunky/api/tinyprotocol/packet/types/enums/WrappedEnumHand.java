@@ -4,7 +4,6 @@ import cc.funkemunky.api.reflections.Reflections;
 import cc.funkemunky.api.reflections.types.WrappedClass;
 import cc.funkemunky.api.tinyprotocol.api.ProtocolVersion;
 
-@Deprecated
 public enum WrappedEnumHand {
     MAIN_HAND,
     OFF_HAND;

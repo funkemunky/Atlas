@@ -11,7 +11,6 @@ import lombok.Getter;
 import org.bukkit.entity.Player;
 
 @Getter
-@Deprecated
 public class WrappedOutOpenWindow extends NMSObject {
 
     private static WrappedClass packet = Reflections.getNMSClass(Server.OPEN_WINDOW);

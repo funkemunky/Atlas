@@ -20,7 +20,6 @@ import java.util.regex.Pattern;
  *
  * @author Kristian
  */
-@Deprecated
 public final class Reflection {
     // Deduce the net.minecraft.server.v* package
     public static String OBC_PREFIX = Bukkit.getServer().getClass().getPackage().getName();

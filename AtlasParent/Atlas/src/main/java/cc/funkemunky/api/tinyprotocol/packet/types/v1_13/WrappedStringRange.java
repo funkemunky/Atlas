@@ -6,7 +6,6 @@ import cc.funkemunky.api.reflections.types.WrappedField;
 import cc.funkemunky.api.tinyprotocol.GeneralObject;
 import cc.funkemunky.api.tinyprotocol.api.ProtocolVersion;
 
-@Deprecated
 public class WrappedStringRange extends GeneralObject {
 
     public static WrappedClass srClass;

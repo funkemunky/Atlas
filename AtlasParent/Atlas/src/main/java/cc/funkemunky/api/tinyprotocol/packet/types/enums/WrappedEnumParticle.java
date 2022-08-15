@@ -10,7 +10,6 @@ import org.bukkit.Particle;
 import java.util.Arrays;
 
 @Getter
-@Deprecated
 public enum WrappedEnumParticle {
     EXPLOSION_NORMAL,
     EXPLOSION_LARGE,

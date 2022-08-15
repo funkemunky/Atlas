@@ -14,7 +14,6 @@ import org.bukkit.entity.Player;
 import javax.annotation.Nullable;
 
 @Getter
-@Deprecated
 public class WrappedOutAttachEntity extends NMSObject {
 
     //Not tested in all versions, just a basically wrapped packet.

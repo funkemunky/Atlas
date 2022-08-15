@@ -7,7 +7,6 @@ import lombok.Getter;
 import org.bukkit.entity.Player;
 
 @Getter
-@Deprecated
 public class WrappedInHeldItemSlotPacket extends NMSObject {
     private static final String packet = Client.HELD_ITEM;
 

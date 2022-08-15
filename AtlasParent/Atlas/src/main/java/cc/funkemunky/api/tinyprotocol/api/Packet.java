@@ -23,7 +23,6 @@ import java.util.Set;
 @NoArgsConstructor
 @Getter
 @Setter
-@Deprecated
 public abstract class Packet {
     private static Map<String, Class<?>> constructors = new HashMap<>();
     private Object packet;
