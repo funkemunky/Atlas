@@ -9,6 +9,7 @@
 package cc.funkemunky.api
         .reflections;
 
+import cc.funkemunky.api.Atlas;
 import cc.funkemunky.api.reflections.types.WrappedClass;
 import cc.funkemunky.api.tinyprotocol.api.ProtocolVersion;
 import cc.funkemunky.api.tinyprotocol.reflection.Reflection;
@@ -30,6 +31,7 @@ import java.util.Set;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 @Getter
 public class Reflections {
@@ -43,9 +45,12 @@ public class Reflections {
         craftBukkitString = "org.bukkit.craftbukkit." + version + ".";
         netMinecraftServerString = "net.minecraft.server." + version + ".";
 
+        Atlas.getInstance().alog(true, "Loading class names...");
         try {
             classNames = ClassScanner.scanFile2(null,
-                    Class.forName("org.bukkit.craftbukkit.Main"));
+                    Class.forName("org.bukkit.craftbukkit.Main"))
+                    .stream().filter(s -> s.contains("net.minecraft.server"))
+                    .collect(Collectors.toSet());
         } catch(ClassNotFoundException e) {
             classNames = Collections.emptySet();
         }
@@ -71,8 +76,6 @@ public class Reflections {
         } catch(Throwable e) {
             Pattern toTest = Pattern.compile("\\." + name.replace("$", ".") + "$");
             for (String className : classNames) {
-                if(!className.startsWith("net.minecraft")) continue;
-
                 if(toTest.matcher(className).find()) {
                     return getClass(className);
                 }
