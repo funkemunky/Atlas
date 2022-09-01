@@ -85,12 +85,6 @@
                                     </includes>
                                 </filter>
                                 <filter>
-                                    <artifact>com.h2database:h2</artifact>
-                                    <includes>
-                                        <include>**</include>
-                                    </includes>
-                                </filter>
-                                <filter>
                                     <artifact>acf-bukkit:acf-bukkit</artifact>
                                     <includes>
                                         <include>**</include>
