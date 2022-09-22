@@ -104,9 +104,9 @@ public class Atlas extends JavaPlugin {
 
     public void onEnable() {
         instance = this;
+        consoleSender = Bukkit.getConsoleSender();
 
         loadConfig(this);
-        consoleSender = Bukkit.getConsoleSender();
 
         alog("&cLoading Atlas...");
 
