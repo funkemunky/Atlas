@@ -215,6 +215,17 @@ public class MinecraftReflection {
         return getItemMethod.invoke(vanillaStack);
     }
 
+    private static final WrappedMethod getMobEffect = ProtocolVersion.getGameVersion().isAbove(ProtocolVersion.V1_9) ? Reflections.getNMSClass("MobEffectList").getMethod("fromId", int.class) : null;
+
+    public static <T> T getMobEffect(int effectId) {
+        return getMobEffect.invoke(null, effectId);
+    }
+
+    private static final WrappedMethod getMobEffectId = ProtocolVersion.getGameVersion().isAbove(ProtocolVersion.V1_9) ? Reflections.getNMSClass("MobEffectList").getMethod("getId") : null;
+    public static int getMobEffectId(Object effect) {
+        return getMobEffectId.invoke(null, effect);
+    }
+
     //Can use either a Bukkit or vanilla object
     public static <T> T getItemAnimation(Object object) {
         Object vanillaStack;

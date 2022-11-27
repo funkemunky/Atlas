@@ -204,6 +204,7 @@ public abstract class Packet {
         public static final String SET_SLOT =  SERVER + "SetSlot";
         public static final String EXPLOSION = SERVER + "Explosion";
         public static final String ATTACH = SERVER + "AttachEntity";
+        public static final String REMOVE_ENTITY_EFFECT = SERVER + "RemoveEntityEffect";
     }
 
     public static class Login {
