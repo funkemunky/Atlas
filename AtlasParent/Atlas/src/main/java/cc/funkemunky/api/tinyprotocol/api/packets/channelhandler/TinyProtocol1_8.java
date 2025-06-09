@@ -53,9 +53,18 @@ public abstract class TinyProtocol1_8 implements AbstractTinyProtocol {
 
 	// Looking up ServerConnection
 	private static final WrappedClass packetClass = Reflections.getNMSClass("Packet");
-	private static final WrappedClass playerConnection = Reflections.getNMSClass("PlayerConnection");
-	private static final WrappedMethod methodSendPacket = playerConnection.getMethodByType(void.class,
-			0, packetClass.getParent());
+    private static final WrappedMethod methodSendPacket;
+
+	static {
+        WrappedClass playerConnection;
+        try {
+			playerConnection = Reflections.getNMSClass("PlayerConnection");
+		} catch (Throwable e) {
+			playerConnection = Reflections.getNMSClass("ServerPlayerConnection");
+		}
+		methodSendPacket = playerConnection.getMethodByType(void.class,
+				0, packetClass.getParent());
+	}
 
 	private List<ChannelFuture> gList;
 

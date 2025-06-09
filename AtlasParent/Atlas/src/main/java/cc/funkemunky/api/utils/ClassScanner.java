@@ -250,6 +250,7 @@ public class ClassScanner {
 
             return classNode.name.replace('/', '.');
         } catch (Exception e) {
+            e.printStackTrace();
             Bukkit.getLogger().severe("Failed to scan: " + in.toString());
         }
         return null;

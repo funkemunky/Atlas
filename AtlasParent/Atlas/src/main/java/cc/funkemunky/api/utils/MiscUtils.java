@@ -77,26 +77,34 @@ public class MiscUtils {
         } else player.sendMessage(toSend);
     }
 
-    private static final WrappedField ticksField;
+    private static WrappedField ticksField = null;
 
     static {
-        switch (ProtocolVersion.getGameVersion()) {
-            case v1_19: {
-                ticksField = MinecraftReflection.minecraftServer
-                        .getFieldByName("S");
-                break;
+        try {
+            switch (ProtocolVersion.getGameVersion()) {
+                case v1_19: {
+                    ticksField = MinecraftReflection.minecraftServer
+                            .getFieldByName("S");
+                    break;
+                }
+                case v1_18_2:
+                case v1_18:
+                case v1_17_1:
+                case v1_17: {
+                    ticksField = MinecraftReflection.minecraftServer.getFieldByName("V");
+                    break;
+                }
+                default: {
+                    try {
+                        ticksField = MinecraftReflection.minecraftServer.getFieldByName("ticks");
+                    } catch (Exception e) {
+                        ticksField = MinecraftReflection.minecraftServer.getFieldByName("tickCount");
+                    }
+                    break;
+                }
             }
-            case v1_18_2:
-            case v1_18:
-            case v1_17_1:
-            case v1_17: {
-                ticksField = MinecraftReflection.minecraftServer.getFieldByName("V");
-                break;
-            }
-            default: {
-                ticksField = MinecraftReflection.minecraftServer.getFieldByName("ticks");
-                break;
-            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
     private static Object minecraftServer = null;

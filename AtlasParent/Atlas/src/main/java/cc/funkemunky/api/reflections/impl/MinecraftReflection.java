@@ -31,101 +31,358 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 public class MinecraftReflection {
-    public static WrappedClass entity = Reflections.getNMSClass("Entity");
-    public static WrappedClass axisAlignedBB = Reflections.getNMSClass("AxisAlignedBB");
-    public static WrappedClass entityHuman = Reflections.getNMSClass("EntityHuman");
-    public static WrappedClass entityLiving = Reflections.getNMSClass("EntityLiving");
-    public static WrappedClass block = Reflections.getNMSClass("Block");
-    public static WrappedClass iBlockData, blockBase,
+    // WrappedClass fields (ALL set to null)
+    public static WrappedClass entity = null;
+    public static WrappedClass axisAlignedBB = null, chunkStatus = null;
+    public static WrappedClass entityHuman = null;
+    public static WrappedClass entityLiving = null;
+    public static WrappedClass block = null;
+    public static WrappedClass iBlockData = null, blockBase = null, chunkProviderServer = null;
+    public static WrappedClass itemClass = null, enumChatFormat = null;
+    public static WrappedClass world = null;
+    public static WrappedClass worldServer = null;
+    public static WrappedClass playerInventory = null;
+    public static WrappedClass itemStack = null, item = null;
+    public static WrappedClass chunk = null;
+    public static WrappedClass classBlockInfo = null;
+    public static WrappedClass minecraftServer = null;
+    public static WrappedClass entityPlayer = null;
+    public static WrappedClass playerConnection = null;
+    public static WrappedClass networkManager = null;
+    public static WrappedClass serverConnection = null;
+    public static WrappedClass gameProfile = null;
+    private static WrappedClass propertyMap = null;
+    private static WrappedClass forwardMultiMap = null;
+    public static WrappedClass iChatBaseComponent = null, chatComponentText = null;
+    public static WrappedClass vec3D = null;
+    public static WrappedClass enumAnimation = null;
+    private static WrappedClass voxelShape = null;
+    private static WrappedClass worldReader = null;
+    public static WrappedClass blockPos = null;
+
+    // WrappedMethod fields (ALL set to null)
+    private static WrappedMethod getProfile = null;
+    private static WrappedMethod methodGetServerConnection = null;
+    private static WrappedConstructor chatComponentTextConst = null;
+    private static WrappedMethod getProperties = null;
+    private static WrappedMethod removeAll = null;
+    private static WrappedMethod putAll = null;
+    private static WrappedMethod worldGetType = null;
+    private static WrappedMethod getCubes = null;
+    private static WrappedField aBB = null;
+    private static WrappedField bBB = null;
+    private static WrappedField cBB = null;
+    private static WrappedField dBB = null;
+    private static WrappedField eBB = null;
+    private static WrappedField fBB = null;
+    private static WrappedConstructor aabbConstructor = null;
+    private static WrappedMethod idioticOldStaticConstructorAABB = null, methodBlockCollisionBox = null;
+    private static WrappedField entitySimpleCollisionBox = null;
+    private static WrappedMethod enumAnimationStack = null;
+    private static WrappedField activeItemField = null;
+    private static WrappedMethod getItemMethod = null;
+    private static WrappedMethod getAnimationMethod = null;
+    private static WrappedMethod canDestroyMethod = null;
+    private static WrappedMethod getCubesFromVoxelShape = null;
+    private static WrappedMethod itemStackAsBukkitCopy = null;
+    private static WrappedMethod addCBoxes = null;
+    private static WrappedConstructor blockPosConstructor = null;
+    private static WrappedMethod getBlockData = null, getBlock = null;
+    private static WrappedField blockData = null;
+    private static WrappedField frictionFactor = null;
+    private static WrappedField strength = null;
+    private static WrappedField chunkProvider = null;
+    private static WrappedField connectionField = null;
+    private static WrappedField connectionNetworkField = null;
+    private static WrappedField networkChannelField = null;
+    private static WrappedField primaryThread = null;
+    private static WrappedMethod fluidMethod = null, getFlowMethod = null;
+    private static WrappedMethod getMobEffect = null;
+    private static WrappedMethod getMobEffectId = null;
+
+    // Initialization
+    static {
+        try {
+            chunkStatus = Reflections.getNMSClass("ChunkStatus");
+        } catch (Throwable t) {
+
+        }
+
+        try {
+            axisAlignedBB = Reflections.getNMSClass("AxisAlignedBB");
             chunkProviderServer = Reflections.getNMSClass("ChunkProviderServer");
-    public static WrappedClass itemClass = Reflections.getNMSClass("Item"),
-            enumChatFormat = Reflections.getNMSClass("EnumChatFormat");;
-    public static WrappedClass world = Reflections.getNMSClass("World");
-    public static WrappedClass worldServer = Reflections.getNMSClass("WorldServer");
-    public static WrappedClass playerInventory = Reflections.getNMSClass("PlayerInventory");
-    public static WrappedClass itemStack = Reflections.getNMSClass("ItemStack"),
+            enumChatFormat = Reflections.getNMSClass("EnumChatFormat");
+        } catch (Throwable t) {
+
+        }
+
+        try {
+            // Begin static initialization, everything is wrapped in this try/catch
+            entity = Reflections.getNMSClass("Entity");
+            try {
+                entityHuman = Reflections.getNMSClass("EntityHuman");
+                entityLiving = Reflections.getNMSClass("EntityLiving");
+                world = Reflections.getNMSClass("World");
+                worldServer = Reflections.getNMSClass("WorldServer");
+            } catch (Throwable t) {
+                entityLiving = Reflections.getNMSClass("LivingEntity");
+                entityHuman = Reflections.getNMSClass("Player");
+                world = Reflections.getNMSClass("Level");
+                worldServer = Reflections.getNMSClass("ServerLevel");
+            }
+
+            block = Reflections.getNMSClass("Block");
+            itemClass = Reflections.getNMSClass("Item");;
+            playerInventory = Reflections.getNMSClass("PlayerInventory");
+            itemStack = Reflections.getNMSClass("ItemStack");
             item = Reflections.getNMSClass("Item");
-    public static WrappedClass chunk = Reflections.getNMSClass("Chunk");
-    public static WrappedClass classBlockInfo;
-    public static WrappedClass minecraftServer = Reflections.getNMSClass("MinecraftServer");
-    public static WrappedClass entityPlayer = ProtocolVersion.getGameVersion().isOrAbove(ProtocolVersion.v1_17)
-            ? Reflections.getClass("net.minecraft.server.level.EntityPlayer")
-            : Reflections.getNMSClass("EntityPlayer");
-    public static WrappedClass playerConnection = ProtocolVersion.getGameVersion().isOrAbove(ProtocolVersion.v1_17)
-            ? Reflections.getClass("net.minecraft.server.network.PlayerConnection")
-            : Reflections.getNMSClass("PlayerConnection");
-    public static WrappedClass networkManager = Reflections.getNMSClass("NetworkManager");
-    public static WrappedClass serverConnection = Reflections.getNMSClass("ServerConnection");
-    public static WrappedClass gameProfile = Reflections.getUtilClass("com.mojang.authlib.GameProfile");
-    private static final WrappedClass propertyMap = Reflections.getUtilClass("com.mojang.authlib.properties.PropertyMap");
-    private static final WrappedClass forwardMultiMap = Reflections.getUtilClass("com.google.common.collect.ForwardingMultimap");
-    public static WrappedClass iChatBaseComponent = Reflections.getNMSClass("IChatBaseComponent"),
-            chatComponentText;
-    public static WrappedClass vec3D = Reflections.getNMSClass("Vec3D");
+            chunk = Reflections.getNMSClass("Chunk");
+            minecraftServer = Reflections.getNMSClass("MinecraftServer");
+            entityPlayer = ProtocolVersion.getGameVersion().isOrAbove(ProtocolVersion.v1_17)
+                    ? Reflections.getClass("net.minecraft.server.level.EntityPlayer")
+                    : Reflections.getNMSClass("EntityPlayer");
+            playerConnection = ProtocolVersion.getGameVersion().isOrAbove(ProtocolVersion.v1_17)
+                    ? Reflections.getNMSClass("ServerPlayerConnection")
+                    : Reflections.getNMSClass("PlayerConnection");
+            networkManager = Reflections.getNMSClass("NetworkManager");
+            serverConnection = Reflections.getNMSClass("ServerConnection");
+            gameProfile = Reflections.getUtilClass("com.mojang.authlib.GameProfile");
+            propertyMap = Reflections.getUtilClass("com.mojang.authlib.properties.PropertyMap");
+            forwardMultiMap = Reflections.getUtilClass("com.google.common.collect.ForwardingMultimap");
+            iChatBaseComponent = Reflections.getNMSClass("IChatBaseComponent");
+            vec3D = Reflections.getNMSClass("Vec3D");
+            enumAnimation = Reflections.getNMSClass("EnumAnimation");
 
-    private static final WrappedMethod getProfile = CraftReflection.craftPlayer.getMethod("getProfile");
-    private static final WrappedMethod methodGetServerConnection = minecraftServer
-            .getMethodByType(serverConnection.getParent(), ProtocolVersion.getGameVersion()
-                    .isBelow(ProtocolVersion.V1_13) ? 1 : 0);
-    private static WrappedConstructor chatComponentTextConst;
-    private static final WrappedMethod getProperties = gameProfile.getMethod("getProperties");
-    private static final WrappedMethod removeAll = forwardMultiMap.getMethod("removeAll", Object.class);
-    private static final WrappedMethod putAll = propertyMap.getMethod("putAll", Object.class, Iterable.class);
-    private static final WrappedMethod worldGetType;
-    //SimpleCollisionBoxes
-    private static final WrappedMethod getCubes;
-    private static final WrappedField aBB = axisAlignedBB.getFieldByName("a");
-    private static final WrappedField bBB = axisAlignedBB.getFieldByName("b");
-    private static final WrappedField cBB = axisAlignedBB.getFieldByName("c");
-    private static final WrappedField dBB = axisAlignedBB.getFieldByName("d");
-    private static final WrappedField eBB = axisAlignedBB.getFieldByName("e");
-    private static final WrappedField fBB = axisAlignedBB.getFieldByName("f");
-    private static WrappedConstructor aabbConstructor;
-    private static WrappedMethod idioticOldStaticConstructorAABB, methodBlockCollisionBox;
-    private static final WrappedField entitySimpleCollisionBox = entity.getFirstFieldByType(axisAlignedBB.getParent());
-    public static WrappedClass enumAnimation = Reflections.getNMSClass("EnumAnimation");
+            getProfile = CraftReflection.craftPlayer.getMethod("getProfile");
+            methodGetServerConnection = minecraftServer
+                    .getMethodByType(serverConnection.getParent(), ProtocolVersion.getGameVersion()
+                            .isBelow(ProtocolVersion.V1_13) ? 1 : 0);
+            getProperties = gameProfile.getMethod("getProperties");
+            removeAll = forwardMultiMap.getMethod("removeAll", Object.class);
+            putAll = propertyMap.getMethod("putAll", Object.class, Iterable.class);
 
-    //ItemStack methods and fields
-    private static WrappedMethod enumAnimationStack;
-    private static final WrappedField activeItemField;
-    private static final WrappedMethod getItemMethod = itemStack.getMethodByType(item.getParent(), 0);
-    private static final WrappedMethod getAnimationMethod = itemClass.getMethodByType(enumAnimation.getParent(), 0);
-    private static final WrappedMethod canDestroyMethod;
+            if (ProtocolVersion.getGameVersion().isAbove(ProtocolVersion.V1_7_10)) {
+                iBlockData = Reflections.getNMSClass("IBlockData");
+                blockPos = Reflections.getNMSClass("BlockPosition");
+                blockPosConstructor = blockPos.getConstructor(int.class, int.class, int.class);
+                getBlock = iBlockData.getMethodByType(block.getParent(), 0);
+                blockData = ProtocolVersion.getGameVersion().isOrAbove(ProtocolVersion.v1_17)
+                        ? block.getFieldByType(iBlockData.getParent(), 0)
+                        : block.getFieldByName("blockData");
+                getBlockData = block.getMethodByType(iBlockData.getParent(), 0);
+                aabbConstructor = axisAlignedBB
+                        .getConstructor(double.class, double.class, double.class, double.class, double.class, double.class);
+                worldGetType = worldServer.getMethodByType(iBlockData.getParent(), 0, blockPos.getParent());
+            } else {
+                idioticOldStaticConstructorAABB = axisAlignedBB.getMethod("a",
+                        double.class, double.class, double.class, double.class, double.class, double.class);
+                worldGetType = worldServer.getMethod("getType", int.class, int.class, int.class);
+            }
 
-    //1.13+ only
-    private static WrappedClass voxelShape;
-    private static WrappedClass worldReader;
-    private static WrappedMethod getCubesFromVoxelShape;
+            aBB = axisAlignedBB.getFieldByName("a");
+            bBB = axisAlignedBB.getFieldByName("b");
+            cBB = axisAlignedBB.getFieldByName("c");
+            dBB = axisAlignedBB.getFieldByName("d");
+            eBB = axisAlignedBB.getFieldByName("e");
+            fBB = axisAlignedBB.getFieldByName("f");
+            entitySimpleCollisionBox = entity.getFirstFieldByType(axisAlignedBB.getParent());
 
-    private static final WrappedMethod itemStackAsBukkitCopy = CraftReflection.craftItemStack
-            .getMethod("asBukkitCopy", itemStack.getParent());
+            // Colliding box/collision initialization
+            if (ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.V1_12)) {
+                getCubes = world.getMethod("a", axisAlignedBB.getParent());
 
-    //Blocks
-    private static WrappedMethod addCBoxes;
-    public static WrappedClass blockPos;
-    private static WrappedConstructor blockPosConstructor;
-    private static WrappedMethod getBlockData, getBlock;
-    private static WrappedField blockData;
-    private static final WrappedField frictionFactor;
-    private static final WrappedField strength;
-    private static final WrappedField chunkProvider = MinecraftReflection.worldServer
-            .getFieldByType(Reflections.getNMSClass(ProtocolVersion.getGameVersion()
-                    .isBelow(ProtocolVersion.v1_16)
-                    && ProtocolVersion.getGameVersion()
-                    .isOrAbove(ProtocolVersion.V1_9) ? "IChunkProvider" : "ChunkProviderServer")
-                    .getParent(), 0);
+                if (ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.V1_8)) {
+                    addCBoxes = block.getMethod("a", world.getParent(), int.class, int.class, int.class,
+                            axisAlignedBB.getParent(), List.class, entity.getParent());
+                    methodBlockCollisionBox = block
+                            .getMethod("a", world.getParent(), int.class, int.class, int.class);
+                } else {
+                    addCBoxes = block.getMethod("a", world.getParent(), blockPos.getParent(), iBlockData.getParent(),
+                            axisAlignedBB.getParent(), List.class, entity.getParent());
+                    if (ProtocolVersion.getGameVersion().isOrAbove(ProtocolVersion.V1_9)) {
+                        methodBlockCollisionBox = block
+                                .getMethod("a", iBlockData.getParent(), world.getParent(), blockPos.getParent());
+                    } else {
+                        methodBlockCollisionBox = block
+                                .getMethod("a", world.getParent(), blockPos.getParent(), iBlockData.getParent());
+                    }
+                }
+                getFlowMethod = Reflections.getNMSClass("BlockFluids")
+                        .getDeclaredMethodByType(vec3D.getParent(), 0);
+            } else if (ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.V1_13)) {
+                getCubes = world.getMethod("getCubes", entity.getParent(), axisAlignedBB.getParent());
+                addCBoxes = block.getMethod("a", iBlockData.getParent(), world.getParent(), blockPos.getParent(),
+                        axisAlignedBB.getParent(), List.class, entity.getParent(), boolean.class);
+                methodBlockCollisionBox = block
+                        .getMethod("a", iBlockData.getParent(), world.getParent(), blockPos.getParent());
+                getFlowMethod = Reflections.getNMSClass("BlockFluids")
+                        .getDeclaredMethodByType(vec3D.getParent(), 0);
+            } else {
+                classBlockInfo = ProtocolVersion.getGameVersion().isOrAbove(ProtocolVersion.v1_16)
+                        ? Reflections.getNMSClass("BlockBase$Info") : Reflections.getNMSClass("Block$Info");
+                worldReader = Reflections.getNMSClass("IWorldReader");
+                getCubes = ProtocolVersion.getGameVersion().isOrAbove(ProtocolVersion.v1_18)
+                        ? worldReader.getMethodByType(List.class, 0, entity.getParent(), axisAlignedBB.getParent())
+                        : (ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.v1_16) ?
+                        worldReader.getMethod("a", entity.getParent(), axisAlignedBB.getParent(),
+                                double.class, double.class, double.class)
+                        : world.getMethod("c", entity.getParent(), axisAlignedBB.getParent(), Predicate.class));
+                voxelShape = Reflections.getNMSClass("VoxelShape");
+                getCubesFromVoxelShape = voxelShape.getMethodByType(List.class, 0);
+                fluidMethod = world.getMethodByType(Reflections.getNMSClass("Fluid").getParent(), 0, blockPos.getParent());
+                getFlowMethod = Reflections.getNMSClass("Fluid").getMethodByType(vec3D.getParent(), 0);
 
+                if (ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.v1_19)) {
+                    chatComponentText = Reflections.getNMSClass("ChatComponentText");
+                    chatComponentTextConst = chatComponentText.getConstructor(String.class);
+                }
+            }
 
-    //Entity Player fields
-    private static final WrappedField connectionField = entityPlayer
-            .getFieldByType(playerConnection.getParent(), 0);
-    private static final WrappedField connectionNetworkField = playerConnection
-            .getFieldByType(networkManager.getParent(), 0);
-    private static final WrappedField networkChannelField = networkManager.getFieldByType(Reflections
-            .getUtilClass("io.netty.channel.Channel").getParent(), 0);
+            if (ProtocolVersion.getGameVersion().isOrAbove(ProtocolVersion.v1_16)) {
+                blockBase = Reflections.getNMSClass("BlockBase");
+            }
+            if (ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.V1_9)) {
+                activeItemField = entityHuman.getFieldByType(itemStack.getParent(), 0);
+            } else {
+                activeItemField = entityLiving.getFieldByType(itemStack.getParent(), 0);
+            }
 
-    //General Fields
-    private static final WrappedField primaryThread = minecraftServer.getFirstFieldByType(Thread.class);
+            canDestroyMethod = ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.v1_16)
+                    ? playerInventory.getMethod("b",
+                    ProtocolVersion.getGameVersion().isAbove(ProtocolVersion.V1_8_9)
+                            ? iBlockData.getParent() : itemClass.getParent())
+                    : itemStack.getMethodByType(boolean.class, 0, iBlockData.getParent());
+
+            if (ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.v1_17)) {
+                frictionFactor = (ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.v1_16)
+                        ? block : blockBase).getFieldByName("frictionFactor");
+            } else {
+                frictionFactor = blockBase.getFieldByType(float.class, 1);
+            }
+            strength = ProtocolVersion.getGameVersion().isOrAbove(ProtocolVersion.v1_17)
+                    ? blockBase.getFieldByType(float.class, 0)
+                    : (ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.v1_16)
+                    ? block.getFieldByName("strength") : blockBase.getFieldByName("durability"));
+
+            enumAnimationStack = itemStack.getMethodByType(enumAnimation.getParent(), 0);
+            getItemMethod = itemStack.getMethodByType(item.getParent(), 0);
+            getAnimationMethod = itemClass.getMethodByType(enumAnimation.getParent(), 0);
+            itemStackAsBukkitCopy = CraftReflection.craftItemStack
+                    .getMethod("asBukkitCopy", itemStack.getParent());
+
+            chunkProvider = MinecraftReflection.worldServer
+                    .getFieldByType(Reflections.getNMSClass(ProtocolVersion.getGameVersion()
+                                    .isBelow(ProtocolVersion.v1_16)
+                                    && ProtocolVersion.getGameVersion()
+                                    .isOrAbove(ProtocolVersion.V1_9) ? "IChunkProvider" : "ChunkProviderServer")
+                            .getParent(), 0);
+
+            connectionField = entityPlayer.getFieldByType(playerConnection.getParent(), 0);
+            connectionNetworkField = playerConnection.getFieldByType(networkManager.getParent(), 0);
+            networkChannelField = networkManager.getFieldByType(
+                    Reflections.getUtilClass("io.netty.channel.Channel").getParent(), 0);
+            primaryThread = minecraftServer.getFirstFieldByType(Thread.class);
+
+            getMobEffect = ProtocolVersion.getGameVersion().isAbove(ProtocolVersion.V1_9)
+                    ? Reflections.getNMSClass("MobEffectList").getMethod("fromId", int.class) : null;
+            getMobEffectId = ProtocolVersion.getGameVersion().isAbove(ProtocolVersion.V1_9)
+                    ? Reflections.getNMSClass("MobEffectList").getMethod("getId") : null;
+
+            if(ProtocolVersion.getGameVersion().isAbove(ProtocolVersion.V1_7_10)) {
+                iBlockData = Reflections.getNMSClass("IBlockData");
+                blockPos = Reflections.getNMSClass("BlockPosition");
+                blockPosConstructor = blockPos.getConstructor(int.class, int.class, int.class);
+                getBlock = iBlockData.getMethodByType(block.getParent(), 0);
+                blockData = ProtocolVersion.getGameVersion().isOrAbove(ProtocolVersion.v1_17)
+                        ? block.getFieldByType(iBlockData.getParent(), 0) :  block.getFieldByName("blockData");
+                blockPosConstructor = blockPos.getConstructor(int.class, int.class, int.class);
+                getBlockData = block.getMethodByType(iBlockData.getParent(), 0);
+                aabbConstructor = axisAlignedBB
+                        .getConstructor(double.class, double.class, double.class, double.class, double.class, double.class);
+                worldGetType = worldServer.getMethodByType(iBlockData.getParent(), 0, blockPos.getParent());
+            } else {
+                idioticOldStaticConstructorAABB = axisAlignedBB.getMethod("a",
+                        double.class, double.class, double.class, double.class, double.class, double.class);
+                worldGetType = worldServer.getMethod("getType", int.class, int.class, int.class);
+            }
+            if(ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.V1_12)) {
+                getCubes = world.getMethod("a", axisAlignedBB.getParent());
+
+                if(ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.V1_8)) {
+                    //1.7.10 does not have the BlockPosition object yet.
+                    addCBoxes = block.getMethod("a", world.getParent(), int.class, int.class, int.class,
+                            axisAlignedBB.getParent(), List.class, entity.getParent());
+                    methodBlockCollisionBox = block
+                            .getMethod("a", world.getParent(), int.class, int.class, int.class);
+                } else {
+                    addCBoxes = block.getMethod("a", world.getParent(), blockPos.getParent(), iBlockData.getParent(),
+                            axisAlignedBB.getParent(), List.class, entity.getParent());
+                    if(ProtocolVersion.getGameVersion().isOrAbove(ProtocolVersion.V1_9)) {
+                        methodBlockCollisionBox = block
+                                .getMethod("a", iBlockData.getParent(), world.getParent(), blockPos.getParent());
+                    } else methodBlockCollisionBox = block
+                            .getMethod("a", world.getParent(), blockPos.getParent(), iBlockData.getParent());
+                }
+
+                getFlowMethod = Reflections.getNMSClass("BlockFluids")
+                        .getDeclaredMethodByType(vec3D.getParent(), 0);
+            } else if(ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.V1_13)) {
+                getCubes = world.getMethod("getCubes", entity.getParent(), axisAlignedBB.getParent());
+                addCBoxes = block.getMethod("a", iBlockData.getParent(), world.getParent(), blockPos.getParent(),
+                        axisAlignedBB.getParent(), List.class, entity.getParent(), boolean.class);
+                methodBlockCollisionBox = block
+                        .getMethod("a", iBlockData.getParent(), world.getParent(), blockPos.getParent());
+                getFlowMethod = Reflections.getNMSClass("BlockFluids")
+                        .getDeclaredMethodByType(vec3D.getParent(), 0);
+            } else {
+                classBlockInfo = ProtocolVersion.getGameVersion().isOrAbove(ProtocolVersion.v1_16)
+                        ? Reflections.getNMSClass("BlockBase$Info") : Reflections.getNMSClass("Block$Info");
+                worldReader = Reflections.getNMSClass("IWorldReader");
+                //1.13 and 1.13.1 returns just VoxelShape while 1.13.2+ returns a Stream<VoxelShape>
+                getCubes = ProtocolVersion.getGameVersion().isOrAbove(ProtocolVersion.v1_18)
+                        ? worldReader.getMethodByType(List.class, 0, entity.getParent(), axisAlignedBB.getParent())
+                        : (ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.v1_16) ?
+                        worldReader.getMethod("a", entity.getParent(), axisAlignedBB.getParent(),
+                                double.class, double.class, double.class)
+                        : world.getMethod("c", entity.getParent(), axisAlignedBB.getParent(), Predicate.class));
+                voxelShape = Reflections.getNMSClass("VoxelShape");
+                getCubesFromVoxelShape = voxelShape.getMethodByType(List.class, 0);
+                fluidMethod = world.getMethodByType(Reflections.getNMSClass("Fluid").getParent(), 0, blockPos.getParent());
+                getFlowMethod = Reflections.getNMSClass("Fluid").getMethodByType(vec3D.getParent(), 0);
+
+                if(ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.v1_19)) {
+                    chatComponentText =  Reflections.getNMSClass("ChatComponentText");
+                    chatComponentTextConst = chatComponentText.getConstructor(String.class);
+                }
+            }
+
+            if(ProtocolVersion.getGameVersion().isOrAbove(ProtocolVersion.v1_16)) {
+                blockBase = Reflections.getNMSClass("BlockBase");
+            }
+            if(ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.V1_9)) {
+                activeItemField = entityHuman.getFieldByType(itemStack.getParent(), 0);
+            } else {
+                activeItemField = entityLiving.getFieldByType(itemStack.getParent(), 0);
+            }
+
+            canDestroyMethod = ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.v1_16)
+                    ? playerInventory.getMethod("b",
+                    ProtocolVersion.getGameVersion().isAbove(ProtocolVersion.V1_8_9)
+                            ? iBlockData.getParent() : itemClass.getParent())
+                    : itemStack.getMethodByType(boolean.class, 0, iBlockData.getParent());
+            if(ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.v1_17)) {
+                frictionFactor = (ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.v1_16)
+                        ? block : blockBase).getFieldByName("frictionFactor");
+            } else frictionFactor = blockBase.getFieldByType(float.class, 1);
+            strength = ProtocolVersion.getGameVersion().isOrAbove(ProtocolVersion.v1_17)
+                    ? blockBase.getFieldByType(float.class, 0)
+                    : (ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.v1_16)
+                    ? block.getFieldByName("strength") : blockBase.getFieldByName("durability"));
+        } catch (Throwable t) {
+            // If *any* error occurs in static field reflection, everything remains null
+            t.printStackTrace(); // Or use your preferred logging mechanism
+        }
+    }
 
     public static WrappedEnumAnimation getArmAnimation(HumanEntity entity) {
         if(entity.getItemInHand() != null) {
@@ -138,6 +395,10 @@ public class MinecraftReflection {
         Object itemStack = CraftReflection.getVanillaItemStack(stack);
 
         return WrappedEnumAnimation.fromNMS(enumAnimationStack.invoke(itemStack));
+    }
+
+    public static <T> T getChunkStatusField(String fieldName) {
+        return chunkStatus.getFieldByName(fieldName).get(null);
     }
 
     public static List<BoundingBox> getBlockBox(@Nullable Entity entity, Block block) {
@@ -215,13 +476,10 @@ public class MinecraftReflection {
         return getItemMethod.invoke(vanillaStack);
     }
 
-    private static final WrappedMethod getMobEffect = ProtocolVersion.getGameVersion().isAbove(ProtocolVersion.V1_9) ? Reflections.getNMSClass("MobEffectList").getMethod("fromId", int.class) : null;
-
     public static <T> T getMobEffect(int effectId) {
         return getMobEffect.invoke(null, effectId);
     }
 
-    private static final WrappedMethod getMobEffectId = ProtocolVersion.getGameVersion().isAbove(ProtocolVersion.V1_9) ? Reflections.getNMSClass("MobEffectList").getMethod("getId") : null;
     public static int getMobEffectId(Object effect) {
         return getMobEffectId.invoke(null, effect);
     }
@@ -428,8 +686,6 @@ public class MinecraftReflection {
         new WrappedClass(channel.getClass()).getMethod("close").invoke(channel);
     }
 
-    private static WrappedMethod fluidMethod, getFlowMethod;
-
     public static Vec3D getBlockFlow(Block block) {
         if(Materials.checkFlag(block.getType(), Materials.LIQUID)) {
             Object world = CraftReflection.getVanillaWorld(block.getWorld());
@@ -487,98 +743,5 @@ public class MinecraftReflection {
         return Arrays.stream(world.getLoadedChunks())
                 .map(c -> (T) CraftReflection.getVanillaChunk(c))
                 .collect(Collectors.toList());
-    }
-
-    static {
-        if(ProtocolVersion.getGameVersion().isAbove(ProtocolVersion.V1_7_10)) {
-            iBlockData = Reflections.getNMSClass("IBlockData");
-            blockPos = Reflections.getNMSClass("BlockPosition");
-            blockPosConstructor = blockPos.getConstructor(int.class, int.class, int.class);
-            getBlock = iBlockData.getMethodByType(block.getParent(), 0);
-            blockData = ProtocolVersion.getGameVersion().isOrAbove(ProtocolVersion.v1_17)
-                    ? block.getFieldByType(iBlockData.getParent(), 0) :  block.getFieldByName("blockData");
-            blockPosConstructor = blockPos.getConstructor(int.class, int.class, int.class);
-            getBlockData = block.getMethodByType(iBlockData.getParent(), 0);
-            aabbConstructor = axisAlignedBB
-                    .getConstructor(double.class, double.class, double.class, double.class, double.class, double.class);
-            worldGetType = worldServer.getMethodByType(iBlockData.getParent(), 0, blockPos.getParent());
-        } else {
-            idioticOldStaticConstructorAABB = axisAlignedBB.getMethod("a",
-                    double.class, double.class, double.class, double.class, double.class, double.class);
-            worldGetType = worldServer.getMethod("getType", int.class, int.class, int.class);
-        }
-        if(ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.V1_12)) {
-            getCubes = world.getMethod("a", axisAlignedBB.getParent());
-
-            if(ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.V1_8)) {
-                //1.7.10 does not have the BlockPosition object yet.
-                addCBoxes = block.getMethod("a", world.getParent(), int.class, int.class, int.class,
-                        axisAlignedBB.getParent(), List.class, entity.getParent());
-                methodBlockCollisionBox = block
-                        .getMethod("a", world.getParent(), int.class, int.class, int.class);
-            } else {
-                addCBoxes = block.getMethod("a", world.getParent(), blockPos.getParent(), iBlockData.getParent(),
-                        axisAlignedBB.getParent(), List.class, entity.getParent());
-                if(ProtocolVersion.getGameVersion().isOrAbove(ProtocolVersion.V1_9)) {
-                    methodBlockCollisionBox = block
-                            .getMethod("a", iBlockData.getParent(), world.getParent(), blockPos.getParent());
-                } else methodBlockCollisionBox = block
-                        .getMethod("a", world.getParent(), blockPos.getParent(), iBlockData.getParent());
-            }
-
-            getFlowMethod = Reflections.getNMSClass("BlockFluids")
-                    .getDeclaredMethodByType(vec3D.getParent(), 0);
-        } else if(ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.V1_13)) {
-            getCubes = world.getMethod("getCubes", entity.getParent(), axisAlignedBB.getParent());
-            addCBoxes = block.getMethod("a", iBlockData.getParent(), world.getParent(), blockPos.getParent(),
-                    axisAlignedBB.getParent(), List.class, entity.getParent(), boolean.class);
-            methodBlockCollisionBox = block
-                    .getMethod("a", iBlockData.getParent(), world.getParent(), blockPos.getParent());
-            getFlowMethod = Reflections.getNMSClass("BlockFluids")
-                    .getDeclaredMethodByType(vec3D.getParent(), 0);
-        } else {
-            classBlockInfo = ProtocolVersion.getGameVersion().isOrAbove(ProtocolVersion.v1_16)
-                    ? Reflections.getNMSClass("BlockBase$Info") : Reflections.getNMSClass("Block$Info");
-            worldReader = Reflections.getNMSClass("IWorldReader");
-            //1.13 and 1.13.1 returns just VoxelShape while 1.13.2+ returns a Stream<VoxelShape>
-            getCubes = ProtocolVersion.getGameVersion().isOrAbove(ProtocolVersion.v1_18)
-                    ? worldReader.getMethodByType(List.class, 0, entity.getParent(), axisAlignedBB.getParent())
-                    : (ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.v1_16) ?
-                    worldReader.getMethod("a", entity.getParent(), axisAlignedBB.getParent(),
-                            double.class, double.class, double.class)
-                    : world.getMethod("c", entity.getParent(), axisAlignedBB.getParent(), Predicate.class));
-            voxelShape = Reflections.getNMSClass("VoxelShape");
-            getCubesFromVoxelShape = voxelShape.getMethodByType(List.class, 0);
-            fluidMethod = world.getMethodByType(Reflections.getNMSClass("Fluid").getParent(), 0, blockPos.getParent());
-            getFlowMethod = Reflections.getNMSClass("Fluid").getMethodByType(vec3D.getParent(), 0);
-
-            if(ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.v1_19)) {
-                chatComponentText =  Reflections.getNMSClass("ChatComponentText");
-                chatComponentTextConst = chatComponentText.getConstructor(String.class);
-            }
-        }
-
-        if(ProtocolVersion.getGameVersion().isOrAbove(ProtocolVersion.v1_16)) {
-            blockBase = Reflections.getNMSClass("BlockBase");
-        }
-        if(ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.V1_9)) {
-            activeItemField = entityHuman.getFieldByType(itemStack.getParent(), 0);
-        } else {
-            activeItemField = entityLiving.getFieldByType(itemStack.getParent(), 0);
-        }
-
-        canDestroyMethod = ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.v1_16)
-                ? playerInventory.getMethod("b",
-                ProtocolVersion.getGameVersion().isAbove(ProtocolVersion.V1_8_9)
-                        ? iBlockData.getParent() : itemClass.getParent())
-                : itemStack.getMethodByType(boolean.class, 0, iBlockData.getParent());
-        if(ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.v1_17)) {
-            frictionFactor = (ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.v1_16)
-                    ? block : blockBase).getFieldByName("frictionFactor");
-        } else frictionFactor = blockBase.getFieldByType(float.class, 1);
-        strength = ProtocolVersion.getGameVersion().isOrAbove(ProtocolVersion.v1_17)
-                ? blockBase.getFieldByType(float.class, 0)
-                : (ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.v1_16)
-                    ? block.getFieldByName("strength") : blockBase.getFieldByName("durability"));
     }
 }

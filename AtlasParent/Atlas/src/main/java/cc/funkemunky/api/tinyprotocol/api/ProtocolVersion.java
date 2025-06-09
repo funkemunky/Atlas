@@ -55,7 +55,7 @@ public enum ProtocolVersion {
     v1_18_2(758, "v1_18_R2"),
     v1_19(759, "v1_19_R1"),
 
-    UNKNOWN(-1, "UNKNOWN");
+    UNKNOWN(10000000, "UNKNOWN");
 
     @Getter
     private static final ProtocolVersion gameVersion = fetchGameVersion();
@@ -74,34 +74,38 @@ public enum ProtocolVersion {
         }
 
         if(toReturn.isOrAbove(ProtocolVersion.v1_17)) {
-            WrappedClass mv = Reflections.getNMSClass("MinecraftVersion");
-            Object mvObject = mv.getFieldByName("a").get(null);
+            try {
+                WrappedClass mv = Reflections.getNMSClass("MinecraftVersion");
+                Object mvObject = mv.getFieldByName("a").get(null);
 
-            String version = mv.getFieldByType(String.class, 1).get(mvObject);
+                String version = mv.getFieldByType(String.class, 1).get(mvObject);
 
-            switch(version) {
-                case "1.19": {
-                    toReturn = v1_19;
-                    break;
+                switch(version) {
+                    case "1.19": {
+                        toReturn = v1_19;
+                        break;
+                    }
+                    case "1.18.2": {
+                        toReturn = v1_18_2;
+                        break;
+                    }
+                    case "1.18.1":
+                    case "1.18": {
+                        toReturn = v1_18;
+                        Bukkit.getLogger().log(Level.INFO, "Version is 1.18");
+                        break;
+                    }
+                    case "1.17.1": {
+                        toReturn = v1_17_1;
+                        break;
+                    }
+                    default: {
+                        toReturn = v1_17;
+                        break;
+                    }
                 }
-                case "1.18.2": {
-                    toReturn = v1_18_2;
-                    break;
-                }
-                case "1.18.1":
-                case "1.18": {
-                    toReturn = v1_18;
-                    Bukkit.getLogger().log(Level.INFO, "Version is 1.18");
-                    break;
-                }
-                case "1.17.1": {
-                    toReturn = v1_17_1;
-                    break;
-                }
-                default: {
-                    toReturn = v1_17;
-                    break;
-                }
+            } catch (Throwable e) {
+                toReturn = UNKNOWN;
             }
         }
 

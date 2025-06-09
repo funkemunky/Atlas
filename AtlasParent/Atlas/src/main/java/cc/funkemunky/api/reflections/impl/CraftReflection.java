@@ -33,16 +33,33 @@ public class CraftReflection {
     private static WrappedMethod entityInstance = craftEntity.getMethod("getHandle"); //1.7-1.14
     private static WrappedMethod blockInstance = craftBlock.getMethod(ProtocolVersion.getGameVersion()
             .isOrAbove(ProtocolVersion.v1_17_1) ? "getNMS" : "getNMSBlock"); //1.7-1.14
-    private static WrappedMethod worldInstance = craftWorld.getMethod("getHandle"); //1.7-1.14
+    private static WrappedMethod worldInstance; //1.7-1.14
     private static WrappedMethod bukkitEntity = MinecraftReflection.entity.getMethod("getBukkitEntity"); //1.7-1.14
     private static WrappedMethod getInventory = craftInventoryPlayer.getMethod("getInventory"); //1.7-1.14
     private static WrappedMethod mcServerInstance = craftServer.getMethod("getServer"); //1.7-1.14
     private static WrappedMethod entityPlayerInstance = craftPlayer.getMethod("getHandle");
-    private static WrappedMethod chunkInstance = craftChunk.getMethod("getHandle");
+    private static WrappedMethod chunkInstance;
     private static WrappedMethod methodGetBlockFromMaterial = ProtocolVersion.getGameVersion()
             .isOrAbove(ProtocolVersion.V1_13) ? craftMagicNumbers.getMethod("getBlock", Material.class)
             : craftMagicNumbers.getMethod("getBlock", int.class);
     private static WrappedMethod fromComponent;
+
+    private static boolean chunkStatusRequired = false;
+
+    static {
+        try {
+            worldInstance = craftWorld.getMethod("getHandle");
+        } catch (Throwable t) {
+            worldInstance = craftWorld.getMethod("getWorld");
+        }
+
+        try {
+            chunkInstance = craftChunk.getMethod("getHandle");
+        } catch (Throwable t) {
+            chunkInstance = craftChunk.getMethod("getHandle", MinecraftReflection.chunkStatus.getParent());
+            chunkStatusRequired = true;
+        }
+    }
 
     public static <T> T getVanillaItemStack(ItemStack stack) {
         return itemStackInstance.invoke(null, stack);
@@ -81,7 +98,11 @@ public class CraftReflection {
     }
 
     public static <T> T getVanillaChunk(Chunk chunk) {
-        return chunkInstance.invoke(chunk);
+        if(!chunkStatusRequired) {
+            return chunkInstance.invoke(chunk);
+        } else {
+            return chunkInstance.invoke(chunk, MinecraftReflection.getChunkStatusField("EMPTY"));
+        }
     }
 
     public static <T> T getVanillaBlock(Material material) {

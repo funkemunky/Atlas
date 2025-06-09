@@ -22,6 +22,8 @@ import lombok.val;
 import org.bukkit.Bukkit;
 import org.bukkit.craftbukkit.Main;
 
+import java.awt.print.Paper;
+import java.io.File;
 import java.lang.invoke.LambdaMetafactory;
 import java.lang.invoke.MethodHandles;
 import java.lang.invoke.MethodType;
@@ -41,17 +43,46 @@ public class Reflections {
     private static Set<String> classNames;
 
     static {
-        String version = Bukkit.getServer().getClass().getPackage().getName().split("\\.")[3];
-        craftBukkitString = "org.bukkit.craftbukkit." + version + ".";
-        netMinecraftServerString = "net.minecraft.server." + version + ".";
+        String[] split = Bukkit.getServer().getClass().getPackage().getName().split("\\.");
+        String version = split.length > 3 ? split[3] : null;
+        craftBukkitString = "org.bukkit.craftbukkit." + (version == null ? "" : version + ".");
+        netMinecraftServerString = "net.minecraft.server." + (version == null ? "" : version + ".");
+        Atlas.getInstance().alog(true, "MinecraftServer: + " + netMinecraftServerString);
 
         Atlas.getInstance().alog(true, "Loading class names...");
+
+
         try {
-            classNames = ClassScanner.scanFile2(null,
-                    Class.forName("org.bukkit.craftbukkit.Main"))
-                    .stream().filter(s -> s.contains("net.minecraft.server"))
-                    .collect(Collectors.toSet());
-        } catch(ClassNotFoundException e) {
+            String file = null;
+            if(version == null) {
+                String serverDir = Bukkit.getServer().getWorldContainer().getAbsolutePath();
+
+                Atlas.getInstance().alog("Server directory: " + serverDir);
+
+                String versionsPath = serverDir + "/versions/1.21.4";
+
+                Atlas.getInstance().alog("Versions path: " + versionsPath);
+                //Get first jar file found in directory
+                File versionsDir = new File(versionsPath);
+                if (versionsDir.exists() && versionsDir.isDirectory()) {
+                    File[] files = versionsDir.listFiles((dir, name) -> name.endsWith(".jar"));
+                    if (files != null && files.length > 0) {
+                        file = files[0].getAbsolutePath();
+                        Atlas.getInstance().alog("Found version jar: " + file);
+                    } else {
+                        Atlas.getInstance().alog("No version jar found in versions directory!");
+                    }
+                } else {
+                    Atlas.getInstance().alog("Versions directory does not exist or is not a directory!");
+                }
+            }
+            classNames = ClassScanner.scanFile2(file,
+                            Class.forName("org.bukkit.craftbukkit.Main"))
+                    .stream().filter(s -> s.contains("net.minecraft"))
+                    .collect(Collectors.toSet());;
+
+            Atlas.getInstance().alog(true, "Version file: " + file);
+        } catch(Exception e) {
             classNames = Collections.emptySet();
         }
     }
@@ -77,6 +108,7 @@ public class Reflections {
             Pattern toTest = Pattern.compile("\\." + name.replace("$", ".") + "$");
             for (String className : classNames) {
                 if(toTest.matcher(className).find()) {
+                    Atlas.getInstance().alog(true, "FOUND CLASS: " + className);
                     return getClass(className);
                 }
             }
