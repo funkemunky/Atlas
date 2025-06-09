@@ -16,6 +16,7 @@ import cc.funkemunky.api.utils.exceptions.Validate;
 import cc.funkemunky.api.utils.world.CollisionBox;
 import cc.funkemunky.api.utils.world.types.NoCollisionBox;
 import cc.funkemunky.api.utils.world.types.SimpleCollisionBox;
+
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
@@ -51,22 +52,15 @@ public class MinecraftReflection {
     public static WrappedClass networkManager = null;
     public static WrappedClass serverConnection = null;
     public static WrappedClass gameProfile = null;
-    private static WrappedClass propertyMap = null;
-    private static WrappedClass forwardMultiMap = null;
     public static WrappedClass iChatBaseComponent = null, chatComponentText = null;
     public static WrappedClass vec3D = null;
     public static WrappedClass enumAnimation = null;
-    private static WrappedClass voxelShape = null;
-    private static WrappedClass worldReader = null;
     public static WrappedClass blockPos = null;
 
     // WrappedMethod fields (ALL set to null)
     private static WrappedMethod getProfile = null;
     private static WrappedMethod methodGetServerConnection = null;
     private static WrappedConstructor chatComponentTextConst = null;
-    private static WrappedMethod getProperties = null;
-    private static WrappedMethod removeAll = null;
-    private static WrappedMethod putAll = null;
     private static WrappedMethod worldGetType = null;
     private static WrappedMethod getCubes = null;
     private static WrappedField aBB = null;
@@ -86,7 +80,6 @@ public class MinecraftReflection {
     private static WrappedMethod getCubesFromVoxelShape = null;
     private static WrappedMethod itemStackAsBukkitCopy = null;
     private static WrappedMethod addCBoxes = null;
-    private static WrappedConstructor blockPosConstructor = null;
     private static WrappedMethod getBlockData = null, getBlock = null;
     private static WrappedField blockData = null;
     private static WrappedField frictionFactor = null;
@@ -104,7 +97,7 @@ public class MinecraftReflection {
     static {
         try {
             chunkStatus = Reflections.getNMSClass("ChunkStatus");
-        } catch (Throwable t) {
+        } catch (Throwable ignored) {
 
         }
 
@@ -112,7 +105,7 @@ public class MinecraftReflection {
             axisAlignedBB = Reflections.getNMSClass("AxisAlignedBB");
             chunkProviderServer = Reflections.getNMSClass("ChunkProviderServer");
             enumChatFormat = Reflections.getNMSClass("EnumChatFormat");
-        } catch (Throwable t) {
+        } catch (Throwable ignored) {
 
         }
 
@@ -141,14 +134,14 @@ public class MinecraftReflection {
             entityPlayer = ProtocolVersion.getGameVersion().isOrAbove(ProtocolVersion.v1_17)
                     ? Reflections.getClass("net.minecraft.server.level.EntityPlayer")
                     : Reflections.getNMSClass("EntityPlayer");
-            playerConnection = ProtocolVersion.getGameVersion().isOrAbove(ProtocolVersion.v1_17)
+            playerConnection = ProtocolVersion.getGameVersion().isOrAbove(ProtocolVersion.V1_20_1)
                     ? Reflections.getNMSClass("ServerPlayerConnection")
                     : Reflections.getNMSClass("PlayerConnection");
             networkManager = Reflections.getNMSClass("NetworkManager");
             serverConnection = Reflections.getNMSClass("ServerConnection");
             gameProfile = Reflections.getUtilClass("com.mojang.authlib.GameProfile");
-            propertyMap = Reflections.getUtilClass("com.mojang.authlib.properties.PropertyMap");
-            forwardMultiMap = Reflections.getUtilClass("com.google.common.collect.ForwardingMultimap");
+            WrappedClass propertyMap = Reflections.getUtilClass("com.mojang.authlib.properties.PropertyMap");
+            WrappedClass forwardMultiMap = Reflections.getUtilClass("com.google.common.collect.ForwardingMultimap");
             iChatBaseComponent = Reflections.getNMSClass("IChatBaseComponent");
             vec3D = Reflections.getNMSClass("Vec3D");
             enumAnimation = Reflections.getNMSClass("EnumAnimation");
@@ -157,14 +150,10 @@ public class MinecraftReflection {
             methodGetServerConnection = minecraftServer
                     .getMethodByType(serverConnection.getParent(), ProtocolVersion.getGameVersion()
                             .isBelow(ProtocolVersion.V1_13) ? 1 : 0);
-            getProperties = gameProfile.getMethod("getProperties");
-            removeAll = forwardMultiMap.getMethod("removeAll", Object.class);
-            putAll = propertyMap.getMethod("putAll", Object.class, Iterable.class);
 
             if (ProtocolVersion.getGameVersion().isAbove(ProtocolVersion.V1_7_10)) {
                 iBlockData = Reflections.getNMSClass("IBlockData");
                 blockPos = Reflections.getNMSClass("BlockPosition");
-                blockPosConstructor = blockPos.getConstructor(int.class, int.class, int.class);
                 getBlock = iBlockData.getMethodByType(block.getParent(), 0);
                 blockData = ProtocolVersion.getGameVersion().isOrAbove(ProtocolVersion.v1_17)
                         ? block.getFieldByType(iBlockData.getParent(), 0)
@@ -188,6 +177,8 @@ public class MinecraftReflection {
             entitySimpleCollisionBox = entity.getFirstFieldByType(axisAlignedBB.getParent());
 
             // Colliding box/collision initialization
+            WrappedClass voxelShape = null;
+            WrappedClass worldReader = null;
             if (ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.V1_12)) {
                 getCubes = world.getMethod("a", axisAlignedBB.getParent());
 
@@ -283,19 +274,18 @@ public class MinecraftReflection {
                     Reflections.getUtilClass("io.netty.channel.Channel").getParent(), 0);
             primaryThread = minecraftServer.getFirstFieldByType(Thread.class);
 
+            WrappedClass mobEffectList = Reflections.getNMSClass("MobEffectList");
             getMobEffect = ProtocolVersion.getGameVersion().isAbove(ProtocolVersion.V1_9)
-                    ? Reflections.getNMSClass("MobEffectList").getMethod("fromId", int.class) : null;
+                    ? mobEffectList.getMethodByType(mobEffectList.getParent(), 0, int.class) : null;
             getMobEffectId = ProtocolVersion.getGameVersion().isAbove(ProtocolVersion.V1_9)
-                    ? Reflections.getNMSClass("MobEffectList").getMethod("getId") : null;
+                    ? mobEffectList.getMethodByType(int.class, 0, mobEffectList.getParent()) : null;
 
             if(ProtocolVersion.getGameVersion().isAbove(ProtocolVersion.V1_7_10)) {
                 iBlockData = Reflections.getNMSClass("IBlockData");
                 blockPos = Reflections.getNMSClass("BlockPosition");
-                blockPosConstructor = blockPos.getConstructor(int.class, int.class, int.class);
                 getBlock = iBlockData.getMethodByType(block.getParent(), 0);
                 blockData = ProtocolVersion.getGameVersion().isOrAbove(ProtocolVersion.v1_17)
                         ? block.getFieldByType(iBlockData.getParent(), 0) :  block.getFieldByName("blockData");
-                blockPosConstructor = blockPos.getConstructor(int.class, int.class, int.class);
                 getBlockData = block.getMethodByType(iBlockData.getParent(), 0);
                 aabbConstructor = axisAlignedBB
                         .getConstructor(double.class, double.class, double.class, double.class, double.class, double.class);

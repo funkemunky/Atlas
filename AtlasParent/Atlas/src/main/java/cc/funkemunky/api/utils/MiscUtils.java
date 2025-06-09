@@ -1,10 +1,7 @@
 package cc.funkemunky.api.utils;
 
 import cc.funkemunky.api.Atlas;
-import cc.funkemunky.api.reflections.impl.CraftReflection;
-import cc.funkemunky.api.reflections.impl.MinecraftReflection;
 import cc.funkemunky.api.reflections.types.WrappedClass;
-import cc.funkemunky.api.reflections.types.WrappedField;
 import cc.funkemunky.api.tinyprotocol.api.ProtocolVersion;
 import cc.funkemunky.api.tinyprotocol.api.TinyProtocolHandler;
 import cc.funkemunky.api.tinyprotocol.packet.out.WrappedPacketPlayOutWorldParticle;
@@ -75,43 +72,6 @@ public class MiscUtils {
         if(player instanceof Player) {
             ((Player)player).spigot().sendMessage(TextComponent.fromLegacyText(toSend));
         } else player.sendMessage(toSend);
-    }
-
-    private static WrappedField ticksField = null;
-
-    static {
-        try {
-            switch (ProtocolVersion.getGameVersion()) {
-                case v1_19: {
-                    ticksField = MinecraftReflection.minecraftServer
-                            .getFieldByName("S");
-                    break;
-                }
-                case v1_18_2:
-                case v1_18:
-                case v1_17_1:
-                case v1_17: {
-                    ticksField = MinecraftReflection.minecraftServer.getFieldByName("V");
-                    break;
-                }
-                default: {
-                    try {
-                        ticksField = MinecraftReflection.minecraftServer.getFieldByName("ticks");
-                    } catch (Exception e) {
-                        ticksField = MinecraftReflection.minecraftServer.getFieldByName("tickCount");
-                    }
-                    break;
-                }
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-    private static Object minecraftServer = null;
-    //TODO Make this use the new abstraction system.
-    public static int currentTick() {
-        if(minecraftServer == null) minecraftServer = CraftReflection.getMinecraftServer();
-        return ticksField.get(minecraftServer);
     }
 
 

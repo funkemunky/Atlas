@@ -53,35 +53,10 @@ public class Reflections {
 
 
         try {
-            String file = null;
-            if(version == null) {
-                String serverDir = Bukkit.getServer().getWorldContainer().getAbsolutePath();
-
-                Atlas.getInstance().alog("Server directory: " + serverDir);
-
-                String versionsPath = serverDir + "/versions/1.21.4";
-
-                Atlas.getInstance().alog("Versions path: " + versionsPath);
-                //Get first jar file found in directory
-                File versionsDir = new File(versionsPath);
-                if (versionsDir.exists() && versionsDir.isDirectory()) {
-                    File[] files = versionsDir.listFiles((dir, name) -> name.endsWith(".jar"));
-                    if (files != null && files.length > 0) {
-                        file = files[0].getAbsolutePath();
-                        Atlas.getInstance().alog("Found version jar: " + file);
-                    } else {
-                        Atlas.getInstance().alog("No version jar found in versions directory!");
-                    }
-                } else {
-                    Atlas.getInstance().alog("Versions directory does not exist or is not a directory!");
-                }
-            }
-            classNames = ClassScanner.scanFile2(file,
+            classNames = ClassScanner.scanFile2(null,
                             Class.forName("org.bukkit.craftbukkit.Main"))
                     .stream().filter(s -> s.contains("net.minecraft"))
-                    .collect(Collectors.toSet());;
-
-            Atlas.getInstance().alog(true, "Version file: " + file);
+                    .collect(Collectors.toSet());
         } catch(Exception e) {
             classNames = Collections.emptySet();
         }

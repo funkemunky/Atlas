@@ -4,11 +4,13 @@ import cc.funkemunky.api.reflections.Reflections;
 import cc.funkemunky.api.reflections.types.WrappedClass;
 import cc.funkemunky.api.reflections.types.WrappedField;
 import cc.funkemunky.api.reflections.types.WrappedMethod;
+import cc.funkemunky.api.tinyprotocol.api.ProtocolVersion;
 import org.bukkit.Chunk;
 import org.bukkit.inventory.ItemStack;
 
 public class BukkitReflection {
-    public static WrappedField bukkitChunkField = MinecraftReflection.chunk.getFieldByType(Chunk.class, 0);
+    public static WrappedField bukkitChunkField = ProtocolVersion.getGameVersion().isOrBelow(ProtocolVersion.v1_17)
+            ? MinecraftReflection.chunk.getFieldByType(Chunk.class, 0) : null;
     public static WrappedClass spigotConfig;
     private static final WrappedMethod asBukkitCopyItemStack = CraftReflection.craftItemStack
             .getMethod("asBukkitCopy", MinecraftReflection.itemStack.getParent());
@@ -20,6 +22,13 @@ public class BukkitReflection {
     }
 
     public static Chunk getChunkFromVanilla(Object vanillaChunk) {
+
+        if(bukkitChunkField == null) {
+            return CraftReflection.craftChunk
+                    .getConstructor(MinecraftReflection.chunk.getParent())
+                    .newInstance(vanillaChunk);
+        }
+
         return bukkitChunkField.get(vanillaChunk);
     }
 

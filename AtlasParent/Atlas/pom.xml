@@ -217,6 +217,12 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
+            <groupId>org.github.paperspigot</groupId>
+            <artifactId>1.19.4</artifactId>
+            <version>1.19.4</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
             <groupId>org.spigotmc</groupId>
             <artifactId>spigot</artifactId>
             <version>1.19-R0.1</version>

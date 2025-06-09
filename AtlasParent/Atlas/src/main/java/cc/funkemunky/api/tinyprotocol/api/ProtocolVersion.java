@@ -4,6 +4,8 @@
 
 package cc.funkemunky.api.tinyprotocol.api;
 
+
+import cc.funkemunky.api.Atlas;
 import cc.funkemunky.api.reflections.Reflections;
 import cc.funkemunky.api.reflections.types.WrappedClass;
 import cc.funkemunky.api.tinyprotocol.reflection.Reflection;
@@ -55,16 +57,27 @@ public enum ProtocolVersion {
     v1_18_2(758, "v1_18_R2"),
     v1_19(759, "v1_19_R1"),
 
-    UNKNOWN(10000000, "UNKNOWN");
+    V1_19_1(760, "v1_19_R1"),
+    V1_19_3(761, "v1_19_R1"),
+    V1_19_4(762, "v1_19_R3"),
+    V1_20_1(763, "v1_20_R1"),
+    V1_20_2(764, "v1_20_R1"),
+    V1_20_3(765, "v1_20_R1"),
+    V1_20_5(766, "v1_20_R1"),
+    V1_21_1(767, "v1_21_R1"),
+    V1_21_2(768, "v1_21_R1"),
+    V1_21_4(769, "v1_21_R1"),
+
+    UNKNOWN(-1, "UNKNOWN");
 
     @Getter
-    private static final ProtocolVersion gameVersion = fetchGameVersion();
+    private static final ProtocolVersion gameVersion = fetchServerVersion();
     private final int version;
     @Getter
     private static boolean paper;
     private final String serverVersion;
 
-    private static ProtocolVersion fetchGameVersion() {
+    private static ProtocolVersion fetchServerVersion() {
         ProtocolVersion toReturn = UNKNOWN;
         for (ProtocolVersion version : values()) {
             if (version.getServerVersion() != null && version.getServerVersion().equals(Reflection.VERSION)) {
@@ -74,39 +87,43 @@ public enum ProtocolVersion {
         }
 
         if(toReturn.isOrAbove(ProtocolVersion.v1_17)) {
-            try {
-                WrappedClass mv = Reflections.getNMSClass("MinecraftVersion");
-                Object mvObject = mv.getFieldByName("a").get(null);
+            WrappedClass mv = Reflections.getNMSClass("MinecraftVersion");
+            Object mvObject = mv.getFieldByName("a").get(null);
 
-                String version = mv.getFieldByType(String.class, 1).get(mvObject);
+            String version = mv.getFieldByType(String.class, 1).get(mvObject);
 
-                switch(version) {
-                    case "1.19": {
-                        toReturn = v1_19;
-                        break;
-                    }
-                    case "1.18.2": {
-                        toReturn = v1_18_2;
-                        break;
-                    }
-                    case "1.18.1":
-                    case "1.18": {
-                        toReturn = v1_18;
-                        Bukkit.getLogger().log(Level.INFO, "Version is 1.18");
-                        break;
-                    }
-                    case "1.17.1": {
-                        toReturn = v1_17_1;
-                        break;
-                    }
-                    default: {
-                        toReturn = v1_17;
-                        break;
-                    }
+            switch(version) {
+                case "1.19.4": {
+                    toReturn = V1_19_4;
+                    break;
                 }
-            } catch (Throwable e) {
-                toReturn = UNKNOWN;
+                case "1.19": {
+                    toReturn = v1_19;
+                    break;
+                }
+                case "1.18.2": {
+                    toReturn = v1_18_2;
+                    break;
+                }
+                case "1.18.1":
+                case "1.18": {
+                    toReturn = v1_18;
+                    Bukkit.getLogger().log(Level.INFO, "Version is 1.18");
+                    break;
+                }
+                case "1.17.1": {
+                    toReturn = v1_17_1;
+                    break;
+                }
+                default: {
+                    toReturn = v1_17;
+                    break;
+                }
             }
+        }
+
+        for(int i = 0 ; i < 10 ; i++) {
+            Atlas.getInstance().alog("Version: %s", toReturn);
         }
 
         return toReturn;
@@ -135,6 +152,8 @@ public enum ProtocolVersion {
         return this.getVersion() >= version.getVersion();
     }
 
+    public static final ProtocolVersion NEWEST_VERSION;
+
     static {
         try {
             Class.forName("org.github.paperspigot.PaperSpigotConfig");
@@ -142,5 +161,15 @@ public enum ProtocolVersion {
         } catch(Exception e) {
             paper = false;
         }
+
+        ProtocolVersion newest = V1_7;
+
+        for (ProtocolVersion version : values()) {
+            if (version.getVersion() > newest.getVersion()) {
+                newest = version;
+            }
+        }
+
+        NEWEST_VERSION = newest;
     }
 }

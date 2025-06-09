@@ -16,18 +16,18 @@ import net.minecraft.world.phys.AxisAlignedBB;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraft.world.phys.shapes.VoxelShapeCollision;
 import org.bukkit.Location;
-import org.bukkit.craftbukkit.v1_17_R1.block.CraftBlock;
-import org.bukkit.craftbukkit.v1_17_R1.CraftWorld;
-import org.bukkit.craftbukkit.v1_17_R1.entity.CraftEntity;
-import org.bukkit.craftbukkit.v1_17_R1.entity.CraftLivingEntity;
-import org.bukkit.craftbukkit.v1_17_R1.entity.CraftPlayer;
+import org.bukkit.craftbukkit.v1_19_R3.block.CraftBlock;
+import org.bukkit.craftbukkit.v1_19_R3.CraftWorld;
+import org.bukkit.craftbukkit.v1_19_R3.entity.CraftEntity;
+import org.bukkit.craftbukkit.v1_19_R3.entity.CraftLivingEntity;
+import org.bukkit.craftbukkit.v1_19_R3.entity.CraftPlayer;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 
 import java.util.List;
 
-public class BlockBox1_17_R1 implements BlockBox {
+public class BlockBox1_19_R3 implements BlockBox {
 
     @Override
     public boolean isChunkLoaded(Location loc) {
@@ -62,7 +62,7 @@ public class BlockBox1_17_R1 implements BlockBox {
     @Override
     public CollisionBox getCollisionBox(org.bukkit.block.Block block) {
         final World world =
-                ((org.bukkit.craftbukkit.v1_17_R1.CraftWorld) block.getWorld()).getHandle();
+                ((org.bukkit.craftbukkit.v1_19_R3.CraftWorld) block.getWorld()).getHandle();
         final int x = block.getX(), y = block.getY(), z = block.getZ();
 
         IBlockData iblockData = ((CraftBlock)block).getNMS();
