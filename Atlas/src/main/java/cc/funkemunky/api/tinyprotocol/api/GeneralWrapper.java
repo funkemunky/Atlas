@@ -4,7 +4,6 @@ import cc.funkemunky.api.reflections.types.WrappedClass;
 import cc.funkemunky.api.reflections.types.WrappedMethod;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import lombok.val;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -26,7 +25,7 @@ public class GeneralWrapper {
     }
 
     public <T> T build(Object... args) {
-        val classes = Arrays.stream(args).map(Object::getClass).toArray(Class<?>[]::new);
+        var classes = Arrays.stream(args).map(Object::getClass).toArray(Class<?>[]::new);
 
         return objectClass.getConstructor(classes).newInstance(args);
     }

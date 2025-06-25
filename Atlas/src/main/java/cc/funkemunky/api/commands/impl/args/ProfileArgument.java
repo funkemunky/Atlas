@@ -8,7 +8,6 @@ import cc.funkemunky.api.utils.Color;
 import cc.funkemunky.api.utils.MiscUtils;
 import cc.funkemunky.api.utils.Pastebin;
 import cc.funkemunky.api.utils.Tuple;
-import lombok.val;
 import org.apache.commons.lang.time.DateFormatUtils;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -61,7 +60,7 @@ public class ProfileArgument extends FunkeArgument {
         List<String> body = new ArrayList<>();
         body.add(MiscUtils.lineNoStrike());
         float totalPCT = 0;
-        val results = Atlas.getInstance().getProfile().results(type);
+        var results = Atlas.getInstance().getProfile().results(type);
 
         for (String key : results.keySet()) {
             //Converting nanoseconds to millis to be more readable.

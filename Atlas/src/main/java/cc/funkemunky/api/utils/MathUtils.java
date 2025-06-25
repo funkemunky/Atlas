@@ -76,7 +76,7 @@ public class MathUtils {
         Vector playerRotation = new Vector(loc1.getYaw(), loc1.getPitch(), 0.0f);
         loc1.setY(0);
         loc2.setY(0);
-        val rot = MathUtils.getRotations(loc1, loc2);
+        var rot = MathUtils.getRotations(loc1, loc2);
         Vector expectedRotation = new Vector(rot[0], rot[1], 0);
         return MathUtils.yawTo180D(playerRotation.getX() - expectedRotation.getX());
     }
@@ -113,7 +113,7 @@ public class MathUtils {
 
         double lowThreshold = q1 - 1.5 * iqr, highThreshold = q3 + 1.5 * iqr;
 
-        val tuple = new Tuple<List<Double>, List<Double>>(new ArrayList<>(), new ArrayList<>());
+        var tuple = new Tuple<List<Double>, List<Double>>(new ArrayList<>(), new ArrayList<>());
 
         for (Double value : values) {
             if(value < lowThreshold) tuple.one.add(value);
@@ -133,7 +133,7 @@ public class MathUtils {
 
         double lowThreshold = q1 - 1.5 * iqr, highThreshold = q3 + 1.5 * iqr;
 
-        val tuple = new Tuple<List<Float>, List<Float>>(new ArrayList<>(), new ArrayList<>());
+        var tuple = new Tuple<List<Float>, List<Float>>(new ArrayList<>(), new ArrayList<>());
 
         for (Float value : values) {
             if(value < lowThreshold) tuple.one.add(value);
@@ -154,7 +154,7 @@ public class MathUtils {
 
         double lowThreshold = q1 - 1.5 * iqr, highThreshold = q3 + 1.5 * iqr;
 
-        val tuple = new Tuple<List<Long>, List<Long>>(new ArrayList<>(), new ArrayList<>());
+        var tuple = new Tuple<List<Long>, List<Long>>(new ArrayList<>(), new ArrayList<>());
 
         for (Long value : values) {
             if(value < lowThreshold) tuple.one.add(value);
@@ -459,8 +459,8 @@ public class MathUtils {
     public static double hypot(double... value) {
         double total = 0;
 
-        for (double val : value) {
-            total += (val * val);
+        for (double var : value) {
+            total += (var * val);
         }
 
         return Math.sqrt(total);
@@ -469,8 +469,8 @@ public class MathUtils {
     public static float hypot(float... value) {
         float total = 0;
 
-        for (float val : value) {
-            total += (val * val);
+        for (float var : value) {
+            total += (var * val);
         }
 
         return (float) Math.sqrt(total);
@@ -729,7 +729,7 @@ public class MathUtils {
         Map<T, Integer> repeated = new HashMap<>();
 
         //Sorting each value by how to repeat into a map.
-        collect.forEach(val -> {
+        collect.forEach(var -> {
             int number = repeated.getOrDefault(val, 0);
 
             repeated.put(val, number + 1);

@@ -1,7 +1,10 @@
 package cc.funkemunky.api.tinyprotocol;
 
 import cc.funkemunky.api.reflections.types.WrappedClass;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.Arrays;
 
@@ -23,7 +26,7 @@ public class GeneralObject {
     }
 
     public <T> T wrap(Object... args) {
-        val classes = Arrays.stream(args).map(Object::getClass).toArray(Class<?>[]::new);
+        var classes = Arrays.stream(args).map(Object::getClass).toArray(Class<?>[]::new);
 
         T instance = wrapper.getConstructor(classes).newInstance(args);
         object = instance;

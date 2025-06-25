@@ -125,7 +125,7 @@ public enum WrappedEnumDirection {
     }
 
     public static WrappedEnumDirection fromVanilla(Enum object) {
-        return Arrays.stream(values()).filter(val -> val.name().equals(object.name())).findFirst()
+        return Arrays.stream(values()).filter(var -> val.name().equals(object.name())).findFirst()
                 .orElse(WrappedEnumDirection.UP);
     }
 

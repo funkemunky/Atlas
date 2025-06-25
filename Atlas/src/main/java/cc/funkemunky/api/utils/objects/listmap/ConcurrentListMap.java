@@ -26,7 +26,7 @@ public class ConcurrentListMap<K, V> implements ListMap<K, V> {
 
     @Override
     public void add(K key, V value) {
-        val list = getList(key);
+        var list = getList(key);
 
         list.add(value);
 
@@ -39,7 +39,7 @@ public class ConcurrentListMap<K, V> implements ListMap<K, V> {
         for (K k : values.keySet()) {
             List<V> vals = values.get(k);
 
-            for (V val : vals) {
+            for (V var : vals) {
                 if(!val.equals(value)) continue;
 
                 vals.remove(val);
@@ -52,7 +52,7 @@ public class ConcurrentListMap<K, V> implements ListMap<K, V> {
 
     @Override
     public boolean remove(K key, V value) {
-        val vals = getList(key);
+        var vals = getList(key);
 
         boolean removed = vals.remove(value);
 
@@ -79,7 +79,7 @@ public class ConcurrentListMap<K, V> implements ListMap<K, V> {
     @Override
     public ContainsResult containsValue(V value) {
         for (K key : values.keySet()) {
-            val list = values.get(key);
+            var list = values.get(key);
 
             for (V v : list) {
                 if(value.equals(v)) return new ContainsResult(key, true);

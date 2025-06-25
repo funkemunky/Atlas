@@ -4,7 +4,6 @@ import cc.funkemunky.api.utils.Color;
 import cc.funkemunky.api.utils.ItemBuilder;
 import cc.funkemunky.api.utils.Setting;
 import cc.funkemunky.api.utils.menu.button.Button;
-import lombok.val;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 
@@ -45,7 +44,7 @@ public class SettingButton extends Button {
 
                 String stringVal = setting.options[i] instanceof Enum
                         ? ((Enum)setting.options[i]).name() : String.valueOf(setting.options[i]);
-                val stack = new ItemBuilder(Material.BOOK)
+                var stack = new ItemBuilder(Material.BOOK)
                         .amount(1).name(Color.Gold + name)
                         .lore(description, "&7Current State: &6" + stringVal)
                         .build();

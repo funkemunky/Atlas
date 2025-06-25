@@ -6,7 +6,6 @@ import cc.funkemunky.api.bungee.objects.Version;
 import cc.funkemunky.api.utils.Color;
 import cc.funkemunky.api.utils.ConfigSetting;
 import cc.funkemunky.api.utils.Init;
-import lombok.val;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
@@ -15,6 +14,7 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.util.UUID;
+import java.util.logging.Level;
 
 
 @Init
@@ -39,7 +39,7 @@ public class BungeeAPI {
 
             Atlas.getInstance().getBungeeManager().sendData(stream.toByteArray(), "atlas:out");
         } catch(IOException e) {
-            e.printStackTrace();
+            Atlas.getInstance().getLogger().log(Level.WARNING, "Failed to send broadcast msg", e);
         }
     }
 
@@ -52,7 +52,8 @@ public class BungeeAPI {
             oStream.writeUTF(playerName);
             oStream.writeUTF(server);
         } catch (IOException e) {
-            e.printStackTrace();
+            Atlas.getInstance().getLogger().log(Level.WARNING, "Failed to move player to server", e);
+            return;
         }
         Atlas.getInstance().getBungeeManager().sendData(stream.toByteArray());
     }
@@ -70,7 +71,8 @@ public class BungeeAPI {
             oStream.writeUTF(name);
             oStream.writeUTF(reason);
         } catch (IOException e) {
-            e.printStackTrace();
+            Atlas.getInstance().getLogger().log(Level.WARNING, "Failed to kick player", e);
+            return;
         }
 
         Atlas.getInstance().getBungeeManager().sendData(stream.toByteArray());
@@ -86,7 +88,7 @@ public class BungeeAPI {
 
              Atlas.getInstance().getBungeeManager().sendData(stream.toByteArray());
          } catch(IOException e) {
-             e.printStackTrace();
+             Atlas.getInstance().getLogger().log(Level.WARNING, "Failed to request version from Bungee", e);
          }
     }
 
@@ -100,7 +102,7 @@ public class BungeeAPI {
             oStream.close();
             Atlas.getInstance().getBungeeManager().sendData(stream.toByteArray());
         } catch (IOException e) {
-            e.printStackTrace();
+            Atlas.getInstance().getLogger().log(Level.WARNING, "Failed to send message to player: " + name, e);
         }
     }
 
@@ -133,11 +135,11 @@ public class BungeeAPI {
             oStream.writeUTF("commandBungee");
             oStream.writeObject(command);
             oStream.close();
-            val array = stream.toByteArray();
+            var array = stream.toByteArray();
 
             Atlas.getInstance().getBungeeManager().sendData(array, "atlas:out");
         } catch (IOException e) {
-            e.printStackTrace();
+            Atlas.getInstance().getLogger().log(Level.WARNING, "Failed to send command to Bungee", e);
         }
     }
 

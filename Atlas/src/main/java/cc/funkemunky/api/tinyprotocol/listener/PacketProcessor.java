@@ -4,8 +4,6 @@ import cc.funkemunky.api.Atlas;
 import cc.funkemunky.api.tinyprotocol.api.Packet;
 import cc.funkemunky.api.tinyprotocol.listener.functions.PacketListener;
 import cc.funkemunky.api.utils.RunUtils;
-import lombok.val;
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventPriority;
 import org.bukkit.plugin.Plugin;
@@ -131,7 +129,7 @@ public class PacketProcessor {
         PacketInfo info = new PacketInfo(player, packet, type, System.currentTimeMillis());
         if(asyncProcessors.containsKey(type)) {
             RunUtils.taskAsync(() -> {
-                val list = asyncProcessors.get(type);
+                var list = asyncProcessors.get(type);
 
                 for (ListenerEntry tuple : list) {
                     tuple.getListener().onEvent(info);
@@ -140,7 +138,7 @@ public class PacketProcessor {
         }
 
         if(processors.containsKey(type)) {
-            val list = processors.get(type);
+            var list = processors.get(type);
 
             boolean cancelled = false;
             for (ListenerEntry tuple : list) {

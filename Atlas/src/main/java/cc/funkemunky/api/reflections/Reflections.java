@@ -12,18 +12,13 @@ package cc.funkemunky.api
 import cc.funkemunky.api.Atlas;
 import cc.funkemunky.api.reflections.types.WrappedClass;
 import cc.funkemunky.api.tinyprotocol.api.ProtocolVersion;
-import cc.funkemunky.api.tinyprotocol.reflection.Reflection;
 import cc.funkemunky.api.utils.ClassScanner;
 import cc.funkemunky.api.utils.objects.QuadFunction;
 import cc.funkemunky.api.utils.objects.TriFunction;
 import lombok.Getter;
 import lombok.SneakyThrows;
-import lombok.val;
 import org.bukkit.Bukkit;
-import org.bukkit.craftbukkit.Main;
 
-import java.awt.print.Paper;
-import java.io.File;
 import java.lang.invoke.LambdaMetafactory;
 import java.lang.invoke.MethodHandles;
 import java.lang.invoke.MethodType;
@@ -107,7 +102,7 @@ public class Reflections {
     @SneakyThrows
     public static <T> T createMethodLambda(Method method) {
         if(!method.isAccessible()) return null;
-        val handle = lookup.unreflect(method);
+        var handle = lookup.unreflect(method);
         Class<?> functionType;
         switch(method.getParameterCount()) {
             case 0:

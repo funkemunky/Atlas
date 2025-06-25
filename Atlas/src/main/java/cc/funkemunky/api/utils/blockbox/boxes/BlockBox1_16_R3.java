@@ -6,13 +6,10 @@ import cc.funkemunky.api.utils.world.BlockData;
 import cc.funkemunky.api.utils.world.CollisionBox;
 import cc.funkemunky.api.utils.world.types.ComplexCollisionBox;
 import cc.funkemunky.api.utils.world.types.SimpleCollisionBox;
-import lombok.val;
 import net.minecraft.server.v1_16_R3.*;
-import net.minecraft.server.v1_16_R3.GenericAttributes;
-import net.minecraft.server.v1_16_R3.World;
 import org.bukkit.Location;
-import org.bukkit.craftbukkit.v1_16_R3.block.CraftBlock;
 import org.bukkit.craftbukkit.v1_16_R3.CraftWorld;
+import org.bukkit.craftbukkit.v1_16_R3.block.CraftBlock;
 import org.bukkit.craftbukkit.v1_16_R3.entity.CraftEntity;
 import org.bukkit.craftbukkit.v1_16_R3.entity.CraftLivingEntity;
 import org.bukkit.craftbukkit.v1_16_R3.entity.CraftPlayer;
@@ -39,7 +36,7 @@ public class BlockBox1_16_R3 implements BlockBox {
 
     @Override
     public float getMovementFactor(Player player) {
-        val attribute = ((CraftPlayer)player).getHandle()
+        var attribute = ((CraftPlayer)player).getHandle()
                 .getAttributeInstance(GenericAttributes.MOVEMENT_SPEED);
         return (float) (attribute != null ? attribute.getValue() : 0);
     }

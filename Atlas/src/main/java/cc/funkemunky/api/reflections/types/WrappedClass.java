@@ -8,11 +8,9 @@
  */
 package cc.funkemunky.api.reflections.types;
 
-import cc.funkemunky.api.utils.RunUtils;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import lombok.Getter;
-import lombok.val;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
@@ -101,7 +99,7 @@ public class WrappedClass {
     }
 
     public WrappedConstructor getConstructor() {
-        val optional = Arrays.stream(this.parent.getConstructors()).filter(cons -> cons.getParameterCount() == 0).findFirst();
+        var optional = Arrays.stream(this.parent.getConstructors()).filter(cons -> cons.getParameterCount() == 0).findFirst();
         return optional.map(constructor -> new WrappedConstructor(this, constructor)).orElse(null);
     }
 

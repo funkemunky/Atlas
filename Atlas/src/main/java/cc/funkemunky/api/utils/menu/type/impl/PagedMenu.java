@@ -8,7 +8,6 @@ import cc.funkemunky.api.utils.menu.type.BukkitInventoryHolder;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
-import lombok.val;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -97,7 +96,7 @@ public class PagedMenu implements Menu {
         holder.getInventory().clear();
         int size = (dimension.getRows() - 1) * dimension.getColumns();
         if(currentPage > 1) {
-            val previous = new ItemBuilder(Material.BOOK).amount(currentPage - 1).name("&ePrevious Page").build();
+            var previous = new ItemBuilder(Material.BOOK).amount(currentPage - 1).name("&ePrevious Page").build();
             setItem(dimension.getSize() * currentPage - 6, new Button(false, previous,
                     (player, info) -> {
                         currentPage--;
@@ -105,7 +104,7 @@ public class PagedMenu implements Menu {
                     }));
             holder.getInventory().setItem(dimension.getSize() - 6, previous);
         }
-        val next = new ItemBuilder(Material.BOOK).amount(currentPage + 1).name("&eNext Page").build();
+        var next = new ItemBuilder(Material.BOOK).amount(currentPage + 1).name("&eNext Page").build();
         setItem(dimension.getSize() * currentPage - 4,  new Button(false, next, (player, info) -> {
             currentPage++;
             buildInventory(false);

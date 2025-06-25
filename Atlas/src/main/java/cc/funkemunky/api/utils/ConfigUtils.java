@@ -21,10 +21,10 @@ public class ConfigUtils {
     }
 
     private static String saveToString(YamlConfiguration yaml) {
-        val field = ReflectionsUtil.getFieldByName(YamlConfiguration.class, "yamlOptions");
-        val yamlOptions = (DumperOptions) ReflectionsUtil.getFieldValue(field, yaml);
-        val rField = ReflectionsUtil.getFieldByName(YamlConfiguration.class, "yamlRepresenter");
-        val yamlRepresenter = (Representer) ReflectionsUtil.getFieldValue(rField, yaml);
+        var field = ReflectionsUtil.getFieldByName(YamlConfiguration.class, "yamlOptions");
+        var yamlOptions = (DumperOptions) ReflectionsUtil.getFieldValue(field, yaml);
+        var rField = ReflectionsUtil.getFieldByName(YamlConfiguration.class, "yamlRepresenter");
+        var yamlRepresenter = (Representer) ReflectionsUtil.getFieldValue(rField, yaml);
         yamlOptions.setIndent(options(yaml).indent());
         yamlOptions.setDefaultFlowStyle(DumperOptions.FlowStyle.BLOCK);
         yamlOptions.setAllowUnicode("UTF-8");
@@ -72,7 +72,7 @@ public class ConfigUtils {
     }
 
     private static YamlConfigurationOptions options(FileConfiguration atlasConfig) {
-        val method = ReflectionsUtil.getMethod(YamlConfiguration.class, "options");
+        var method = ReflectionsUtil.getMethod(YamlConfiguration.class, "options");
         return (YamlConfigurationOptions) ReflectionsUtil.getMethodValue(method, atlasConfig);
     }
 

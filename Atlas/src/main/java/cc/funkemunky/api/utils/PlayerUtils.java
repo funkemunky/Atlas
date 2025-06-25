@@ -1,7 +1,6 @@
 package cc.funkemunky.api.utils;
 
 import cc.funkemunky.api.tinyprotocol.api.ProtocolVersion;
-import lombok.val;
 import org.bukkit.Location;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Entity;
@@ -17,7 +16,7 @@ public class PlayerUtils {
     public static int getDepthStriderLevel(Player player) {
         if(DEPTH == null) return 0;
 
-        val boots = player.getInventory().getBoots();
+        var boots = player.getInventory().getBoots();
 
         if(boots == null) return 0;
 

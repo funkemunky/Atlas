@@ -23,7 +23,6 @@ import cc.funkemunky.api.utils.RunUtils;
 import com.google.common.collect.Lists;
 import com.google.common.collect.MapMaker;
 import io.netty.channel.*;
-import lombok.val;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -129,7 +128,7 @@ public abstract class TinyProtocol1_8 implements AbstractTinyProtocol {
 
 		/*Object ms = CraftReflection.getMinecraftServer();
 
-		val scMethod = MinecraftReflection.minecraftServer
+		var scMethod = MinecraftReflection.minecraftServer
 				.getMethodByType(MinecraftReflection.serverConnection.getParent(), 0);
 
 		serverConnection = scMethod.invoke(ms);
@@ -404,7 +403,7 @@ public abstract class TinyProtocol1_8 implements AbstractTinyProtocol {
 			// Inject our packet interceptor
 			if (interceptor == null) {
 				interceptor = new PacketInterceptor();
-				val context = channel.pipeline().context("packet_handler");
+				var context = channel.pipeline().context("packet_handler");
 				if(context != null) {
 					channel.pipeline().addBefore("packet_handler", handlerName, interceptor);
 					uninjectedChannels.remove(channel);

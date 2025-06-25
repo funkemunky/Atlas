@@ -1,7 +1,6 @@
 package cc.funkemunky.api.utils.world;
 
 import cc.funkemunky.api.reflections.Reflections;
-import cc.funkemunky.api.reflections.impl.MinecraftReflection;
 import cc.funkemunky.api.tinyprotocol.api.ProtocolVersion;
 import cc.funkemunky.api.utils.MiscUtils;
 import cc.funkemunky.api.utils.ReflectionsUtil;
@@ -9,21 +8,11 @@ import cc.funkemunky.api.utils.XMaterial;
 import cc.funkemunky.api.utils.world.blocks.*;
 import cc.funkemunky.api.utils.world.state.BlockStateManager;
 import cc.funkemunky.api.utils.world.types.*;
-import lombok.val;
-import net.minecraft.core.EnumDirection;
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
-import org.bukkit.block.BlockState;
 import org.bukkit.block.data.Directional;
-import org.bukkit.craftbukkit.v1_17_R1.block.impl.CraftAmethystCluster;
-import org.bukkit.material.Cake;
-import org.bukkit.material.Gate;
-import org.bukkit.material.MaterialData;
-import org.bukkit.material.Vine;
 
-import javax.xml.crypto.dsig.SignatureMethod;
 import java.util.*;
 import java.util.stream.Stream;
 
@@ -259,7 +248,7 @@ public enum BlockData {
             XMaterial.SOUL_SAND.parseMaterial()),
     _PICKLE((version, block) -> {
         if(version.isOrAbove(ProtocolVersion.V1_13)) {
-            val pickleClass = Reflections.getClass("org.bukkit.block.data.type.SeaPickle");
+            var pickleClass = Reflections.getClass("org.bukkit.block.data.type.SeaPickle");
 
             int pickles = pickleClass.getMethod("getPickles").invoke(block.getBlockData());
 

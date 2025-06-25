@@ -10,7 +10,6 @@ import cc.funkemunky.api.utils.JsonMessage;
 import cc.funkemunky.api.utils.MathUtils;
 import cc.funkemunky.api.utils.MiscUtils;
 import lombok.Getter;
-import lombok.val;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
@@ -21,7 +20,6 @@ import org.bukkit.plugin.SimplePluginManager;
 import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.Field;
-import java.lang.reflect.Method;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
@@ -78,11 +76,11 @@ public class CommandManager implements CommandExecutor {
     public void unregisterCommands(Plugin plugin) {
         commands.keySet().stream().filter(key -> commands.get(key).getPlugin().getName().equals(plugin.getName())).forEach(key -> {
 
-            val split = key.split("\\.");
+            var split = key.split("\\.");
 
-            val name = split[0];
+            var name = split[0];
 
-            val cmd = map.getCommand(name);
+            var cmd = map.getCommand(name);
 
             if(cmd != null) {
                 cmd.unregister(map);
@@ -134,7 +132,7 @@ public class CommandManager implements CommandExecutor {
         List<String> argsList = new ArrayList<>();
         String[] args;
         if(label.contains(":")) {
-            val splitLabel = (label.replace(label.split(":")[0] + ":", ""))
+            var splitLabel = (label.replace(label.split(":")[0] + ":", ""))
                     .split(":");
             argsList.addAll(Arrays.asList(splitLabel));
             argsList.addAll(Arrays.asList(argsArray));
@@ -323,7 +321,7 @@ public class CommandManager implements CommandExecutor {
 
         commands.put(annotation.name().toLowerCase(), cmdReg);
 
-        val split = ("/" + annotation.name().toLowerCase()).split("\\.");
+        var split = ("/" + annotation.name().toLowerCase()).split("\\.");
         if(split.length > 0) {
             String[] requirements;
             if(split.length > 1) {
@@ -342,7 +340,7 @@ public class CommandManager implements CommandExecutor {
         if (map.getCommand(cmdLabel) == null) {
             SpigotCommand cmd = new SpigotCommand(cmdLabel, this, plugin);
             Arrays.stream(annotation.tabCompletions()).forEach(string -> {
-                val split1 = ("/" + annotation.name().toLowerCase()).split("\\.");
+                var split1 = ("/" + annotation.name().toLowerCase()).split("\\.");
                 String[] requirements1;
                 if(split1.length > 1) {
                     requirements1 = new String[split1.length - 1];

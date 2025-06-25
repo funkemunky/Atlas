@@ -1,7 +1,6 @@
 package cc.funkemunky.api.commands;
 
 import lombok.Getter;
-import lombok.val;
 import org.bukkit.plugin.Plugin;
 
 import java.util.ArrayList;
@@ -19,7 +18,7 @@ public class FunkeCommandManager {
     }
 
     public void addCommand(Plugin plugin, FunkeCommand command) {
-        val list = commands.getOrDefault(plugin, new ArrayList<>());
+        var list = commands.getOrDefault(plugin, new ArrayList<>());
 
         list.add(command);
 
@@ -32,7 +31,7 @@ public class FunkeCommandManager {
 
     public void removeCommand(String name) {
         commands.keySet().forEach(key -> {
-            val list = commands.get(key);
+            var list = commands.get(key);
 
             list.stream().filter(cmd -> cmd.getName().equalsIgnoreCase(name)).forEach(list::remove);
         });
@@ -44,7 +43,7 @@ public class FunkeCommandManager {
 
     public void removeCommand(FunkeCommand command) {
         commands.keySet().stream().filter(key -> commands.get(key).contains(command)).forEach(key -> {
-            val list = commands.get(key);
+            var list = commands.get(key);
 
             list.remove(command);
 

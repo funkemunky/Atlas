@@ -8,15 +8,12 @@ import cc.funkemunky.api.reflections.types.WrappedField;
 import cc.funkemunky.api.tinyprotocol.api.ProtocolVersion;
 import cc.funkemunky.api.utils.KLocation;
 import cc.funkemunky.api.utils.world.types.SimpleCollisionBox;
-import lombok.val;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.util.Vector;
 
 import java.util.EnumMap;
-import java.util.HashMap;
-import java.util.Map;
 
 public class EntityData {
     private static final EnumMap<EntityType, CollisionBox> entityBounds = new EnumMap<>(EntityType.class);
@@ -35,7 +32,7 @@ public class EntityData {
                 return new SimpleCollisionBox(new Vector(), (float)fieldWidth.get(ventity),
                         (float)fieldLength.get(ventity));
             } else {
-                val blockBox = Atlas.getInstance().getBlockBoxManager().getBlockBox();
+                var blockBox = Atlas.getInstance().getBlockBoxManager().getBlockBox();
                 return new SimpleCollisionBox(new Vector(), blockBox.getWidth(entity), blockBox.getHeight(entity));
             }
         }).copy();

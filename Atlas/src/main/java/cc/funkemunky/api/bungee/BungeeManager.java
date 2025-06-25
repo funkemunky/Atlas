@@ -11,7 +11,6 @@ import cc.funkemunky.api.tinyprotocol.packet.in.WrappedInCustomPayload;
 import cc.funkemunky.api.utils.RunUtils;
 import cc.funkemunky.api.utils.Tuple;
 import lombok.Getter;
-import lombok.val;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.messaging.PluginMessageListener;
@@ -46,7 +45,7 @@ public class BungeeManager implements PluginMessageListener {
         Bukkit.getMessenger().registerIncomingPluginChannel(Atlas.getInstance(), atlasIn, this);
 
         try {
-            val wrappedClass = new WrappedClass(Class.forName("org.spigotmc.SpigotConfig"));
+            var wrappedClass = new WrappedClass(Class.forName("org.spigotmc.SpigotConfig"));
 
             isBungee = wrappedClass.getFieldByName("bungee").get(null);
         } catch(ClassNotFoundException e) {
