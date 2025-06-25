@@ -23,21 +23,20 @@ jobs:
           restore-keys: ${{ runner.os }}-m2-
       - name: Compile
         run: mvn -B clean package -DskipTests
-        working-directory: AtlasParent/
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Upload Atlas
         uses: actions/upload-artifact@v4
         with:
           name: AtlasBukkit
-          path: AtlasParent/AtlasBukkit/target/AtlasBukkit-*.jar
+          path: AtlasBukkit/target/AtlasBukkit-*.jar
       - name:  Upload AtlasBungee
         uses: actions/upload-artifact@v4
         with:
           name: AtlasBungee
-          path: AtlasParent/AtlasBungee/target/AtlasBungee-*.jar
+          path: AtlasBungee/target/AtlasBungee-*.jar
       - name: Upload AtlasVelocity
         uses: actions/upload-artifact@v4
         with:
           name: AtlasVelocity
-          path: AtlasParent/AtlasVelocity/target/AtlasVelocity-*.jar
+          path: AtlasVelocity/target/AtlasVelocity-*.jar
