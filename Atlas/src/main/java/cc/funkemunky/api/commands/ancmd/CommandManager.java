@@ -5,8 +5,6 @@ import cc.funkemunky.api.commands.tab.TabHandler;
 import cc.funkemunky.api.reflections.types.WrappedClass;
 import cc.funkemunky.api.reflections.types.WrappedField;
 import cc.funkemunky.api.reflections.types.WrappedMethod;
-import cc.funkemunky.api.tinyprotocol.api.ProtocolVersion;
-import cc.funkemunky.api.tinyprotocol.packet.types.v1_13.DontImportIfNotLatestThanks;
 import cc.funkemunky.api.utils.Color;
 import cc.funkemunky.api.utils.JsonMessage;
 import cc.funkemunky.api.utils.MathUtils;
@@ -20,23 +18,23 @@ import org.bukkit.command.SimpleCommandMap;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.SimplePluginManager;
+import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.logging.Level;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 @Getter
-@Deprecated
 public class CommandManager implements CommandExecutor {
-    private Map<String, CommandRegister> commands = new ConcurrentHashMap<>();
-    private Plugin plugin;
+    private final Map<String, CommandRegister> commands = new ConcurrentHashMap<>();
+    private final Plugin plugin;
     @Getter
     public SimpleCommandMap map;
     public List<SpigotCommand> registered = new ArrayList<>();
-    private static DontImportIfNotLatestThanks stuff;
 
     public CommandManager(Plugin plugin) {
         this.plugin = plugin;
@@ -45,21 +43,15 @@ public class CommandManager implements CommandExecutor {
     }
 
     public void createCommandMap(Plugin plugin) {
-        if (plugin.getServer().getPluginManager() instanceof SimplePluginManager) {
-            SimplePluginManager manager = (SimplePluginManager) plugin.getServer().getPluginManager();
+        if (plugin.getServer().getPluginManager() instanceof SimplePluginManager manager) {
             try {
                 Field field = SimplePluginManager.class.getDeclaredField("commandMap");
                 field.setAccessible(true);
                 map = (SimpleCommandMap) field.get(manager);
             } catch (IllegalArgumentException | SecurityException | NoSuchFieldException | IllegalAccessException e) {
-                e.printStackTrace();
+                Atlas.getInstance().getLogger().log(Level.WARNING, "Failed to create command map", e);
             }
         }
-    }
-
-    @Deprecated
-    public void registerCommands(Plugin plugin, Object clazz) {
-        registerCommands(clazz);
     }
 
     public void registerCommands(Object clazz) {
@@ -78,7 +70,7 @@ public class CommandManager implements CommandExecutor {
                         }
                     });
         } catch(Exception e) {
-            e.printStackTrace();
+            Atlas.getInstance().getLogger().log(Level.WARNING, "Failed to register commands for " + clazz.getClass().getName(), e);
         }
     }
 
@@ -86,7 +78,7 @@ public class CommandManager implements CommandExecutor {
     public void unregisterCommands(Plugin plugin) {
         commands.keySet().stream().filter(key -> commands.get(key).getPlugin().getName().equals(plugin.getName())).forEach(key -> {
 
-            val split = key.split(".");
+            val split = key.split("\\.");
 
             val name = split[0];
 
@@ -108,8 +100,8 @@ public class CommandManager implements CommandExecutor {
         commands.clear();
     }
 
-    private static WrappedClass scmClass = new WrappedClass(SimpleCommandMap.class);
-    private static WrappedField fieldKnownCommands = scmClass.getFieldByType(Map.class, 0);
+    private static final WrappedClass scmClass = new WrappedClass(SimpleCommandMap.class);
+    private static final WrappedField fieldKnownCommands = scmClass.getFieldByType(Map.class, 0);
 
     public void unregisterCommand(String name) {
         registered.stream()
@@ -133,12 +125,12 @@ public class CommandManager implements CommandExecutor {
                 }
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            Atlas.getInstance().getLogger().log(Level.WARNING, "Failed to unregister command: " + cmd.getName(), e);
         }
     }
 
     @Override
-    public boolean onCommand(CommandSender sender, org.bukkit.command.Command cmd, String label, String[] argsArray) {
+    public boolean onCommand(@NotNull CommandSender sender, @NotNull org.bukkit.command.Command cmd, String label, String[] argsArray) {
         List<String> argsList = new ArrayList<>();
         String[] args;
         if(label.contains(":")) {
@@ -149,10 +141,10 @@ public class CommandManager implements CommandExecutor {
             args = argsList.toArray(new String[0]);
         } else args = argsArray;
         for(int arg = args.length; arg >= 0 ; arg--) {
-            StringBuffer buffer = new StringBuffer();
+            StringBuilder buffer = new StringBuilder();
             buffer.append(label.toLowerCase());
             for (int x = 0; x < arg; x++) {
-                buffer.append("." + args[x].toLowerCase());
+                buffer.append(".").append(args[x].toLowerCase());
             }
             String bufferString = buffer.toString();
             if(commands.containsKey(buffer.toString())) {
@@ -183,7 +175,8 @@ public class CommandManager implements CommandExecutor {
                                 try {
                                     entry.getMethod().invoke(entry.getObject(), adapter);
                                 } catch (Exception e) {
-                                    e.printStackTrace();
+                                    Atlas.getInstance().getLogger().log(Level.WARNING,
+                                            "Failed to invoke command method: " + entry.getMethod().getMethod().getName(), e);
                                 }
                             } else {
                                 sender.sendMessage(Color.translate(command.noPermissionMessage()));
@@ -211,7 +204,8 @@ public class CommandManager implements CommandExecutor {
                             try {
                                 entry.getMethod().invoke(entry.getObject(), adapter);
                             } catch (Exception e) {
-                                e.printStackTrace();
+                                Atlas.getInstance().getLogger().log(Level.WARNING,
+                                        "Failed to invoke command method: " + entry.getMethod().getMethod().getName(), e);
                             }
                         } else {
                             sender.sendMessage(Color.translate(command.noPermissionMessage()));
@@ -259,7 +253,7 @@ public class CommandManager implements CommandExecutor {
             if (sender instanceof Player) {
                 StringBuilder cmdaliasesFormatted = new StringBuilder();
                 List<String> cmdaliases = Arrays.asList(command.getAnnotation().aliases());
-                if (cmdaliases.size() > 0) {
+                if (!cmdaliases.isEmpty()) {
                     for (String aliase : cmdaliases) {
                         cmdaliasesFormatted.append(scheme.getValue()).append(aliase).append(scheme.getBody())
                                 .append(", ");
@@ -284,7 +278,7 @@ public class CommandManager implements CommandExecutor {
                     Command argument = arguments.get(i);
                     StringBuilder aliasesFormatted = new StringBuilder();
                     List<String> aliases = Arrays.asList(argument.aliases());
-                    if (aliases.size() > 0) {
+                    if (!aliases.isEmpty()) {
                         for (String aliase : aliases) {
                             aliasesFormatted.append(scheme.getValue()).append(aliase).append(scheme.getBody())
                                     .append(", ");
@@ -301,7 +295,7 @@ public class CommandManager implements CommandExecutor {
                             : scheme.getTitle() + "Permission: " + scheme.getValue() + "none")
                             + "\n" + scheme.getTitle() +  "Aliases: " + scheme.getValue() + aliasesFormatted.toString());
                     message.addText(scheme.getBody()+ "/" + command.getLabel().toLowerCase()
-                            + scheme.getValue() + " " + (argument.display().length() > 0 ? argument.display()
+                            + scheme.getValue() + " " + (!argument.display().isEmpty() ? argument.display()
                             : argument.name()) + scheme.getBody() + " to " + argument.description())
                             .addHoverText(hoverText);
                     message.sendToPlayer((Player) sender);
@@ -312,7 +306,7 @@ public class CommandManager implements CommandExecutor {
                 for (int i = (page - 1) * 6; i < Math.min(arguments.size(), page * 6); i++) {
                     Command argument = arguments.get(i);
                     sender.sendMessage(scheme.getBody()+ "/" + command.getLabel().toLowerCase() + scheme.getValue()
-                            + " " + (argument.display().length() > 0 ? argument.display() : argument.name())
+                            + " " + (!argument.display().isEmpty() ? argument.display() : argument.name())
                             + scheme.getBody() + " to " + argument.description());
                 }
             }
@@ -348,7 +342,7 @@ public class CommandManager implements CommandExecutor {
         if (map.getCommand(cmdLabel) == null) {
             SpigotCommand cmd = new SpigotCommand(cmdLabel, this, plugin);
             Arrays.stream(annotation.tabCompletions()).forEach(string -> {
-                val split1 = ("/" + annotation.name().toLowerCase()).split(".");
+                val split1 = ("/" + annotation.name().toLowerCase()).split("\\.");
                 String[] requirements1;
                 if(split1.length > 1) {
                     requirements1 = new String[split1.length - 1];
@@ -365,7 +359,7 @@ public class CommandManager implements CommandExecutor {
             registered.add(cmd);
 
             if(label.contains(".")) {
-                String[] args = label.split(".");
+                String[] args = label.split("\\.");
 
                 if(args.length > 1) {
                     StringBuilder completeLabel = new StringBuilder();
@@ -380,36 +374,37 @@ public class CommandManager implements CommandExecutor {
             }
         }
         if (!command.description().equalsIgnoreCase("") && Objects.equals(cmdLabel, label)) {
-            map.getCommand(cmdLabel).setDescription(command.description());
+            var cmdFromLabel = map.getCommand(cmdLabel);
+
+            if(cmdFromLabel != null) {
+                cmdFromLabel.setDescription(command.description());
+            }
         }
         if (!command.usage().equalsIgnoreCase("") && Objects.equals(cmdLabel, label)) {
-            map.getCommand(cmdLabel).setUsage(command.usage());
+            var cmdFromLabel = map.getCommand(cmdLabel);
+            if(cmdFromLabel != null) {
+                cmdFromLabel.setUsage(command.usage());
+            }
         }
-    }
-
-    @Deprecated
-    public void registerCommand(Plugin plugin, Command command, String label, Method method, Object clazz) {
-        registerCommand(command, label, new WrappedMethod(new WrappedClass(clazz.getClass()), method), clazz);
     }
 
     public void addCompletionsForCommand(String command, String...completions) {
         if(commands.containsKey(command)) {
             CommandRegister reg = commands.get(command);
 
-            String[] split = command.split(".");
+            String[] split = command.split("\\.");
             String label = split[0];
 
             SpigotCommand cmd = (SpigotCommand) map.getCommand(label);
 
+
             for (String completion : completions) {
+                if(cmd == null) {
+                    Atlas.getInstance().getLogger().log(Level.WARNING, "Command " + label + " not found in command map.");
+                    break;
+                }
                 cmd.completer.addCompleter(command, completion);
             }
-        }
-    }
-
-    static {
-        if(ProtocolVersion.getGameVersion().isOrAbove(ProtocolVersion.V1_13)) {
-            stuff = new DontImportIfNotLatestThanks();
         }
     }
 }

@@ -9,7 +9,6 @@ import java.util.*;
 
 @Getter
 @Setter
-@Deprecated
 public abstract class FunkeArgument {
     private FunkeCommand parent;
     private String name, display, description;
@@ -18,15 +17,6 @@ public abstract class FunkeArgument {
     private Map<Integer, List<String>> tabComplete = new HashMap<>();
     private String[] permission;
 
-    public FunkeArgument(FunkeCommand parent, String name, String display, String description) {
-        this.parent = parent;
-        this.name = name;
-        this.display = display;
-        this.description = description;
-
-        playerOnly = false;
-    }
-
     public FunkeArgument(FunkeCommand parent, String name, String display, String description, String... permission) {
         this.parent = parent;
         this.name = name;
@@ -34,10 +24,6 @@ public abstract class FunkeArgument {
         this.description = description;
         this.permission = permission;
         playerOnly = false;
-    }
-
-    public void addAlias(String alias) {
-        aliases.add(alias);
     }
 
     public void addTabComplete(int arg, String... name) {
@@ -50,8 +36,5 @@ public abstract class FunkeArgument {
 
     public abstract void onArgument(CommandSender sender, Command cmd, String[] args);
 
-    public FunkeCommand getParent() {
-        return this.parent;
-    }
 }
 

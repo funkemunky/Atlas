@@ -1,16 +1,18 @@
 package cc.funkemunky.api.utils;
 
+import cc.funkemunky.api.Atlas;
 import cc.funkemunky.api.tinyprotocol.api.TinyProtocolHandler;
 import cc.funkemunky.api.tinyprotocol.packet.out.WrappedOutChatPacket;
 import cc.funkemunky.api.tinyprotocol.packet.types.WrappedChatMessageType;
+import lombok.Getter;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.chat.ComponentSerializer;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.*;
+import java.util.logging.Level;
 
-@Deprecated
 public class JsonMessage {
     private final List<AMText> Text = new ArrayList<>();
 
@@ -38,7 +40,7 @@ public class JsonMessage {
 
             TinyProtocolHandler.sendPacket(player, packet);
         } catch (Exception e1) {
-            e1.printStackTrace();
+            Atlas.getInstance().getLogger().log(Level.WARNING, "Failed to send json message to " + player.getName(), e1);
         }
     }
 
@@ -54,18 +56,15 @@ public class JsonMessage {
         }
     }
 
-    public class AMText {
+    public static class AMText {
         private final Map<String, Map.Entry<String, String>> Modifiers;
+        @Getter
         private String Message;
 
         AMText(String Text) {
             this.Message = "";
             this.Modifiers = new HashMap<>();
             this.Message = Text;
-        }
-
-        public String getMessage() {
-            return this.Message;
         }
 
         String getFormattedMessage() {
@@ -101,15 +100,15 @@ public class JsonMessage {
             try {
                 String Event2 = "hoverEvent";
                 String Key = "show_item";
-                Class craftItemStack = ReflectionsUtil.getCBClass("CraftItemStack");
-                Class items = Class.forName("org.bukkit.inventory.ItemStack");
-                Object NMS = craftItemStack.getClass().getMethod("asNMSCopy", items).invoke(Item);
-                String Value = NMS.getClass().getMethod("getTag", new Class[0]).toString();
+                Class<?> craftItemStack = ReflectionsUtil.getCBClass("CraftItemStack");
+                Class<?> items = Class.forName("org.bukkit.inventory.ItemStack");
+                Object NMS = craftItemStack.getMethod("asNMSCopy", items).invoke(Item);
+                String Value = NMS.getClass().getMethod("getTag").toString();
                 AbstractMap.SimpleEntry<String, String> Values2 = new AbstractMap.SimpleEntry<>(Key, Value);
                 this.Modifiers.put(Event2, Values2);
                 return this;
             } catch (Exception e) {
-                e.printStackTrace();
+                Atlas.getInstance().getLogger().log(Level.WARNING, "Failed to add hover item", e);
                 return null;
             }
         }

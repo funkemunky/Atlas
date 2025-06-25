@@ -9,8 +9,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+@SuppressWarnings("unused")
 @Getter
-@Deprecated
 public class FunkeCommandManager {
     private final Map<Plugin, List<FunkeCommand>> commands;
 

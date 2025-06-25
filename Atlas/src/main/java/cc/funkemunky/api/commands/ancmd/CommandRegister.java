@@ -9,7 +9,6 @@ import org.bukkit.plugin.Plugin;
 @AllArgsConstructor
 @Getter
 @Setter
-@Deprecated
 public class CommandRegister {
     private Plugin plugin;
     private WrappedMethod method;

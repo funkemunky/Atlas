@@ -16,6 +16,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -23,50 +24,19 @@ import java.util.List;
 
 @Getter
 @Setter
-@Deprecated
 public abstract class FunkeCommand
         implements CommandExecutor, TabCompleter {
-    private static FunkeCommand instance;
     private String name, display, permission, description, adminPerm = "api.admin";
     private boolean helpPage, playerOnly;
     private final List<FunkeArgument> arguments;
     private CommandMessages commandMessages;
 
     public FunkeCommand(JavaPlugin plugin, String name, String display, String description, String permission) {
-        this.name = name;
-        this.display = display;
-        this.permission = permission;
-        this.description = description;
-
-        commandMessages = new CommandMessages("No permission.", "Invalid arguments. Please check the help page for more information.", "You must be a player to use this feature", "Only console can use this feature.", Color.Gray, Color.Yellow, Color.Gold, Color.Red, Color.White, Color.Green);
-
-        this.arguments = new ArrayList<>();
-        instance = this;
-        helpPage = true;
-        plugin.getCommand(name).setExecutor(this);
-        plugin.getCommand(name).setTabCompleter(this);
-
-        this.addArguments();
+        this(plugin, name, display, description, permission, false, false);
     }
 
     public FunkeCommand(JavaPlugin plugin, String name, String display, String description, String permission, boolean registerLater) {
-        this.name = name;
-        this.display = display;
-        this.permission = permission;
-        this.description = description;
-
-        commandMessages = new CommandMessages("No permission.", "Invalid arguments. Please check the help page for more information.", "You must be a player to use this feature", "Only console can use this feature.", Color.Gray, Color.Yellow, Color.Gold, Color.Red, Color.White, Color.Green);
-
-        this.arguments = new ArrayList<>();
-        instance = this;
-        helpPage = true;
-
-        if(!registerLater) {
-            plugin.getCommand(name).setExecutor(this);
-            plugin.getCommand(name).setTabCompleter(this);
-        }
-
-        this.addArguments();
+        this(plugin, name, display, description, permission, false, registerLater);
     }
 
     public FunkeCommand(JavaPlugin plugin, String name, String display, String permission, String description, boolean helpPage, boolean registerLater) {
@@ -77,19 +47,23 @@ public abstract class FunkeCommand
         this.helpPage = helpPage;
 
         commandMessages = new CommandMessages("No permission.", "Invalid arguments. Please check the help page for more information.", "You must be a player to use this feature", "Only console can use this feature.", Color.Gray, Color.Yellow, Color.Gold, Color.Red, Color.White, Color.Green);
-        commandMessages = new CommandMessages("No permission.", "Invalid arguments. Please check the help page for more information.", "You must be a player to use this feature", "Only console can use this feature.", Color.Gray, Color.Yellow, Color.Gold, Color.Red, Color.White, Color.Green);
 
         this.arguments = new ArrayList<>();
-        instance = this;
         if(!registerLater) {
-            plugin.getCommand(name).setExecutor(this);
-            plugin.getCommand(name).setTabCompleter(this);
+            var command = plugin.getCommand(name);
+
+            if(command != null) {
+                command.setExecutor(this);
+                command.setTabCompleter(this);
+            } else {
+                Atlas.getInstance().getLogger().warning("Command " + name + " not found in plugin.yml. Please ensure it is registered.");
+            }
         }
 
         this.addArguments();
     }
 
-    public List<String> onTabComplete(CommandSender commandSender, Command command, String label, String[] args) {
+    public List<String> onTabComplete(@NotNull CommandSender commandSender, @NotNull Command command, String label, String[] args) {
         Atlas.getInstance().getProfile().start("command:" + getName() + "#tabComplete");
         List<String> toReturn = new ArrayList<>();
 
@@ -125,11 +99,11 @@ public abstract class FunkeCommand
 
         }
         Atlas.getInstance().getProfile().stop("command:" + getName() + "#tabComplete");
-        return toReturn.size() == 0 ? null : toReturn;
+        return toReturn.isEmpty() ? null : toReturn;
     }
 
     @Override
-    public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
+    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command cmd, @NotNull String label, String[] args) {
         Atlas.getInstance().getProfile().start("command:" + getName() + "#onCommand");
         if (this.permission != null && !sender.hasPermission(this.permission)) {
             sender.sendMessage(commandMessages.getErrorColor() + commandMessages.getNoPermission());
@@ -155,7 +129,7 @@ public abstract class FunkeCommand
 
                         StringBuilder aliasesFormatted = new StringBuilder();
                         List<String> aliases = argument.getAliases();
-                        if (aliases.size() > 0) {
+                        if (!aliases.isEmpty()) {
                             for (String aliase : aliases) {
                                 aliasesFormatted.append(Color.White).append(aliase).append(Color.Gray).append(", ");
                             }

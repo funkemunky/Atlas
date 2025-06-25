@@ -10,7 +10,6 @@ import org.bukkit.entity.Player;
 @Getter
 @Setter
 @AllArgsConstructor
-@Deprecated
 public class CommandAdapter {
     private CommandSender sender;
     private Command command;

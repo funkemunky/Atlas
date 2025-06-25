@@ -9,10 +9,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@Deprecated
 public class SpigotCompleter implements TabCompleter {
 
-    private Map<String, List<String>> completers = new HashMap<>();
+    private final Map<String, List<String>> completers = new HashMap<>();
 
     public void addCompleter(String label, String completer) {
         List<String> completers = this.completers.getOrDefault(label, new ArrayList<>());
@@ -22,15 +21,15 @@ public class SpigotCompleter implements TabCompleter {
         this.completers.put(label, completers);
     }
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings("NullableProblems")
     @Override
     public List<String> onTabComplete(CommandSender sender, Command command, String label, String[] args) {
         for (int i = args.length; i >= 0; i--) {
-            StringBuffer buffer = new StringBuffer();
+            StringBuilder buffer = new StringBuilder();
             buffer.append(label.toLowerCase());
             for (int x = 0; x < i; x++) {
-                if (!args[x].equals("") && !args[x].equals(" ")) {
-                    buffer.append("." + args[x].toLowerCase());
+                if (!args[x].isEmpty() && !args[x].equals(" ")) {
+                    buffer.append(".").append(args[x].toLowerCase());
                 }
             }
             String cmdLabel = buffer.toString();

@@ -7,7 +7,6 @@ import lombok.Setter;
 @Getter
 @Setter
 @AllArgsConstructor
-@Deprecated
 public class CommandMessages {
     private String noPermission, invalidArguments, playerOnly, consoleOnly, primaryColor, secondaryColor, titleColor, errorColor, valueColor, successColor;
 }

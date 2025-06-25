@@ -1,20 +1,22 @@
 package cc.funkemunky.api.commands.ancmd;
 
+import lombok.Setter;
 import org.apache.commons.lang.Validate;
 import org.bukkit.command.CommandException;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.plugin.Plugin;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
-@Deprecated
 public class SpigotCommand extends org.bukkit.command.Command {
 
-    private Plugin owningPlugin;
+    private final Plugin owningPlugin;
     protected SpigotCompleter completer;
-    private CommandExecutor executor;
+    private final CommandExecutor executor;
+    @Setter
     private boolean notAno = false;
 
 
@@ -25,23 +27,15 @@ public class SpigotCommand extends org.bukkit.command.Command {
         this.usageMessage = "";
     }
 
-    public SpigotCommand(String label, CommandExecutor executor, Plugin owner, boolean notAno) {
-        super(label);
-        this.executor = executor;
-        this.owningPlugin = owner;
-        this.usageMessage = "";
-        this.notAno = notAno;
-    }
-
     @Override
-    public boolean execute(CommandSender sender, String commandLabel, String[] args) {
+    public boolean execute(@NotNull CommandSender sender, @NotNull String commandLabel, String[] args) {
         if (!owningPlugin.isEnabled()) {
             return false;
         }
         if(notAno) {
             return executor.onCommand(sender, this, commandLabel, args);
         } else {
-            boolean success = false;
+            boolean success;
 
             if (!testPermission(sender)) {
                 return true;
@@ -53,7 +47,7 @@ public class SpigotCommand extends org.bukkit.command.Command {
                 throw new CommandException("Unhandled exception executing ancmd '" + commandLabel + "' in plugin " + owningPlugin.getDescription().getFullName(), ex);
             }
 
-            if (!success && usageMessage.length() > 0) {
+            if (!success && !usageMessage.isEmpty()) {
                 for (String line : usageMessage.replace("<ancmd>", commandLabel).split("\n")) {
                     sender.sendMessage(line);
                 }
@@ -64,7 +58,8 @@ public class SpigotCommand extends org.bukkit.command.Command {
     }
 
     @Override
-    public java.util.List<String> tabComplete(CommandSender sender, String alias, String[] args) throws CommandException, IllegalArgumentException {
+    @NotNull
+    public java.util.List<String> tabComplete(@NotNull CommandSender sender, @NotNull String alias, String[] args) throws CommandException, IllegalArgumentException {
         Validate.notNull(sender, "Sender cannot be null");
         Validate.notNull(args, "Arguments cannot be null");
         Validate.notNull(alias, "Alias cannot be null");

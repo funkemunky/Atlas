@@ -9,11 +9,10 @@ import cc.funkemunky.api.utils.Priority;
 import java.util.*;
 
 @Init(priority = Priority.HIGH)
-@Deprecated
 public class TabHandler implements AtlasListener {
 
     public static TabHandler INSTANCE;
-    private Map<String[], Set<String>> tabArgs = new HashMap<>();
+    private final Map<String[], Set<String>> tabArgs = new HashMap<>();
     private static DontImportIfNotLatestThanks stuff;
 
     public TabHandler() {

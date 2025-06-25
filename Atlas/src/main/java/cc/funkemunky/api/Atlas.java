@@ -1,3 +1,4 @@
+
 package cc.funkemunky.api;
 
 import cc.funkemunky.api.bungee.BungeeManager;
@@ -85,19 +86,16 @@ public class Atlas extends JavaPlugin {
     private final Map<UUID, WorldInfo> worldInfoMap = new HashMap<>();
 
     @ConfigSetting(path = "updater", name = "autoDownload")
-    private static boolean autoDownload = false;
+    private static volatile boolean autoDownload = false;
     
     @ConfigSetting(path = "logging", name = "verbose")
-    private static boolean verboseLogging = true;
+    private static volatile boolean verboseLogging = true;
 
     @ConfigSetting(name = "metrics")
-    private static boolean metricsEnabled = true;
-
-    @ConfigSetting(path = "init", name = "reloadDependingPlugins")
-    private static boolean enableDependingPlugins = true;
+    private static volatile boolean metricsEnabled = true;
 
     @ConfigSetting(path = "ticking", name = "runAsync")
-    private static boolean runAsync = false;
+    private static volatile boolean runAsync = false;
 
     @ConfigSetting(name = "debug")
     public static boolean debugMode = false;
@@ -226,15 +224,19 @@ public class Atlas extends JavaPlugin {
         schedular.shutdown();
     }
 
-    public Configuration loadConfig(Plugin plugin) {
-        return loadConfig(plugin, "config");
+    public void loadConfig(Plugin plugin) {
+        loadConfig(plugin, "config");
     }
 
     @SneakyThrows
-    public Configuration loadConfig(Plugin plugin, String name) {
+    public void loadConfig(Plugin plugin, String name) {
         File configFile = new File(plugin.getDataFolder(), name +".yml");
         if(!configFile.exists()){
-            configFile.getParentFile().mkdirs();
+            if(configFile.getParentFile().mkdirs()) {
+                alog(true, "&7Created plugin folder for &e%s&7!", plugin.getName());
+            } else {
+                alog(true, "&cFailed to create plugin folder for &e%s&c! Please check your permissions.", plugin.getName());
+            }
             MiscUtils.copy(plugin.getResource(name + ".yml"), configFile);
         }
         Configuration yaml = ConfigurationProvider.getProvider(YamlConfiguration.class)
@@ -248,7 +250,6 @@ public class Atlas extends JavaPlugin {
             return value;
         });
 
-        return yaml;
     }
 
     public Configuration getConfig(Plugin plugin, String name) {
@@ -270,7 +271,7 @@ public class Atlas extends JavaPlugin {
             ConfigurationProvider.getProvider(YamlConfiguration.class)
                     .save(config, new File(plugin.getDataFolder(), name + ".yml"));
         } catch (IOException e) {
-            e.printStackTrace();
+            getLogger().log(Level.WARNING, "Failed to save config for plugin " + plugin.getName(), e);
         }
     }
 
@@ -282,11 +283,11 @@ public class Atlas extends JavaPlugin {
         loadConfig(plugin, name);
     }
 
+
     public void reloadConfig(Plugin plugin) {
         reloadConfig(plugin, "config");
     }
 
-    @Deprecated
     public CommandManager getCommandManager(Plugin plugin) {
         return pluginCommandManagers.computeIfAbsent(plugin.getName(), key -> new CommandManager(plugin));
     }
@@ -364,10 +365,14 @@ public class Atlas extends JavaPlugin {
                         try {
                             if(loader instanceof RemoteClassLoader) {
                                 return new WrappedClass(((RemoteClassLoader)loader).findClass(name));
-                            } else
-                            return new WrappedClass(Class.forName(name, true, loader));
+                            } else return new WrappedClass(Class.forName(name, true, loader));
                         } catch (ClassNotFoundException e) {
-                            e.printStackTrace();
+                            if(debugMode) getLogger().log(Level.WARNING, "Failed to load class: " + name, e);
+                            //If the class is not found, we return null so it can be filtered out later.
+                            if(e.getMessage() != null && e.getMessage().contains("Unsupported major.minor version")) {
+                                alog(true, "&cThe class &e%s &cis not supported by this version of Atlas! "
+                                        + "Please update your server to a newer version.", name);
+                            }
                         }
                         return null;
                     } else {
@@ -458,7 +463,7 @@ public class Atlas extends JavaPlugin {
                         } else if(field.isAnnotationPresent(ConfigSetting.class)) {
                             ConfigSetting setting = field.getAnnotation(ConfigSetting.class);
 
-                            String name = setting.name().length() > 0
+                            String name = !setting.name().isEmpty()
                                     ? setting.name()
                                     : field.getField().getName();
 
@@ -469,12 +474,12 @@ public class Atlas extends JavaPlugin {
 
                             FileConfiguration config = plugin.getConfig();
 
-                            if(config.get((setting.path().length() > 0 ? setting.path() + "." : "") + name) == null) {
+                            if(config.get((!setting.path().isEmpty() ? setting.path() + "." : "") + name) == null) {
                                 alog(true,"&7Value not set in config! Setting value...");
-                                config.set((setting.path().length() > 0 ? setting.path() + "." : "") + name, field.get(obj));
+                                config.set((!setting.path().isEmpty() ? setting.path() + "." : "") + name, field.get(obj));
                                 plugin.saveConfig();
                             } else {
-                                Object configObj = config.get((setting.path().length() > 0 ? setting.path() + "." : "") + name);
+                                Object configObj = config.get((!setting.path().isEmpty() ? setting.path() + "." : "") + name);
                                 alog(true, "&7Set field to value &e%s&7.",
                                         (setting.hide() ? "HIDDEN" : configObj));
                                 field.set(obj, configObj);
