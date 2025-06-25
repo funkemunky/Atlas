@@ -1,8 +1,8 @@
 package cc.funkemunky.api.utils;
 
 import cc.funkemunky.api.tinyprotocol.packet.types.MathHelper;
-import lombok.val;
 import org.bukkit.Location;
+import org.bukkit.block.Block;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
@@ -446,11 +446,12 @@ public class MathUtils {
     }
 
     //Returns -1 if fails.
+    @SuppressWarnings("unchecked")
     public static <T extends Number> T tryParse(String string) {
         try {
             return (T)(Number)Double.parseDouble(string);
         } catch(NumberFormatException e) {
-
+            //Empty catch block
         }
         return (T)(Number)(-1);
     }
@@ -460,7 +461,7 @@ public class MathUtils {
         double total = 0;
 
         for (double var : value) {
-            total += (var * val);
+            total += (var * var);
         }
 
         return Math.sqrt(total);
@@ -470,7 +471,7 @@ public class MathUtils {
         float total = 0;
 
         for (float var : value) {
-            total += (var * val);
+            total += (var * var);
         }
 
         return (float) Math.sqrt(total);
@@ -684,7 +685,12 @@ public class MathUtils {
         int distance = 0;
         for (double i = y; i >= 0.0; i -= 1.0) {
             loc.setY(i);
-            if (BlockUtils.getBlock(loc).getType().isSolid() || BlockUtils.getBlock(loc).isLiquid()) break;
+            Optional<Block> block = BlockUtils.getBlockAsync(loc);
+
+            if(block.isEmpty()) {
+                continue;
+            }
+            if (block.get().getType().isSolid() || block.get().isLiquid()) break;
             ++distance;
         }
         return distance;
@@ -730,9 +736,9 @@ public class MathUtils {
 
         //Sorting each value by how to repeat into a map.
         collect.forEach(var -> {
-            int number = repeated.getOrDefault(val, 0);
+            int number = repeated.getOrDefault(var, 0);
 
-            repeated.put(val, number + 1);
+            repeated.put(var, number + 1);
         });
 
         //Calculating the largest value to the key, which would be the mode.
@@ -827,13 +833,7 @@ public class MathUtils {
 
     public static float[] getRotations(LivingEntity origin, LivingEntity point) {
         Location two = point.getLocation(), one = origin.getLocation();
-        double diffX = two.getX() - one.getX();
-        double diffZ = two.getZ() - one.getZ();
-        double diffY = two.getY() + 2.0 - 0.4 - (one.getY() + 2.0);
-        double dist = Math.sqrt(diffX * diffX + diffZ * diffZ);
-        float yaw = (float) (FastTrig.fast_atan2(diffZ, diffX) * 180.0 / 3.141592653589793) - 90.0f;
-        float pitch = (float) (-FastTrig.fast_atan2(diffY, dist) * 180.0 / 3.141592653589793);
-        return new float[]{yaw, pitch};
+        return getRotations(one, two);
     }
 
     public static boolean isLookingTowardsEntity(Location from, Location to, LivingEntity entity) {

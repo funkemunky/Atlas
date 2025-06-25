@@ -1,7 +1,5 @@
 package cc.funkemunky.api.utils.objects.listmap;
 
-import lombok.val;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -40,9 +38,9 @@ public class ConcurrentListMap<K, V> implements ListMap<K, V> {
             List<V> vals = values.get(k);
 
             for (V var : vals) {
-                if(!val.equals(value)) continue;
+                if(!var.equals(value)) continue;
 
-                vals.remove(val);
+                vals.remove(var);
                 values.put(k, vals);
                 removed++;
             }
@@ -70,7 +68,7 @@ public class ConcurrentListMap<K, V> implements ListMap<K, V> {
 
     @Override
     public boolean clear() {
-        if(values.size() > 0) {
+        if(!values.isEmpty()) {
             values.clear();
         }
         return false;

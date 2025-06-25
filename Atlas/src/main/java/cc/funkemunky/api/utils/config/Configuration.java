@@ -171,18 +171,18 @@ public final class Configuration
         Object val;
         if ( section == this )
         {
-            var = self.get( path );
+            val = self.get( path );
         } else
         {
-            var = section.get( getChild( path ), def );
+            val = section.get( getChild( path ), def );
         }
 
-        if ( var == null && def instanceof Configuration )
+        if ( val == null && def instanceof Configuration )
         {
             self.put( path, def );
         }
 
-        return ( var != null ) ? (T) var : def;
+        return ( val != null ) ? (T) val : def;
     }
 
     public boolean contains(String path)
@@ -249,8 +249,8 @@ public final class Configuration
 
     public byte getByte(String path, byte def)
     {
-        Object var = get( path, def );
-        return ( var instanceof Number ) ? ( (Number) var ).byteValue() : def;
+        Object val = get( path, def );
+        return ( val instanceof Number ) ? ( (Number) val ).byteValue() : def;
     }
 
     public List<Byte> getByteList(String path)
@@ -277,8 +277,8 @@ public final class Configuration
 
     public short getShort(String path, short def)
     {
-        Object var = get( path, def );
-        return ( var instanceof Number ) ? ( (Number) var ).shortValue() : def;
+        Object val = get( path, def );
+        return ( val instanceof Number ) ? ( (Number) val ).shortValue() : def;
     }
 
     public List<Short> getShortList(String path)
@@ -305,8 +305,8 @@ public final class Configuration
 
     public int getInt(String path, int def)
     {
-        Object var = get( path, def );
-        return ( var instanceof Number ) ? ( (Number) var ).intValue() : def;
+        Object val = get( path, def );
+        return ( val instanceof Number ) ? ( (Number) val ).intValue() : def;
     }
 
     public List<Integer> getIntList(String path)
@@ -333,8 +333,8 @@ public final class Configuration
 
     public long getLong(String path, long def)
     {
-        Object var = get( path, def );
-        return ( var instanceof Number ) ? ( (Number) var ).longValue() : def;
+        Object val = get( path, def );
+        return ( val instanceof Number ) ? ( (Number) val ).longValue() : def;
     }
 
     public List<Long> getLongList(String path)
@@ -361,8 +361,8 @@ public final class Configuration
 
     public float getFloat(String path, float def)
     {
-        Object var = get( path, def );
-        return ( var instanceof Number ) ? ( (Number) var ).floatValue() : def;
+        Object val = get( path, def );
+        return ( val instanceof Number ) ? ( (Number) val ).floatValue() : def;
     }
 
     public List<Float> getFloatList(String path)
@@ -389,8 +389,8 @@ public final class Configuration
 
     public double getDouble(String path, double def)
     {
-        Object var = get( path, def );
-        return ( var instanceof Number ) ? ( (Number) var ).doubleValue() : def;
+        Object val = get( path, def );
+        return ( val instanceof Number ) ? ( (Number) val ).doubleValue() : def;
     }
 
     public List<Double> getDoubleList(String path)
@@ -417,8 +417,8 @@ public final class Configuration
 
     public boolean getBoolean(String path, boolean def)
     {
-        Object var = get( path, def );
-        return ( var instanceof Boolean ) ? (Boolean) var : def;
+        Object val = get( path, def );
+        return ( val instanceof Boolean ) ? (Boolean) val : def;
     }
 
     public List<Boolean> getBooleanList(String path)
@@ -445,8 +445,8 @@ public final class Configuration
 
     public char getChar(String path, char def)
     {
-        Object var = get( path, def );
-        return ( var instanceof Character ) ? (Character) var : def;
+        Object val = get( path, def );
+        return ( val instanceof Character ) ? (Character) val : def;
     }
 
     public List<Character> getCharList(String path)
@@ -473,8 +473,8 @@ public final class Configuration
 
     public String getString(String path, String def)
     {
-        Object var = get( path, def );
-        return ( var instanceof String ) ? (String) var : def;
+        Object val = get( path, def );
+        return ( val instanceof String ) ? (String) val : def;
     }
 
     public List<String> getStringList(String path)
@@ -502,7 +502,7 @@ public final class Configuration
 
     public List<?> getList(String path, List<?> def)
     {
-        Object var = get( path, def );
-        return ( var instanceof List<?> ) ? (List<?>) var : def;
+        Object val = get( path, def );
+        return ( val instanceof List<?> ) ? (List<?>) val : def;
     }
 }

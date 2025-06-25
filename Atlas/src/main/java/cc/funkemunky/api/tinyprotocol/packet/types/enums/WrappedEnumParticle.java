@@ -72,7 +72,7 @@ public enum WrappedEnumParticle {
     private static WrappedMethod toNMS;
 
     public static WrappedEnumParticle getByName(String name) {
-        return Arrays.stream(values()).filter(var -> val.getName().equalsIgnoreCase(name))
+        return Arrays.stream(values()).filter(var -> var.getName().equalsIgnoreCase(name))
                 .findFirst().orElse(null);
     }
 

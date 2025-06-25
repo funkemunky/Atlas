@@ -66,6 +66,6 @@ public class Interval extends LinkedList<Double> {
     }
     
     public DoubleStream getDoubleStream() { 
-        return stream().mapToDouble(var -> val);
+        return stream().mapToDouble(var -> var);
     }
 }

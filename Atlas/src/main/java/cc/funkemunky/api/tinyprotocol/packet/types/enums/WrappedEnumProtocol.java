@@ -25,7 +25,7 @@ public enum WrappedEnumProtocol {
     }
 
     public static WrappedEnumProtocol fromVanilla(Enum object) {
-        return Arrays.stream(values()).filter(var -> val.name().equals(object.name())).findFirst()
+        return Arrays.stream(values()).filter(var -> var.name().equals(object.name())).findFirst()
                 .orElse(WrappedEnumProtocol.UNKNOWN);
     }
 }
