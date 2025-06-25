@@ -383,7 +383,8 @@ public class Atlas extends JavaPlugin {
                     if(c == null) return false;
                     Init init = c.getAnnotation(Init.class);
                     //If the current version is 1.8, but the required version is 1.9, this will return false.
-                    if(ProtocolVersion.getGameVersion().isBelow(init.requireProtocolVersion())) return false;
+                    if(ProtocolVersion.getGameVersion() != ProtocolVersion.UNKNOWN
+                            && ProtocolVersion.getGameVersion().isBelow(init.requireProtocolVersion())) return false;
 
                     String[] required = init.requirePlugins();
 
