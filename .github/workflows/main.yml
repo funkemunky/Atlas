@@ -7,14 +7,16 @@ jobs:
     runs-on: ubuntu-latest
  
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
       - name: Set up JDK 17.0.2
-        uses: actions/setup-java@v1
+        uses: actions/setup-java@v4
         with:
           java-version: 17.0
- 
+          cache: maven
+          distribution: 'termurin'
+
       - name: Cache Maven packages
-        uses: actions/cache@v2
+        uses: actions/cache@v4
         with:
           path: ~/.m2
           key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
@@ -25,17 +27,17 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Upload Atlas
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: AtlasBukkit
           path: AtlasParent/AtlasBukkit/target/AtlasBukkit-*.jar
       - name:  Upload AtlasBungee
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: AtlasBungee
           path: AtlasParent/AtlasBungee/target/AtlasBungee-*.jar
       - name: Upload AtlasVelocity
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: AtlasVelocity
           path: AtlasParent/AtlasVelocity/target/AtlasVelocity-*.jar
