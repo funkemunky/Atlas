@@ -1,0 +1,8 @@
+name: Atlas
+main: cc.funkemunky.api.Atlas
+version: ${project.version}
+author: funkemunky
+api-version: "1.13"
+softdepend: [ViaVersion]
+commands:
+  atlas:

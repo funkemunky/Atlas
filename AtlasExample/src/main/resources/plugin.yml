@@ -1,0 +1,7 @@
+name: AtlasExample
+main: dev.brighten.example.AtlasExample
+description: An example project showing how you can use Atlas.
+version: ${project.version}
+author: funkemunky
+depend: [Atlas]
+api-version: "1.13"
