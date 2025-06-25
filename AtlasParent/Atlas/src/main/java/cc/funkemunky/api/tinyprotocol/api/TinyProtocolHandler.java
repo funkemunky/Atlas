@@ -6,6 +6,7 @@ import cc.funkemunky.api.events.impl.PacketReceiveEvent;
 import cc.funkemunky.api.events.impl.PacketSendEvent;
 import cc.funkemunky.api.handlers.protocolsupport.ProtocolAPI;
 import cc.funkemunky.api.tinyprotocol.api.packets.AbstractTinyProtocol;
+import cc.funkemunky.api.tinyprotocol.api.packets.channelhandler.NoProtocol;
 import cc.funkemunky.api.tinyprotocol.api.packets.channelhandler.TinyProtocol1_7;
 import cc.funkemunky.api.tinyprotocol.api.packets.channelhandler.TinyProtocol1_8;
 import lombok.Getter;
@@ -34,6 +35,11 @@ public class TinyProtocolHandler {
         TinyProtocolHandler self = this;
         // 1.8+ and 1.7 NMS have different class paths for their libraries used. This is why we have to separate the two.
         // These feed the packets asynchronously, before Minecraft processes it, into our own methods to process and be used as an API.
+
+        if(ProtocolVersion.getGameVersion() == ProtocolVersion.UNKNOWN) {
+            instance = new NoProtocol();
+            return;
+        }
         instance = ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.V1_8) ?
                 new TinyProtocol1_7(Atlas.getInstance()) {
             @Override
