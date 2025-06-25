@@ -1,6 +1,7 @@
 package cc.funkemunky.api.reflections.impl;
 
 import cc.funkemunky.api.Atlas;
+import cc.funkemunky.api.handlers.protocolsupport.Protocol;
 import cc.funkemunky.api.reflections.Reflections;
 import cc.funkemunky.api.reflections.types.WrappedClass;
 import cc.funkemunky.api.reflections.types.WrappedConstructor;
@@ -96,17 +97,20 @@ public class MinecraftReflection {
     // Initialization
     static {
         try {
-            chunkStatus = Reflections.getNMSClass("ChunkStatus");
-        } catch (Throwable ignored) {
-
-        }
-
-        try {
             axisAlignedBB = Reflections.getNMSClass("AxisAlignedBB");
-            chunkProviderServer = Reflections.getNMSClass("ChunkProviderServer");
+            chunkProviderServer = Reflections.getNMSClass(ProtocolVersion.getGameVersion()
+                    .isBelow(ProtocolVersion.v1_16)
+                    && ProtocolVersion.getGameVersion()
+                    .isOrAbove(ProtocolVersion.V1_9) ? "IChunkProvider" : "ChunkProviderServer");
             enumChatFormat = Reflections.getNMSClass("EnumChatFormat");
+            if(ProtocolVersion.getGameVersion().isOrAbove(ProtocolVersion.V1_13)) {
+                chunkStatus = Reflections.getNMSClass("ChunkStatus");
+            }
         } catch (Throwable ignored) {
-
+            axisAlignedBB = Reflections.getNMSClass("AABB");
+            chunkProviderServer = Reflections.getNMSClass("ServerChunkCache");
+            enumChatFormat = Reflections.getNMSClass("ChatFormatting");
+            chunkStatus = Reflections.getClass("net.minecraft.world.level.chunk.status.ChunkStatus");
         }
 
         try {
@@ -125,26 +129,38 @@ public class MinecraftReflection {
             }
 
             block = Reflections.getNMSClass("Block");
-            itemClass = Reflections.getNMSClass("Item");;
-            playerInventory = Reflections.getNMSClass("PlayerInventory");
+            itemClass = Reflections.getNMSClass("Item");
+            if(ProtocolVersion.getGameVersion().isOrAbove(ProtocolVersion.V1_20_1)) {
+                playerInventory = Reflections.getClass("net.minecraft.world.entity.player.Inventory");
+            } else playerInventory = Reflections.getNMSClass("PlayerInventory");
             itemStack = Reflections.getNMSClass("ItemStack");
             item = Reflections.getNMSClass("Item");
-            chunk = Reflections.getNMSClass("Chunk");
+            chunk = ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.V1_20_1)
+                    ? Reflections.getNMSClass("Chunk")
+                    : Reflections.getNMSClass("LevelChunk");
             minecraftServer = Reflections.getNMSClass("MinecraftServer");
-            entityPlayer = ProtocolVersion.getGameVersion().isOrAbove(ProtocolVersion.v1_17)
-                    ? Reflections.getClass("net.minecraft.server.level.EntityPlayer")
+            entityPlayer = ProtocolVersion.getGameVersion().isOrAbove(ProtocolVersion.V1_20_1)
+                    ? Reflections.getNMSClass("ServerPlayer")
                     : Reflections.getNMSClass("EntityPlayer");
             playerConnection = ProtocolVersion.getGameVersion().isOrAbove(ProtocolVersion.V1_20_1)
                     ? Reflections.getNMSClass("ServerPlayerConnection")
                     : Reflections.getNMSClass("PlayerConnection");
-            networkManager = Reflections.getNMSClass("NetworkManager");
-            serverConnection = Reflections.getNMSClass("ServerConnection");
+            networkManager = ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.V1_20_1)
+                    ? Reflections.getNMSClass("NetworkManager")
+                    : Reflections.getNMSClass("Connection");
+            serverConnection = ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.V1_20_1)
+                    ? Reflections.getNMSClass("ServerConnection")
+                    : Reflections.getNMSClass("ServerConnectionListener");
             gameProfile = Reflections.getUtilClass("com.mojang.authlib.GameProfile");
-            WrappedClass propertyMap = Reflections.getUtilClass("com.mojang.authlib.properties.PropertyMap");
-            WrappedClass forwardMultiMap = Reflections.getUtilClass("com.google.common.collect.ForwardingMultimap");
-            iChatBaseComponent = Reflections.getNMSClass("IChatBaseComponent");
-            vec3D = Reflections.getNMSClass("Vec3D");
-            enumAnimation = Reflections.getNMSClass("EnumAnimation");
+            iChatBaseComponent = ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.V1_20_1)
+                    ? Reflections.getNMSClass("IChatBaseComponent")
+                    : Reflections.getClass("net.minecraft.network.chat.Component");
+            vec3D = ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.V1_20_1)
+                    ? Reflections.getNMSClass("Vec3D")
+                    : Reflections.getNMSClass("Vec3");
+            enumAnimation = ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.V1_20_1)
+                    ? Reflections.getNMSClass("EnumAnimation")
+                    : Reflections.getNMSClass("UseAnim");
 
             getProfile = CraftReflection.craftPlayer.getMethod("getProfile");
             methodGetServerConnection = minecraftServer
@@ -152,8 +168,12 @@ public class MinecraftReflection {
                             .isBelow(ProtocolVersion.V1_13) ? 1 : 0);
 
             if (ProtocolVersion.getGameVersion().isAbove(ProtocolVersion.V1_7_10)) {
-                iBlockData = Reflections.getNMSClass("IBlockData");
-                blockPos = Reflections.getNMSClass("BlockPosition");
+                iBlockData = ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.V1_20_1)
+                        ? Reflections.getNMSClass("IBlockData")
+                        : Reflections.getNMSClass("BlockState");
+                blockPos = ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.V1_20_1)
+                        ? Reflections.getNMSClass("BlockPosition")
+                        : Reflections.getNMSClass("BlockPos");
                 getBlock = iBlockData.getMethodByType(block.getParent(), 0);
                 blockData = ProtocolVersion.getGameVersion().isOrAbove(ProtocolVersion.v1_17)
                         ? block.getFieldByType(iBlockData.getParent(), 0)
@@ -177,8 +197,8 @@ public class MinecraftReflection {
             entitySimpleCollisionBox = entity.getFirstFieldByType(axisAlignedBB.getParent());
 
             // Colliding box/collision initialization
-            WrappedClass voxelShape = null;
-            WrappedClass worldReader = null;
+            WrappedClass voxelShape;
+            WrappedClass worldReader;
             if (ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.V1_12)) {
                 getCubes = world.getMethod("a", axisAlignedBB.getParent());
 
@@ -208,7 +228,7 @@ public class MinecraftReflection {
                         .getMethod("a", iBlockData.getParent(), world.getParent(), blockPos.getParent());
                 getFlowMethod = Reflections.getNMSClass("BlockFluids")
                         .getDeclaredMethodByType(vec3D.getParent(), 0);
-            } else {
+            } else if(ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.V1_20_1)) {
                 classBlockInfo = ProtocolVersion.getGameVersion().isOrAbove(ProtocolVersion.v1_16)
                         ? Reflections.getNMSClass("BlockBase$Info") : Reflections.getNMSClass("Block$Info");
                 worldReader = Reflections.getNMSClass("IWorldReader");
@@ -227,10 +247,21 @@ public class MinecraftReflection {
                     chatComponentText = Reflections.getNMSClass("ChatComponentText");
                     chatComponentTextConst = chatComponentText.getConstructor(String.class);
                 }
+            } else {
+                classBlockInfo = Reflections.getNMSClass("BlockBehaviour$Properties");
+                worldReader = Reflections.getNMSClass("LevelReader");
+                getCubes = worldReader.getMethod("getEntityCollisions", entity.getParent(), axisAlignedBB.getParent());
+                voxelShape = Reflections.getNMSClass("VoxelShape");
+                getCubesFromVoxelShape = voxelShape.getMethod("toAabbs");
+                var fluidClass = Reflections.getClass("net.minecraft.world.level.material.FluidState");
+                fluidMethod = world.getMethodByType(fluidClass.getParent(), 0, blockPos.getParent());
+                getFlowMethod = fluidClass.getMethodByType(vec3D.getParent(), 0);
             }
 
             if (ProtocolVersion.getGameVersion().isOrAbove(ProtocolVersion.v1_16)) {
-                blockBase = Reflections.getNMSClass("BlockBase");
+                blockBase = ProtocolVersion.getGameVersion().isOrAbove(ProtocolVersion.V1_20_1)
+                        ? Reflections.getNMSClass("BlockBehaviour")
+                        : Reflections.getNMSClass("BlockBase");
             }
             if (ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.V1_9)) {
                 activeItemField = entityHuman.getFieldByType(itemStack.getParent(), 0);
@@ -261,20 +292,21 @@ public class MinecraftReflection {
             itemStackAsBukkitCopy = CraftReflection.craftItemStack
                     .getMethod("asBukkitCopy", itemStack.getParent());
 
-            chunkProvider = MinecraftReflection.worldServer
-                    .getFieldByType(Reflections.getNMSClass(ProtocolVersion.getGameVersion()
-                                    .isBelow(ProtocolVersion.v1_16)
-                                    && ProtocolVersion.getGameVersion()
-                                    .isOrAbove(ProtocolVersion.V1_9) ? "IChunkProvider" : "ChunkProviderServer")
-                            .getParent(), 0);
+            chunkProvider = MinecraftReflection.worldServer.getFieldByType(
+                    chunkProviderServer.getParent(),
+                    0
+            );
 
             connectionField = entityPlayer.getFieldByType(playerConnection.getParent(), 0);
+            //TODO Fix this, this is not found within the Connection class at index 0. My gusess is the player Connection class is incorrect
             connectionNetworkField = playerConnection.getFieldByType(networkManager.getParent(), 0);
             networkChannelField = networkManager.getFieldByType(
                     Reflections.getUtilClass("io.netty.channel.Channel").getParent(), 0);
             primaryThread = minecraftServer.getFirstFieldByType(Thread.class);
 
-            WrappedClass mobEffectList = Reflections.getNMSClass("MobEffectList");
+            WrappedClass mobEffectList = ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.V1_20_1)
+                    ? Reflections.getNMSClass("MobEffectList")
+                    : Reflections.getNMSClass("MobEffect");
             getMobEffect = ProtocolVersion.getGameVersion().isAbove(ProtocolVersion.V1_9)
                     ? mobEffectList.getMethodByType(mobEffectList.getParent(), 0, int.class) : null;
             getMobEffectId = ProtocolVersion.getGameVersion().isAbove(ProtocolVersion.V1_9)

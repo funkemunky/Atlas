@@ -2,7 +2,7 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
         <artifactId>atlas-parent</artifactId>
-        <groupId>cc.funkemunky.utils</groupId>
+        <groupId>cc.funkemunky.api</groupId>
         <version>1.12.1.1</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
@@ -85,7 +85,7 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>cc.funkemunky.utils</groupId>
+            <groupId>cc.funkemunky.api</groupId>
             <artifactId>AtlasBukkit</artifactId>
             <version>1.12.1.1</version>
             <scope>provided</scope>

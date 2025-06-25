@@ -8,6 +8,7 @@ package cc.funkemunky.api.tinyprotocol.api;
 import cc.funkemunky.api.Atlas;
 import cc.funkemunky.api.reflections.Reflections;
 import cc.funkemunky.api.reflections.types.WrappedClass;
+import cc.funkemunky.api.reflections.types.WrappedMethod;
 import cc.funkemunky.api.tinyprotocol.reflection.Reflection;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -86,40 +87,28 @@ public enum ProtocolVersion {
             }
         }
 
-        if(toReturn.isOrAbove(ProtocolVersion.v1_17)) {
-            WrappedClass mv = Reflections.getNMSClass("MinecraftVersion");
-            Object mvObject = mv.getFieldByName("a").get(null);
+        if(toReturn.isOrAbove(ProtocolVersion.v1_17) || toReturn == ProtocolVersion.UNKNOWN) {
+            WrappedClass mv;
 
-            String version = mv.getFieldByType(String.class, 1).get(mvObject);
-
-            switch(version) {
-                case "1.19.4": {
-                    toReturn = V1_19_4;
-                    break;
-                }
-                case "1.19": {
-                    toReturn = v1_19;
-                    break;
-                }
-                case "1.18.2": {
-                    toReturn = v1_18_2;
-                    break;
-                }
-                case "1.18.1":
-                case "1.18": {
-                    toReturn = v1_18;
-                    Bukkit.getLogger().log(Level.INFO, "Version is 1.18");
-                    break;
-                }
-                case "1.17.1": {
-                    toReturn = v1_17_1;
-                    break;
-                }
-                default: {
-                    toReturn = v1_17;
-                    break;
-                }
+            WrappedClass worldVersion = Reflections.getClass("net.minecraft.WorldVersion");
+            WrappedMethod protocolVersionMethod;
+            try {
+                mv = Reflections.getNMSClass("MinecraftVersion");
+                protocolVersionMethod = worldVersion.getMethod("e");
+            } catch (Exception e) {
+                mv = Reflections.getNMSClass("DetectedVersion");
+                protocolVersionMethod = worldVersion.getMethod("getProtocolVersion");
             }
+
+            Atlas.getInstance().alog("Method found: %s", protocolVersionMethod.getName());
+
+            Object mvObject = mv.getFieldByType(worldVersion.getParent(), 0).get(null);
+
+            int protocolVersion = protocolVersionMethod.invoke(mvObject);
+
+            Atlas.getInstance().alog("Detected protocol version: %s", protocolVersion);
+
+            toReturn = getVersion(protocolVersion);
         }
 
         for(int i = 0 ; i < 10 ; i++) {

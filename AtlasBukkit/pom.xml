@@ -4,12 +4,13 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
         <artifactId>atlas-parent</artifactId>
-        <groupId>cc.funkemunky.utils</groupId>
+        <groupId>cc.funkemunky.api</groupId>
         <version>1.12.1.1</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>AtlasBukkit</artifactId>
+    <version>1.12.1.1</version>
 
     <properties>
         <maven.compiler.source>8</maven.compiler.source>
@@ -18,25 +19,25 @@
 
     <dependencies>
         <dependency>
-            <groupId>cc.funkemunky.utils</groupId>
+            <groupId>cc.funkemunky.api</groupId>
             <artifactId>Atlas</artifactId>
-            <version>${project.version}</version>
+            <version>${version}</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
-            <groupId>cc.funkemunky.utils</groupId>
+            <groupId>cc.funkemunky.api</groupId>
             <artifactId>Atlas_Compat_1_19</artifactId>
             <version>${project.version}</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
-            <groupId>cc.funkemunky.utils</groupId>
+            <groupId>cc.funkemunky.api</groupId>
             <artifactId>Atlas_Compat_1_18_R2</artifactId>
             <version>${project.version}</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
-            <groupId>cc.funkemunky.utils</groupId>
+            <groupId>cc.funkemunky.api</groupId>
             <artifactId>Atlas_Compat_1_18</artifactId>
             <version>${project.version}</version>
             <scope>compile</scope>
@@ -58,6 +59,7 @@
                 <configuration>
                     <source>17</source>
                     <target>17</target>
+                    <useIncrementalCompilation>true</useIncrementalCompilation>
                     <compilerArgument>-XDignore.symbol.file</compilerArgument>
                     <annotationProcessorPaths>
                         <path>
@@ -88,11 +90,27 @@
                                 </relocation>
                                 <relocation>
                                     <pattern>co.aikar.commands</pattern>
-                                    <shadedPattern>cc.funkemunky.api.co.aikar.commands</shadedPattern>
+                                    <shadedPattern>cc.funkemunky.api.utils.co.aikar.commands</shadedPattern>
+                                </relocation>
+                                <relocation>
+                                    <pattern>co.aikar.locales</pattern>
+                                    <shadedPattern>cc.funkemunky.api.utils.co.aikar.locales</shadedPattern>
                                 </relocation>
                                 <relocation>
                                     <pattern>com.google.gson</pattern>
                                     <shadedPattern>cc.funkemunky.api.utils.com.google.gson</shadedPattern>
+                                </relocation>
+                                <relocation>
+                                    <pattern>com.google.errorprone</pattern>
+                                    <shadedPattern>cc.funkemunky.api.utils.com.google.gson</shadedPattern>
+                                </relocation>
+                                <relocation>
+                                    <pattern>com.google.j2objc</pattern>
+                                    <shadedPattern>cc.funkemunky.api.utils.com.google.j2objc</shadedPattern>
+                                </relocation>
+                                <relocation>
+                                    <pattern>com.google.thirdparty</pattern>
+                                    <shadedPattern>cc.funkemunky.api.utils.com.google.thirdparty</shadedPattern>
                                 </relocation>
                                 <relocation>
                                     <pattern>org.yaml</pattern>
@@ -110,10 +128,34 @@
                                     <pattern>it.unimi.dsi</pattern>
                                     <shadedPattern>cc.funkemunky.api.utils.it.unimi.dsi</shadedPattern>
                                 </relocation>
+                                <relocation>
+                                    <pattern>com.mongodb</pattern>
+                                    <shadedPattern>cc.funkemunky.api.utils.com.mongodb</shadedPattern>
+                                </relocation>
+                                <relocation>
+                                    <pattern>okhttp3</pattern>
+                                    <shadedPattern>cc.funkemunky.api.utils.okhttp3</shadedPattern>
+                                </relocation>
+                                <relocation>
+                                    <pattern>okio</pattern>
+                                    <shadedPattern>cc.funkemunky.api.utils.okio</shadedPattern>
+                                </relocation>
+                                <relocation>
+                                    <pattern>org.bson</pattern>
+                                    <shadedPattern>cc.funkemunky.api.utils.org.bson</shadedPattern>
+                                </relocation>
+                                <relocation>
+                                    <pattern>org.json</pattern>
+                                    <shadedPattern>cc.funkemunky.api.utils.org.json</shadedPattern>
+                                </relocation>
+                                <relocation>
+                                    <pattern>org.slf4j</pattern>
+                                    <shadedPattern>cc.funkemunky.api.utils.org.slf4j</shadedPattern>
+                                </relocation>
                             </relocations>
                             <filters>
                                 <filter>
-                                    <artifact>cc.funkemunky.utils:Atlas</artifact>
+                                    <artifact>cc.funkemunky.api:Atlas</artifact>
                                     <includes>
                                         <incude>**</incude>
                                     </includes>
@@ -125,19 +167,19 @@
                                     </includes>
                                 </filter>
                                 <filter>
-                                    <artifact>cc.funkemunky.utils:Atlas_Compat_1_18</artifact>
+                                    <artifact>cc.funkemunky.api:Atlas_Compat_1_18</artifact>
                                     <includes>
                                         <incude>**</incude>
                                     </includes>
                                 </filter>
                                 <filter>
-                                    <artifact>cc.funkemunky.utils:Atlas_Compat_1_18_R2</artifact>
+                                    <artifact>cc.funkemunky.api:Atlas_Compat_1_18_R2</artifact>
                                     <includes>
                                         <incude>**</incude>
                                     </includes>
                                 </filter>
                                 <filter>
-                                    <artifact>cc.funkemunky.utils:Atlas_Compat_1_19</artifact>
+                                    <artifact>cc.funkemunky.api:Atlas_Compat_1_19</artifact>
                                     <includes>
                                         <incude>**</incude>
                                     </includes>
