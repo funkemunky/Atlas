@@ -10,21 +10,18 @@ import com.mojang.brigadier.LiteralMessage;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.suggestion.Suggestions;
 import com.mojang.brigadier.suggestion.SuggestionsBuilder;
-import lombok.var;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 public class DontImportIfNotLatestThanks {
 
-    private static WrappedClass commandDispatcherClass = Reflections.getNMSClass("CommandDispatcher");
-    private Object commandDispatcher;
-    private CommandDispatcher bukkitDispatcher;
-    private WrappedMethod updateCommands = new WrappedClass(Player.class).getMethod("updateCommands");
+    private static final WrappedClass commandDispatcherClass = Reflections.getNMSClass("CommandDispatcher");
+    private final CommandDispatcher<?> bukkitDispatcher;
+    private final WrappedMethod updateCommands = new WrappedClass(Player.class).getMethod("updateCommands");
 
     public DontImportIfNotLatestThanks() {
-        commandDispatcher =
-                MinecraftReflection.minecraftServer
-                        .getFieldByType(commandDispatcherClass.getParent(), 0)
-                        .get(CraftReflection.getMinecraftServer());
+        Object commandDispatcher = MinecraftReflection.minecraftServer
+                .getFieldByType(commandDispatcherClass.getParent(), 0)
+                .get(CraftReflection.getMinecraftServer());
 
         bukkitDispatcher = commandDispatcherClass.getFieldByType(CommandDispatcher.class, 0)
                 .get(commandDispatcher);
