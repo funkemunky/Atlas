@@ -1,7 +1,6 @@
 package cc.funkemunky.api.reflections.impl;
 
 import cc.funkemunky.api.Atlas;
-import cc.funkemunky.api.handlers.protocolsupport.Protocol;
 import cc.funkemunky.api.reflections.Reflections;
 import cc.funkemunky.api.reflections.types.WrappedClass;
 import cc.funkemunky.api.reflections.types.WrappedConstructor;
@@ -91,8 +90,6 @@ public class MinecraftReflection {
     private static WrappedField networkChannelField = null;
     private static WrappedField primaryThread = null;
     private static WrappedMethod fluidMethod = null, getFlowMethod = null;
-    private static WrappedMethod getMobEffect = null;
-    private static WrappedMethod getMobEffectId = null;
 
     // Initialization
     static {
@@ -299,107 +296,10 @@ public class MinecraftReflection {
 
             connectionField = entityPlayer.getFieldByType(playerConnection.getParent(), 0);
             //TODO Fix this, this is not found within the Connection class at index 0. My gusess is the player Connection class is incorrect
-            connectionNetworkField = playerConnection.getFieldByType(networkManager.getParent(), 0);
+            connectionNetworkField = Reflections.getNMSClass("ServerCommonPacketListenerImpl").getFieldByType(networkManager.getParent(), 0);
             networkChannelField = networkManager.getFieldByType(
                     Reflections.getUtilClass("io.netty.channel.Channel").getParent(), 0);
             primaryThread = minecraftServer.getFirstFieldByType(Thread.class);
-
-            WrappedClass mobEffectList = ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.V1_20_1)
-                    ? Reflections.getNMSClass("MobEffectList")
-                    : Reflections.getNMSClass("MobEffect");
-            getMobEffect = ProtocolVersion.getGameVersion().isAbove(ProtocolVersion.V1_9)
-                    ? mobEffectList.getMethodByType(mobEffectList.getParent(), 0, int.class) : null;
-            getMobEffectId = ProtocolVersion.getGameVersion().isAbove(ProtocolVersion.V1_9)
-                    ? mobEffectList.getMethodByType(int.class, 0, mobEffectList.getParent()) : null;
-
-            if(ProtocolVersion.getGameVersion().isAbove(ProtocolVersion.V1_7_10)) {
-                iBlockData = Reflections.getNMSClass("IBlockData");
-                blockPos = Reflections.getNMSClass("BlockPosition");
-                getBlock = iBlockData.getMethodByType(block.getParent(), 0);
-                blockData = ProtocolVersion.getGameVersion().isOrAbove(ProtocolVersion.v1_17)
-                        ? block.getFieldByType(iBlockData.getParent(), 0) :  block.getFieldByName("blockData");
-                getBlockData = block.getMethodByType(iBlockData.getParent(), 0);
-                aabbConstructor = axisAlignedBB
-                        .getConstructor(double.class, double.class, double.class, double.class, double.class, double.class);
-                worldGetType = worldServer.getMethodByType(iBlockData.getParent(), 0, blockPos.getParent());
-            } else {
-                idioticOldStaticConstructorAABB = axisAlignedBB.getMethod("a",
-                        double.class, double.class, double.class, double.class, double.class, double.class);
-                worldGetType = worldServer.getMethod("getType", int.class, int.class, int.class);
-            }
-            if(ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.V1_12)) {
-                getCubes = world.getMethod("a", axisAlignedBB.getParent());
-
-                if(ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.V1_8)) {
-                    //1.7.10 does not have the BlockPosition object yet.
-                    addCBoxes = block.getMethod("a", world.getParent(), int.class, int.class, int.class,
-                            axisAlignedBB.getParent(), List.class, entity.getParent());
-                    methodBlockCollisionBox = block
-                            .getMethod("a", world.getParent(), int.class, int.class, int.class);
-                } else {
-                    addCBoxes = block.getMethod("a", world.getParent(), blockPos.getParent(), iBlockData.getParent(),
-                            axisAlignedBB.getParent(), List.class, entity.getParent());
-                    if(ProtocolVersion.getGameVersion().isOrAbove(ProtocolVersion.V1_9)) {
-                        methodBlockCollisionBox = block
-                                .getMethod("a", iBlockData.getParent(), world.getParent(), blockPos.getParent());
-                    } else methodBlockCollisionBox = block
-                            .getMethod("a", world.getParent(), blockPos.getParent(), iBlockData.getParent());
-                }
-
-                getFlowMethod = Reflections.getNMSClass("BlockFluids")
-                        .getDeclaredMethodByType(vec3D.getParent(), 0);
-            } else if(ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.V1_13)) {
-                getCubes = world.getMethod("getCubes", entity.getParent(), axisAlignedBB.getParent());
-                addCBoxes = block.getMethod("a", iBlockData.getParent(), world.getParent(), blockPos.getParent(),
-                        axisAlignedBB.getParent(), List.class, entity.getParent(), boolean.class);
-                methodBlockCollisionBox = block
-                        .getMethod("a", iBlockData.getParent(), world.getParent(), blockPos.getParent());
-                getFlowMethod = Reflections.getNMSClass("BlockFluids")
-                        .getDeclaredMethodByType(vec3D.getParent(), 0);
-            } else {
-                classBlockInfo = ProtocolVersion.getGameVersion().isOrAbove(ProtocolVersion.v1_16)
-                        ? Reflections.getNMSClass("BlockBase$Info") : Reflections.getNMSClass("Block$Info");
-                worldReader = Reflections.getNMSClass("IWorldReader");
-                //1.13 and 1.13.1 returns just VoxelShape while 1.13.2+ returns a Stream<VoxelShape>
-                getCubes = ProtocolVersion.getGameVersion().isOrAbove(ProtocolVersion.v1_18)
-                        ? worldReader.getMethodByType(List.class, 0, entity.getParent(), axisAlignedBB.getParent())
-                        : (ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.v1_16) ?
-                        worldReader.getMethod("a", entity.getParent(), axisAlignedBB.getParent(),
-                                double.class, double.class, double.class)
-                        : world.getMethod("c", entity.getParent(), axisAlignedBB.getParent(), Predicate.class));
-                voxelShape = Reflections.getNMSClass("VoxelShape");
-                getCubesFromVoxelShape = voxelShape.getMethodByType(List.class, 0);
-                fluidMethod = world.getMethodByType(Reflections.getNMSClass("Fluid").getParent(), 0, blockPos.getParent());
-                getFlowMethod = Reflections.getNMSClass("Fluid").getMethodByType(vec3D.getParent(), 0);
-
-                if(ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.v1_19)) {
-                    chatComponentText =  Reflections.getNMSClass("ChatComponentText");
-                    chatComponentTextConst = chatComponentText.getConstructor(String.class);
-                }
-            }
-
-            if(ProtocolVersion.getGameVersion().isOrAbove(ProtocolVersion.v1_16)) {
-                blockBase = Reflections.getNMSClass("BlockBase");
-            }
-            if(ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.V1_9)) {
-                activeItemField = entityHuman.getFieldByType(itemStack.getParent(), 0);
-            } else {
-                activeItemField = entityLiving.getFieldByType(itemStack.getParent(), 0);
-            }
-
-            canDestroyMethod = ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.v1_16)
-                    ? playerInventory.getMethod("b",
-                    ProtocolVersion.getGameVersion().isAbove(ProtocolVersion.V1_8_9)
-                            ? iBlockData.getParent() : itemClass.getParent())
-                    : itemStack.getMethodByType(boolean.class, 0, iBlockData.getParent());
-            if(ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.v1_17)) {
-                frictionFactor = (ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.v1_16)
-                        ? block : blockBase).getFieldByName("frictionFactor");
-            } else frictionFactor = blockBase.getFieldByType(float.class, 1);
-            strength = ProtocolVersion.getGameVersion().isOrAbove(ProtocolVersion.v1_17)
-                    ? blockBase.getFieldByType(float.class, 0)
-                    : (ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.v1_16)
-                    ? block.getFieldByName("strength") : blockBase.getFieldByName("durability"));
         } catch (Throwable t) {
             // If *any* error occurs in static field reflection, everything remains null
             t.printStackTrace(); // Or use your preferred logging mechanism
@@ -498,14 +398,6 @@ public class MinecraftReflection {
         return getItemMethod.invoke(vanillaStack);
     }
 
-    public static <T> T getMobEffect(int effectId) {
-        return getMobEffect.invoke(null, effectId);
-    }
-
-    public static int getMobEffectId(Object effect) {
-        return getMobEffectId.invoke(null, effect);
-    }
-
     //Can use either a Bukkit or vanilla object
     public static <T> T getItemAnimation(Object object) {
         Object vanillaStack;
@@ -580,8 +472,7 @@ public class MinecraftReflection {
 
     //Argument can either be org.bukkit.block.Block or vanilla Block.
     public static <T> T getBlockData(Object object) {
-        if(object instanceof Block) {
-            Block block = (Block) object;
+        if(object instanceof Block block) {
             Object vworld = CraftReflection.getVanillaWorld(block.getWorld());
             if(ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.V1_8)) {
                 return worldGetType.invoke(vworld, block.getX(), block.getY(), block.getZ());

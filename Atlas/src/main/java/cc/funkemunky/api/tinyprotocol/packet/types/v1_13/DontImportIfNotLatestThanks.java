@@ -5,6 +5,7 @@ import cc.funkemunky.api.reflections.impl.CraftReflection;
 import cc.funkemunky.api.reflections.impl.MinecraftReflection;
 import cc.funkemunky.api.reflections.types.WrappedClass;
 import cc.funkemunky.api.reflections.types.WrappedMethod;
+import cc.funkemunky.api.tinyprotocol.api.ProtocolVersion;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.LiteralMessage;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
@@ -14,17 +15,25 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 public class DontImportIfNotLatestThanks {
 
-    private static final WrappedClass commandDispatcherClass = Reflections.getNMSClass("CommandDispatcher");
+    private static final WrappedClass commandDispatcherClass = ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.V1_19_1)
+            ? Reflections.getNMSClass("CommandDispatcher") : Reflections.getClass("com.mojang.brigadier.CommandDispatcher");
     private final CommandDispatcher<?> bukkitDispatcher;
     private final WrappedMethod updateCommands = new WrappedClass(Player.class).getMethod("updateCommands");
 
     public DontImportIfNotLatestThanks() {
-        Object commandDispatcher = MinecraftReflection.minecraftServer
-                .getFieldByType(commandDispatcherClass.getParent(), 0)
-                .get(CraftReflection.getMinecraftServer());
+        if(ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.V1_20_1)) {
+            Object commandDispatcher = MinecraftReflection.minecraftServer
+                    .getFieldByType(commandDispatcherClass.getParent(), 0)
+                    .get(CraftReflection.getMinecraftServer());
 
-        bukkitDispatcher = commandDispatcherClass.getFieldByType(CommandDispatcher.class, 0)
-                .get(commandDispatcher);
+            bukkitDispatcher = commandDispatcherClass.getFieldByType(CommandDispatcher.class, 0)
+                    .get(commandDispatcher);
+        } else {
+            WrappedClass commandsClass = Reflections.getNMSClass("Commands");
+            var commands = MinecraftReflection.minecraftServer.getMethod("getCommands");
+            bukkitDispatcher = commandsClass.getFieldByType(CommandDispatcher.class, 0)
+                    .get(commands.invoke(CraftReflection.getMinecraftServer()));
+        }
     }
     public <T> T getSuggestions(String input, String... options) {
         int start = input.startsWith("/") ? 1 : 0;

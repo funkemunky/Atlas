@@ -2,18 +2,19 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
     <parent>
-        <artifactId>atlas-parent</artifactId>
         <groupId>cc.funkemunky.api</groupId>
+        <artifactId>atlas-parent</artifactId>
         <version>1.12.1.1</version>
     </parent>
-    <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>Atlas_Compat_1_19</artifactId>
+    <artifactId>AtlasCompat1_20</artifactId>
 
     <properties>
-        <maven.compiler.source>8</maven.compiler.source>
-        <maven.compiler.target>8</maven.compiler.target>
+        <maven.compiler.source>21</maven.compiler.source>
+        <maven.compiler.target>21</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
     <build>
@@ -46,22 +47,17 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>org.spigotmc</groupId>
-            <artifactId>spigot</artifactId>
-            <version>1.19-R0.1</version>
+            <groupId>org.github.paperspigot</groupId>
+            <artifactId>1.20.6</artifactId>
+            <version>1.20.6</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>org.spigotmc</groupId>
             <artifactId>spigot-api</artifactId>
-            <version>1.19-R0.1</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.github.spigot</groupId>
-            <artifactId>1.17</artifactId>
-            <version>1.17</version>
+            <version>1.20.2-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>
+
 </project>
