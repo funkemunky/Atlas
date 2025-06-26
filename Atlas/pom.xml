@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>cc.funkemunky.api</groupId>
+        <groupId>cc.funkemunky.utils</groupId>
         <version>1.12.1.1</version>
         <artifactId>atlas-parent</artifactId>
         <relativePath>../pom.xml</relativePath>

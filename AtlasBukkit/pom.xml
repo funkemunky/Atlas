@@ -4,7 +4,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
         <artifactId>atlas-parent</artifactId>
-        <groupId>cc.funkemunky.api</groupId>
+        <groupId>cc.funkemunky.utils</groupId>
         <version>1.12.1.1</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
@@ -19,31 +19,31 @@
 
     <dependencies>
         <dependency>
-            <groupId>cc.funkemunky.api</groupId>
+            <groupId>cc.funkemunky.utils</groupId>
             <artifactId>Atlas</artifactId>
             <version>${version}</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
-            <groupId>cc.funkemunky.api</groupId>
+            <groupId>cc.funkemunky.utils</groupId>
             <artifactId>Atlas_Compat_1_19</artifactId>
             <version>${project.version}</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
-            <groupId>cc.funkemunky.api</groupId>
+            <groupId>cc.funkemunky.utils</groupId>
             <artifactId>Atlas_Compat_1_18_R2</artifactId>
             <version>${project.version}</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
-            <groupId>cc.funkemunky.api</groupId>
+            <groupId>cc.funkemunky.utils</groupId>
             <artifactId>Atlas_Compat_1_18</artifactId>
             <version>${project.version}</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
-            <groupId>cc.funkemunky.api</groupId>
+            <groupId>cc.funkemunky.utils</groupId>
             <artifactId>AtlasCompat1_20</artifactId>
             <version>${project.version}</version>
             <scope>compile</scope>
