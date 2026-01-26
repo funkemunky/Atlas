@@ -266,15 +266,15 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>org.github.paperspigot</groupId>
-            <artifactId>1.19.4</artifactId>
-            <version>1.19.4</version>
+            <groupId>org.spigotmc</groupId>
+            <artifactId>spigot</artifactId>
+            <version>1.21.11-R0.2-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>org.spigotmc</groupId>
-            <artifactId>spigot</artifactId>
-            <version>1.19-R0.1</version>
+            <groupId>org.github.paperspigot</groupId>
+            <artifactId>1.19.4</artifactId>
+            <version>1.19.4</version>
             <scope>provided</scope>
         </dependency>
         <dependency>

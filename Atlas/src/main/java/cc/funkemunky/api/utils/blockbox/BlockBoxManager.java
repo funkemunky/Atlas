@@ -2,6 +2,7 @@ package cc.funkemunky.api.utils.blockbox;
 
 import cc.funkemunky.api.tinyprotocol.api.ProtocolVersion;
 import cc.funkemunky.api.tinyprotocol.reflection.Reflection;
+import cc.funkemunky.api.utils.blockbox.boxes.BlockBoxUNKNOWN;
 import cc.funkemunky.api.utils.world.types.SimpleCollisionBox;
 import lombok.Getter;
 import org.bukkit.Bukkit;
@@ -17,12 +18,11 @@ public class BlockBoxManager {
 
     public BlockBoxManager() {
         try {
-            blockBox = (BlockBox) Reflection.getClass("cc.funkemunky.api.utils.blockbox.boxes.BlockBox"
-                    + ProtocolVersion.getGameVersion()
-                    .getServerVersion().replaceAll("v", "")).newInstance();
-        } catch (InstantiationException | IllegalAccessException e) {
-            Bukkit.getLogger().log(Level.SEVERE,"There was an error loading BlockBox API for version "
-                    + ProtocolVersion.getGameVersion().name());
+            this.blockBox = (BlockBox)Reflection.getClass("cc.funkemunky.api.utils.blockbox.boxes.BlockBox" + ProtocolVersion.getGameVersion().getServerVersion().replaceAll("v", "")).newInstance();
+        }
+        catch (Throwable e) {
+            this.blockBox = new BlockBoxUNKNOWN();
+            Bukkit.getLogger().log(Level.SEVERE, "There was an error loading BlockBox API for version " + ProtocolVersion.getGameVersion().name());
         }
     }
 }

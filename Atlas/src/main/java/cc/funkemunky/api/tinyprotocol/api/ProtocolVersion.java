@@ -68,7 +68,11 @@ public enum ProtocolVersion {
     V1_21_1(767, "v1_21_R1"),
     V1_21_2(768, "v1_21_R1"),
     V1_21_4(769, "v1_21_R1"),
-
+    V1_21_5(770, "v1_21_R1"),
+    V1_21_6(771, "v1_21_R1"),
+    V1_21_7(772, "v1_21_R1"),
+    V1_21_9(773, "v1_21_R1"),
+    V1_21_11(774, "v1_21_R1"),
     UNKNOWN(-1, "UNKNOWN");
 
     @Getter
@@ -80,41 +84,29 @@ public enum ProtocolVersion {
 
     private static ProtocolVersion fetchServerVersion() {
         ProtocolVersion toReturn = UNKNOWN;
-        for (ProtocolVersion version : values()) {
-            if (version.getServerVersion() != null && version.getServerVersion().equals(Reflection.VERSION)) {
-                toReturn = version;
-                break;
-            }
+        for (ProtocolVersion version : ProtocolVersion.values()) {
+            if (version.getServerVersion() == null || !version.getServerVersion().equals(Reflection.VERSION)) continue;
+            toReturn = version;
+            break;
         }
-
-        if(toReturn.isOrAbove(ProtocolVersion.v1_17) || toReturn == ProtocolVersion.UNKNOWN) {
-            WrappedClass mv;
-
-            WrappedClass worldVersion = Reflections.getClass("net.minecraft.WorldVersion");
+        if (toReturn.isOrAbove(v1_17) || toReturn == UNKNOWN) {
             WrappedMethod protocolVersionMethod;
+            WrappedClass mv;
+            WrappedClass worldVersion = Reflections.getClass("net.minecraft.WorldVersion");
             try {
                 mv = Reflections.getNMSClass("MinecraftVersion");
-                protocolVersionMethod = worldVersion.getMethod("e");
-            } catch (Exception e) {
-                mv = Reflections.getNMSClass("DetectedVersion");
-                protocolVersionMethod = worldVersion.getMethod("getProtocolVersion");
+                protocolVersionMethod = worldVersion.getMethodByType(Integer.TYPE, 0);
             }
-
+            catch (Exception e) {
+                mv = Reflections.getNMSClass("DetectedVersion");
+                protocolVersionMethod = worldVersion.getMethodByType(Integer.TYPE, 0);
+            }
             Atlas.getInstance().alog("Method found: %s", protocolVersionMethod.getName());
-
             Object mvObject = mv.getFieldByType(worldVersion.getParent(), 0).get(null);
-
-            int protocolVersion = protocolVersionMethod.invoke(mvObject);
-
+            int protocolVersion = (Integer)protocolVersionMethod.invoke(mvObject, new Object[0]);
             Atlas.getInstance().alog("Detected protocol version: %s", protocolVersion);
-
-            toReturn = getVersion(protocolVersion);
+            toReturn = ProtocolVersion.getVersion(protocolVersion);
         }
-
-        for(int i = 0 ; i < 10 ; i++) {
-            Atlas.getInstance().alog("Version: %s", toReturn);
-        }
-
         return toReturn;
     }
 
